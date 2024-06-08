@@ -2,6 +2,7 @@ import 'package:d_report/src/core/config/theme/themes.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/login_page.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/register_page.dart';
 import 'package:d_report/src/feature/current_cases/presentation/pages/main_page.dart';
+import 'package:d_report/src/feature/not_found/presentation/pages/not-found_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,12 +26,12 @@ class MyApp extends StatelessWidget {
         '/home/': (context) => const MainPage(),
       },
       initialRoute: '/auth/login/',
-      // onUnknownRoute: (RouteSettings setting) { // TODO implement later
-      //    String unknownRoute = setting.name ;
-      //    return new MaterialPageRoute(
-      //                builder: (context) => NotFoundPage()
-      //    );
-      //  }
+      onUnknownRoute: (RouteSettings setting) {
+        settings: setting;
+          return MaterialPageRoute(
+        builder: (context) => const NotFoundPage()
+        );
+      }
     );
   }
 }

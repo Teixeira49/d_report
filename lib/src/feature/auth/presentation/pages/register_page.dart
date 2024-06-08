@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import '../widgets/firstname_field.dart';
 import '../widgets/password_field.dart';
 import '../widgets/register_button.dart';
-import '../widgets/typeuser_field.dart';
+import '../widgets/type-user_field.dart';
 import '../widgets/user_field.dart';
-import '../widgets/validatepassword_field.dart';
+import '../widgets/validate-password_field.dart';
 
 final _formatKey2 = GlobalKey<FormState>();
 
