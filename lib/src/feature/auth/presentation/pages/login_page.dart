@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:d_report/src/feature/auth/presentation/widgets/user_text-field.dart';
+import 'package:d_report/src/feature/auth/presentation/widgets/user_field.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 
-import '../widgets/password_textfield.dart';
+import '../widgets/login_button.dart';
+import '../widgets/password_field.dart';
 
 final _formatKey = GlobalKey<FormState>();
 
@@ -24,6 +25,7 @@ class LoginPage extends StatelessWidget{
           backgroundColor: Theme.of(context).colorScheme.primary,
           //    .inversePrimary,
           centerTitle: true,
+          automaticallyImplyLeading: false,
         ),
 
         body: Center(
@@ -70,17 +72,13 @@ class LoginPage extends StatelessWidget{
                                     top: size.height / 60,
                                     bottom: 0.25
                                 ),
-                                child: MaterialButton(
-                                  color: Colors.deepOrange,
-                                  child: const Text('Entrance', style: TextStyle(color: Colors.white)),
-                                  onPressed: () {
-                                    Navigator.of(context).pushReplacementNamed('/main/');
-                                  },
-                                )
+                                child: const LoginButton()
                             ),
                             TextButton(
-                              onPressed: () {  },
                               child: const Text("Register", style: TextStyle(color: Colors.white)),
+                              onPressed: () {
+                                Navigator.of(context).pushNamed('/auth/register/');
+                              },
                             )
                           ]
                       )

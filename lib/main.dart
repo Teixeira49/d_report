@@ -1,7 +1,7 @@
 import 'package:d_report/src/core/config/theme/themes.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/login_page.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/register_page.dart';
-import 'package:d_report/src/feature/current_cases/presentation/main_page.dart';
+import 'package:d_report/src/feature/current_cases/presentation/pages/main_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,27 +18,25 @@ class MyApp extends StatelessWidget {
       title: 'Flutter D Project APP',
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
+      debugShowCheckedModeBanner: false,
       routes: {
-        '/login/': (context) => const LoginPage(),
-        '/register/': (context) => const RegisterPage(),
-        '/main/': (context) => const MainPage(),
+        '/auth/login/': (context) => const LoginPage(),
+        '/auth/register/': (context) => const RegisterPage(),
+        '/home/': (context) => const MainPage(),
       },
-      initialRoute: '/login/',
+      initialRoute: '/auth/login/',
+      // onUnknownRoute: (RouteSettings setting) { // TODO implement later
+      //    String unknownRoute = setting.name ;
+      //    return new MaterialPageRoute(
+      //                builder: (context) => NotFoundPage()
+      //    );
+      //  }
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 

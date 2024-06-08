@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 
-class UserAccountTextField extends StatelessWidget {
-  const UserAccountTextField({super.key});
+class ValidatePasswordTextField extends StatelessWidget {
+  const ValidatePasswordTextField({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const SizedBox(
       width: double.infinity,
-
-      child:
-
-      TextField(
-        obscureText: false,
-        keyboardType: TextInputType.emailAddress,
+      child: TextField(
+        obscureText: true,
+        keyboardType: TextInputType.visiblePassword,
         decoration: InputDecoration(
           fillColor: Colors.white70,
           filled: true,
@@ -25,10 +22,10 @@ class UserAccountTextField extends StatelessWidget {
             ),
           ),
           suffixIcon: Icon(
-              Icons.person,
-              color: Color.fromRGBO(58, 58, 58, 1.0),
+            Icons.lock_rounded,
+            color: Color.fromRGBO(58, 58, 58, 1.0),
           ),
-          labelText: 'Email',
+          labelText: 'Password',
           labelStyle: TextStyle(
             color: Color.fromRGBO(58, 58, 58, 1.0),
             fontWeight: FontWeight.w700,
