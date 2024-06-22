@@ -6,11 +6,11 @@ abstract class AppTheme {
 
       appBarTheme: const AppBarTheme(
         elevation: 0,
-        backgroundColor: Color.fromRGBO(6, 147, 253, 1),
+        backgroundColor: Color.fromRGBO(20, 154, 255, 1.0),
       ),
 
-      scaffoldBackgroundColor: const Color.fromRGBO(6, 147, 253, 1),
-      primaryColor: Colors.black26,
+      scaffoldBackgroundColor: const Color.fromRGBO(210, 233, 245, 1.0),
+      primaryColor: const Color.fromRGBO(6, 147, 253, 1),
       splashColor: Colors.black26,
       fontFamily: 'IBM',
 
@@ -19,6 +19,12 @@ abstract class AppTheme {
         secondary: Colors.red,
         brightness: Brightness.light,
       ),
+
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Color.fromRGBO(6, 135, 232, 1.0),
+        selectedItemColor: Color.fromRGBO(33, 160, 255, 1.0),
+        selectedLabelStyle: TextStyle(color: Colors.black),
+      )
 
     );
   } static ThemeData get dark {

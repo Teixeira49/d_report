@@ -1,7 +1,7 @@
 import 'package:d_report/src/core/config/theme/themes.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/login_page.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/register_page.dart';
-import 'package:d_report/src/feature/current_cases/presentation/pages/main_page.dart';
+import 'package:d_report/src/feature/main_page/presentation/pages/main_page.dart';
 import 'package:d_report/src/feature/not_found/presentation/pages/not-found_page.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +23,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/auth/login/': (context) => const LoginPage(),
         '/auth/register/': (context) => const RegisterPage(),
-        '/home/': (context) => const MainPage(),
+        '/patients/': (context) => const MainPage(),
+        '/patients/details/': (context) => const MainPage(),
       },
       initialRoute: '/auth/login/',
       onUnknownRoute: (RouteSettings setting) {
