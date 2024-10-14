@@ -3,6 +3,7 @@ import 'package:d_report/src/feature/auth/presentation/pages/login_page.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/register_page.dart';
 import 'package:d_report/src/feature/main_page/presentation/pages/main_page.dart';
 import 'package:d_report/src/feature/not_found/presentation/pages/not-found_page.dart';
+import 'package:d_report/src/feature/patients_details/presentation/pages/patient-details_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,11 +11,15 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+
+
     return MaterialApp(
       title: 'Flutter D Project APP',
       theme: AppTheme.light,
@@ -24,11 +29,11 @@ class MyApp extends StatelessWidget {
         '/auth/login/': (context) => const LoginPage(),
         '/auth/register/': (context) => const RegisterPage(),
         '/patients/': (context) => const MainPage(),
-        '/patients/details/': (context) => const MainPage(),
+        '/patients/details/': (context) => const PatientDetailsPage(),
       },
       initialRoute: '/auth/login/',
       onUnknownRoute: (RouteSettings setting) {
-        settings: setting;
+        //settings: setting;
           return MaterialPageRoute(
         builder: (context) => const NotFoundPage()
         );

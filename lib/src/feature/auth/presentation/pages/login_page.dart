@@ -44,14 +44,17 @@ class LoginPage extends StatelessWidget{
                             Container(
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  border: Border.all(color: Colors.black),
+                                  border: Border.all(color: Colors.transparent),
                                   shape: BoxShape.circle
                               ),
                               padding: EdgeInsets.symmetric(
                                 horizontal: size.width * 0.0075,
                                 vertical: size.height * 0.025,
                               ),
-                              child: Image.asset("assets/images/logo.png", width: MediaQuery.of(context).size.width/1.5, height: MediaQuery.of(context).size.width/1.5 ),
+                              child: Image.asset("assets/images/logo.png",
+                                  width: MediaQuery.of(context).size.width/1.5,
+                                  height: MediaQuery.of(context).size.width/1.5
+                              ),
                             ),
                             Container(
                                 padding: EdgeInsets.symmetric(

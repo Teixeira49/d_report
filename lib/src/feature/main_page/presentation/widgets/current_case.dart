@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:d_report/src/feature/main_page/domain/entities/patient.dart';
 import 'package:flutter/material.dart';
-
-import 'package:d_report/src/feature/auth/presentation/widgets/user_field.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
+import 'case_tile.dart';
 
 class CurrentCasesPage extends StatelessWidget {
 
-  final List<String> patients;
+  final List<Patient> patients;
 
   const CurrentCasesPage(this.patients, {super.key});
 
@@ -31,23 +28,7 @@ class CurrentCasesPage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25.5)
                 ),
-                child: ListTile(
-                  title: Text(patients[index]),
-                  subtitle: const Text('pepe'), //patients[index].getPrice()
-                  tileColor: const Color.fromRGBO(210, 233, 245, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.5)
-                  ),
-                  trailing: const Icon(
-                    Icons.arrow_circle_right, color: Colors.grey,
-                  ),
-                  leading: const Icon(
-                    Icons.person_search_outlined, color: Colors.grey,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pushReplacementNamed('/patients/details/');
-                  },
-                ),
+                child: CaseTile(context, patients[index])
               )),
             ),
           ),

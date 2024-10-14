@@ -9,7 +9,7 @@ abstract class AppTheme {
         backgroundColor: Color.fromRGBO(20, 154, 255, 1.0),
       ),
 
-      scaffoldBackgroundColor: const Color.fromRGBO(210, 233, 245, 1.0),
+      scaffoldBackgroundColor: const Color.fromRGBO(255, 255, 255, 1.0),
       primaryColor: const Color.fromRGBO(6, 147, 253, 1),
       splashColor: Colors.black26,
       fontFamily: 'IBM',
@@ -22,9 +22,16 @@ abstract class AppTheme {
 
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: Color.fromRGBO(6, 135, 232, 1.0),
-        selectedItemColor: Color.fromRGBO(33, 160, 255, 1.0),
+        selectedItemColor: Colors.white,
         selectedLabelStyle: TextStyle(color: Colors.black),
-      )
+      ),
+
+      listTileTheme: const ListTileThemeData(
+        tileColor: Color.fromRGBO(210, 233, 245, 1),
+        textColor: Colors.black,
+        titleTextStyle: TextStyle(fontWeight: FontWeight.bold),
+        iconColor: Colors.grey,
+      ),
 
     );
   } static ThemeData get dark {
