@@ -1,3 +1,5 @@
+import 'package:d_report/src/core/utils/constants/fields_constants.dart';
+
 import 'package:d_report/src/feature/main_page/domain/entities/patient.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +20,10 @@ class MyMainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context){
 
+    var userName = "Pepe loco";
+    var accountEmail = "Pepeloco@gmail.com";
     var accountName = "Doctor"; // TODO take name for back
+    var img = "";
     final size = MediaQuery.of(context).size;
 
     //List<Patients> patients = [];
@@ -51,9 +56,9 @@ class MyMainPageState extends State<MainPage> {
           title: Row(
             children: [
               GestureDetector(
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   backgroundColor: Colors.white,
-                  child: Icon(Icons.person),
+                  child: img == "" ? Image.asset("assets/images/logo.png") : Image.asset(img),
                 ),
                 onTap: () {
                   print('Se presionó el CircleAvatar');
@@ -76,21 +81,67 @@ class MyMainPageState extends State<MainPage> {
         ),
 
         drawer: Drawer(
-          semanticLabel: "pepe",
+          surfaceTintColor: Theme.of(context).drawerTheme.surfaceTintColor,
+          shadowColor: Theme.of(context).drawerTheme.shadowColor,
           child:
             ListView(
               padding: EdgeInsets.zero,
                 children: <Widget>[
-                  const DrawerHeader(
-                      child: Text("Pepe")
+                  DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundColor: Colors.white,
+                          child: img == "" ? Image.asset("assets/images/logo.png") : Image.asset(img),
+                        ),
+                        const SizedBox(height: 4,),
+                        Text(
+                          userName != "" ? accountName + point + userName : 'Nombre de usuario',
+                          style: const TextStyle(color: Colors.white, fontSize: 18), // TODO Add colors to palette
+                        ),
+                        Text(
+                          accountEmail ?? 'correo@ejemplo.com',
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    )
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.home),
+                    title: const Text('Principal'),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.5)
+                    ),
+                    onTap: () {
+                      setState(() {
+                        Navigator.of(context).pushNamed('/main/patients/');
+                      });
+                      print("pepe");
+                    },
                   ),
                   ListTile(
                     leading: const Icon(Icons.person),
                     title: const Text('Profile'),
                     onTap: () {
-                    //  setState(() {
-                    //    selectedPage = 'Messages';
-                    //  });
+                      setState(() {
+                        Navigator.of(context).pushNamed('/main/profile/');
+                      });
+                      print("pepe");
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.settings),
+                    title: const Text('Configuracion'),
+                    onTap: () {
+                      setState(() {
+                          Navigator.of(context).pushNamed('/main/config/');
+                      });
                       print("pepe");
                     },
                   ),
@@ -101,7 +152,8 @@ class MyMainPageState extends State<MainPage> {
                       Navigator.popUntil(context, (route) => route.isFirst);
                       print("Se presiono cerrar sesion");
                     },
-                  )
+                  ),
+                  Divider(color: Theme.of(context).colorScheme.outline,),
                 ]
             ),
           ),

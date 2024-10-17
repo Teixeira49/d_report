@@ -28,8 +28,10 @@ class MyApp extends StatelessWidget {
       routes: {
         '/auth/login/': (context) => const LoginPage(),
         '/auth/register/': (context) => const RegisterPage(),
-        '/patients/': (context) => const MainPage(),
-        '/patients/details/': (context) => const PatientDetailsPage(),
+        '/main/patients/': (context) => const MainPage(),
+        '/main/patients/details/': (context) => const PatientDetailsPage(),
+        '/main/profile/': (context) => const NotFoundPage(),
+        '/main/config/': (context) => const NotFoundPage(),
       },
       initialRoute: '/auth/login/',
       onUnknownRoute: (RouteSettings setting) {

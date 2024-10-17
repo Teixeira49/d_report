@@ -27,13 +27,13 @@ class CaseTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(25.5)
       ),
       trailing: const Icon(
-        Icons.arrow_circle_right, color: Colors.grey,
+        Icons.arrow_circle_right, color: Colors.grey, // TODO delete Colors
       ),
       leading: const Icon(
         Icons.person_search_outlined, color: Colors.grey,
       ),
       onTap: () {
-        Navigator.of(context).pushNamed('/patients/details/',
+        Navigator.of(context).pushNamed('/main/patients/details/',
             arguments: {"data":dataPatient}
         );
       },

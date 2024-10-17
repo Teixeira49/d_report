@@ -13,4 +13,6 @@ const String role = "Roles";
 
 const String hintRole = 'Please, select one role';
 
+const String point = '. ';
+
 final List<String> userType = <String>["Doctor","Resident","Administrator"];

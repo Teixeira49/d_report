@@ -14,8 +14,9 @@ abstract class AppTheme {
       ),
 
       drawerTheme: const DrawerThemeData(
-        backgroundColor: Color.fromRGBO(33, 160, 255, 1.0),
+        backgroundColor: Color.fromRGBO(242, 248, 255, 1.0),
         surfaceTintColor: Colors.red,
+        shadowColor: Colors.black,
       ),
 
       scaffoldBackgroundColor: const Color.fromRGBO(255, 255, 255, 1.0),
@@ -37,8 +38,70 @@ abstract class AppTheme {
         secondary: Colors.red,
         tertiary: Colors.deepOrange,
         tertiaryContainer: Colors.white,
+        outline: const Color.fromRGBO(192, 192, 192, 1.0),
         brightness: Brightness.light,
+      ),
 
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Colors.red,
+      ),
+
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Color.fromRGBO(6, 135, 232, 1.0),
+        selectedItemColor: Colors.white,
+        selectedLabelStyle: TextStyle(color: Colors.black),
+      ),
+
+      listTileTheme: ListTileThemeData(
+        tileColor: const Color.fromRGBO(242, 248, 255, 1.0),
+        textColor: Colors.black,
+        titleTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+        subtitleTextStyle: const TextStyle(fontStyle: FontStyle.italic),
+        iconColor: Colors.grey,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.5)
+        ),
+      ),
+
+    );
+  } static ThemeData get dark {
+    return ThemeData(
+
+      fontFamily: 'IBM',
+
+      primaryColor: Colors.black,
+
+      appBarTheme: const AppBarTheme(
+        elevation: 0,
+        color: Color.fromRGBO(4, 107, 185, 1.0),
+      ),
+
+      drawerTheme: const DrawerThemeData(
+        backgroundColor: Color.fromRGBO(33, 160, 255, 1.0),
+        surfaceTintColor: Colors.red,
+      ),
+
+      scaffoldBackgroundColor: Colors.black,
+
+      splashColor: Colors.transparent,
+
+      iconTheme: const IconThemeData(
+          color: Color.fromRGBO(58, 58, 58, 1.0)
+      ),
+
+      textTheme: const TextTheme(
+          headlineSmall: TextStyle(color: Color.fromRGBO(58, 58, 58, 1.0)),
+          bodyLarge: TextStyle(color: Color.fromRGBO(58, 58, 58, 1.0))
+      ),
+
+
+      colorScheme: ColorScheme.fromSwatch().copyWith(
+        primary: const Color.fromRGBO(6, 135, 232, 1.0),
+        secondary: Colors.red,
+        tertiary: Colors.deepOrange,
+        tertiaryContainer: Colors.white,
+        outline: const Color.fromRGBO(192, 192, 192, 1.0),
+        brightness: Brightness.light,
       ),
 
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -56,26 +119,6 @@ abstract class AppTheme {
         textColor: Colors.black,
         titleTextStyle: TextStyle(fontWeight: FontWeight.bold),
         iconColor: Colors.grey,
-      ),
-
-    );
-  } static ThemeData get dark {
-    return ThemeData(
-
-      appBarTheme: const AppBarTheme(
-        elevation: 0,
-        color: Color.fromRGBO(4, 107, 185, 1.0),
-      ),
-
-      scaffoldBackgroundColor: const Color.fromRGBO(4, 107, 185, 1.0),
-      primaryColor: Colors.grey,
-      splashColor: Colors.transparent,
-      fontFamily: 'IBM',
-
-      colorScheme: ColorScheme.fromSwatch().copyWith(
-        primary: const Color.fromRGBO(15, 109, 187, 1.0),
-        secondary: Colors.red,
-        brightness: Brightness.dark,
       ),
 
     );

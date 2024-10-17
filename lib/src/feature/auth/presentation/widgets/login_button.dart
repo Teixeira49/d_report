@@ -19,7 +19,7 @@ class LoginButton extends StatelessWidget {
           focusColor: Theme.of(context).colorScheme.inversePrimary,
           child: const Text(loadData, style: TextStyle(color: Colors.white)),
           onPressed: () {
-            Navigator.of(context).pushNamed('/patients/');
+            Navigator.of(context).pushNamed('/main/patients/');
           },
         )
     );
