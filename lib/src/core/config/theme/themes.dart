@@ -4,20 +4,45 @@ abstract class AppTheme {
   static ThemeData get light {
     return ThemeData(
 
+      fontFamily: 'IBM',
+
+      primaryColor: const Color.fromRGBO(6, 147, 253, 1),
+
       appBarTheme: const AppBarTheme(
         elevation: 0,
         backgroundColor: Color.fromRGBO(20, 154, 255, 1.0),
       ),
 
+      drawerTheme: const DrawerThemeData(
+        backgroundColor: Color.fromRGBO(33, 160, 255, 1.0),
+        surfaceTintColor: Colors.red,
+      ),
+
       scaffoldBackgroundColor: const Color.fromRGBO(255, 255, 255, 1.0),
-      primaryColor: const Color.fromRGBO(6, 147, 253, 1),
+
       splashColor: Colors.black26,
-      fontFamily: 'IBM',
+
+      iconTheme: const IconThemeData(
+        color: Color.fromRGBO(58, 58, 58, 1.0)
+      ),
+
+      textTheme: const TextTheme(
+        headlineSmall: TextStyle(color: Color.fromRGBO(58, 58, 58, 1.0)),
+        bodyLarge: TextStyle(color: Color.fromRGBO(58, 58, 58, 1.0))
+      ),
+
 
       colorScheme: ColorScheme.fromSwatch().copyWith(
         primary: const Color.fromRGBO(6, 135, 232, 1.0),
         secondary: Colors.red,
+        tertiary: Colors.deepOrange,
+        tertiaryContainer: Colors.white,
         brightness: Brightness.light,
+
+      ),
+
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Colors.red
       ),
 
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:d_report/src/core/utils/constants/fields_constants.dart';
+
 class UserAccountTextField extends StatelessWidget {
   const UserAccountTextField({super.key});
 
@@ -7,7 +9,7 @@ class UserAccountTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SizedBox(
       width: double.infinity,
-      child: TextField(
+      child: TextField (
         obscureText: false,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
@@ -25,7 +27,7 @@ class UserAccountTextField extends StatelessWidget {
               Icons.person,
               color: Color.fromRGBO(58, 58, 58, 1.0),
           ),
-          labelText: 'Email',
+          labelText: email,
           labelStyle: TextStyle(
             color: Color.fromRGBO(58, 58, 58, 1.0),
             fontWeight: FontWeight.w700,

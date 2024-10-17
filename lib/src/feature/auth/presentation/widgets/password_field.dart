@@ -1,33 +1,50 @@
 import 'package:flutter/material.dart';
 
-class PasswordTextField extends StatelessWidget {
-  const PasswordTextField({super.key});
+
+class PasswordTextField extends StatefulWidget {
+
+  const PasswordTextField({super.key, required this.password});
+
+  final String password;
+
+  @override
+  MyPasswordTextFieldWidget createState() => MyPasswordTextFieldWidget();
+}
+
+class MyPasswordTextFieldWidget extends State<PasswordTextField> {
+  bool isObscured = true;
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+
+    return SizedBox(
       width: double.infinity,
       child: TextField(
-        obscureText: true,
+        obscureText: isObscured,
         keyboardType: TextInputType.visiblePassword,
         decoration: InputDecoration(
           fillColor: Colors.white70,
           filled: true,
-          border: OutlineInputBorder(
+          border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
             borderSide: BorderSide(
               width: 0.10,
               style: BorderStyle.none,
-              color: Color.fromRGBO(58, 58, 58, 1.0),
+              color: Color.fromRGBO(58, 58, 58, 1.0), //TODO change for Theme.of(context).textTheme.headlineSmall?.color
             ),
           ),
-          suffixIcon: Icon(
-            Icons.lock_rounded,
-            color: Color.fromRGBO(58, 58, 58, 1.0),
+          suffixIcon: IconButton(
+            icon: isObscured ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
+            color: Theme.of(context).iconTheme.color,
+            onPressed: () {
+              setState(() {
+                isObscured = !isObscured;
+              });
+            },
           ),
-          labelText: 'Password',
+          labelText: widget.password,
           labelStyle: TextStyle(
-            color: Color.fromRGBO(58, 58, 58, 1.0),
+            color: Theme.of(context).textTheme.headlineSmall?.color,
             fontWeight: FontWeight.w700,
           ),
         ),

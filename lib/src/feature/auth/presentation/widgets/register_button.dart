@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:d_report/src/core/utils/constants/fields_constants.dart';
+
 class RegisterButton extends StatelessWidget {
   const RegisterButton({super.key});
 
@@ -11,11 +13,16 @@ class RegisterButton extends StatelessWidget {
         color: Colors.transparent,
 
         child: MaterialButton(
-          color: Colors.deepOrange,
+          color: Theme.of(context).colorScheme.tertiary,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(22.0)),
-          focusColor: Colors.red,
-          child: const Text('Load Data', style: TextStyle(color: Colors.white)),
+          focusColor: Theme.of(context).colorScheme.secondary,
+          child: Text(
+              registerData,
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.tertiaryContainer
+              )
+          ),
           onPressed: () {
             Navigator.of(context).pop(context);
           },

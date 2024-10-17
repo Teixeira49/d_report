@@ -41,7 +41,11 @@ class MyMainPageState extends State<MainPage> {
       CurrentCasesPage(currentP)
     ];
 
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
+
+      key: scaffoldKey,
 
         appBar: AppBar(
           title: Row(
@@ -51,9 +55,9 @@ class MyMainPageState extends State<MainPage> {
                   backgroundColor: Colors.white,
                   child: Icon(Icons.person),
                 ),
-                onLongPress: () {
+                onTap: () {
                   print('Se presionó el CircleAvatar');
-                  //Navigator.pushNamed(context, '/perfil');
+                  scaffoldKey.currentState?.openDrawer();
                 },
               ),
               const SizedBox(width: 12),
@@ -71,7 +75,55 @@ class MyMainPageState extends State<MainPage> {
 
         ),
 
-        body: pages[_currentPage],
+        drawer: Drawer(
+          semanticLabel: "pepe",
+          child:
+            ListView(
+              padding: EdgeInsets.zero,
+                children: <Widget>[
+                  const DrawerHeader(
+                      child: Text("Pepe")
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.person),
+                    title: const Text('Profile'),
+                    onTap: () {
+                    //  setState(() {
+                    //    selectedPage = 'Messages';
+                    //  });
+                      print("pepe");
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: const Text('Cerrar sesion'),
+                    onTap: () {
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                      print("Se presiono cerrar sesion");
+                    },
+                  )
+                ]
+            ),
+          ),
+
+        body: GestureDetector(
+          child: pages[_currentPage],
+          onHorizontalDragStart: (DragStartDetails details) {
+            if (details.globalPosition.dx < 100) {
+              scaffoldKey.currentState?.openDrawer();
+            }
+          },
+        ),
+
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: ThemeData().floatingActionButtonTheme.backgroundColor,
+          child: const Icon(Icons.add),
+          onPressed: () {
+            print("pepe");
+          },
+
+        ),
+
         bottomNavigationBar: BottomNavigationBar(
           onTap: (index) {
             setState(() {

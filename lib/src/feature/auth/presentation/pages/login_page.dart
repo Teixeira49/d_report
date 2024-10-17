@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:d_report/src/core/utils/constants/fields_constants.dart';
+
 import 'package:d_report/src/feature/auth/presentation/widgets/user_field.dart';
+
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 
@@ -10,9 +13,24 @@ import '../widgets/password_field.dart';
 
 final _formatKey = GlobalKey<FormState>();
 
-class LoginPage extends StatelessWidget{
-
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  MyLoginPageState createState() => MyLoginPageState();
+
+}
+
+class MyLoginPageState extends State<LoginPage> {
+
+  var _isObscuredPassword;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _isObscuredPassword = false;
+  }
 
   @override
   Widget build(BuildContext context){
@@ -20,13 +38,13 @@ class LoginPage extends StatelessWidget{
 
     return Scaffold(
 
-        appBar: AppBar(
+        /*appBar: AppBar(
           title: const Text("D_Project"),
           backgroundColor: Theme.of(context).colorScheme.primary,
           //    .inversePrimary,
           centerTitle: true,
           automaticallyImplyLeading: false,
-        ),
+        ),*/
 
         body: Center(
           child: SingleChildScrollView(
@@ -68,17 +86,21 @@ class LoginPage extends StatelessWidget{
                                   horizontal: size.width * 0.075,
                                   vertical: size.height * 0.025,
                                 ),
-                                child: const PasswordTextField()
+                                child: const PasswordTextField(password: password)
                             ),
                             Container(
                                 padding: EdgeInsets.only(
-                                    top: size.height / 60,
+                                    top: size.height / 20,
                                     bottom: 0.25
                                 ),
                                 child: const LoginButton()
                             ),
                             TextButton(
-                              child: const Text("Register", style: TextStyle(color: Colors.white)),
+                              child: Text(registerData,
+                                  style: TextStyle(
+                                      color: Theme.of(context).colorScheme.tertiary
+                                  )
+                              ),
                               onPressed: () {
                                 Navigator.of(context).pushNamed('/auth/register/');
                               },

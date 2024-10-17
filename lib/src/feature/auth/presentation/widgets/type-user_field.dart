@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final List<String> userType = <String>["Doctor","Resident","Administrator"];
+import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class TypeUserDropdownField extends StatelessWidget {
   const TypeUserDropdownField({super.key});
@@ -9,40 +9,41 @@ class TypeUserDropdownField extends StatelessWidget {
     return SizedBox(
         width: double.infinity,
         child: DropdownButtonFormField(
-          decoration: const InputDecoration(
-            fillColor: Colors.white70,
+          dropdownColor: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          decoration: InputDecoration(
+            fillColor: Theme.of(context).colorScheme.tertiaryContainer,
             filled: true,
-            border: OutlineInputBorder(
+            border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(20)),
               borderSide: BorderSide(
                 width: 0.10,
                 style: BorderStyle.none,
-                color: Color.fromRGBO(58, 58, 58, 1.0),
+                color: Color.fromRGBO(58, 58, 58, 1.0), // TODO Change Theme.of(context).textTheme.headlineSmall?.color
               ),
             ),
             suffixIcon: Icon(
               Icons.person,
-              color: Color.fromRGBO(58, 58, 58, 1.0),
+              color: Theme.of(context).iconTheme.color,
             ),
-            labelText: 'role',
+            labelText: role,
             labelStyle: TextStyle(
-              color: Color.fromRGBO(58, 58, 58, 1.0),
+              color: Theme.of(context).textTheme.headlineSmall?.color,
               fontWeight: FontWeight.w700,
             ),
-            hintText: 'please, select one role',
+            hintText: hintRole,
             hintStyle: TextStyle(
-              color: Color.fromRGBO(58, 58, 58, 1.0),
+              color: Theme.of(context).textTheme.headlineSmall?.color,
               fontWeight: FontWeight.w700,
             ),
           ),
           items: userType.map((users){
             return DropdownMenuItem(
-              alignment: Alignment.centerLeft,
-              value: users,
-              child: Text(users)
+                alignment: Alignment.centerLeft,
+                value: users,
+                child: Text(users)
             );
-          }
-          ).toList(),
+          }).toList(),
           onChanged: (newValue) {
 
           },
