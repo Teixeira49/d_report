@@ -18,7 +18,7 @@ class NotFoundExitButton extends StatelessWidget {
           minWidth: 90,
           height: 50,
           child: const Text(
-              'Return to the before page',
+              'Volver al ultimo modulo',
               style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed: () {

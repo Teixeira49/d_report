@@ -18,10 +18,8 @@ class NotFoundPage extends StatelessWidget{
     return Scaffold(
 
         appBar: AppBar(
-          title: const Text("D_Project"),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          centerTitle: true,
-          automaticallyImplyLeading: false,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          automaticallyImplyLeading: true,
         ),
 
         body: Center(
@@ -37,35 +35,15 @@ class NotFoundPage extends StatelessWidget{
                 children:[
                   Container(
                     padding: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.095,
-                      vertical: size.height * 0.025,
+                      horizontal: size.width * 0.0025,
+                      vertical: size.height * 0.0025,
                     ),
-                    child: Icon(
-                        Icons.warning_rounded,
-                      color: Colors.black12,
-                      size: sizeIcon,
+                    child: Image.asset(
+                      "assets/images/not_found_logo.png",
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      border: Border.all(color: Colors.black),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.095,
-                      vertical: size.height * 0.055,
-                    ),
-                    child: const Row(
-                      children: [
-                        Expanded(
-                          child: Text('Error 404:', style: TextStyle(fontSize: 32),),
-                        ),
-                        Expanded(
-                          child: Text('Page Not Found', style: TextStyle(fontSize: 18),),
-                        )
-                      ],
-                    )
-                  ),
+                  const Text('Error 404:', style: TextStyle(fontSize: 32)),
+                  const Text('Modulo no Encontrado', style: TextStyle(fontSize: 18)),
                   Container(
                     padding: EdgeInsets.only(
                       top: size.height * 0.055,
