@@ -1,4 +1,4 @@
-import 'package:d_report/src/core/config/theme/themes.dart';
+import 'package:d_report/src/core/config/styles/themes.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/login_page.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/register_page.dart';
 import 'package:d_report/src/feature/main_page/presentation/pages/main_page.dart';

@@ -57,11 +57,10 @@ class MyMainPageState extends State<MainPage> {
             children: [
               GestureDetector(
                 child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: img == "" ? Image.asset("assets/images/logo.png") : Image.asset(img),
+                  backgroundColor: Theme.of(context).colorScheme.onSecondary,
+                  child: img == "" ? Image.asset("assets/images/logo.png") : Image.asset(img), // TODO volver constante
                 ),
                 onTap: () {
-                  print('Se presionó el CircleAvatar');
                   scaffoldKey.currentState?.openDrawer();
                 },
               ),
@@ -71,6 +70,7 @@ class MyMainPageState extends State<MainPage> {
               IconButton(
                   onPressed: () {
                     print('Se presionó el icono de búsqueda');
+
                   },
                   icon: const Icon(Icons.search))
             ],
@@ -98,56 +98,120 @@ class MyMainPageState extends State<MainPage> {
                         CircleAvatar(
                           radius: 40,
                           backgroundColor: Colors.white,
-                          child: img == "" ? Image.asset("assets/images/logo.png") : Image.asset(img),
+                          child: img == "" ? Image.asset("assets/images/logo.png") : Image.asset(img), // TODO volver constante
                         ),
                         const SizedBox(height: 4,),
                         Text(
                           userName != "" ? accountName + point + userName : 'Nombre de usuario',
-                          style: const TextStyle(color: Colors.white, fontSize: 18), // TODO Add colors to palette
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSecondary,
+                              fontSize: 18
+                          ),
                         ),
                         Text(
                           accountEmail ?? 'correo@ejemplo.com',
-                          style: const TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSecondary
+                          ),
                         ),
                       ],
                     )
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.home),
-                    title: const Text('Principal'),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.5)
+                  ListTile( // TODO Change ModalRoute for Navigator, and replace string route for a more than serius code
+                    leading: Icon(
+                      Icons.home,
+                      color: ModalRoute.of(context)?.settings.name == '/main/patients/' ?
+                        Theme.of(context).colorScheme.primary :
+                        Theme.of(context).iconTheme.color,
                     ),
+                    title: Text(
+                        'Principal',
+                      style: TextStyle(
+                        color: ModalRoute.of(context)?.settings.name == '/main/patients/' ?
+                          Theme.of(context).colorScheme.primary :
+                          Theme.of(context).iconTheme.color,
+                        fontSize: Theme.of(context).listTileTheme.titleTextStyle?.fontSize
+                      ),
+                    ),
+                    tileColor: Colors.transparent, // Add to Theme palette
+                    shape: Theme.of(context).listTileTheme.shape,
                     onTap: () {
                       setState(() {
-                        Navigator.of(context).pushNamed('/main/patients/');
+                        if (ModalRoute.of(context)?.settings.name != '/main/patients/'){
+                          Navigator.of(context).pushNamed('/main/patients/');
+                        }
                       });
                       print("pepe");
                     },
                   ),
                   ListTile(
-                    leading: const Icon(Icons.person),
-                    title: const Text('Profile'),
+                    leading: Icon(
+                      Icons.person,
+                      color: ModalRoute.of(context)?.settings.name == '/main/profile/' ?
+                        Theme.of(context).colorScheme.primary :
+                        Theme.of(context).iconTheme.color,
+                    ),
+                    title: Text(
+                      'Profile',
+                      style: TextStyle(
+                        color: ModalRoute.of(context)?.settings.name == '/main/profile/' ?
+                          Theme.of(context).colorScheme.primary :
+                          Theme.of(context).iconTheme.color,
+                        fontSize: Theme.of(context).listTileTheme.titleTextStyle?.fontSize
+                      ),
+                    ),
+                    tileColor: Colors.transparent, // Add to Theme palette
+                    shape: Theme.of(context).listTileTheme.shape,
                     onTap: () {
                       setState(() {
-                        Navigator.of(context).pushNamed('/main/profile/');
+                        if (ModalRoute.of(context)?.settings.name != '/main/profile/') {
+                          Navigator.of(context).pushNamed('/main/profile/');
+                        }
                       });
                       print("pepe");
                     },
                   ),
                   ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: const Text('Configuracion'),
+                    leading: Icon(
+                      Icons.settings,
+                      color: ModalRoute.of(context)?.settings.name == '/main/config/' ?
+                        Theme.of(context).colorScheme.primary :
+                        Theme.of(context).iconTheme.color,
+                    ),
+                    title: Text(
+                      'Configuracion',
+                      style: TextStyle(
+                        color: ModalRoute.of(context)?.settings.name == '/main/config/' ?
+                          Theme.of(context).colorScheme.primary :
+                          Theme.of(context).iconTheme.color,
+                        fontSize: Theme.of(context).listTileTheme.titleTextStyle?.fontSize
+                      ),
+                    ),
+                    tileColor: Colors.transparent, // Add to Theme palette
+                    shape: Theme.of(context).listTileTheme.shape,
                     onTap: () {
                       setState(() {
+                        if (ModalRoute.of(context)?.settings.name != '/main/config/'){
                           Navigator.of(context).pushNamed('/main/config/');
+                        }
                       });
                       print("pepe");
                     },
                   ),
                   ListTile(
-                    leading: const Icon(Icons.logout),
-                    title: const Text('Cerrar sesion'),
+                    leading: Icon(
+                      Icons.logout,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    title: Text(
+                      'Cerrar sesion',
+                      style: TextStyle(
+                        color: Theme.of(context).iconTheme.color,
+                        fontSize: Theme.of(context).listTileTheme.titleTextStyle?.fontSize
+                      )
+                    ),
+                    tileColor: Colors.transparent, // Add to Theme palette
+                    shape: Theme.of(context).listTileTheme.shape,
                     onTap: () {
                       Navigator.popUntil(context, (route) => route.isFirst);
                       print("Se presiono cerrar sesion");
@@ -176,6 +240,7 @@ class MyMainPageState extends State<MainPage> {
 
         ),
 
+        // Change a widget in other file
         bottomNavigationBar: BottomNavigationBar(
           onTap: (index) {
             setState(() {
@@ -184,6 +249,7 @@ class MyMainPageState extends State<MainPage> {
           },
           backgroundColor: ThemeData().bottomNavigationBarTheme.backgroundColor,
           selectedItemColor: ThemeData().bottomNavigationBarTheme.selectedItemColor,
+          selectedLabelStyle: ThemeData().bottomNavigationBarTheme.selectedLabelStyle,
           currentIndex: _currentPage,
           items: const [
             BottomNavigationBarItem(

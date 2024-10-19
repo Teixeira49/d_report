@@ -16,16 +16,14 @@ class CaseTile extends StatelessWidget {
     return ListTile(
       title: Text(
         dataPatient.getAllName(),
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: Theme.of(context).listTileTheme.titleTextStyle,
       ),
       subtitle: Text(
         dataPatient.getMessage(),
-        style: const TextStyle(fontStyle: FontStyle.italic),
+        style: Theme.of(context).listTileTheme.subtitleTextStyle,
       ),
-      tileColor: const Color.fromRGBO(210, 233, 245, 1),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.5)
-      ),
+      tileColor: Theme.of(context).listTileTheme.tileColor,
+      shape: Theme.of(context).listTileTheme.shape,
       trailing: const Icon(
         Icons.arrow_circle_right, color: Colors.grey, // TODO delete Colors
       ),

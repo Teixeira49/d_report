@@ -91,13 +91,22 @@ abstract class AppTheme {
         backgroundColor: Color.fromRGBO(6, 135, 232, 1.0),
         selectedItemColor: Colors.white,
         selectedLabelStyle: TextStyle(color: Colors.black),
+        unselectedItemColor: Colors.black54
       ),
 
       listTileTheme: ListTileThemeData(
         tileColor: const Color.fromRGBO(242, 248, 255, 1.0),
         textColor: Colors.black,
-        titleTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-        subtitleTextStyle: const TextStyle(fontStyle: FontStyle.italic),
+        titleTextStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            height: 1.2
+        ),
+        subtitleTextStyle: const TextStyle(
+            fontStyle: FontStyle.italic,
+            fontSize: 14,
+            height: 1.35
+        ),
         iconColor: Colors.grey,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25.5)
@@ -110,7 +119,7 @@ abstract class AppTheme {
 
       fontFamily: 'gotham',
 
-      primaryColor: Colors.black,
+      primaryColor: const Color.fromRGBO(5, 21, 30, 1.0),
 
       appBarTheme: const AppBarTheme(
         elevation: 0,
@@ -128,7 +137,7 @@ abstract class AppTheme {
       ),
 
       drawerTheme: const DrawerThemeData(
-        backgroundColor: Color.fromRGBO(33, 160, 255, 1.0),
+        backgroundColor: Color.fromRGBO(7, 26, 38, 1.0),
         surfaceTintColor: Colors.red,
       ),
 
@@ -191,18 +200,30 @@ abstract class AppTheme {
       ),
 
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Color.fromRGBO(6, 135, 232, 1.0),
-        selectedItemColor: Colors.white,
-        selectedLabelStyle: TextStyle(color: Colors.black),
+        backgroundColor: Color.fromRGBO(7, 26, 38, 1.0),
+        selectedItemColor: Color.fromRGBO(20, 154, 255, 1.0),
+        selectedLabelStyle: TextStyle(color: Colors.white70),
+        unselectedItemColor: Colors.white54
       ),
 
-      listTileTheme: const ListTileThemeData(
-        tileColor: Color.fromRGBO(210, 233, 245, 1),
-        textColor: Colors.black,
-        titleTextStyle: TextStyle(fontWeight: FontWeight.bold),
-        iconColor: Colors.grey,
+      listTileTheme: ListTileThemeData(
+        tileColor: const Color.fromRGBO(9, 33, 51, 1.0),
+        textColor: Colors.white70,
+        titleTextStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          height: 1.2
+        ),
+        subtitleTextStyle: const TextStyle(
+            fontStyle: FontStyle.italic,
+            fontSize: 14,
+            height: 1.35
+        ),
+        iconColor: Colors.white54,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.5)
+        ),
       ),
-
     );
   }
 }
