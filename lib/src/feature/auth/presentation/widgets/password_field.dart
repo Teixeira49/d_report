@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class PasswordTextField extends StatefulWidget {
 
   const PasswordTextField({super.key, required this.password});
@@ -20,19 +19,13 @@ class MyPasswordTextFieldWidget extends State<PasswordTextField> {
     return SizedBox(
       width: double.infinity,
       child: TextField(
+        style: Theme.of(context).textTheme.labelLarge,
         obscureText: isObscured,
         keyboardType: TextInputType.visiblePassword,
         decoration: InputDecoration(
-          fillColor: Colors.white70,
-          filled: true,
-          border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            borderSide: BorderSide(
-              width: 0.10,
-              style: BorderStyle.none,
-              color: Color.fromRGBO(58, 58, 58, 1.0), //TODO change for Theme.of(context).textTheme.headlineSmall?.color
-            ),
-          ),
+          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+          filled: Theme.of(context).inputDecorationTheme.filled,
+          border: Theme.of(context).inputDecorationTheme.border,
           suffixIcon: IconButton(
             icon: isObscured ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
             color: Theme.of(context).iconTheme.color,
@@ -43,10 +36,7 @@ class MyPasswordTextFieldWidget extends State<PasswordTextField> {
             },
           ),
           labelText: widget.password,
-          labelStyle: TextStyle(
-            color: Theme.of(context).textTheme.headlineSmall?.color,
-            fontWeight: FontWeight.w700,
-          ),
+          labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
         ),
         //onChanged: (value) => {},
       ),

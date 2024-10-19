@@ -24,12 +24,13 @@ class RegisterPage extends StatelessWidget{
     return Scaffold(
 
         appBar: AppBar(
-        //  title: const Text("D_Project"),
-          backgroundColor: Theme
-              .of(context)
-              .colorScheme
-              .inversePrimary,
+          title: Text(
+              registerData + space + user,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
+          ),
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           centerTitle: true,
+          //titleTextStyle: TextStyle(color: Theme.of(context).primaryColor),
         //  automaticallyImplyLeading: true,
         ),
 

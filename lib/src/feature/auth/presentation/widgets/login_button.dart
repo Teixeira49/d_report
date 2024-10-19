@@ -17,7 +17,12 @@ class LoginButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(22.0)),
           focusColor: Theme.of(context).colorScheme.inversePrimary,
-          child: const Text(loadData, style: TextStyle(color: Colors.white)),
+          child: const Text(
+              loadData,
+              style: TextStyle(
+                  color: Colors.white
+              )
+          ),
           onPressed: () {
             Navigator.of(context).pushNamed('/main/patients/');
           },

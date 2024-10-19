@@ -7,31 +7,23 @@ class UserAccountTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       width: double.infinity,
       child: TextField (
-        obscureText: false,
+        style: Theme.of(context).textTheme.labelLarge,
+        obscureText: obscureTextDefault,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          fillColor: Colors.white70,
-          filled: true,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            borderSide: BorderSide(
-              width: 0.10,
-              style: BorderStyle.none,
-              color: Color.fromRGBO(58, 58, 58, 1.0),
-            ),
-          ),
+          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+          filled: Theme.of(context).inputDecorationTheme.filled,
+          border: Theme.of(context).inputDecorationTheme.border,
           suffixIcon: Icon(
               Icons.person,
-              color: Color.fromRGBO(58, 58, 58, 1.0),
+              color: Theme.of(context).iconTheme.color,
           ),
           labelText: email,
-          labelStyle: TextStyle(
-            color: Color.fromRGBO(58, 58, 58, 1.0),
-            fontWeight: FontWeight.w700,
-          ),
+          labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+          hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
         ),
         //onChanged: (value) => {},
       ),

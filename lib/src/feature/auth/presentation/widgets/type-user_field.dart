@@ -9,39 +9,30 @@ class TypeUserDropdownField extends StatelessWidget {
     return SizedBox(
         width: double.infinity,
         child: DropdownButtonFormField(
-          dropdownColor: Theme.of(context).scaffoldBackgroundColor,
+          style: Theme.of(context).textTheme.labelLarge,
+          dropdownColor: Theme.of(context).inputDecorationTheme.fillColor,
           borderRadius: const BorderRadius.all(Radius.circular(20)),
           decoration: InputDecoration(
-            fillColor: Theme.of(context).colorScheme.tertiaryContainer,
-            filled: true,
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              borderSide: BorderSide(
-                width: 0.10,
-                style: BorderStyle.none,
-                color: Color.fromRGBO(58, 58, 58, 1.0), // TODO Change Theme.of(context).textTheme.headlineSmall?.color
-              ),
-            ),
+            fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+            filled: Theme.of(context).inputDecorationTheme.filled,
+            border: Theme.of(context).inputDecorationTheme.border,
             suffixIcon: Icon(
               Icons.person,
               color: Theme.of(context).iconTheme.color,
             ),
             labelText: role,
-            labelStyle: TextStyle(
-              color: Theme.of(context).textTheme.headlineSmall?.color,
-              fontWeight: FontWeight.w700,
-            ),
+            labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
             hintText: hintRole,
-            hintStyle: TextStyle(
-              color: Theme.of(context).textTheme.headlineSmall?.color,
-              fontWeight: FontWeight.w700,
-            ),
+            hintStyle: Theme.of(context).inputDecorationTheme.labelStyle
           ),
           items: userType.map((users){
             return DropdownMenuItem(
                 alignment: Alignment.centerLeft,
                 value: users,
-                child: Text(users)
+                child: Text(
+                  users,
+                  style: Theme.of(context).inputDecorationTheme.labelStyle,
+                )
             );
           }).toList(),
           onChanged: (newValue) {

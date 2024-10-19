@@ -4,13 +4,23 @@ abstract class AppTheme {
   static ThemeData get light {
     return ThemeData(
 
-      fontFamily: 'IBM',
+      fontFamily: 'gotham',
 
       primaryColor: const Color.fromRGBO(6, 147, 253, 1),
 
       appBarTheme: const AppBarTheme(
         elevation: 0,
         backgroundColor: Color.fromRGBO(20, 154, 255, 1.0),
+        titleTextStyle: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.5,
+          color: Color.fromRGBO(58, 58, 58, 1.0),
+          fontFamily: "roboto"
+        ),
+        iconTheme: IconThemeData(
+            color: Color.fromRGBO(58, 58, 58, 1.0)
+        ),
       ),
 
       drawerTheme: const DrawerThemeData(
@@ -28,13 +38,42 @@ abstract class AppTheme {
       ),
 
       textTheme: const TextTheme(
-        headlineSmall: TextStyle(color: Color.fromRGBO(58, 58, 58, 1.0)),
-        bodyLarge: TextStyle(color: Color.fromRGBO(58, 58, 58, 1.0))
+        titleLarge: TextStyle(
+            color: Colors.white70,
+            fontFamily: "gotham"
+        ),
+        headlineSmall: TextStyle(
+            color: Color.fromRGBO(58, 58, 58, 1.0)
+        ),
+        bodyLarge: TextStyle(
+            color: Color.fromRGBO(58, 58, 58, 1.0)
+        ),
+        labelLarge: TextStyle(
+          color: Color.fromRGBO(58, 58, 58, 1.0),
+          fontFamily: "Lato"
+        )
       ),
 
+      inputDecorationTheme: const InputDecorationTheme(
+        fillColor: Colors.white70,
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderSide: BorderSide(
+            width: 0.10,
+            style: BorderStyle.none,
+            color: Color.fromRGBO(58, 58, 58, 1.0),
+          )
+        ),
+        labelStyle: TextStyle(
+          color: Color.fromRGBO(58, 58, 58, 1.0),
+          fontWeight: FontWeight.w700,
+        )
+      ),
 
       colorScheme: ColorScheme.fromSwatch().copyWith(
         primary: const Color.fromRGBO(6, 135, 232, 1.0),
+        primaryContainer: Colors.black,
         secondary: Colors.red,
         tertiary: Colors.deepOrange,
         tertiaryContainer: Colors.white,
@@ -67,13 +106,23 @@ abstract class AppTheme {
   } static ThemeData get dark {
     return ThemeData(
 
-      fontFamily: 'IBM',
+      fontFamily: 'gotham',
 
       primaryColor: Colors.black,
 
       appBarTheme: const AppBarTheme(
         elevation: 0,
-        color: Color.fromRGBO(4, 107, 185, 1.0),
+        color: Color.fromRGBO(5, 21, 30, 1.0),
+        titleTextStyle: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.5,
+          color: Colors.white70,
+          fontFamily: "roboto"
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.white
+        ),
       ),
 
       drawerTheme: const DrawerThemeData(
@@ -81,22 +130,51 @@ abstract class AppTheme {
         surfaceTintColor: Colors.red,
       ),
 
-      scaffoldBackgroundColor: Colors.black,
+      scaffoldBackgroundColor: const Color.fromRGBO(7, 26, 38, 1.0),
 
       splashColor: Colors.transparent,
 
       iconTheme: const IconThemeData(
-          color: Color.fromRGBO(58, 58, 58, 1.0)
+          color: Colors.white70
       ),
 
       textTheme: const TextTheme(
-          headlineSmall: TextStyle(color: Color.fromRGBO(58, 58, 58, 1.0)),
-          bodyLarge: TextStyle(color: Color.fromRGBO(58, 58, 58, 1.0))
+        titleLarge: TextStyle(
+          color: Colors.white70,
+          fontFamily: "gotham"
+        ),
+        headlineSmall: TextStyle(
+          color: Color.fromRGBO(58, 58, 58, 1.0)
+        ),
+        bodyLarge: TextStyle(
+          color: Color.fromRGBO(58, 58, 58, 1.0)
+        ),
+        labelLarge: TextStyle(
+          color: Colors.white70,
+          fontFamily: "gotham"
+        )
       ),
 
+      inputDecorationTheme: const InputDecorationTheme(
+          fillColor: Color.fromRGBO(9, 33, 51, 1.0),
+          filled: true,
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderSide: BorderSide(
+                width: 0.10,
+                style: BorderStyle.none,
+                color: Color.fromRGBO(185, 185, 185, 1.0),
+              )
+          ),
+          labelStyle: TextStyle(
+            color: Colors.white70,
+            fontWeight: FontWeight.w700,
+          )
+      ),
 
       colorScheme: ColorScheme.fromSwatch().copyWith(
         primary: const Color.fromRGBO(6, 135, 232, 1.0),
+        primaryContainer: Colors.white,
         secondary: Colors.red,
         tertiary: Colors.deepOrange,
         tertiaryContainer: Colors.white,

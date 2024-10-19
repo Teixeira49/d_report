@@ -11,7 +11,6 @@ class RegisterButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.0),
         clipBehavior: Clip.antiAlias,
         color: Colors.transparent,
-
         child: MaterialButton(
           color: Theme.of(context).colorScheme.tertiary,
           shape: RoundedRectangleBorder(

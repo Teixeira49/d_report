@@ -75,7 +75,7 @@ class MyMainPageState extends State<MainPage> {
                   icon: const Icon(Icons.search))
             ],
           ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           automaticallyImplyLeading: false,
 
         ),
@@ -208,7 +208,7 @@ class MyMainPageState extends State<MainPage> {
 
       ),
 
-      backgroundColor: ThemeData().scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     );
   }
 }

@@ -42,8 +42,16 @@ class NotFoundPage extends StatelessWidget{
                       "assets/images/not_found_logo.png",
                     ),
                   ),
-                  const Text('Error 404:', style: TextStyle(fontSize: 32)),
-                  const Text('Modulo no Encontrado', style: TextStyle(fontSize: 18)),
+                  Text('Error 404:', style: TextStyle(
+                      fontSize: 32,
+                      color: Theme.of(context).colorScheme.primaryContainer
+                    )
+                  ),
+                  Text('Modulo no Encontrado', style: TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.primaryContainer
+                    )
+                  ),
                   Container(
                     padding: EdgeInsets.only(
                       top: size.height * 0.055,
