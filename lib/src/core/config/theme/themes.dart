@@ -15,11 +15,11 @@ abstract class AppTheme {
           fontSize: 20,
           fontWeight: FontWeight.bold,
           letterSpacing: 1.5,
-          color: Color.fromRGBO(58, 58, 58, 1.0),
+          color: Color.fromRGBO(44, 44, 44, 1.0),
           fontFamily: "roboto"
         ),
         iconTheme: IconThemeData(
-            color: Color.fromRGBO(58, 58, 58, 1.0)
+            color: Color.fromRGBO(44, 44, 44, 1.0)
         ),
       ),
 
@@ -74,8 +74,10 @@ abstract class AppTheme {
       colorScheme: ColorScheme.fromSwatch().copyWith(
         primary: const Color.fromRGBO(6, 135, 232, 1.0),
         primaryContainer: Colors.black,
-        secondary: Colors.red,
-        tertiary: Colors.deepOrange,
+        secondary: Colors.deepOrange,
+        onSecondary: Colors.white,
+        secondaryContainer: Colors.red,
+        tertiary: Colors.red,
         tertiaryContainer: Colors.white,
         outline: const Color.fromRGBO(192, 192, 192, 1.0),
         brightness: Brightness.light,
@@ -175,8 +177,10 @@ abstract class AppTheme {
       colorScheme: ColorScheme.fromSwatch().copyWith(
         primary: const Color.fromRGBO(6, 135, 232, 1.0),
         primaryContainer: Colors.white,
-        secondary: Colors.red,
-        tertiary: Colors.deepOrange,
+        secondary: Colors.deepOrange,
+        onSecondary: Colors.white,
+        secondaryContainer: Colors.red,
+        tertiary: Colors.red,
         tertiaryContainer: Colors.white,
         outline: const Color.fromRGBO(192, 192, 192, 1.0),
         brightness: Brightness.light,

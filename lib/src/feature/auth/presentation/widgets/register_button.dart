@@ -12,14 +12,14 @@ class RegisterButton extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         color: Colors.transparent,
         child: MaterialButton(
-          color: Theme.of(context).colorScheme.tertiary,
+          color: Theme.of(context).colorScheme.secondaryContainer,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(22.0)),
           focusColor: Theme.of(context).colorScheme.secondary,
           child: Text(
               registerData,
               style: TextStyle(
-                  color: Theme.of(context).colorScheme.tertiaryContainer
+                  color: Theme.of(context).colorScheme.onSecondary
               )
           ),
           onPressed: () {
