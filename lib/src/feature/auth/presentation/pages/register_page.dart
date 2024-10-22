@@ -1,4 +1,7 @@
+import 'package:d_report/src/core/utils/constants/fields_constants.dart';
+
 import 'package:d_report/src/feature/auth/presentation/widgets/lastname_field.dart';
+
 import 'package:flutter/material.dart';
 
 import '../widgets/firstname_field.dart';
@@ -21,13 +24,14 @@ class RegisterPage extends StatelessWidget{
     return Scaffold(
 
         appBar: AppBar(
-          title: const Text("D_Project"),
-          backgroundColor: Theme
-              .of(context)
-              .colorScheme
-              .inversePrimary,
+          title: Text(
+              registerData + space + user,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
+          ),
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           centerTitle: true,
-          automaticallyImplyLeading: true,
+          //titleTextStyle: TextStyle(color: Theme.of(context).primaryColor),
+        //  automaticallyImplyLeading: true,
         ),
 
         body: Center(
@@ -74,14 +78,14 @@ class RegisterPage extends StatelessWidget{
                       horizontal: size.width * 0.075,
                       vertical: size.height * 0.025,
                     ),
-                    child: const PasswordTextField()
+                    child: const PasswordTextField(password: password)
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: size.width * 0.075,
                       vertical: size.height * 0.025,
                     ),
-                    child: const ValidatePasswordTextField()
+                    child: const PasswordTextField(password: validatePassword)
                   ),
                   Container(
                     padding: EdgeInsets.only(

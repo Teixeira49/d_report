@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final List<String> userType = <String>["Doctor","Resident","Administrator"];
+import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class TypeUserDropdownField extends StatelessWidget {
   const TypeUserDropdownField({super.key});
@@ -9,40 +9,32 @@ class TypeUserDropdownField extends StatelessWidget {
     return SizedBox(
         width: double.infinity,
         child: DropdownButtonFormField(
-          decoration: const InputDecoration(
-            fillColor: Colors.white70,
-            filled: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              borderSide: BorderSide(
-                width: 0.10,
-                style: BorderStyle.none,
-                color: Color.fromRGBO(58, 58, 58, 1.0),
-              ),
-            ),
+          style: Theme.of(context).textTheme.labelLarge,
+          dropdownColor: Theme.of(context).inputDecorationTheme.fillColor,
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          decoration: InputDecoration(
+            fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+            filled: Theme.of(context).inputDecorationTheme.filled,
+            border: Theme.of(context).inputDecorationTheme.border,
             suffixIcon: Icon(
               Icons.person,
-              color: Color.fromRGBO(58, 58, 58, 1.0),
+              color: Theme.of(context).iconTheme.color,
             ),
-            labelText: 'role',
-            labelStyle: TextStyle(
-              color: Color.fromRGBO(58, 58, 58, 1.0),
-              fontWeight: FontWeight.w700,
-            ),
-            hintText: 'please, select one role',
-            hintStyle: TextStyle(
-              color: Color.fromRGBO(58, 58, 58, 1.0),
-              fontWeight: FontWeight.w700,
-            ),
+            labelText: role,
+            labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+            hintText: hintRole,
+            hintStyle: Theme.of(context).inputDecorationTheme.labelStyle
           ),
           items: userType.map((users){
             return DropdownMenuItem(
-              alignment: Alignment.centerLeft,
-              value: users,
-              child: Text(users)
+                alignment: Alignment.centerLeft,
+                value: users,
+                child: Text(
+                  users,
+                  style: Theme.of(context).inputDecorationTheme.labelStyle,
+                )
             );
-          }
-          ).toList(),
+          }).toList(),
           onChanged: (newValue) {
 
           },

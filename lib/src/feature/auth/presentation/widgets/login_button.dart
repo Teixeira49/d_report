@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:d_report/src/core/utils/constants/fields_constants.dart';
+
 class LoginButton extends StatelessWidget {
   const LoginButton({super.key});
 
@@ -11,13 +13,18 @@ class LoginButton extends StatelessWidget {
         color: Colors.transparent,
 
         child: MaterialButton(
-          color: Colors.deepOrange,
+          color: Theme.of(context).colorScheme.primary,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(22.0)),
-          focusColor: Colors.red,
-          child: const Text('Entrance', style: TextStyle(color: Colors.white)),
+          focusColor: Theme.of(context).colorScheme.inversePrimary,
+          child: const Text(
+              loadData,
+              style: TextStyle(
+                  color: Colors.white
+              )
+          ),
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed('/patients/');
+            Navigator.of(context).pushNamed('/main/patients/');
           },
         )
     );

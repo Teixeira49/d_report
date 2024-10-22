@@ -15,6 +15,7 @@ class CurrentCasesPage extends StatelessWidget {
         .size;
 
     return Center(
+
       child: Column(
 
         mainAxisAlignment: MainAxisAlignment.center,

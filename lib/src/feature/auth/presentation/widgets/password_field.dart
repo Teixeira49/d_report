@@ -1,35 +1,42 @@
 import 'package:flutter/material.dart';
 
-class PasswordTextField extends StatelessWidget {
-  const PasswordTextField({super.key});
+class PasswordTextField extends StatefulWidget {
+
+  const PasswordTextField({super.key, required this.password});
+
+  final String password;
+
+  @override
+  MyPasswordTextFieldWidget createState() => MyPasswordTextFieldWidget();
+}
+
+class MyPasswordTextFieldWidget extends State<PasswordTextField> {
+  bool isObscured = true;
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+
+    return SizedBox(
       width: double.infinity,
       child: TextField(
-        obscureText: true,
+        style: Theme.of(context).textTheme.labelLarge,
+        obscureText: isObscured,
         keyboardType: TextInputType.visiblePassword,
         decoration: InputDecoration(
-          fillColor: Colors.white70,
-          filled: true,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            borderSide: BorderSide(
-              width: 0.10,
-              style: BorderStyle.none,
-              color: Color.fromRGBO(58, 58, 58, 1.0),
-            ),
+          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+          filled: Theme.of(context).inputDecorationTheme.filled,
+          border: Theme.of(context).inputDecorationTheme.border,
+          suffixIcon: IconButton(
+            icon: isObscured ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
+            color: Theme.of(context).iconTheme.color,
+            onPressed: () {
+              setState(() {
+                isObscured = !isObscured;
+              });
+            },
           ),
-          suffixIcon: Icon(
-            Icons.lock_rounded,
-            color: Color.fromRGBO(58, 58, 58, 1.0),
-          ),
-          labelText: 'Password',
-          labelStyle: TextStyle(
-            color: Color.fromRGBO(58, 58, 58, 1.0),
-            fontWeight: FontWeight.w700,
-          ),
+          labelText: widget.password,
+          labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
         ),
         //onChanged: (value) => {},
       ),
