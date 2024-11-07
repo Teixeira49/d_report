@@ -13,6 +13,7 @@ class CaseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // TODO REFACTOR
     return ListTile(
       title: Text(
         dataPatient.getAllName(),

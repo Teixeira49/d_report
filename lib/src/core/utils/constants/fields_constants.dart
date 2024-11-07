@@ -28,4 +28,6 @@ const String point = '. ';
 
 const String space = " ";
 
+const String edit = "Editar";
+
 final List<String> userType = <String>["Doctor","Resident","Administrator"];

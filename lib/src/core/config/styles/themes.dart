@@ -146,7 +146,7 @@ abstract class AppTheme {
       splashColor: Colors.transparent,
 
       iconTheme: const IconThemeData(
-          color: Colors.white70
+          color: Colors.white70,
       ),
 
       textTheme: const TextTheme(

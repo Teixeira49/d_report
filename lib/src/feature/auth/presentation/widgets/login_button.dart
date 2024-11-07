@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
+import '../../../../shared/domain/entities/user.dart';
+
 class LoginButton extends StatelessWidget {
   const LoginButton({super.key});
 
@@ -24,7 +26,10 @@ class LoginButton extends StatelessWidget {
               )
           ),
           onPressed: () {
-            Navigator.of(context).pushNamed('/main/patients/');
+            Navigator.of(context).pushNamed(
+                '/main/patients/',
+                arguments: { "userData" : User(userName: "Pepe Loco", userEmail: "Pepeloco@gmail.com", userRole: "Doctor", userImgUrl: "")}
+            ); // TODO DELETE harcode Argument
           },
         )
     );
