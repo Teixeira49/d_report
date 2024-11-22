@@ -7,6 +7,7 @@ class Doctor{
         required this.secName,
         required this.lastName,
         required this.secLastName,
+        required this.dni,
         required this.genre,
         required this.birthday,
         required this.range,
@@ -19,8 +20,9 @@ class Doctor{
   String secName;
   String lastName;
   String secLastName;
+  int dni;
   String genre;
-  DateTime birthday;
+  String birthday;
   String range;
   String speciality;
 

@@ -20,6 +20,9 @@ class MyCustomCardProfileRowWidget extends State<CustomCardProfileRow> {
     return SizedBox(
       width: double.infinity,
       child: Card(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.5)
+        ),
         child: ListTile(
           dense: false,
           minLeadingWidth: 7,

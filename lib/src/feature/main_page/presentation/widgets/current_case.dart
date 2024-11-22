@@ -25,7 +25,6 @@ class CurrentCasesPage extends StatelessWidget {
               itemCount: patients.length,
               itemBuilder: ((context, index) =>
               Card(
-                color: const Color.fromRGBO(210, 233, 245, 1),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25.5)
                 ),

@@ -20,6 +20,12 @@ const String loadData = 'Iniciar sesion';
 
 const String registerData = 'Registrar';
 
+const String genre = "Genero";
+
+const String hintGenre = "Please, select a genre";
+
+final List<String> genreType = <String>["Male","Female","Other"];
+
 const String role = "Roles";
 
 const String hintRole = 'Please, select one role';

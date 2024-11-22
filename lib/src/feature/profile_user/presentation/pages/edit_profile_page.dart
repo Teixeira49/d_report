@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/utils/constants/fields_constants.dart';
 import '../widgets/dynamic_edit_field.dart';
 import '../widgets/firstname_field.dart';
-
+import '../widgets/genre-user_field.dart';
 
 class EditProfilePage extends StatelessWidget {
 
@@ -80,21 +80,63 @@ class EditProfilePage extends StatelessWidget {
                       ),
                       child: const FirstNameTextField(defaultName: 'Pepe')
                   ),
-                  MaterialButton(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(22.0)),
-                    focusColor: Theme.of(context).colorScheme.inversePrimary,
-                    child: const Text(
-                        "Continuar",
-                        style: TextStyle(
-                            color: Colors.white
-                        )
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/main/profile/edit-row');
-                    },
-                  )
+                  Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.075,
+                        vertical: size.height * 0.025,
+                      ),
+                      child: const FirstNameTextField(defaultName: 'Gonzales')
+                  ),
+                  Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.075,
+                        vertical: size.height * 0.025,
+                      ),
+                      child: const FirstNameTextField(defaultName: '28432830')
+                  ),
+                  Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.075,
+                        vertical: size.height * 0.025,
+                      ),
+                      child: Text('fecha'
+                      ),
+                  ),
+                  Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.075,
+                        vertical: size.height * 0.025,
+                      ),
+                      child: TypeGenreDropdownField()
+                  ),
+                  Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.075,
+                        vertical: size.height * 0.025,
+                      ),
+                      child: const FirstNameTextField(defaultName: 'Especialidad')
+                  ),
+                  Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.075,
+                        vertical: size.height * 0.025,
+                      ),
+                      child: MaterialButton(
+                          color: Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(22.0)),
+                          focusColor: Theme.of(context).colorScheme.inversePrimary,
+                          child: const Text(
+                              "Continuar",
+                              style: TextStyle(
+                                  color: Colors.white
+                              )
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                    )
+                  ),
                 ]
             ),
           )

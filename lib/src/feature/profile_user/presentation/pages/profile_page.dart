@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/drawer.dart';
+import '../../domain/entities/doctor.dart';
 import '../widgets/custom_card_profile.dart';
 import '../widgets/firstname_field.dart';
 
@@ -24,14 +25,15 @@ class MyProfilePageState extends State<ProfilePage> {
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
     User user = argument["userData"];
 
-    var userName = "Pepe loco";
-    var accountEmail = "Pepeloco@gmail.com";
-    var accountName = "Doctor"; // TODO take name for back
-    var img = "";
-    final size = MediaQuery.of(context).size;
+    Doctor doctor = Doctor(id: 1, firstName: "pepe", secName: "peter",
+        lastName: "Gonzales", secLastName: "Herrera", dni: 123124,
+        birthday: "25/20/1980", genre: "Male", range: "Doctor",
+        speciality: "Bacteriologo");
 
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final _formatKey = GlobalKey<FormState>();
+
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
 
@@ -141,20 +143,26 @@ class MyProfilePageState extends State<ProfilePage> {
                       //),
                       child: CustomCardProfileRow(defaultKey: "ID Usuario", defaultValue: "12412",)
                   ),
-                  MaterialButton(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: RoundedRectangleBorder(
+                  Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.075,
+                        vertical: size.height * 0.025,
+                      ),
+                      child: MaterialButton(
+                        color: Theme.of(context).colorScheme.primary,
+                        shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(22.0)),
-                    focusColor: Theme.of(context).colorScheme.inversePrimary,
-                    child: const Text(
-                        "Continuar",
-                        style: TextStyle(
-                            color: Colors.white
-                        )
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/main/profile/edit-row');
-                    },
+                        focusColor: Theme.of(context).colorScheme.inversePrimary,
+                        child: const Text(
+                          "Editar",
+                          style: TextStyle(
+                              color: Colors.white
+                          )
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/main/profile/edit-row');
+                        },
+                    )
                   )
                 ]
               ),
