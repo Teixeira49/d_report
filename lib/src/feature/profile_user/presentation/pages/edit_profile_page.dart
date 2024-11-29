@@ -2,11 +2,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/constants/fields_constants.dart';
+import '../widgets/date_field.dart';
 import '../widgets/dynamic_edit_field.dart';
 import '../widgets/firstname_field.dart';
 import '../widgets/genre-user_field.dart';
 
-class EditProfilePage extends StatelessWidget {
+class EditProfilePage extends StatefulWidget {
 
   //final String namePatient;
 
@@ -15,19 +16,48 @@ class EditProfilePage extends StatelessWidget {
   final String dataField;
 
   @override
-  Widget build(BuildContext context) {
+  MyEditProfilePageState createState() => MyEditProfilePageState();
+}
+
+  class MyEditProfilePageState extends State<EditProfilePage> {
+
+    DateTime selectedDate = DateTime.now();
+
+    TextEditingController dateController = TextEditingController();
+
+    @override
+    Widget build(BuildContext context) {
     //final size = MediaQuery.of(context).size;
     //double sizeIcon = size.shortestSide * 0.50;
 
     final size = MediaQuery.of(context).size;
 
-    final _formatKey = GlobalKey<FormState>();
+    final formatKey = GlobalKey<FormState>();
+
+    Future<void> selectDate (BuildContext context) async {
+      DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: selectedDate,
+          firstDate: DateTime(1900),
+          lastDate: DateTime.now()
+      );
+
+      print(picked);
+      print("PEPE");
+      if (picked != null && picked != selectedDate) {
+        print('pepe');
+        setState(() {
+          selectedDate = picked;
+          dateController.text = selectedDate.toString().split(" ")[0];
+        });
+      }
+    }
 
     return Scaffold(
 
       appBar: AppBar(
         title: Text(
-            edit + space + dataField,
+            edit + space + widget.dataField,
           style: Theme.of(context).appBarTheme.titleTextStyle,
       ),
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
@@ -99,8 +129,28 @@ class EditProfilePage extends StatelessWidget {
                         horizontal: size.width * 0.075,
                         vertical: size.height * 0.025,
                       ),
-                      child: Text('fecha'
-                      ),
+                      child: TextField(
+                        controller: dateController,
+                        readOnly: true,
+                        //decoration: InputDecoration(
+                        //  labelText: dateController.text == '' ? 'Pepe' : dateController.text
+                        //),
+                        decoration: InputDecoration(
+                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                          filled: Theme.of(context).inputDecorationTheme.filled,
+                          border: Theme.of(context).inputDecorationTheme.border,
+                          suffixIcon: Icon(
+                              Icons.calendar_month,
+                              color: Theme.of(context).iconTheme.color
+                          ),
+                          labelText: "Cumpleaños",
+                          labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+                          hintText: "Cumpleaños no seleccionado",
+                          hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+                        ),
+                        style: Theme.of(context).inputDecorationTheme.labelStyle,
+                        onTap: () => selectDate(context),
+                      )
                   ),
                   Container(
                       padding: EdgeInsets.symmetric(
@@ -133,6 +183,7 @@ class EditProfilePage extends StatelessWidget {
                               )
                           ),
                           onPressed: () {
+                            print(selectedDate);
                             Navigator.of(context).pop();
                           },
                     )

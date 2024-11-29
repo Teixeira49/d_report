@@ -7,6 +7,7 @@ import 'package:d_report/src/feature/patients_details/presentation/pages/patient
 import 'package:d_report/src/feature/profile_user/presentation/pages/edit_profile_page.dart';
 import 'package:d_report/src/feature/profile_user/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,7 +44,15 @@ class MyApp extends StatelessWidget {
           return MaterialPageRoute(
         builder: (context) => const NotFoundPage()
         );
-      }
+      },
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale ('es', 'ES'),
+      ],
+
     );
   }
 }
