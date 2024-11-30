@@ -186,7 +186,8 @@ abstract class AppTheme {
       textTheme: const TextTheme(
         titleLarge: TextStyle(
           color: Colors.white70,
-          fontFamily: "gotham"
+          fontFamily: "gotham",
+          fontWeight: FontWeight.bold
         ),
         headlineSmall: TextStyle(
           color: Color.fromRGBO(58, 58, 58, 1.0)

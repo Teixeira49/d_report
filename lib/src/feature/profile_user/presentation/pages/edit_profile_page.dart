@@ -1,10 +1,12 @@
 
+import 'package:d_report/src/feature/profile_user/domain/entities/doctor.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/constants/fields_constants.dart';
+import '../../../../shared/domain/entities/user.dart';
 import '../widgets/date_field.dart';
 import '../widgets/dynamic_edit_field.dart';
-import '../widgets/firstname_field.dart';
+import '../widgets/data_textfield.dart';
 import '../widgets/genre-user_field.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -29,23 +31,26 @@ class EditProfilePage extends StatefulWidget {
     Widget build(BuildContext context) {
     //final size = MediaQuery.of(context).size;
     //double sizeIcon = size.shortestSide * 0.50;
+      final argument = ModalRoute.of(context)!.settings.arguments as Map;
 
-    final size = MediaQuery.of(context).size;
+      User user = argument["userData"];
+      Doctor doctor = argument["doctorData"];
 
-    final formatKey = GlobalKey<FormState>();
 
-    Future<void> selectDate (BuildContext context) async {
-      DateTime? picked = await showDatePicker(
+      final size = MediaQuery.of(context).size;
+
+      final formatKey = GlobalKey<FormState>();
+
+      Future<void> selectDate (BuildContext context) async {
+        DateTime? picked = await showDatePicker(
           context: context,
           initialDate: selectedDate,
           firstDate: DateTime(1900),
           lastDate: DateTime.now()
       );
 
-      print(picked);
-      print("PEPE");
       if (picked != null && picked != selectedDate) {
-        print('pepe');
+
         setState(() {
           selectedDate = picked;
           dateController.text = selectedDate.toString().split(" ")[0];
@@ -57,7 +62,7 @@ class EditProfilePage extends StatefulWidget {
 
       appBar: AppBar(
         title: Text(
-            edit + space + widget.dataField,
+            edit,
           style: Theme.of(context).appBarTheme.titleTextStyle,
       ),
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
@@ -108,28 +113,29 @@ class EditProfilePage extends StatefulWidget {
                         horizontal: size.width * 0.075,
                         vertical: size.height * 0.025,
                       ),
-                      child: const FirstNameTextField(defaultName: 'Pepe')
+                      child: DataTextField(defaultName: doctor.firstName, contextRow: "Nombre",)
                   ),
                   Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
                         vertical: size.height * 0.025,
                       ),
-                      child: const FirstNameTextField(defaultName: 'Gonzales')
+                      child: DataTextField(defaultName: doctor.lastName, contextRow: "Apellido",)
                   ),
                   Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
                         vertical: size.height * 0.025,
                       ),
-                      child: const FirstNameTextField(defaultName: '28432830')
+                      child: DataTextField(defaultName: doctor.dni.toString(), contextRow: "Cedula",)
                   ),
                   Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
                         vertical: size.height * 0.025,
                       ),
-                      child: TextField(
+                      child: TextFormField(
+                        //initialValue: doctor.birthday,
                         controller: dateController,
                         readOnly: true,
                         //decoration: InputDecoration(
@@ -164,7 +170,7 @@ class EditProfilePage extends StatefulWidget {
                         horizontal: size.width * 0.075,
                         vertical: size.height * 0.025,
                       ),
-                      child: const FirstNameTextField(defaultName: 'Especialidad')
+                      child: const DataTextField(defaultName: 'Bacteriologo', contextRow: 'Especialidad')
                   ),
                   Container(
                       padding: EdgeInsets.symmetric(

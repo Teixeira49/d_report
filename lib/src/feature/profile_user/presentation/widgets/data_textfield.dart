@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
-class FirstNameTextField extends StatefulWidget {
+class DataTextField extends StatefulWidget {
 
-  const FirstNameTextField({super.key, required this.defaultName});
+  const DataTextField({super.key, required this.defaultName, required this.contextRow});
 
   final String defaultName;
+  final String contextRow;
 
   @override
-  MyFirsNameTextFieldWidget createState() => MyFirsNameTextFieldWidget();
+  MyDataTextFieldWidget createState() => MyDataTextFieldWidget();
 }
 
-  class MyFirsNameTextFieldWidget extends State<FirstNameTextField> {
+  class MyDataTextFieldWidget extends State<DataTextField> {
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +28,13 @@ class FirstNameTextField extends StatefulWidget {
             fillColor: Theme.of(context).inputDecorationTheme.fillColor,
             filled: Theme.of(context).inputDecorationTheme.filled,
             border: Theme.of(context).inputDecorationTheme.border,
-            suffixIcon: const Icon(Icons.person),
-            labelText: nameUser,
+            suffixIcon: Icon(
+              Icons.person,
+              color: Theme.of(context).iconTheme.color,
+            ),
+            labelText: widget.contextRow,
             labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
-            hintText: hintNameUser,
+            hintText: hintEditProfile,
             hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
           ),
           onSaved: (String? value) {

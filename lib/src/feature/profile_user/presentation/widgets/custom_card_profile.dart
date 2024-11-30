@@ -20,22 +20,20 @@ class MyCustomCardProfileRowWidget extends State<CustomCardProfileRow> {
     return SizedBox(
       width: double.infinity,
       child: Card(
+        color: Colors.transparent,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25.5)
         ),
         child: ListTile(
+          tileColor: Colors.transparent,
           dense: false,
-          minLeadingWidth: 7,
+          minLeadingWidth: 5,
           leading: Container(
             height: double.maxFinite,
             width: 7,
           ),
           title: Text(widget.defaultKey),
           subtitle: Text(widget.defaultValue),
-          trailing: Icon(
-            Icons.person_search_outlined,
-              color: Theme.of(context).listTileTheme.iconColor
-          ),
         ),
       )
     );

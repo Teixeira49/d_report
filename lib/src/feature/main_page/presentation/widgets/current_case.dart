@@ -20,11 +20,13 @@ class CurrentCasesPage extends StatelessWidget {
 
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          const SizedBox(height: 5,),
           Expanded(
             child: ListView.builder(
               itemCount: patients.length,
               itemBuilder: ((context, index) =>
               Card(
+                color: Colors.transparent,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25.5)
                 ),

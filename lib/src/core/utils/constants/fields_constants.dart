@@ -10,6 +10,8 @@ const String lastNameUser = 'Last Name *';
 
 const String hintLastNameUser = 'What do people call you?';
 
+const String hintEditProfile = 'you dont forget edit this row';
+
 const String email = 'Email';
 
 const String password = 'Password';
@@ -34,6 +36,6 @@ const String point = '. ';
 
 const String space = " ";
 
-const String edit = "Editar";
+const String edit = "Editar Perfil";
 
 final List<String> userType = <String>["Doctor","Resident","Administrator"];
