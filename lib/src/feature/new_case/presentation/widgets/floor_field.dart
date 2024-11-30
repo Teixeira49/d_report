@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:d_report/src/core/utils/constants/fields_constants.dart';
+
+class FloorMixedField extends StatelessWidget {
+  const FloorMixedField({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: DropdownButtonFormField(
+            style: Theme.of(context).textTheme.labelLarge,
+            dropdownColor: Theme.of(context).inputDecorationTheme.fillColor,
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            decoration: InputDecoration(
+              fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+              filled: Theme.of(context).inputDecorationTheme.filled,
+              border: Theme.of(context).inputDecorationTheme.border,
+              suffixIcon: Icon(
+                Icons.water_drop,
+                color: Theme.of(context).iconTheme.color,
+              ),
+              labelText: floor,
+              labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+              hintStyle: Theme.of(context).inputDecorationTheme.labelStyle
+            ),
+            items: floorType.map((rh){
+            return DropdownMenuItem(
+              alignment: Alignment.centerLeft,
+              value: rh,
+              child: Text(
+                rh,
+                style: Theme.of(context).inputDecorationTheme.labelStyle,
+              )
+            );
+          }).toList(),
+          onChanged: (newValue) {
+
+          },
+          onSaved: (String? value) {},
+          isDense: true,
+          isExpanded: true,
+        )
+      ),
+      const SizedBox(width: 16),
+      Expanded(
+       child: TextFormField(
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(2),
+        ],
+        decoration: const InputDecoration(
+          hintText: 'Max. 2 números',
+        ),
+      ),
+      ),
+    ],
+  );
+ }
+}
