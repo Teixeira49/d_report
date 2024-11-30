@@ -117,8 +117,8 @@ class MyMainPageState extends State<MainPage> {
                               dense: true,
                               tileColor: Colors.transparent,
                               onTap: () {
-                                print("pepe nuevo");
                                 Navigator.pop(context);
+                                Navigator.of(context).pushNamed('/main/new-case/new-patient');
                               },
                             ),
                           ),

@@ -2,6 +2,8 @@ import 'package:d_report/src/core/config/styles/themes.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/login_page.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/register_page.dart';
 import 'package:d_report/src/feature/main_page/presentation/pages/main_page.dart';
+import 'package:d_report/src/feature/new_case/presentation/pages/new_case_page.dart';
+import 'package:d_report/src/feature/new_patient/presentation/pages/new_patient_page.dart';
 import 'package:d_report/src/feature/not_found/presentation/pages/not-found_page.dart';
 import 'package:d_report/src/feature/patients_details/presentation/pages/patient-details_page.dart';
 import 'package:d_report/src/feature/profile_user/presentation/pages/edit_profile_page.dart';
@@ -37,6 +39,9 @@ class MyApp extends StatelessWidget {
         '/main/profile/': (context) => const ProfilePage(),
         '/main/profile/edit-row': (context) => const EditProfilePage(dataField: 'pepe',),
         '/main/config/': (context) => const NotFoundPage(),
+        '/main/new-case/new-patient': (context) => const NewPatientPage(),
+        '/main/new-case/find-patient': (context) => const NewPatientPage(),
+        '/main/new-case/add-case': (context) => const NewCasePage(),
       },
       initialRoute: '/auth/login/',
       onUnknownRoute: (RouteSettings setting) {

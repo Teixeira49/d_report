@@ -42,6 +42,14 @@ abstract class AppTheme {
             color: Colors.white70,
             fontFamily: "gotham"
         ),
+        titleMedium: TextStyle(
+            color: Colors.black54,
+            fontFamily: "gotham"
+        ),
+        titleSmall: TextStyle(
+            color: Colors.white,
+            fontFamily: "gotham"
+        ),
         headlineSmall: TextStyle(
             color: Color.fromRGBO(58, 58, 58, 1.0)
         ),
@@ -188,6 +196,14 @@ abstract class AppTheme {
           color: Colors.white70,
           fontFamily: "gotham",
           fontWeight: FontWeight.bold
+        ),
+        titleMedium: TextStyle(
+          color: Colors.white70,
+          fontFamily: "gotham"
+        ),
+        titleSmall: TextStyle(
+          color: Colors.white,
+          fontFamily: "gotham"
         ),
         headlineSmall: TextStyle(
           color: Color.fromRGBO(58, 58, 58, 1.0)
