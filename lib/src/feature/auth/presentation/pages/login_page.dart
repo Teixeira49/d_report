@@ -52,64 +52,65 @@ class MyLoginPageState extends State<LoginPage> {
               constraints: BoxConstraints(
                 minHeight: size.height * 0.25,
               ),
-                child: IntrinsicHeight(
-                  child: Form(
-                    key: _formatKey,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children:[
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.transparent),
-                                  shape: BoxShape.circle
-                              ),
+              child: IntrinsicHeight(
+                child: Form(
+
+
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children:[
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Colors.transparent),
+                                shape: BoxShape.circle
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.0075,
+                              vertical: size.height * 0.025,
+                            ),
+                            child: Image.asset("assets/images/logo.png",
+                                width: MediaQuery.of(context).size.width/1.5,
+                                height: MediaQuery.of(context).size.width/1.5
+                            ),
+                          ),
+                          Container(
                               padding: EdgeInsets.symmetric(
-                                horizontal: size.width * 0.0075,
+                                horizontal: size.width * 0.075,
                                 vertical: size.height * 0.025,
                               ),
-                              child: Image.asset("assets/images/logo.png",
-                                  width: MediaQuery.of(context).size.width/1.5,
-                                  height: MediaQuery.of(context).size.width/1.5
+                              child: const UserAccountTextField()
+                          ),
+                          Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.075,
+                                vertical: size.height * 0.025,
                               ),
-                            ),
-                            Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.075,
-                                  vertical: size.height * 0.025,
-                                ),
-                                child: const UserAccountTextField()
-                            ),
-                            Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.075,
-                                  vertical: size.height * 0.025,
-                                ),
-                                child: const PasswordTextField(password: password)
-                            ),
-                            Container(
-                                padding: EdgeInsets.only(
-                                    top: size.height / 20,
-                                    bottom: 0.25
-                                ),
-                                child: const LoginButton()
-                            ),
-                            TextButton(
-                              child: Text(registerData,
-                                  style: TextStyle(
-                                      color: Theme.of(context).colorScheme.tertiary
-                                  )
+                              child: const PasswordTextField(password: password)
+                          ),
+                          Container(
+                              padding: EdgeInsets.only(
+                                  top: size.height / 20,
+                                  bottom: 0.25
                               ),
-                              onPressed: () {
-                                Navigator.of(context).pushNamed('/auth/register/');
-                              },
-                            )
-                          ]
-                      )
-                  )
+                              child: const LoginButton()
+                          ),
+                          TextButton(
+                            child: Text(registerData,
+                                style: TextStyle(
+                                    color: Theme.of(context).colorScheme.tertiary
+                                )
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pushNamed('/auth/register/');
+                            },
+                          )
+                        ]
+                    )
                 )
-              ),
+              )
+            ),
           )
         )
     );

@@ -4,7 +4,10 @@ import 'package:d_report/src/feature/auth/presentation/pages/register_page.dart'
 import 'package:d_report/src/feature/main_page/presentation/pages/main_page.dart';
 import 'package:d_report/src/feature/not_found/presentation/pages/not-found_page.dart';
 import 'package:d_report/src/feature/patients_details/presentation/pages/patient-details_page.dart';
+import 'package:d_report/src/feature/profile_user/presentation/pages/edit_profile_page.dart';
+import 'package:d_report/src/feature/profile_user/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,13 +27,15 @@ class MyApp extends StatelessWidget {
       title: 'Flutter D Project APP',
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.system, // Edit for change theme color
       debugShowCheckedModeBanner: false,
       routes: {
         '/auth/login/': (context) => const LoginPage(),
         '/auth/register/': (context) => const RegisterPage(),
         '/main/patients/': (context) => const MainPage(),
         '/main/patients/details/': (context) => const PatientDetailsPage(),
-        '/main/profile/': (context) => const NotFoundPage(),
+        '/main/profile/': (context) => const ProfilePage(),
+        '/main/profile/edit-row': (context) => const EditProfilePage(dataField: 'pepe',),
         '/main/config/': (context) => const NotFoundPage(),
       },
       initialRoute: '/auth/login/',
@@ -39,7 +44,15 @@ class MyApp extends StatelessWidget {
           return MaterialPageRoute(
         builder: (context) => const NotFoundPage()
         );
-      }
+      },
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale ('es', 'ES'),
+      ],
+
     );
   }
 }

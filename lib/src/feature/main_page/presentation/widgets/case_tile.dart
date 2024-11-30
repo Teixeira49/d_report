@@ -13,6 +13,7 @@ class CaseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // TODO REFACTOR
     return ListTile(
       title: Text(
         dataPatient.getAllName(),
@@ -23,12 +24,12 @@ class CaseTile extends StatelessWidget {
         style: Theme.of(context).listTileTheme.subtitleTextStyle,
       ),
       tileColor: Theme.of(context).listTileTheme.tileColor,
-      shape: Theme.of(context).listTileTheme.shape,
       trailing: const Icon(
         Icons.arrow_circle_right, color: Colors.grey, // TODO delete Colors
       ),
-      leading: const Icon(
-        Icons.person_search_outlined, color: Colors.grey,
+      leading: const SizedBox(
+        height: double.maxFinite,
+        width: 5,
       ),
       onTap: () {
         Navigator.of(context).pushNamed('/main/patients/details/',

@@ -113,6 +113,40 @@ abstract class AppTheme {
         ),
       ),
 
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: const Color.fromRGBO(242, 248, 255, 1.0),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.5)
+        ),
+        //todayBackgroundColor: Color.fromRGBO(6, 135, 232, 1.0),
+        headerBackgroundColor: const Color.fromRGBO(6, 135, 232, 1.0),
+        yearForegroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
+        yearStyle: const TextStyle(
+          color: Color.fromRGBO(58, 58, 58, 1.0),
+          fontWeight: FontWeight.w700,
+        ),
+        rangePickerHeaderHelpStyle: const TextStyle(
+          color: Color.fromRGBO(58, 58, 58, 1.0),
+          fontWeight: FontWeight.w700,
+        ),
+
+        headerHelpStyle: const TextStyle(
+          color: Color.fromRGBO(58, 58, 58, 1.0),
+          fontWeight: FontWeight.w700,
+        ),
+
+        weekdayStyle: const TextStyle(
+          color: Color.fromRGBO(58, 58, 58, 1.0),
+          fontWeight: FontWeight.w700,
+        ),
+
+        dayForegroundColor: const MaterialStatePropertyAll<Color>(Color.fromRGBO(58, 58, 58, 1.0)),
+        //dayOverlayColor
+        cancelButtonStyle: const ButtonStyle(
+          foregroundColor: MaterialStatePropertyAll<Color>(Colors.red),
+        ),
+      )
+
     );
   } static ThemeData get dark {
     return ThemeData(
@@ -146,13 +180,14 @@ abstract class AppTheme {
       splashColor: Colors.transparent,
 
       iconTheme: const IconThemeData(
-          color: Colors.white70
+          color: Colors.white70,
       ),
 
       textTheme: const TextTheme(
         titleLarge: TextStyle(
           color: Colors.white70,
-          fontFamily: "gotham"
+          fontFamily: "gotham",
+          fontWeight: FontWeight.bold
         ),
         headlineSmall: TextStyle(
           color: Color.fromRGBO(58, 58, 58, 1.0)
@@ -196,7 +231,7 @@ abstract class AppTheme {
       ),
 
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: Colors.red
+        backgroundColor: Colors.red,
       ),
 
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -224,6 +259,44 @@ abstract class AppTheme {
             borderRadius: BorderRadius.circular(25.5)
         ),
       ),
+
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: const Color.fromRGBO(7, 26, 38, 1.0),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.5)
+        ),
+        //todayBackgroundColor: Color.fromRGBO(6, 135, 232, 1.0),
+        headerBackgroundColor: const Color.fromRGBO(5, 21, 30, 1.0),
+        headerForegroundColor: Colors.white,
+        yearForegroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
+        yearStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+        ),
+        rangePickerHeaderHelpStyle: const TextStyle(
+          color: Colors.white70,
+          fontWeight: FontWeight.w700,
+        ),
+
+
+        todayForegroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
+        headerHelpStyle: const TextStyle(
+          color: Colors.white70,
+          fontWeight: FontWeight.w700,
+        ),
+        dayOverlayColor: const MaterialStatePropertyAll<Color>(Colors.white),
+        weekdayStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+        ),
+
+        dayForegroundColor: const MaterialStatePropertyAll<Color>(Colors.white70),
+          //dayOverlayColor
+        cancelButtonStyle: const ButtonStyle(
+          foregroundColor: MaterialStatePropertyAll<Color>(Colors.red),
+        ),
+        //cancelButtonStyle: ,
+      )
     );
   }
 }

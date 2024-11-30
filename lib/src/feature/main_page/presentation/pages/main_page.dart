@@ -3,6 +3,9 @@ import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 import 'package:d_report/src/feature/main_page/domain/entities/patient.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../shared/domain/entities/user.dart';
+import '../../../../shared/presentation/widget/drawer.dart';
+
 import '../widgets/current_case.dart';
 
 class MainPage extends StatefulWidget {
@@ -15,15 +18,14 @@ class MainPage extends StatefulWidget {
 
 class MyMainPageState extends State<MainPage> {
 
-  int _currentPage = 1;
+  int _currentPage = 0;
 
   @override
   Widget build(BuildContext context){
 
-    var userName = "Pepe loco";
-    var accountEmail = "Pepeloco@gmail.com";
-    var accountName = "Doctor"; // TODO take name for back
-    var img = "";
+    final argument = ModalRoute.of(context)!.settings.arguments as Map;
+    User user = argument["userData"];
+
     final size = MediaQuery.of(context).size;
 
     //List<Patients> patients = [];
@@ -41,7 +43,6 @@ class MyMainPageState extends State<MainPage> {
     ];
 
     List<Widget> pages = [
-      CurrentCasesPage(currentP),
       CurrentCasesPage(regularP),
       CurrentCasesPage(currentP)
     ];
@@ -58,14 +59,14 @@ class MyMainPageState extends State<MainPage> {
               GestureDetector(
                 child: CircleAvatar(
                   backgroundColor: Theme.of(context).colorScheme.onSecondary,
-                  child: img == "" ? Image.asset("assets/images/logo.png") : Image.asset(img), // TODO volver constante
+                  child: user.userImgUrl == "" ? Image.asset("assets/images/logo.png") : Image.asset(user.userImgUrl), // TODO volver constante
                 ),
                 onTap: () {
                   scaffoldKey.currentState?.openDrawer();
                 },
               ),
               const SizedBox(width: 12),
-              Text(accountName),
+              Text(user.userRole),
               const Spacer(),
               IconButton(
                   onPressed: () {
@@ -80,147 +81,7 @@ class MyMainPageState extends State<MainPage> {
 
         ),
 
-        drawer: Drawer(
-          surfaceTintColor: Theme.of(context).drawerTheme.surfaceTintColor,
-          shadowColor: Theme.of(context).drawerTheme.shadowColor,
-          child:
-            ListView(
-              padding: EdgeInsets.zero,
-                children: <Widget>[
-                  DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Colors.white,
-                          child: img == "" ? Image.asset("assets/images/logo.png") : Image.asset(img), // TODO volver constante
-                        ),
-                        const SizedBox(height: 4,),
-                        Text(
-                          userName != "" ? accountName + point + userName : 'Nombre de usuario',
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSecondary,
-                              fontSize: 18
-                          ),
-                        ),
-                        Text(
-                          accountEmail ?? 'correo@ejemplo.com',
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSecondary
-                          ),
-                        ),
-                      ],
-                    )
-                  ),
-                  ListTile( // TODO Change ModalRoute for Navigator, and replace string route for a more than serius code
-                    leading: Icon(
-                      Icons.home,
-                      color: ModalRoute.of(context)?.settings.name == '/main/patients/' ?
-                        Theme.of(context).colorScheme.primary :
-                        Theme.of(context).iconTheme.color,
-                    ),
-                    title: Text(
-                        'Principal',
-                      style: TextStyle(
-                        color: ModalRoute.of(context)?.settings.name == '/main/patients/' ?
-                          Theme.of(context).colorScheme.primary :
-                          Theme.of(context).iconTheme.color,
-                        fontSize: Theme.of(context).listTileTheme.titleTextStyle?.fontSize
-                      ),
-                    ),
-                    tileColor: Colors.transparent, // Add to Theme palette
-                    shape: Theme.of(context).listTileTheme.shape,
-                    onTap: () {
-                      setState(() {
-                        if (ModalRoute.of(context)?.settings.name != '/main/patients/'){
-                          Navigator.of(context).pushNamed('/main/patients/');
-                        }
-                      });
-                      print("pepe");
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.person,
-                      color: ModalRoute.of(context)?.settings.name == '/main/profile/' ?
-                        Theme.of(context).colorScheme.primary :
-                        Theme.of(context).iconTheme.color,
-                    ),
-                    title: Text(
-                      'Profile',
-                      style: TextStyle(
-                        color: ModalRoute.of(context)?.settings.name == '/main/profile/' ?
-                          Theme.of(context).colorScheme.primary :
-                          Theme.of(context).iconTheme.color,
-                        fontSize: Theme.of(context).listTileTheme.titleTextStyle?.fontSize
-                      ),
-                    ),
-                    tileColor: Colors.transparent, // Add to Theme palette
-                    shape: Theme.of(context).listTileTheme.shape,
-                    onTap: () {
-                      setState(() {
-                        if (ModalRoute.of(context)?.settings.name != '/main/profile/') {
-                          Navigator.of(context).pushNamed('/main/profile/');
-                        }
-                      });
-                      print("pepe");
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.settings,
-                      color: ModalRoute.of(context)?.settings.name == '/main/config/' ?
-                        Theme.of(context).colorScheme.primary :
-                        Theme.of(context).iconTheme.color,
-                    ),
-                    title: Text(
-                      'Configuracion',
-                      style: TextStyle(
-                        color: ModalRoute.of(context)?.settings.name == '/main/config/' ?
-                          Theme.of(context).colorScheme.primary :
-                          Theme.of(context).iconTheme.color,
-                        fontSize: Theme.of(context).listTileTheme.titleTextStyle?.fontSize
-                      ),
-                    ),
-                    tileColor: Colors.transparent, // Add to Theme palette
-                    shape: Theme.of(context).listTileTheme.shape,
-                    onTap: () {
-                      setState(() {
-                        if (ModalRoute.of(context)?.settings.name != '/main/config/'){
-                          Navigator.of(context).pushNamed('/main/config/');
-                        }
-                      });
-                      print("pepe");
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.logout,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    title: Text(
-                      'Cerrar sesion',
-                      style: TextStyle(
-                        color: Theme.of(context).iconTheme.color,
-                        fontSize: Theme.of(context).listTileTheme.titleTextStyle?.fontSize
-                      )
-                    ),
-                    tileColor: Colors.transparent, // Add to Theme palette
-                    shape: Theme.of(context).listTileTheme.shape,
-                    onTap: () {
-                      Navigator.popUntil(context, (route) => route.isFirst);
-                      print("Se presiono cerrar sesion");
-                    },
-                  ),
-                  Divider(color: Theme.of(context).colorScheme.outline,),
-                ]
-            ),
-          ),
+        drawer: NavigatorDrawer(user: user),
 
         body: GestureDetector(
           child: pages[_currentPage],
@@ -231,14 +92,58 @@ class MyMainPageState extends State<MainPage> {
           },
         ),
 
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: ThemeData().floatingActionButtonTheme.backgroundColor,
-          child: const Icon(Icons.add),
-          onPressed: () {
-            print("pepe");
-          },
-
-        ),
+        floatingActionButton: _currentPage == 0 && user.userRole == 'Doctor' ?
+          FloatingActionButton(
+            backgroundColor: ThemeData().floatingActionButtonTheme.backgroundColor,
+            child: const Icon(Icons.add),
+            onPressed: () {
+              showModalBottomSheet<void>(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    height: 110,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.010,
+                          ),
+                            child: ListTile(
+                              title: Text('Crear Caso - Nuevo Paciente'),
+                              dense: true,
+                              tileColor: Colors.transparent,
+                              onTap: () {
+                                print("pepe nuevo");
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                          Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.010,
+                              ),
+                            child: ListTile(
+                              title: Text('Crear Caso - Paciente Existente'),
+                              dense: true,
+                              tileColor: Colors.transparent,
+                              onTap: () {
+                                print("Crear Caso - Paciente Existente");
+                                Navigator.pop(context);
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              );
+            },
+          ) : Container(),
 
         // Change a widget in other file
         bottomNavigationBar: BottomNavigationBar(
@@ -251,24 +156,24 @@ class MyMainPageState extends State<MainPage> {
           selectedItemColor: ThemeData().bottomNavigationBarTheme.selectedItemColor,
           selectedLabelStyle: ThemeData().bottomNavigationBarTheme.selectedLabelStyle,
           currentIndex: _currentPage,
-          items: const [
-            BottomNavigationBarItem(
+          items: [
+            /*BottomNavigationBarItem(
               icon: Icon(
                   Icons.stacked_bar_chart_rounded
               ),
               label: 'Statistics',
+            ),*/
+            BottomNavigationBarItem(
+              icon: _currentPage == 1 ?
+                const Icon(Icons.other_houses_outlined) :
+                const Icon(Icons.other_houses),
+              label: 'Mis Casos',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                  Icons.other_houses_outlined
-              ),
-              label: 'Active Cases',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                  Icons.folder_copy
-              ),
-              label: 'Search Case',
+              icon: _currentPage == 1 ?
+                const Icon(Icons.folder_copy) :
+                const Icon(Icons.folder_copy_outlined),
+              label: 'Buscar Caso',
             ),
       ],
 

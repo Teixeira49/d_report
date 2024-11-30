@@ -20,15 +20,13 @@ class CurrentCasesPage extends StatelessWidget {
 
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          const SizedBox(height: 5,),
           Expanded(
             child: ListView.builder(
               itemCount: patients.length,
               itemBuilder: ((context, index) =>
               Card(
-                color: const Color.fromRGBO(210, 233, 245, 1),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.5)
-                ),
+                color: Colors.transparent,
                 child: CaseTile(context, patients[index])
               )),
             ),
