@@ -59,12 +59,9 @@ class MyNavigatorDrawerState extends State<NavigatorDrawer> {
                 )
             ),
             ListTile( // TODO Change ModalRoute for Navigator, and replace string route for a more than serius code
-              leading: Icon(
-                Icons.home,
-                color: ModalRoute.of(context)?.settings.name == '/main/patients/' ?
-                Theme.of(context).colorScheme.primary :
-                Theme.of(context).iconTheme.color,
-              ),
+              leading: ModalRoute.of(context)?.settings.name == '/main/patients/' ?
+                Icon(Icons.home, color: Theme.of(context).colorScheme.primary) :
+                Icon(Icons.home_outlined, color: Theme.of(context).iconTheme.color,),
               title: Text(
                 'Principal',
                 style: TextStyle(
@@ -89,12 +86,9 @@ class MyNavigatorDrawerState extends State<NavigatorDrawer> {
               },
             ),
             ListTile(
-              leading: Icon(
-                Icons.person,
-                color: ModalRoute.of(context)?.settings.name == '/main/profile/' ?
-                Theme.of(context).colorScheme.primary :
-                Theme.of(context).iconTheme.color,
-              ),
+              leading: ModalRoute.of(context)?.settings.name == '/main/profile/' ?
+                Icon(Icons.person, color: Theme.of(context).colorScheme.primary) :
+                Icon(Icons.person_outlined, color: Theme.of(context).iconTheme.color,),
               title: Text(
                 'Profile',
                 style: TextStyle(
@@ -119,12 +113,9 @@ class MyNavigatorDrawerState extends State<NavigatorDrawer> {
               },
             ),
             ListTile(
-              leading: Icon(
-                Icons.settings,
-                color: ModalRoute.of(context)?.settings.name == '/main/config/' ?
-                Theme.of(context).colorScheme.primary :
-                Theme.of(context).iconTheme.color,
-              ),
+              leading: ModalRoute.of(context)?.settings.name == '/main/config/' ?
+                Icon(Icons.settings, color: Theme.of(context).colorScheme.primary) :
+                Icon(Icons.settings_outlined, color: Theme.of(context).iconTheme.color,),
               title: Text(
                 'Configuracion',
                 style: TextStyle(

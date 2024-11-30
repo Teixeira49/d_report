@@ -231,7 +231,7 @@ abstract class AppTheme {
       ),
 
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: Colors.red
+        backgroundColor: Colors.red,
       ),
 
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(

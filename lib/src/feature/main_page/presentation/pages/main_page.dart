@@ -18,7 +18,7 @@ class MainPage extends StatefulWidget {
 
 class MyMainPageState extends State<MainPage> {
 
-  int _currentPage = 1;
+  int _currentPage = 0;
 
   @override
   Widget build(BuildContext context){
@@ -43,7 +43,6 @@ class MyMainPageState extends State<MainPage> {
     ];
 
     List<Widget> pages = [
-      CurrentCasesPage(currentP),
       CurrentCasesPage(regularP),
       CurrentCasesPage(currentP)
     ];
@@ -93,14 +92,58 @@ class MyMainPageState extends State<MainPage> {
           },
         ),
 
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: ThemeData().floatingActionButtonTheme.backgroundColor,
-          child: const Icon(Icons.add),
-          onPressed: () {
-            print("pepe");
-          },
-
-        ),
+        floatingActionButton: _currentPage == 0 && user.userRole == 'Doctor' ?
+          FloatingActionButton(
+            backgroundColor: ThemeData().floatingActionButtonTheme.backgroundColor,
+            child: const Icon(Icons.add),
+            onPressed: () {
+              showModalBottomSheet<void>(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    height: 110,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.010,
+                          ),
+                            child: ListTile(
+                              title: Text('Crear Caso - Nuevo Paciente'),
+                              dense: true,
+                              tileColor: Colors.transparent,
+                              onTap: () {
+                                print("pepe nuevo");
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                          Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.010,
+                              ),
+                            child: ListTile(
+                              title: Text('Crear Caso - Paciente Existente'),
+                              dense: true,
+                              tileColor: Colors.transparent,
+                              onTap: () {
+                                print("Crear Caso - Paciente Existente");
+                                Navigator.pop(context);
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              );
+            },
+          ) : Container(),
 
         // Change a widget in other file
         bottomNavigationBar: BottomNavigationBar(
@@ -113,24 +156,24 @@ class MyMainPageState extends State<MainPage> {
           selectedItemColor: ThemeData().bottomNavigationBarTheme.selectedItemColor,
           selectedLabelStyle: ThemeData().bottomNavigationBarTheme.selectedLabelStyle,
           currentIndex: _currentPage,
-          items: const [
-            BottomNavigationBarItem(
+          items: [
+            /*BottomNavigationBarItem(
               icon: Icon(
                   Icons.stacked_bar_chart_rounded
               ),
               label: 'Statistics',
+            ),*/
+            BottomNavigationBarItem(
+              icon: _currentPage == 1 ?
+                const Icon(Icons.other_houses_outlined) :
+                const Icon(Icons.other_houses),
+              label: 'Mis Casos',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                  Icons.other_houses_outlined
-              ),
-              label: 'Active Cases',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                  Icons.folder_copy
-              ),
-              label: 'Search Case',
+              icon: _currentPage == 1 ?
+                const Icon(Icons.folder_copy) :
+                const Icon(Icons.folder_copy_outlined),
+              label: 'Buscar Caso',
             ),
       ],
 

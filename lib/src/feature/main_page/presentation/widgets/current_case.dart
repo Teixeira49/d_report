@@ -27,9 +27,6 @@ class CurrentCasesPage extends StatelessWidget {
               itemBuilder: ((context, index) =>
               Card(
                 color: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.5)
-                ),
                 child: CaseTile(context, patients[index])
               )),
             ),

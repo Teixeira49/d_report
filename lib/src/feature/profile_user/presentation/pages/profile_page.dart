@@ -26,8 +26,8 @@ class MyProfilePageState extends State<ProfilePage> {
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
     User user = argument["userData"];
 
-    Doctor doctor = Doctor(id: 1, firstName: "pepe", secName: "peter",
-        lastName: "Gonzales", secLastName: "Herrera", dni: 123124,
+    Doctor doctor = Doctor(id: 1, firstName: "pepe",
+        lastName: "Gonzales", dni: 123124,
         birthday: "25-10-1980", genre: "Male", range: "Doctor",
         speciality: "Bacteriologo");
 
@@ -41,9 +41,25 @@ class MyProfilePageState extends State<ProfilePage> {
       key: scaffoldKey,
 
       appBar: AppBar(
-        title: const Text("Profile"),
+        title: Row(
+          children: [
+            const Spacer(),
+            const Text("Perfil  "),
+            const Spacer(),
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                print(user.userName);
+                print(user.userRole);
+                print(user.userEmail);
+                Navigator.of(context).pushNamed('/main/profile/edit-row', arguments: {
+                  'userData': argument["userData"],
+                  'doctorData': doctor,
+                });
+              },)
+          ]
+        ),
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        centerTitle: true,
         automaticallyImplyLeading: true,
       ),
 
@@ -87,7 +103,7 @@ class MyProfilePageState extends State<ProfilePage> {
               //  horizontal: size.width * 0.075,
               //  vertical: size.height * 0.025,
               //),
-                child: CustomCardProfileRow(defaultKey: "Nombre", defaultValue: "${doctor.firstName} ${doctor.secName} ${doctor.lastName} ${doctor.secLastName}",)
+                child: CustomCardProfileRow(defaultKey: "Nombre", defaultValue: "${doctor.firstName} ${doctor.lastName}",)
             ),
             Container(
               //padding: EdgeInsets.symmetric(
@@ -124,33 +140,6 @@ class MyProfilePageState extends State<ProfilePage> {
               //),
                 child: CustomCardProfileRow(defaultKey: "ID Usuario", defaultValue: "12412",)
             ),
-            Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.075,
-                  vertical: size.height * 0.025,
-                ),
-                child: MaterialButton(
-                  color: Theme.of(context).colorScheme.primary,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(22.0)),
-                  focusColor: Theme.of(context).colorScheme.inversePrimary,
-                  child: const Text(
-                      "Editar",
-                      style: TextStyle(
-                          color: Colors.white
-                      )
-                  ),
-                  onPressed: () {
-                    print(user.userName);
-                    print(user.userRole);
-                    print(user.userEmail);
-                    Navigator.of(context).pushNamed('/main/profile/edit-row', arguments: {
-                      'userData': argument["userData"],
-                      'doctorData': doctor,
-                    });
-                  },
-                )
-            )
           ],
         )
         ),

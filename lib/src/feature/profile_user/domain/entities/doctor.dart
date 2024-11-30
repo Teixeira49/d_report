@@ -4,9 +4,7 @@ class Doctor{
       {
         required this.id,
         required this.firstName,
-        required this.secName,
         required this.lastName,
-        required this.secLastName,
         required this.dni,
         required this.genre,
         required this.birthday,
@@ -17,9 +15,7 @@ class Doctor{
 
   int id;
   String firstName;
-  String secName;
   String lastName;
-  String secLastName;
   int dni;
   String genre;
   String birthday;

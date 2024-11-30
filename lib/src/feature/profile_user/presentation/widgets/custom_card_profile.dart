@@ -28,7 +28,7 @@ class MyCustomCardProfileRowWidget extends State<CustomCardProfileRow> {
           tileColor: Colors.transparent,
           dense: false,
           minLeadingWidth: 5,
-          leading: Container(
+          leading: const SizedBox(
             height: double.maxFinite,
             width: 7,
           ),

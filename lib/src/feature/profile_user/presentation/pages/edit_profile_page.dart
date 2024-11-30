@@ -108,31 +108,32 @@ class EditProfilePage extends StatefulWidget {
           SliverList(
             delegate: SliverChildListDelegate(
                 [
+                  SizedBox(height: 10,),
                   Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
-                        vertical: size.height * 0.025,
+                        vertical: size.height * 0.010,
                       ),
                       child: DataTextField(defaultName: doctor.firstName, contextRow: "Nombre",)
                   ),
                   Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
-                        vertical: size.height * 0.025,
+                        vertical: size.height * 0.010,
                       ),
                       child: DataTextField(defaultName: doctor.lastName, contextRow: "Apellido",)
                   ),
                   Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
-                        vertical: size.height * 0.025,
+                        vertical: size.height * 0.010,
                       ),
                       child: DataTextField(defaultName: doctor.dni.toString(), contextRow: "Cedula",)
                   ),
                   Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
-                        vertical: size.height * 0.025,
+                        vertical: size.height * 0.010,
                       ),
                       child: TextFormField(
                         //initialValue: doctor.birthday,
@@ -161,21 +162,21 @@ class EditProfilePage extends StatefulWidget {
                   Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
-                        vertical: size.height * 0.025,
+                        vertical: size.height * 0.010,
                       ),
                       child: TypeGenreDropdownField()
                   ),
                   Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
-                        vertical: size.height * 0.025,
+                        vertical: size.height * 0.010,
                       ),
                       child: const DataTextField(defaultName: 'Bacteriologo', contextRow: 'Especialidad')
                   ),
                   Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
-                        vertical: size.height * 0.025,
+                        vertical: size.height * 0.010,
                       ),
                       child: MaterialButton(
                           color: Theme.of(context).colorScheme.primary,
