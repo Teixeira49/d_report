@@ -24,9 +24,8 @@ class NewPatientPage extends StatelessWidget {
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.close), // Aquí cambiamos el icono a una X
+          icon: const Icon(Icons.close),
           onPressed: () {
-            // Acción al presionar el botón, por ejemplo, volver a la pantalla anterior
             Navigator.pop(context);
           },
         ),

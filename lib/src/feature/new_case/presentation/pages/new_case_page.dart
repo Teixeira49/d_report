@@ -1,4 +1,3 @@
-import 'package:d_report/src/feature/new_patient/presentation/widgets/blood_type_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
