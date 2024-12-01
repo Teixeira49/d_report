@@ -15,7 +15,7 @@ class FindPatientPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          caseDetails,
+          registerData + space + patient,
           style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
@@ -54,6 +54,7 @@ class FindPatientPage extends StatelessWidget {
                     ),
                     Expanded(
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
                               padding: EdgeInsets.symmetric(
@@ -83,9 +84,9 @@ class FindPatientPage extends StatelessWidget {
                           ],
                         )
                     ),
-                    const SizedBox(height: 25,),
                     Expanded(
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Container(
                               padding: EdgeInsets.symmetric(
