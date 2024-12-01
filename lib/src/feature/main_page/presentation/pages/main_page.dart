@@ -131,8 +131,8 @@ class MyMainPageState extends State<MainPage> {
                               dense: true,
                               tileColor: Colors.transparent,
                               onTap: () {
-                                print("Crear Caso - Paciente Existente");
                                 Navigator.pop(context);
+                                Navigator.of(context).pushNamed('/main/new-case/find-patient');
                               },
                             ),
                           )

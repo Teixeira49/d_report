@@ -56,6 +56,10 @@ abstract class AppTheme {
         bodyLarge: TextStyle(
             color: Color.fromRGBO(58, 58, 58, 1.0)
         ),
+        bodyMedium: TextStyle(
+            color: Color.fromRGBO(58, 58, 58, 1.0),
+            fontFamily: "gotham"
+        ),
         labelLarge: TextStyle(
           color: Color.fromRGBO(58, 58, 58, 1.0),
           fontFamily: "Lato"
@@ -210,6 +214,10 @@ abstract class AppTheme {
         ),
         bodyLarge: TextStyle(
           color: Color.fromRGBO(58, 58, 58, 1.0)
+        ),
+        bodyMedium: TextStyle(
+          color: Colors.white70,
+          fontFamily: "gotham"
         ),
         labelLarge: TextStyle(
           color: Colors.white70,
