@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
-import '../../../profile_user/presentation/widgets/date_field.dart';
 import '../widgets/data_textArea.dart';
 import '../widgets/data_textfield.dart';
+import '../widgets/entry_area_field.dart';
 import '../widgets/finish_button.dart';
 import '../widgets/floor_field.dart';
 
@@ -53,27 +53,26 @@ class NewCasePage extends StatelessWidget {
                       "Informacion del caso",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    CaseDataTextArea(contextRow: 'Nombre'),
                     Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
                         vertical: size.height * 0.010,
                       ),
-                      child: const CaseDataTextField(contextRow: 'Apelllido'),
+                      child: const CaseDataTextArea(contextRow: 'Sintomatologia'),
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
                         vertical: size.height * 0.010,
                       ),
-                      child: const CaseDataTextField(contextRow: 'CI Paciente'),
+                      child: const CaseDataTextArea(contextRow: 'Estado Fisico'),
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.075,
                         vertical: size.height * 0.010,
                       ),
-                      child: const DateTextField(),
+                      child: const CaseDataTextField(contextRow: 'Diagnostico Inicial'),
                     ),
                     Container(
                         padding: EdgeInsets.symmetric(
@@ -97,7 +96,7 @@ class NewCasePage extends StatelessWidget {
                         horizontal: size.width * 0.075,
                         vertical: size.height * 0.010,
                       ),
-                      child: const CaseDataTextField(contextRow: 'CI Representante'),
+                      child: const EntryAreaDropdownField(),
                     ),
                     const SizedBox(height: 25,),
                     Container(

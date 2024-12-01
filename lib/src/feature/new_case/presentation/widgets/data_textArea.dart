@@ -19,7 +19,7 @@ class CaseDataTextArea extends StatefulWidget {
     return TextFormField(
           style: Theme.of(context).textTheme.labelLarge,
           obscureText: obscureTextDefault,
-          maxLines: null,
+          maxLines: 4,
           keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
             fillColor: Theme.of(context).inputDecorationTheme.fillColor,
