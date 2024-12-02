@@ -98,48 +98,12 @@ class MyProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
-            Container(
-              //padding: EdgeInsets.symmetric(
-              //  horizontal: size.width * 0.075,
-              //  vertical: size.height * 0.025,
-              //),
-                child: CustomCardProfileRow(defaultKey: "Nombre", defaultValue: "${doctor.firstName} ${doctor.lastName}",)
-            ),
-            Container(
-              //padding: EdgeInsets.symmetric(
-              //  horizontal: size.width * 0.075,
-              //  vertical: size.height * 0.025,
-              //),
-                child: CustomCardProfileRow(defaultKey: "Cedula", defaultValue: "123124",)
-            ),
-            Container(
-              //padding: EdgeInsets.symmetric(
-              //  horizontal: size.width * 0.075,
-              //  vertical: size.height * 0.025,
-              //),
-                child: CustomCardProfileRow(defaultKey: "Cumpleaños", defaultValue: "25/20/1980",)
-            ),
-            Container(
-              //padding: EdgeInsets.symmetric(
-              //  horizontal: size.width * 0.075,
-              //  vertical: size.height * 0.025,
-              //),
-                child: CustomCardProfileRow(defaultKey: "Genero", defaultValue: "Hombre",)
-            ),
-            Container(
-              //padding: EdgeInsets.symmetric(
-              //  horizontal: size.width * 0.075,
-              //  vertical: size.height * 0.025,
-              //),
-                child: CustomCardProfileRow(defaultKey: "Especialidad", defaultValue: "Doctor - Bacteriologo",)
-            ),
-            Container(
-              //padding: EdgeInsets.symmetric(
-              //  horizontal: size.width * 0.075,
-              //  vertical: size.height * 0.025,
-              //),
-                child: CustomCardProfileRow(defaultKey: "ID Usuario", defaultValue: "12412",)
-            ),
+            CustomCardProfileRow(defaultKey: "Nombre", defaultValue: "${doctor.firstName} ${doctor.lastName}",),
+            CustomCardProfileRow(defaultKey: "Cedula", defaultValue: "123124",),
+            CustomCardProfileRow(defaultKey: "Cumpleaños", defaultValue: "25/20/1980",),
+            CustomCardProfileRow(defaultKey: "Genero", defaultValue: "Hombre",),
+            CustomCardProfileRow(defaultKey: "Especialidad", defaultValue: "Doctor - Bacteriologo",),
+            CustomCardProfileRow(defaultKey: "ID Usuario", defaultValue: "12412",),
           ],
         )
         ),

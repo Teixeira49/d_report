@@ -3,12 +3,12 @@ import 'dart:ui';
 import 'package:d_report/src/feature/main_page/domain/entities/patient.dart';
 import 'package:flutter/material.dart';
 
-class CaseTile extends StatelessWidget {
+class FollowTile extends StatelessWidget {
 
   final context;
-  final Patient dataPatient;
+  final String dataPatient;
 
-  const CaseTile(this.context, this.dataPatient, {super.key});
+  const FollowTile(this.context, this.dataPatient, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +20,11 @@ class CaseTile extends StatelessWidget {
       ),
       child: ListTile(
         title: Text(
-          dataPatient.getAllName(),
+          dataPatient,
           style: Theme.of(context).listTileTheme.titleTextStyle,
         ),
         subtitle: Text(
-          dataPatient.getMessage(),
+          dataPatient,
           style: Theme.of(context).listTileTheme.subtitleTextStyle,
         ),
         leading: const SizedBox(
@@ -32,9 +32,7 @@ class CaseTile extends StatelessWidget {
           width: 5,
         ),
         onTap: () {
-          Navigator.of(context).pushNamed('/main/patients/details/',
-              arguments: {"data":dataPatient}
-          );
+
         },
       ),
     )
