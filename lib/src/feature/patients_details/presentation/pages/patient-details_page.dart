@@ -23,7 +23,7 @@ class PatientDetailsPage extends StatelessWidget {
 
       appBar: AppBar(
         title: const Text("D_Project"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         centerTitle: true,
         automaticallyImplyLeading: true,
       ),

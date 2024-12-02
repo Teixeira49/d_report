@@ -19,22 +19,16 @@ class MyCustomCardProfileRowWidget extends State<CustomCardProfileRow> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: Card(
-        color: Colors.transparent,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25.5)
+      child: ListTile(
+        tileColor: Colors.transparent,
+        dense: false,
+        minLeadingWidth: 5,
+        leading: const SizedBox(
+          height: double.maxFinite,
+          width: 7,
         ),
-        child: ListTile(
-          tileColor: Colors.transparent,
-          dense: false,
-          minLeadingWidth: 5,
-          leading: const SizedBox(
-            height: double.maxFinite,
-            width: 7,
-          ),
-          title: Text(widget.defaultKey),
-          subtitle: Text(widget.defaultValue),
-        ),
+        title: Text(widget.defaultKey),
+        subtitle: Text(widget.defaultValue),
       )
     );
   }

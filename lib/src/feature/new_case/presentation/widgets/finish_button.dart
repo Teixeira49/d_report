@@ -14,13 +14,15 @@ class FinishRegisterCaseButton extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         color: Colors.transparent,
 
-        child: MaterialButton(
-          color: Theme.of(context).colorScheme.primary,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(22.0)),
-          focusColor: Theme.of(context).colorScheme.inversePrimary,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.tertiary,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(22.0)
+            ),
+          ),
           child: Text(
-              continueRegister,
+              "Guardar Paciente",
               style: Theme.of(context).textTheme.titleSmall
           ),
           onPressed: () {

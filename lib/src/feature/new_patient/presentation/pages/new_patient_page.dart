@@ -1,4 +1,5 @@
 import 'package:d_report/src/feature/new_patient/presentation/widgets/blood_type_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
@@ -53,61 +54,74 @@ class NewPatientPage extends StatelessWidget {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.075,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: const PatientDataTextField(contextRow: 'Nombre'),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.075,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: const PatientDataTextField(contextRow: 'Apelllido'),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.075,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: const PatientDataTextField(contextRow: 'CI Paciente'),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.075,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: const DateTextField(),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.075,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: const Row(
+                     Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(child: TypeGenreDropdownField()),
-                          SizedBox(width: 10,),
-                          Expanded(child: TypeBloodDropdownField())
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.075,
+                              vertical: size.height * 0.010,
+                            ),
+                            child: const PatientDataTextField(contextRow: 'Nombre'),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.075,
+                              vertical: size.height * 0.010,
+                            ),
+                            child: const PatientDataTextField(contextRow: 'Apelllido'),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.075,
+                              vertical: size.height * 0.010,
+                            ),
+                            child: const PatientDataTextField(contextRow: 'CI Paciente'),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.075,
+                              vertical: size.height * 0.010,
+                            ),
+                            child: const DateTextField(),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.075,
+                              vertical: size.height * 0.010,
+                            ),
+                            child: const Row(
+                              children: [
+                                Expanded(child: TypeGenreDropdownField()),
+                                SizedBox(width: 10,),
+                                Expanded(child: TypeBloodDropdownField())
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.075,
+                              vertical: size.height * 0.010,
+                            ),
+                            child: const PatientDataTextField(contextRow: 'CI Representante'),
+                          ),
                         ],
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.075,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: const PatientDataTextField(contextRow: 'CI Representante'),
-                    ),
                     const SizedBox(height: 25,),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: size.height * 0.010
-                      ),
-                      child: NextStateButton(),
+                    Flexible(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: size.height * 0.010
+                              ),
+                              child: NextStateButton(),
+                            )
+                          ],
+                        )
                     )
+
                   ],
               ),
             ),

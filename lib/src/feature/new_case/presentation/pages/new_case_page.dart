@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
+import 'package:flutter/widgets.dart';
 
 import '../widgets/data_textArea.dart';
 import '../widgets/data_textfield.dart';
@@ -37,72 +39,84 @@ class NewCasePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(height: 25,),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.010,
-                        vertical: size.width * 0.020,
-                      ),
-                      child: Text(
-                        "Porfavor complete la información del paciente",
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                    Text(
-                      "Informacion del caso",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.075,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: const CaseDataTextArea(contextRow: 'Sintomatologia'),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.075,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: const CaseDataTextArea(contextRow: 'Estado Fisico'),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.075,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: const CaseDataTextField(contextRow: 'Diagnostico Inicial'),
-                    ),
-                    Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.075,
-                          vertical: size.height * 0.010,
-                        ),
-                        child: Text(
-                            "Area De internacion del paciente",
+                    Expanded(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.010,
+                            vertical: size.width * 0.020,
+                          ),
+                          child: Text(
+                            "Porfavor complete la información del paciente",
                             style: Theme.of(context).textTheme.titleMedium,
+                          ),
                         ),
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.075,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: FloorMixedField()
-                      ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.075,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: const EntryAreaDropdownField(),
-                    ),
-                    const SizedBox(height: 25,),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: size.height * 0.010
-                      ),
-                      child: FinishRegisterCaseButton(),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Informacion del caso",
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.075,
+                                vertical: size.height * 0.010,
+                              ),
+                              child: const CaseDataTextArea(contextRow: 'Sintomatologia'),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.075,
+                                vertical: size.height * 0.010,
+                              ),
+                              child: const CaseDataTextArea(contextRow: 'Estado Fisico'),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.075,
+                                vertical: size.height * 0.010,
+                              ),
+                              child: const CaseDataTextField(contextRow: 'Diagnostico Inicial'),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.075,
+                                vertical: size.height * 0.010,
+                              ),
+                              child: Text(
+                                "Area De internacion del paciente",
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ),
+                            Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.075,
+                                  vertical: size.height * 0.010,
+                                ),
+                                child: FloorMixedField()
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.075,
+                                vertical: size.height * 0.010,
+                              ),
+                              child: const EntryAreaDropdownField(),
+                            ),
+                          ],),
+
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: size.height * 0.010
+                            ),
+                            child: const FinishRegisterCaseButton(),
+                          )
+                        ]
+                      )
                     )
                   ],
                 ),

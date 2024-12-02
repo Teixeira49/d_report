@@ -14,7 +14,7 @@ class NextStateButton extends StatelessWidget {
 
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.tertiary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(22.0)
             ),

@@ -18,10 +18,6 @@ class FloorMixedField extends StatelessWidget {
               fillColor: Theme.of(context).inputDecorationTheme.fillColor,
               filled: Theme.of(context).inputDecorationTheme.filled,
               border: Theme.of(context).inputDecorationTheme.border,
-              suffixIcon: Icon(
-                Icons.water_drop,
-                color: Theme.of(context).iconTheme.color,
-              ),
               labelText: floor,
               labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
               hintStyle: Theme.of(context).inputDecorationTheme.labelStyle

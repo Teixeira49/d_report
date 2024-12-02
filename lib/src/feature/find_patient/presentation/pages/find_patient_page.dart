@@ -72,14 +72,25 @@ class FindPatientPage extends StatelessWidget {
                                 horizontal: size.width * 0.075,
                                 vertical: size.height * 0.010,
                               ),
-                              child: const PatientDataTextField(contextRow: 'Sintomatologia'),
+                              child: const PatientDataTextField(contextRow: 'Doc. Identidad'),
                             ),
                             Container(
                               padding: EdgeInsets.symmetric(
                                 horizontal: size.width * 0.075,
                                 vertical: size.height * 0.010,
                               ),
-                              child: const PatientDataTextField(contextRow: 'Estado Fisico'),
+                              child: const PatientDataTextField(contextRow: 'Nombre Paciente'),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.075,
+                                vertical: size.height * 0.010,
+                              ),
+                              child: Text(
+                                "Solicite estos datos al paciente",
+                                textAlign: TextAlign.justify,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
                             ),
                           ],
                         )
@@ -92,7 +103,7 @@ class FindPatientPage extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   vertical: size.height * 0.010
                               ),
-                              child: NextStateButton(),
+                              child: const NextStateButton(),
                             )
                           ],
                         )

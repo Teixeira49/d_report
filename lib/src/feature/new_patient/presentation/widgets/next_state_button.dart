@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
-import '../../../../shared/domain/entities/user.dart';
-
 class NextStateButton extends StatelessWidget {
   const NextStateButton({super.key});
 
@@ -14,11 +12,13 @@ class NextStateButton extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         color: Colors.transparent,
 
-        child: MaterialButton(
-          color: Theme.of(context).colorScheme.primary,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(22.0)),
-          focusColor: Theme.of(context).colorScheme.inversePrimary,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.tertiary,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(22.0)
+            ),
+          ),
           child: Text(
               continueRegister,
               style: Theme.of(context).textTheme.titleSmall

@@ -80,7 +80,7 @@ class EditProfilePage extends StatefulWidget {
                 children: [
                   CircleAvatar(
                     radius: 50.0,
-                    backgroundColor: Theme.of(context).iconTheme.color,
+                    backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
                     child: Image.asset("assets/images/logo.png"),
                   ),
                   Positioned(

@@ -81,7 +81,7 @@ class MyProfilePageState extends State<ProfilePage> {
                       children: [
                         CircleAvatar(
                           radius: 65.0,
-                          backgroundColor: Theme.of(context).iconTheme.color,
+                          backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
                           child: Image.asset("assets/images/logo.png"),
                         ),
                       ]
@@ -93,7 +93,7 @@ class MyProfilePageState extends State<ProfilePage> {
                   ),
                   Text(
                     '${user.userEmail}',
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context).textTheme.titleSmall,
                   )
                 ],
               ),
