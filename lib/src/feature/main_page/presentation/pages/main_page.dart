@@ -1,11 +1,18 @@
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:d_report/src/feature/main_page/domain/entities/patient.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/drawer.dart';
 
+import '../../domain/entities/case_simple.dart';
+import '../../domain/use_cases/get_my_cases.dart';
+import '../cubit/my_cases/my_cases_cubit.dart';
+import '../cubit/my_cases/my_cases_state.dart';
+import '../widgets/case_tile_copy.dart';
 import '../widgets/current_case.dart';
 
 class MainPage extends StatefulWidget {
@@ -19,6 +26,28 @@ class MainPage extends StatefulWidget {
 class MyMainPageState extends State<MainPage> {
 
   int _currentPage = 0;
+
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    print('pepe');
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 100 &&
+        !context.read<MyCasesCubit>().isFetching) {
+      context.read<MyCasesCubit>().fetchCases(23); // TODO agregar al usuario
+    }
+  }
 
   @override
   Widget build(BuildContext context){
@@ -49,9 +78,12 @@ class MyMainPageState extends State<MainPage> {
 
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-    return Scaffold(
 
-      key: scaffoldKey,
+    return BlocProvider(
+      create: (_) => MyCasesCubit()..fetchCases(23), // TODO añadir id al user
+      child: Scaffold(
+
+        key: scaffoldKey,
 
         appBar: AppBar(
           title: Row(
@@ -83,21 +115,38 @@ class MyMainPageState extends State<MainPage> {
 
         drawer: NavigatorDrawer(user: user),
 
-        body: GestureDetector(
-          child: pages[_currentPage],
-          onHorizontalDragStart: (DragStartDetails details) {
-            if (details.globalPosition.dx < 100) {
-              scaffoldKey.currentState?.openDrawer();
-            }
-          },
+        body: Container(
+          padding: EdgeInsets.symmetric(
+            vertical: size.height * 0.005,
+            horizontal: size.width * 0.005
+          ),
+          child:
+            BlocBuilder<MyCasesCubit, MyCasesState>(
+                builder: (context, state) {
+                  return RefreshIndicator(
+                      onRefresh: () async {
+                        context.read<MyCasesCubit>().refreshCases(23); // TODO REPLACE
+                      },
+                    child: _buildCasesList(state),
+                  );
+                },
+            ),
         ),
+       // GestureDetector(
+       //   child: pages[_currentPage],
+       //   onHorizontalDragStart: (DragStartDetails details) {
+       //     if (details.globalPosition.dx < 100) {
+       //       scaffoldKey.currentState?.openDrawer();
+       //     }
+       //   },
+       // ),
 
         floatingActionButton: _currentPage == 0 && user.userRole == 'Doctor' ?
-          FloatingActionButton(
-            backgroundColor: ThemeData().floatingActionButtonTheme.backgroundColor,
-            child: const Icon(Icons.add),
-            onPressed: () {
-              showModalBottomSheet<void>(
+        FloatingActionButton(
+          backgroundColor: ThemeData().floatingActionButtonTheme.backgroundColor,
+          child: const Icon(Icons.add),
+          onPressed: () {
+            showModalBottomSheet<void>(
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 context: context,
                 builder: (BuildContext context) {
@@ -110,8 +159,8 @@ class MyMainPageState extends State<MainPage> {
                         children: [
                           Container(
                             padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.010,
-                          ),
+                              horizontal: size.width * 0.010,
+                            ),
                             child: ListTile(
                               title: Text('Crear Caso - Nuevo Paciente'),
                               dense: true,
@@ -123,9 +172,9 @@ class MyMainPageState extends State<MainPage> {
                             ),
                           ),
                           Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: size.width * 0.010,
-                              ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.010,
+                            ),
                             child: ListTile(
                               title: Text('Crear Caso - Paciente Existente'),
                               dense: true,
@@ -141,9 +190,9 @@ class MyMainPageState extends State<MainPage> {
                     ),
                   );
                 }
-              );
-            },
-          ) : Container(),
+            );
+          },
+        ) : Container(),
 
         // Change a widget in other file
         bottomNavigationBar: BottomNavigationBar(
@@ -165,21 +214,96 @@ class MyMainPageState extends State<MainPage> {
             ),*/
             BottomNavigationBarItem(
               icon: _currentPage == 1 ?
-                const Icon(Icons.other_houses_outlined) :
-                const Icon(Icons.other_houses),
+              const Icon(Icons.other_houses_outlined) :
+              const Icon(Icons.other_houses),
               label: 'Mis Casos',
             ),
             BottomNavigationBarItem(
               icon: _currentPage == 1 ?
-                const Icon(Icons.folder_copy) :
-                const Icon(Icons.folder_copy_outlined),
+              const Icon(Icons.folder_copy) :
+              const Icon(Icons.folder_copy_outlined),
               label: 'Buscar Caso',
             ),
-      ],
+          ],
 
+        ),
+
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
-
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     );
   }
+
+  Widget _buildCasesList(MyCasesState state){
+    if (state is MyCasesInitial){
+      return Center(child: CircularProgressIndicator( // TODO MAKE GLOBAL
+        color: Theme.of(context).colorScheme.primary,
+      ));
+    } else if (state is MyCasesLoaded) {
+      return GestureDetector(
+        onVerticalDragDown: (DragDownDetails details) {
+          if (details.globalPosition.dy < 50) {
+            print("AAAA");
+            context.read<MyCasesCubit>().fetchCases(23);
+          }
+        },
+        child: ListView.builder(
+            itemCount: state.cases.length,
+            itemBuilder: (context, index) => CaseTile(context, state.cases[index])
+        ),
+      );
+    } else if (state is MyCasesLoadedButEmpty) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            "assets/images/not_found_logo.png",
+          ),
+          Text(state.sms),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () async {
+              await context.read<MyCasesCubit>().fetchCases(23); // TODO YA TE LA SABES
+            },
+            child: const Text('Reintentar'),
+          ),
+        ],
+      );
+    }else if (state is MyCasesTimeout) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            "assets/images/not_found_logo.png",
+          ),
+          Text(state.sms),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () async {
+              await context.read<MyCasesCubit>().fetchCases(23); // TODO YA TE LA SABES
+            },
+            child: const Text('Reintentar'),
+          ),
+        ],
+      );
+    } else if (state is MyCasesFail) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            "assets/images/not_found_logo.png",
+          ),
+          Text(state.errorSMS, style: Theme.of(context).textTheme.headlineSmall,),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () async {
+              await context.read<MyCasesCubit>().fetchCases(23); // TODO YA TE LA SABES
+            },
+            child: const Text('Reintentar'),
+          ),
+        ],
+      );
+    } else {
+      return Container();
+    }
+    }
 }
