@@ -1,19 +1,16 @@
 
-import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 import 'package:d_report/src/feature/patients_details/data/datasource/remote/follow_case_remote_data_source.dart';
 import 'package:d_report/src/feature/patients_details/data/repository/follow_case_repository.dart';
 import 'package:d_report/src/feature/patients_details/presentation/cubit/follow_report/follow_report_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../main_page/domain/entities/patient.dart';
 import '../../data/datasource/remote/all_case_remote_data_source.dart';
 import '../../data/repository/patient_repository.dart';
 import '../cubit/follow_report/follow_report_cubit.dart';
 import '../cubit/patient_data/patient_data_cubit.dart';
 import '../cubit/patient_data/patient_data_state.dart';
 import '../widgets/card_patient_data.dart';
-import '../../../patient_case_follow_details/presentation/widgets/card_patient_summary.dart';
 import '../widgets/follow_tile.dart';
 import '../widgets/header_details.dart';
 
@@ -29,10 +26,10 @@ class PatientDetailsPage extends StatelessWidget {
     //final size = MediaQuery.of(context).size;
     //double sizeIcon = size.shortestSide * 0.50;
 
-    dynamic mainData = ModalRoute.of(context)?.settings.arguments; // TODO Refactor Rename
+    dynamic arguments = ModalRoute.of(context)?.settings.arguments; // TODO Refactor Rename
     //List<String> pepe = ['pepe', 'e'];
-    int caseId = mainData['casKey'];
-    String patName = mainData['patFullName'];
+    int caseId = arguments['casKey'];
+    String patFullName = arguments['patFullName'];
 
     final size = MediaQuery.of(context).size;
 
@@ -47,7 +44,9 @@ class PatientDetailsPage extends StatelessWidget {
         BlocProvider(create: (_) => PatientDataCubit(patientRepositoryImpl: patRepository)..fetchCaseDetails(caseId)),
         BlocProvider(create: (_) => FollowReportCubit(followRepositoryImpl: cafRepository)..fetchFollowCaseDetails(caseId)),
       ],
-      child: Scaffold(
+      child: DefaultTabController(
+          length: 3,
+          child: Scaffold(
 
         appBar: AppBar(
           title: const Text("Detalles del Caso"),
@@ -55,9 +54,7 @@ class PatientDetailsPage extends StatelessWidget {
           centerTitle: true,
           automaticallyImplyLeading: true,
         ),
-        body: DefaultTabController(
-          length: 3,
-          child: NestedScrollView(
+        body: NestedScrollView(
               headerSliverBuilder: (context, _) {
                 return  [
                   SliverList(delegate:  SliverChildListDelegate([
@@ -168,7 +165,7 @@ class PatientDetailsPage extends StatelessWidget {
                               )*/
                           ),
                           SingleChildScrollView(
-                              child: FollowInfo(patName),
+                              child: FollowInfo(patFullName),
                               /*Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
@@ -198,9 +195,32 @@ class PatientDetailsPage extends StatelessWidget {
                   )
                 ],
               )
-          ),
+            ),
+            floatingActionButton: _FloatingActionButtonForTab(),
+          )
         ),
-      ),
+    );
+  }
+}
+
+class _FloatingActionButtonForTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final TabController tabController = DefaultTabController.of(context)!;
+
+    return AnimatedBuilder(
+      animation: tabController,
+      builder: (context, child) {
+        return Visibility(
+          visible: tabController.index == 2,
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed('/main/patients/details/create-follow-case');
+            },
+            child: const Icon(Icons.add),
+          ),
+        );
+      },
     );
   }
 }
