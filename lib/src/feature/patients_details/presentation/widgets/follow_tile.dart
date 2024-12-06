@@ -1,14 +1,15 @@
 import 'dart:ui';
 
 import 'package:d_report/src/feature/main_page/domain/entities/patient.dart';
+import 'package:d_report/src/feature/patients_details/domain/entities/follows_in_case.dart';
 import 'package:flutter/material.dart';
 
 class FollowTile extends StatelessWidget {
 
   final context;
-  final String dataPatient;
+  final FollowCase followData;
 
-  const FollowTile(this.context, this.dataPatient, {super.key});
+  const FollowTile(this.context, this.followData, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +21,11 @@ class FollowTile extends StatelessWidget {
       ),
       child: ListTile(
         title: Text(
-          dataPatient,
+          followData.cafReportTitle.toString(),
           style: Theme.of(context).listTileTheme.titleTextStyle,
         ),
         subtitle: Text(
-          dataPatient,
+          followData.cafReportDate,
           style: Theme.of(context).listTileTheme.subtitleTextStyle,
         ),
         leading: const SizedBox(
@@ -32,7 +33,10 @@ class FollowTile extends StatelessWidget {
           width: 5,
         ),
         onTap: () {
-
+          Navigator.of(context).pushNamed(
+            '/main/patients/details/follow-case',
+            arguments: { "cafId" : followData.cafId }
+          );
         },
       ),
     )

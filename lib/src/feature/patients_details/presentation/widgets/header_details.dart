@@ -1,21 +1,33 @@
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HeaderDetails extends StatelessWidget {
 
   final context;
   final Size size;
   final String namePatient;
-  final int agePatient;
-  final String typeCase;
+  final String agePatient;
+  final String? status;
 
-  const HeaderDetails(this.context, this.size, this.namePatient, this.agePatient, this.typeCase, {super.key});
+  const HeaderDetails(this.context, this.size, this.namePatient, this.agePatient, this.status, {super.key});
 
   @override
   Widget build(BuildContext context) {
 
-    var status = true;
-    var p = status ? 'Active' : 'Close';
+    var temp = agePatient.split('T')[0];
+    DateFormat time = DateFormat("yyyy-MM-dd");
+    DateTime birthdayTemp = time.parse(temp);
+    DateTime nowTemp = DateTime.now();
+
+    var age = nowTemp.year - birthdayTemp.year;
+    if(nowTemp.month - birthdayTemp.month <= 0 ||
+        (nowTemp.month - birthdayTemp.month == 0 &&
+            nowTemp.day - birthdayTemp.day < 0)){
+      age--;
+    }
+
+    var caseStatus = status ?? "Activo";
 
     return Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -27,9 +39,8 @@ class HeaderDetails extends StatelessWidget {
                 horizontal: size.width * 0.05,
               ),
               child: Text('''Name: $namePatient
-Age: $agePatient
-Type Case: $typeCase
-Status: $p''', textAlign: TextAlign.left, style: Theme.of(context).textTheme.bodyMedium,),
+Age: $age
+Status: $caseStatus''', textAlign: TextAlign.left, style: Theme.of(context).textTheme.bodyMedium,),
             )
           ]
     );

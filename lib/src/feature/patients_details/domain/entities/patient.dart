@@ -3,29 +3,26 @@ class Patient{
 
   Patient(
     {
-      required this.id,
-      required this.name,
-      required this.lastname,
-      required this.age,
-      required this.codHab
+      required this.patId,
+      required this.patName,
+      required this.patLastname,
+      required this.patDni,
+      required this.patGender,
+      required this.patBirthdayDate,
+      required this.patBirthdayPlace,
+      required this.patGuardianDni,
+      required this.patBloodType,
+
     }
   );
 
-  int id;
-  String name;
-  String lastname;
-  int age;
-  String codHab;
-
-  String getMessage(){
-    return 'Age: $age\nHabitation: $codHab';
-  }
-
-  String getAllName(){
-    return '$name $lastname';
-  }
-
-  int getAge(){
-    return age;
-  }
+  int patId;
+  String patName;
+  String patLastname;
+  int patDni;
+  String patGender;
+  String patBirthdayDate;
+  String patBirthdayPlace;
+  int patGuardianDni;
+  String patBloodType;
 }
