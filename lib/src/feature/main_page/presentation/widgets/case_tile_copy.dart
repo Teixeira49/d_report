@@ -34,7 +34,7 @@ class CaseTile extends StatelessWidget {
         ),
         onTap: () {
           Navigator.of(context).pushNamed('/main/patients/details/',
-              arguments: {"casKey":int.parse(dataPatientRow.casId)}
+              arguments: {"casKey":int.parse(dataPatientRow.casId), 'patFullName': dataPatientRow.patName}
           );
         },
       ),

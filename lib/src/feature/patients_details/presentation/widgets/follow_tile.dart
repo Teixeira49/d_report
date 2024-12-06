@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 class FollowTile extends StatelessWidget {
 
   final context;
+  final String patFullName;
   final FollowCase followData;
 
-  const FollowTile(this.context, this.followData, {super.key});
+  const FollowTile(this.context, this.followData, this.patFullName, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class FollowTile extends StatelessWidget {
         onTap: () {
           Navigator.of(context).pushNamed(
             '/main/patients/details/follow-case',
-            arguments: { "cafId" : followData.cafId }
+            arguments: { "cafId" : followData.cafId, 'patFullName': patFullName }
           );
         },
       ),

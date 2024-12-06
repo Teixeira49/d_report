@@ -17,6 +17,7 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
 
     final cafId = argument['cafId'];
+    final patFullName = argument['patFullName'];
 
     final cafDetailedRemoteDataSource = FollowCaseDetailsRemoteDataSourceImpl();
     final followDetailedRepositoryImpl = FollowDetailedRepositoryImpl(cafDetailedRemoteDataSource);
@@ -27,8 +28,8 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
           appBar: AppBar(
             title: Row(children: [
               const Spacer(),
-              const Text("Seguimiento "),
-              const Spacer(),
+              //const Text("Seguimiento "),
+              //const Spacer(),
               IconButton(
                 icon: const Icon(Icons.edit),
                 onPressed: () {
@@ -45,24 +46,17 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
             automaticallyImplyLeading: true,
           ),
           body: SingleChildScrollView(
-                child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: size.height * 0.25,
-                    ),
-                    child: IntrinsicHeight(
-                        child: BlocBuilder<FollowDetailedReportCubit, FollowDetailedReportState>(
+                child: BlocBuilder<FollowDetailedReportCubit, FollowDetailedReportState>(
                           builder: (context, state) {
-                            return _buildDetailRows(context, cafId, state);
+                            return _buildDetailRows(context, cafId, patFullName, state);
                           }
-                      )
-                ),
               )
           )
       ),
     );
   }
 
-  Widget _buildDetailRows(context, cafId, FollowDetailedReportState state){
+  Widget _buildDetailRows(context, cafId, patFullName, FollowDetailedReportState state){
     if (state is FollowDetailedCaseInitial) {
       return Center(child: CircularProgressIndicator( // TODO MAKE GLOBAL
         color: Theme.of(context).colorScheme.primary,
@@ -71,13 +65,21 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(state.followDetailedCase.cafReportTitle, style: Theme.of(context).textTheme.titleLarge,),
-          SizedBox(height: 10,),
-          CustomCardResumeRow(widgetKey: "Reporte Emitido",
-            widgetValue: state.followDetailedCase.cafReportDate == state.followDetailedCase.cafReportUpdateTime ?
-            state.followDetailedCase.cafReportDate : '${state.followDetailedCase.cafReportDate} (Actualizado: ${state.followDetailedCase.cafReportUpdateTime})',),
-          CustomCardResumeRow(widgetKey: "Autor del Reporte", widgetValue: '${state.followDetailedCase.docFullName} (${state.followDetailedCase.docSpecialty})',),
-          CustomCardResumeRow(widgetKey: "Informacion", widgetValue: state.followDetailedCase.cafReportInfo,),
+          const SizedBox(height: 20,),
+          Text(state.followDetailedCase.cafReportTitle, style: Theme.of(context).textTheme.headlineSmall,),
+          ListView(
+            shrinkWrap: true,
+            children: [
+              const Divider(indent: 20.4, endIndent: 20.4, color: Colors.black,),
+              CustomCardResumeRow(widgetKey: "Paciente", widgetValue: patFullName,),
+              CustomCardResumeRow(widgetKey: "Reporte Emitido",
+                widgetValue: state.followDetailedCase.cafReportDate == state.followDetailedCase.cafReportUpdateTime ?
+                state.followDetailedCase.cafReportDate : '${state.followDetailedCase.cafReportDate} (Actualizado: ${state.followDetailedCase.cafReportUpdateTime})',),
+              CustomCardResumeRow(widgetKey: "Autor del Reporte", widgetValue: '${state.followDetailedCase.docFullName} (${state.followDetailedCase.docSpecialty})',),
+              const Divider(indent: 20.4, endIndent: 20.4, color: Colors.black,),
+              CustomCardResumeRow(widgetKey: "Informacion del Seguimiento", widgetValue: state.followDetailedCase.cafReportInfo,),
+            ],
+          )
         ],
       );
     } else if (state is FollowDetailedCaseFail) {

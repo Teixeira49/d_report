@@ -1,4 +1,5 @@
 
+import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 import 'package:d_report/src/feature/patients_details/data/datasource/remote/follow_case_remote_data_source.dart';
 import 'package:d_report/src/feature/patients_details/data/repository/follow_case_repository.dart';
 import 'package:d_report/src/feature/patients_details/presentation/cubit/follow_report/follow_report_state.dart';
@@ -28,9 +29,10 @@ class PatientDetailsPage extends StatelessWidget {
     //final size = MediaQuery.of(context).size;
     //double sizeIcon = size.shortestSide * 0.50;
 
-    dynamic mainData = ModalRoute.of(context)?.settings.arguments;
-    List<String> pepe = ['pepe', 'e'];
+    dynamic mainData = ModalRoute.of(context)?.settings.arguments; // TODO Refactor Rename
+    //List<String> pepe = ['pepe', 'e'];
     int caseId = mainData['casKey'];
+    String patName = mainData['patFullName'];
 
     final size = MediaQuery.of(context).size;
 
@@ -166,7 +168,7 @@ class PatientDetailsPage extends StatelessWidget {
                               )*/
                           ),
                           SingleChildScrollView(
-                              child: FollowInfo(),
+                              child: FollowInfo(patName),
                               /*Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
@@ -205,7 +207,9 @@ class PatientDetailsPage extends StatelessWidget {
 
 class FollowInfo extends StatelessWidget {
 
-  const FollowInfo({super.key});
+  const FollowInfo(this.patName, {super.key});
+
+  final String patName;
 
   @override
   Widget build(BuildContext context) {
@@ -220,7 +224,7 @@ class FollowInfo extends StatelessWidget {
               itemCount: state.followCase.length,
               shrinkWrap: true,
               itemBuilder: (
-                (context, index) => FollowTile(context, state.followCase[index])
+                (context, index) => FollowTile(context, state.followCase[index], patName)
               ),
             );
           } else if (state is FollowCaseLoadedButEmpty) {
