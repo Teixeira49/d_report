@@ -6,6 +6,7 @@ import 'package:d_report/src/feature/main_page/presentation/pages/main_page.dart
 import 'package:d_report/src/feature/new_case/presentation/pages/new_case_page.dart';
 import 'package:d_report/src/feature/new_patient/presentation/pages/new_patient_page.dart';
 import 'package:d_report/src/feature/not_found/presentation/pages/not-found_page.dart';
+import 'package:d_report/src/feature/patient_case_follow_details/presentation/pages/patient_case_follow_details_page.dart';
 import 'package:d_report/src/feature/patients_details/presentation/pages/patient-details_page.dart';
 import 'package:d_report/src/feature/profile_user/presentation/pages/edit_profile_page.dart';
 import 'package:d_report/src/feature/profile_user/presentation/pages/profile_page.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/auth/register/': (context) => const RegisterPage(),
         '/main/patients/': (context) => const MainPage(),
         '/main/patients/details/': (context) => const PatientDetailsPage(),
+        '/main/patients/details/follow-case': (context) => const PatientFollowCaseDetailsPage(),
         '/main/profile/': (context) => const ProfilePage(),
         '/main/profile/edit-row': (context) => const EditProfilePage(dataField: 'pepe',),
         '/main/config/': (context) => const NotFoundPage(),
