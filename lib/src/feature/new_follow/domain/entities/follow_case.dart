@@ -3,7 +3,7 @@ class FollowCase{
 
   FollowCase(
       {
-        required this.cafId,
+        required this.casId,
         required this.cafReportType,
         required this.cafReportInfo,
         required this.docId,
@@ -11,7 +11,7 @@ class FollowCase{
       }
       );
 
-  int cafId;
+  int casId;
   String cafReportType;
   String cafReportInfo;
   int docId;

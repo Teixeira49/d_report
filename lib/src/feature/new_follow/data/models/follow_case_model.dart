@@ -6,7 +6,7 @@ import '../../domain/entities/follow_case.dart';
 class FollowModel extends FollowCase {
 
   FollowModel({
-    required  super .cafId,
+    required  super .casId,
     required  super .cafReportType,
     required  super .cafReportInfo,
     required  super .docId,
@@ -16,7 +16,7 @@ class FollowModel extends FollowCase {
   factory FollowModel.fromJson(json) {
     return FollowModel(
       cafReportType: json['cafReportType'],
-      cafId: json['cafId'],
+      casId: json['casId'],
       cafReportInfo: json['cafReportDate'],
       docId: json['docId'],
       cafReportTitle: json['cafReportTitle'],
@@ -25,7 +25,7 @@ class FollowModel extends FollowCase {
 
   Map<String, dynamic> toJson() {
     return {
-      'cafId': cafId,
+      'casId': casId,
       'cafReportType': cafReportType,
       'cafReportInfo': cafReportInfo,
       'docId': docId,
@@ -33,9 +33,19 @@ class FollowModel extends FollowCase {
     };
   }
 
+  factory FollowModel.fromBodyJson(json) {
+    return FollowModel(
+      casId: json['casId'],
+      cafReportType: "Text",
+      cafReportInfo: json['info'],
+      docId: json['docId'],
+      cafReportTitle: json['title'],
+    );
+  }
+
   factory FollowModel.fromEntity(FollowCase followCase) {
     return FollowModel(
-      cafId: followCase.cafId,
+      casId: followCase.casId,
       cafReportType: followCase.cafReportType,
       cafReportInfo: followCase.cafReportInfo,
       docId: followCase.docId,

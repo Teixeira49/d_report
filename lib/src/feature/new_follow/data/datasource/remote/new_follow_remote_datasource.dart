@@ -2,11 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
 
 import '../../../domain/entities/follow_case.dart';
+import '../../models/follow_case_model.dart';
 
 
 
 abstract class FollowCaseRemoteDataSource {
-  Future<FollowCase> postCaseFollowsByCase(int cafId, String accessToken);
+  Future<FollowCase> postCaseFollowsByCase(Map<String, dynamic> data, String accessToken);
 }
 
 
@@ -19,7 +20,7 @@ class FollowCaseDataSourceImpl implements FollowCaseRemoteDataSource{
   final Dio dio = Dio();
 
   @override
-  Future<FollowCase> postCaseFollowsByCase(int cafId, String accessToken) async {
+  Future<FollowCase> postCaseFollowsByCase(Map<String, dynamic> data, String accessToken) async {
 
     if(!_isFetching) {
       _isFetching = true;
@@ -27,6 +28,8 @@ class FollowCaseDataSourceImpl implements FollowCaseRemoteDataSource{
 
     const r = RetryOptions(maxAttempts: 3);
 
+    print('AAA');
+    print(FollowModel.fromBodyJson(data).toJson());
 
     final resp = await r.retry(() => dio.post(
       'http://192.168.30.196:9004/api/cases/operations/follows/add', // TODO Create a Global with route
@@ -37,20 +40,13 @@ class FollowCaseDataSourceImpl implements FollowCaseRemoteDataSource{
           'Authorization': 'Bearer $accessToken',
         },
       ),
-      data: {
-
-      }
+      data: FollowModel.fromBodyJson(data).toJson()
     ));
 
     print('KONO DIO DAA');
     print(resp.data);
 
 
-    return FollowDetailedModel.fromJson(resp.data);
-  }
-
-  Future<void> refreshGetCaseFollowsByCase(cafId, accessToken) async {
-    //emit(MyCasesInitial());
-    await postCaseFollowsByCase(cafId, accessToken);
+    return FollowModel.fromJson(resp.data);
   }
 }
