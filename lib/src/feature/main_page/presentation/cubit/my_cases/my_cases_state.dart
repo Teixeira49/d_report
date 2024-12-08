@@ -7,6 +7,9 @@ abstract class MyCasesState {
 
 class MyCasesInitial extends MyCasesState {}
 
+class MyCasesLoading extends MyCasesState {
+}
+
 class MyCasesLoaded extends MyCasesState {
   final List<CaseSimple> cases;
   MyCasesLoaded({required this.cases});

@@ -6,7 +6,7 @@ import '../entities/case_simple.dart';
 
 abstract class MyCasesRepository {
 
-  Future<Either<Failure, List<CaseSimple>>> getMyCasesById(int docId);
+  Future<Either<Failure, List<CaseSimple>>> getMyCasesById(int docId, String accessToken);
 
   Future<Either<Failure, bool>> saveLocalMyCase(Page<CaseSimple> caseSimple);
 

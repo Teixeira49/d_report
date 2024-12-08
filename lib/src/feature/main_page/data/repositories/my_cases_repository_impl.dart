@@ -1,5 +1,5 @@
 import 'package:d_report/src/core/network/error/failures.dart';
-import 'package:d_report/src/feature/main_page/data/datasources/my_cases_remote_data_sources.dart';
+import 'package:d_report/src/feature/main_page/data/datasources/remote/my_cases_remote_data_sources.dart';
 
 import 'package:d_report/src/feature/main_page/domain/entities/case_simple.dart';
 
@@ -21,12 +21,12 @@ class MyCasesRepositoryImpl implements MyCasesRepository {
   });
 
   @override
-  Future<Either<Failure, List<CaseSimple>>> getMyCasesById(int docId) async {
+  Future<Either<Failure, List<CaseSimple>>> getMyCasesById(int docId, String accessToken) async {
     try {
-      final List<CaseSimple> resp = await myCasesRemoteDataSource.getMyCases(docId);
+      final List<CaseSimple> resp = await myCasesRemoteDataSource.getMyCases(docId, accessToken);
       return Right(resp);
     } on DioException {
-      return Left(ServerFailure());
+      return Left(ServerFailure("Fallo en conexion al servidor"));
     }
   }
 

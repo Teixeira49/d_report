@@ -1,33 +1,52 @@
 import 'package:bloc/bloc.dart';
 import 'package:d_report/src/feature/main_page/domain/entities/case_simple.dart';
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
 
 
 import '../../../data/models/my_case_model.dart';
+import '../../../domain/repositories/my_cases_repository.dart';
 import 'my_cases_state.dart';
 
 class MyCasesCubit extends Cubit<MyCasesState>{
 
-  MyCasesCubit() : super(MyCasesInitial());
-
-  final String accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYXZpZXJ0eHJAZ21haWwuY29tIiwicm9sZXMiOiJET0NUT1IiLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4zMC4xOTY6OTAwMS9hcGkvYXV0aC9sb2dpbi9zaWduaW4iLCJleHAiOjE3MzM0NDM5ODN9.SbkUtS9LqI8fKUUUFQt0CCkaqgnD0oeHhidlPCe9NqA";
+  MyCasesCubit(this._myCasesRepository) : super(MyCasesInitial());
+/*
+  final String accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYXZpZXJ0eHJAZ21haWwuY29tIiwicm9sZXMiOiJET0NUT1IiLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4zMC4xOTY6OTAwMS9hcGkvYXV0aC9sb2dpbi9zaWduaW4iLCJleHAiOjE3MzM2MTQzOTZ9.81MvIEuf4JyqBUWBxtba0eOPEboKguA8X18FzlrYUMY";
   int _page = 1;
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
 
   final Dio dio = Dio();
+*/
 
-  Future<void> fetchCases(int docId) async {
+  final MyCasesRepository _myCasesRepository;
 
-    if(_isFetching) return;
-    _isFetching = true;
+  Future<void> fetchCases(int docId, String accessToken) async {
 
-    const r = RetryOptions(maxAttempts: 3);
+    //if(_isFetching) return;
+    //_isFetching = true;
+
+    //const r = RetryOptions(maxAttempts: 3);
 
     try {
-      final resp = await r.retry(
+      emit(MyCasesLoading());
+
+      final cases = await _myCasesRepository.getMyCasesById(docId, accessToken);
+      print("Pinocho");
+
+      List<CaseSimple> finalList = cases.getOrElse(() => []);
+
+      if (finalList.isNotEmpty) {
+        emit(MyCasesLoaded(cases: finalList));
+      } else {
+        emit(MyCasesLoadedButEmpty(
+            sms: "Parece que no tienes casos pendientes"));
+      }
+
+      /*final resp = await r.retry(
         () => dio.get(
           'http://192.168.30.196:9004/api/cases/my-cases/$docId/',
           options: Options(
@@ -64,20 +83,20 @@ class MyCasesCubit extends Cubit<MyCasesState>{
       _page++;
 
       print(_page);
-
+*/
     }catch(e){
       print('Error: $e');
       emit(MyCasesFail(errorSMS: "Error cargando los datos"));
-    }finally{
-      _isFetching = false;
-    }
+    }//finally{
+     // _isFetching = false;
+    //}
 
 
   }
-  Future<void> refreshCases(docId) async {
-    _page = 1;
+  Future<void> refreshCases(docId, accessToken) async {
+  //  _page = 1;
     //emit(MyCasesInitial());
-    await fetchCases(docId);
+    await fetchCases(docId, accessToken);
   }
 
 }

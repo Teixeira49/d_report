@@ -1,15 +1,15 @@
-import 'package:d_report/src/core/utils/constants/fields_constants.dart';
-
+import 'package:d_report/src/shared/domain/entities/auth_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:d_report/src/feature/main_page/domain/entities/patient.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../shared/domain/entities/roles.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/drawer.dart';
 
-import '../../domain/entities/case_simple.dart';
-import '../../domain/use_cases/get_my_cases.dart';
+import '../../data/datasources/remote/my_cases_remote_data_sources.dart';
+import '../../data/repositories/my_cases_repository_impl.dart';
 import '../cubit/my_cases/my_cases_cubit.dart';
 import '../cubit/my_cases/my_cases_state.dart';
 import '../widgets/case_tile_copy.dart';
@@ -43,17 +43,23 @@ class MyMainPageState extends State<MainPage> {
 
   void _onScroll() {
     print('pepe');
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 100 &&
-        !context.read<MyCasesCubit>().isFetching) {
-      context.read<MyCasesCubit>().fetchCases(23); // TODO agregar al usuario
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent
+        /*!context.read<MyCasesCubit>().si*/) {
+      //context.read<MyCasesCubit>().fetchCases();
+      print("Scroll");
     }
   }
 
   @override
   Widget build(BuildContext context){
 
+    final remoteDataSource = MyCasesRemoteDataSourceImpl();
+    final repository = MyCasesRepositoryImpl(myCasesRemoteDataSource: remoteDataSource);
+
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
+
     User user = argument["userData"];
+    AuthUser authUser = argument["AuthCredentials"];
 
     final size = MediaQuery.of(context).size;
 
@@ -80,7 +86,7 @@ class MyMainPageState extends State<MainPage> {
 
 
     return BlocProvider(
-      create: (_) => MyCasesCubit()..fetchCases(23), // TODO añadir id al user
+      create: (_) => MyCasesCubit(repository)..fetchCases(user.userProfileId, authUser.accessToken),
       child: Scaffold(
 
         key: scaffoldKey,
@@ -98,7 +104,7 @@ class MyMainPageState extends State<MainPage> {
                 },
               ),
               const SizedBox(width: 12),
-              Text(user.userRole),
+              Text(UserRole.values[authUser.roleId].name),
               const Spacer(),
               IconButton(
                   onPressed: () {
@@ -113,7 +119,7 @@ class MyMainPageState extends State<MainPage> {
 
         ),
 
-        drawer: NavigatorDrawer(user: user),
+        drawer: NavigatorDrawer(user: user, authUser: authUser),
 
         body: Container(
           padding: EdgeInsets.symmetric(
@@ -125,7 +131,7 @@ class MyMainPageState extends State<MainPage> {
                 builder: (context, state) {
                   return RefreshIndicator(
                       onRefresh: () async {
-                        context.read<MyCasesCubit>().refreshCases(23); // TODO REPLACE
+                        context.read<MyCasesCubit>().refreshCases(user.userProfileId, authUser.accessToken);
                       },
                     child: _buildCasesList(state),
                   );
@@ -141,58 +147,60 @@ class MyMainPageState extends State<MainPage> {
        //   },
        // ),
 
-        floatingActionButton: _currentPage == 0 && user.userRole == 'Doctor' ?
-        FloatingActionButton(
-          backgroundColor: ThemeData().floatingActionButtonTheme.backgroundColor,
-          child: const Icon(Icons.add),
-          onPressed: () {
-            showModalBottomSheet<void>(
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    height: 110,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.010,
+        floatingActionButton: Visibility(
+          visible: ((_currentPage == 0) && (authUser.roleId == UserRole.DOCTOR.index)),
+          child: FloatingActionButton(
+            backgroundColor: ThemeData().floatingActionButtonTheme.backgroundColor,
+            child: const Icon(Icons.add),
+            onPressed: () {
+              showModalBottomSheet<void>(
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 110,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.010,
+                              ),
+                              child: ListTile(
+                                title: Text('Crear Caso - Nuevo Paciente'),
+                                dense: true,
+                                tileColor: Colors.transparent,
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.of(context).pushNamed('/main/new-case/new-patient');
+                                },
+                              ),
                             ),
-                            child: ListTile(
-                              title: Text('Crear Caso - Nuevo Paciente'),
-                              dense: true,
-                              tileColor: Colors.transparent,
-                              onTap: () {
-                                Navigator.pop(context);
-                                Navigator.of(context).pushNamed('/main/new-case/new-patient');
-                              },
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.010,
-                            ),
-                            child: ListTile(
-                              title: Text('Crear Caso - Paciente Existente'),
-                              dense: true,
-                              tileColor: Colors.transparent,
-                              onTap: () {
-                                Navigator.pop(context);
-                                Navigator.of(context).pushNamed('/main/new-case/find-patient');
-                              },
-                            ),
-                          )
-                        ],
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.010,
+                              ),
+                              child: ListTile(
+                                title: Text('Crear Caso - Paciente Existente'),
+                                dense: true,
+                                tileColor: Colors.transparent,
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.of(context).pushNamed('/main/new-case/find-patient');
+                                },
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                }
-            );
-          },
-        ) : Container(),
+                    );
+                  }
+              );
+            },
+          ),
+        ),
 
         // Change a widget in other file
         bottomNavigationBar: BottomNavigationBar(
@@ -234,6 +242,12 @@ class MyMainPageState extends State<MainPage> {
   }
 
   Widget _buildCasesList(MyCasesState state){
+
+    final argument = ModalRoute.of(context)!.settings.arguments as Map;
+
+    User user = argument["userData"];
+    AuthUser authUser = argument["AuthCredentials"];
+
     if (state is MyCasesInitial){
       return Center(child: CircularProgressIndicator( // TODO MAKE GLOBAL
         color: Theme.of(context).colorScheme.primary,
@@ -243,12 +257,12 @@ class MyMainPageState extends State<MainPage> {
         onVerticalDragDown: (DragDownDetails details) {
           if (details.globalPosition.dy < 50) {
             print("AAAA");
-            context.read<MyCasesCubit>().fetchCases(23);
+            context.read<MyCasesCubit>().fetchCases(user.userProfileId, authUser.accessToken);
           }
         },
         child: ListView.builder(
             itemCount: state.cases.length,
-            itemBuilder: (context, index) => CaseTile(context, state.cases[index])
+            itemBuilder: (context, index) => CaseTile(context, state.cases[index], authUser)
         ),
       );
     } else if (state is MyCasesLoadedButEmpty) {
@@ -262,7 +276,7 @@ class MyMainPageState extends State<MainPage> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
-              await context.read<MyCasesCubit>().fetchCases(23); // TODO YA TE LA SABES
+              await context.read<MyCasesCubit>().fetchCases(user.userProfileId, authUser.accessToken);
             },
             child: const Text('Reintentar'),
           ),
@@ -279,7 +293,7 @@ class MyMainPageState extends State<MainPage> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
-              await context.read<MyCasesCubit>().fetchCases(23); // TODO YA TE LA SABES
+              await context.read<MyCasesCubit>().fetchCases(user.userProfileId, authUser.accessToken);
             },
             child: const Text('Reintentar'),
           ),
@@ -296,7 +310,7 @@ class MyMainPageState extends State<MainPage> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
-              await context.read<MyCasesCubit>().fetchCases(23); // TODO YA TE LA SABES
+              await context.read<MyCasesCubit>().fetchCases(user.userProfileId, authUser.accessToken);
             },
             child: const Text('Reintentar'),
           ),

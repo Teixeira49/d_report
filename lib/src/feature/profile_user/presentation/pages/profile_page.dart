@@ -4,6 +4,7 @@ import 'package:d_report/src/feature/main_page/domain/entities/patient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/drawer.dart';
 import '../../domain/entities/doctor.dart';
@@ -25,6 +26,7 @@ class MyProfilePageState extends State<ProfilePage> {
 
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
     User user = argument["userData"];
+    AuthUser authUser = argument["AuthCredentials"];
 
     Doctor doctor = Doctor(id: 1, firstName: "pepe",
         lastName: "Gonzales", dni: 123124,
@@ -50,7 +52,7 @@ class MyProfilePageState extends State<ProfilePage> {
               icon: const Icon(Icons.edit),
               onPressed: () {
                 print(user.userName);
-                print(user.userRole);
+                print(user.userRoleUid);
                 print(user.userEmail);
                 Navigator.of(context).pushNamed('/main/profile/edit-row', arguments: {
                   'userData': argument["userData"],
@@ -63,7 +65,7 @@ class MyProfilePageState extends State<ProfilePage> {
         automaticallyImplyLeading: true,
       ),
 
-      drawer: NavigatorDrawer(user: user),
+      drawer: NavigatorDrawer(user: user, authUser: authUser,),
 
       body: Center(
         child: ListView(
@@ -88,7 +90,7 @@ class MyProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 15,),
                   Text(
-                    '${user.userRole}. ${user.userName}',
+                    '${user.userRoleUid}. ${user.userName}',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Text(
