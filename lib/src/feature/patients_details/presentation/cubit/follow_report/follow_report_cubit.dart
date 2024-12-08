@@ -10,7 +10,6 @@ class FollowReportCubit extends Cubit<FollowReportState>{
 
   FollowReportCubit({required FollowRepositoryImpl followRepositoryImpl}) : _followRepositoryImpl = followRepositoryImpl, super(FollowCaseInitial());
 
-  final String accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYXZpZXJ0eHJAZ21haWwuY29tIiwicm9sZXMiOiJET0NUT1IiLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4zMC4xOTY6OTAwMS9hcGkvYXV0aC9sb2dpbi9zaWduaW4iLCJleHAiOjE3MzM0NDM5ODN9.SbkUtS9LqI8fKUUUFQt0CCkaqgnD0oeHhidlPCe9NqA";
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
@@ -19,7 +18,7 @@ class FollowReportCubit extends Cubit<FollowReportState>{
 
   final FollowRepositoryImpl _followRepositoryImpl;
 
-  Future<void> fetchFollowCaseDetails(int casId) async {
+  Future<void> fetchFollowCaseDetails(int casId, String accessToken) async {
 
     try{
 
@@ -39,9 +38,9 @@ class FollowReportCubit extends Cubit<FollowReportState>{
     }
 
   }
-  Future<void> refreshCases(docId) async {
+  Future<void> refreshCases(casId, accessToken) async {
     emit(FollowCaseInitial());
-    await fetchFollowCaseDetails(docId);
+    await fetchFollowCaseDetails(casId, accessToken);
   }
 
 }

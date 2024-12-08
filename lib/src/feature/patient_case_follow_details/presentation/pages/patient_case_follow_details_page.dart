@@ -1,4 +1,3 @@
-import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 import 'package:d_report/src/feature/patient_case_follow_details/data/datasource/remote/follow_case_remote_data_source.dart';
 import 'package:d_report/src/feature/patient_case_follow_details/domain/repository/follow_detailed_case_repository.dart';
 import 'package:d_report/src/feature/patient_case_follow_details/presentation/cubit/follow_report/follow_detailed_report_cubit.dart';
@@ -6,6 +5,7 @@ import 'package:d_report/src/feature/patient_case_follow_details/presentation/cu
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../shared/domain/entities/auth_user.dart';
 import '../widgets/card_patient_summary.dart';
 
 class PatientFollowCaseDetailsPage extends StatelessWidget {
@@ -18,12 +18,13 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
 
     final cafId = argument['cafId'];
     final patFullName = argument['patFullName'];
+    AuthUser authUser = argument["AuthCredentials"];
 
     final cafDetailedRemoteDataSource = FollowCaseDetailsRemoteDataSourceImpl();
     final followDetailedRepositoryImpl = FollowDetailedRepositoryImpl(cafDetailedRemoteDataSource);
 
     return BlocProvider(
-      create: (_) => FollowDetailedReportCubit(followDetailedRepositoryImpl: followDetailedRepositoryImpl)..fetchFollowCaseDetails(cafId),
+      create: (_) => FollowDetailedReportCubit(followDetailedRepositoryImpl: followDetailedRepositoryImpl)..fetchFollowCaseDetails(cafId, authUser.accessToken),
       child: Scaffold(
           appBar: AppBar(
             title: Row(children: [
@@ -57,6 +58,10 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
   }
 
   Widget _buildDetailRows(context, cafId, patFullName, FollowDetailedReportState state){
+
+    final argument = ModalRoute.of(context)!.settings.arguments as Map;
+    AuthUser authUser = argument["AuthCredentials"];
+
     if (state is FollowDetailedCaseInitial) {
       return Center(child: CircularProgressIndicator( // TODO MAKE GLOBAL
         color: Theme.of(context).colorScheme.primary,
@@ -93,7 +98,7 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
-              await context.read<FollowDetailedReportCubit>().refreshGetCaseFollowsByCase(cafId);
+              await context.read<FollowDetailedReportCubit>().refreshGetCaseFollowsByCase(cafId, authUser.accessToken);
             },
             child: const Text('Reintentar'),
           ),

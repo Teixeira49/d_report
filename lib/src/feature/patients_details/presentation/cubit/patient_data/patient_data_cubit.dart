@@ -7,7 +7,6 @@ class PatientDataCubit extends Cubit<PatientDataState>{
 
   PatientDataCubit({required PatientRepositoryImpl patientRepositoryImpl}) : _patientRepositoryImpl = patientRepositoryImpl, super(PatientDataInitial());
 
-  final String accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYXZpZXJ0eHJAZ21haWwuY29tIiwicm9sZXMiOiJET0NUT1IiLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4zMC4xOTY6OTAwMS9hcGkvYXV0aC9sb2dpbi9zaWduaW4iLCJleHAiOjE3MzM0NDM5ODN9.SbkUtS9LqI8fKUUUFQt0CCkaqgnD0oeHhidlPCe9NqA";
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
@@ -15,7 +14,7 @@ class PatientDataCubit extends Cubit<PatientDataState>{
   final PatientRepositoryImpl _patientRepositoryImpl;
   //final GetPatientDataUseCase useCase;
 
-  Future<void> fetchCaseDetails(int casId) async {
+  Future<void> fetchCaseDetails(int casId, String accessToken) async {
 
     try{
 
@@ -34,9 +33,9 @@ class PatientDataCubit extends Cubit<PatientDataState>{
 
 
   }
-  Future<void> refreshCases(docId) async {
+  Future<void> refreshCases(casId, accessToken) async {
     emit(PatientDataInitial());
-    await fetchCaseDetails(docId);
+    await fetchCaseDetails(casId, accessToken);
   }
 
 }

@@ -27,7 +27,6 @@ class FollowCaseDetailsRemoteDataSourceImpl implements FollowCaseDetailsRemoteDa
 
     const r = RetryOptions(maxAttempts: 3);
 
-
     final resp = await r.retry(() => dio.get(
       'http://192.168.30.196:9004/api/cases/operations/follows/view/$cafId', // TODO Create a Global with route
       options: Options(

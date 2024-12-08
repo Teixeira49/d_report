@@ -1,5 +1,3 @@
-
-import 'package:d_report/src/feature/patients_details/data/models/case_model.dart';
 import 'package:d_report/src/feature/patients_details/data/models/follow_model.dart';
 import 'package:d_report/src/feature/patients_details/domain/entities/follows_in_case.dart';
 import 'package:dio/dio.dart';
@@ -9,9 +7,7 @@ abstract class FollowCaseRemoteDataSource {
   Future<List<FollowCase>> getCaseFollowsByCase(int casId, String accessToken);
 }
 
-
-class FollowCaseRemoteDataSourceImpl implements FollowCaseRemoteDataSource{
-
+class FollowCaseRemoteDataSourceImpl implements FollowCaseRemoteDataSource {
   int _page = 1;
   bool _isFetching = false;
 
@@ -20,31 +16,30 @@ class FollowCaseRemoteDataSourceImpl implements FollowCaseRemoteDataSource{
   final Dio dio = Dio();
 
   @override
-  Future<List<FollowCase>> getCaseFollowsByCase(int casId, String accessToken) async {
-
-    if(!_isFetching) {
+  Future<List<FollowCase>> getCaseFollowsByCase(
+      int casId, String accessToken) async {
+    if (!_isFetching) {
       _isFetching = true;
     }
 
     const r = RetryOptions(maxAttempts: 3);
 
-
-    final resp = await r.retry(() => dio.get(
-      'http://192.168.30.196:9004/api/cases/follows/view-follow', // TODO Create a Global with route
-      options: Options(
-        sendTimeout: const Duration(seconds: 3),
-        receiveTimeout: const Duration(seconds: 3),
-        headers: {
-          'Authorization': 'Bearer $accessToken',
-        },
-      ),
-      queryParameters: {
-        "id": casId,
-        "pag": _page,
-        //"size"
-        //'isRev'
-      }
-    ));
+    final resp = await r.retry(() =>
+        dio.get('http://192.168.30.196:9004/api/cases/follows/view-follow',
+            // TODO Create a Global with route
+            options: Options(
+              sendTimeout: const Duration(seconds: 3),
+              receiveTimeout: const Duration(seconds: 3),
+              headers: {
+                'Authorization': 'Bearer $accessToken',
+              },
+            ),
+            queryParameters: {
+              "id": casId,
+              "pag": _page,
+              //"size"
+              //'isRev'
+            }));
 
     print(casId);
     print(resp.data["content"]);
@@ -61,7 +56,6 @@ class FollowCaseRemoteDataSourceImpl implements FollowCaseRemoteDataSource{
 
   Future<void> refreshFollowCases(casId, accessToken) async {
     _page = 1;
-    //emit(MyCasesInitial());
     await getCaseFollowsByCase(casId, accessToken);
   }
 }

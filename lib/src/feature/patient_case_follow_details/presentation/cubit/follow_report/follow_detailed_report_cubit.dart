@@ -11,7 +11,6 @@ class FollowDetailedReportCubit extends Cubit<FollowDetailedReportState>{
 
   FollowDetailedReportCubit({required FollowDetailedRepositoryImpl followDetailedRepositoryImpl}) : _followDetailedRepositoryImpl = followDetailedRepositoryImpl, super(FollowDetailedCaseInitial());
 
-  final String accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYXZpZXJ0eHJAZ21haWwuY29tIiwicm9sZXMiOiJET0NUT1IiLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4zMC4xOTY6OTAwMS9hcGkvYXV0aC9sb2dpbi9zaWduaW4iLCJleHAiOjE3MzM0NDM5ODN9.SbkUtS9LqI8fKUUUFQt0CCkaqgnD0oeHhidlPCe9NqA";
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
@@ -20,7 +19,7 @@ class FollowDetailedReportCubit extends Cubit<FollowDetailedReportState>{
 
   final FollowDetailedRepositoryImpl _followDetailedRepositoryImpl;
 
-  Future<void> fetchFollowCaseDetails(int cafId) async {
+  Future<void> fetchFollowCaseDetails(int cafId, String accessToken) async {
 
     try{
 
@@ -37,9 +36,10 @@ class FollowDetailedReportCubit extends Cubit<FollowDetailedReportState>{
     }
 
   }
-  Future<void> refreshGetCaseFollowsByCase(docId) async {
+
+  Future<void> refreshGetCaseFollowsByCase(casId, accessToken) async {
     emit(FollowDetailedCaseInitial());
-    await fetchFollowCaseDetails(docId);
+    await fetchFollowCaseDetails(casId, accessToken);
   }
 
 }
