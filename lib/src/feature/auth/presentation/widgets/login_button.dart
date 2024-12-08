@@ -1,11 +1,18 @@
+import 'package:d_report/src/feature/auth/presentation/cubit/login_auth_cubit/auth_user_cubit.dart';
 import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 import '../../../../shared/domain/entities/user.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 class LoginButton extends StatelessWidget {
-  const LoginButton({super.key});
+
+  const LoginButton({super.key, required this.username, required this.password});
+
+  final String username;
+  final String password;
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +22,16 @@ class LoginButton extends StatelessWidget {
         color: Colors.transparent,
 
         child: MaterialButton(
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme
+              .of(context)
+              .colorScheme
+              .primary,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(22.0)),
-          focusColor: Theme.of(context).colorScheme.inversePrimary,
+          focusColor: Theme
+              .of(context)
+              .colorScheme
+              .inversePrimary,
           child: const Text(
               loadData,
               style: TextStyle(
@@ -26,10 +39,9 @@ class LoginButton extends StatelessWidget {
               )
           ),
           onPressed: () {
-            Navigator.of(context).pushNamed(
-                '/main/patients/',
-                arguments: { "userData" : User(userName: "Pepe Loco", userEmail: "Pepeloco@gmail.com", userRole: "Doctor", userImgUrl: "")}
-            ); // TODO DELETE harcode Argument
+            if (username.isNotEmpty && password.isNotEmpty){
+              context.read<AuthCubit>().login(username, password);
+            }
           },
         )
     );

@@ -1,9 +1,16 @@
-abstract class Failure {}
+abstract class Failure {
+  final String message;
 
-class ServerFailure extends Failure {
+  Failure(this.message);
 
+  @override
+  String toString() => message;
 }
 
-class LocalFailure extends Failure {
+class ServerFailure extends Failure {
+  ServerFailure(String message) : super(message);
+}
 
+class CacheFailure extends Failure {
+  CacheFailure(String message) : super(message);
 }
