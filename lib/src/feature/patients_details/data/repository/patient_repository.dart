@@ -1,5 +1,5 @@
 
-import 'package:d_report/src/feature/patients_details/data/models/case_model.dart';
+import 'package:d_report/src/shared/data/model/case_model.dart';
 import 'package:d_report/src/feature/patients_details/domain/entities/complete_report_dto.dart';
 import 'package:d_report/src/feature/patients_details/domain/entities/patient.dart';
 

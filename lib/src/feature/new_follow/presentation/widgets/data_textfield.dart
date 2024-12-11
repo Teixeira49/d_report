@@ -44,15 +44,3 @@ class CaseDataTextField extends StatefulWidget {
     );
   }
 }
-
-//IconButton(
-//               icon: isEnabled ? const Icon(Icons.check) : const Icon(Icons.edit),
-//               color: Theme.of(context).iconTheme.color,
-//               onPressed: () {
-//                 setState(() {
-//                   isEnabled = !isEnabled;
-//                 });
-//                 print("SetSTATE");
-//                 print(isEnabled);
-//               },
-//             ),

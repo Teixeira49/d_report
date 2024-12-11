@@ -1,5 +1,5 @@
 
-import '../../../domain/entities/case_report.dart';
+import '../../../../../shared/domain/entities/case_report.dart';
 import '../../../domain/entities/patient.dart';
 
 abstract class PatientDataState {

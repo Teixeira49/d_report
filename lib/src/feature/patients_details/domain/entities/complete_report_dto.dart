@@ -1,5 +1,5 @@
 
-import 'package:d_report/src/feature/patients_details/domain/entities/case_report.dart';
+import 'package:d_report/src/shared/domain/entities/case_report.dart';
 import 'package:d_report/src/feature/patients_details/domain/entities/patient.dart';
 
 class CompleteCaseDTO{
