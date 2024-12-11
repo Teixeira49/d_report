@@ -19,6 +19,7 @@ class AuthRepositoryImpl extends AuthRepository {
     if (await networkInfo.isConnected) {
       try {
         final userModel = await remoteDataSource.login(email, password);
+        print(userModel);
         return AuthUser(
             accessToken: userModel.accessToken,
             refreshToken: userModel.refreshToken,

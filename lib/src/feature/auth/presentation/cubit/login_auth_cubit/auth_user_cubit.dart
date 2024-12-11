@@ -13,12 +13,10 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(AuthLoading());
       final userAuth = await _repositoryImpl.login(username, password);
-      print("pepe");
       final userProfile = await _repositoryImpl.getProfile(username, userAuth.accessToken);
-      print("pasando");
       emit(AuthLoaded(userAuth, userProfile));
     } catch (e) {
-      emit(AuthError('Error al subir los datos del paciente'));
+      emit(AuthError('Error de inicio de sesion'));
     }
   }
 }

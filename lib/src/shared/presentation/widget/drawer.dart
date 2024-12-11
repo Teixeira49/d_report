@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/entities/user.dart';
 
-class NavigatorDrawer extends StatefulWidget {
+class NavigatorDrawer extends StatefulWidget { // TODO este puede ser stateless
   const NavigatorDrawer(
       {super.key, required this.user, required this.authUser});
 
