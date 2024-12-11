@@ -4,13 +4,19 @@ import 'package:flutter/services.dart';
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class FloorMixedField extends StatelessWidget {
-  const FloorMixedField({super.key});
+
+  const FloorMixedField({super.key, required this.controllerDataDropDown, required this.controllerDataTextField});
+
+  final ValueNotifier<String?> controllerDataDropDown;
+  final TextEditingController controllerDataTextField;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: DropdownButtonFormField(
+            value: controllerDataDropDown.value,
             style: Theme.of(context).textTheme.labelLarge,
             dropdownColor: Theme.of(context).inputDecorationTheme.fillColor,
             borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -33,7 +39,7 @@ class FloorMixedField extends StatelessWidget {
             );
           }).toList(),
           onChanged: (newValue) {
-
+              controllerDataDropDown.value = newValue;
           },
           onSaved: (String? value) {},
           isDense: true,
@@ -43,6 +49,7 @@ class FloorMixedField extends StatelessWidget {
       const SizedBox(width: 16),
       Expanded(
        child: TextFormField(
+         controller: controllerDataTextField,
         keyboardType: TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,

@@ -14,3 +14,7 @@ class ServerFailure extends Failure {
 class CacheFailure extends Failure {
   CacheFailure(String message) : super(message);
 }
+
+class OtherFailure extends Failure {
+  OtherFailure(String message) : super(message);
+}
