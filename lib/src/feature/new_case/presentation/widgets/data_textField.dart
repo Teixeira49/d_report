@@ -4,9 +4,10 @@ import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class CaseDataTextField extends StatefulWidget {
 
-  const CaseDataTextField({super.key, required this.contextRow});
+  const CaseDataTextField({super.key, required this.contextRow, required this.controllerData});
 
   final String contextRow;
+  final TextEditingController controllerData;
 
   @override
   MyCaseDataTextFieldWidget createState() => MyCaseDataTextFieldWidget();
@@ -19,6 +20,7 @@ class CaseDataTextField extends StatefulWidget {
     return SizedBox(
         width: double.infinity,
         child: TextFormField(
+          controller: widget.controllerData,
           style: Theme.of(context).textTheme.labelLarge,
           obscureText: obscureTextDefault,
           keyboardType: TextInputType.name,
@@ -42,15 +44,3 @@ class CaseDataTextField extends StatefulWidget {
     );
   }
 }
-
-//IconButton(
-//               icon: isEnabled ? const Icon(Icons.check) : const Icon(Icons.edit),
-//               color: Theme.of(context).iconTheme.color,
-//               onPressed: () {
-//                 setState(() {
-//                   isEnabled = !isEnabled;
-//                 });
-//                 print("SetSTATE");
-//                 print(isEnabled);
-//               },
-//             ),

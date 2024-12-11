@@ -1,65 +1,54 @@
 import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
+import 'package:flutter/services.dart';
 
-class DateTextField extends StatefulWidget {
+class PatientDataTextFieldNumeric extends StatefulWidget {
+  const PatientDataTextFieldNumeric(
+      {super.key,
+      required this.contextRow,
+      required this.controllerData,
+      required this.iconData,});
 
-  const DateTextField({super.key, required this.controllerData});
-
+  final String contextRow;
   final TextEditingController controllerData;
+  final IconData iconData;
 
   @override
-  MyDateTextFieldWidget createState() => MyDateTextFieldWidget();
+  MyPatientDataTextFieldWidget createState() => MyPatientDataTextFieldWidget();
 }
 
-class MyDateTextFieldWidget extends State<DateTextField> {
-
+class MyPatientDataTextFieldWidget extends State<PatientDataTextFieldNumeric> {
   @override
   Widget build(BuildContext context) {
-
-    Future<void> _selectDate() async {
-      DateTime? _picked = await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime(1900),
-          lastDate: DateTime(2100)
-      );
-
-      if (_picked != null) {
-        setState(() {
-          widget.controllerData.text = _picked.toString().split(" ")[0];
-        });
-      }
-    }
-
     return SizedBox(
       width: double.infinity,
       child: TextFormField(
         controller: widget.controllerData,
         style: Theme.of(context).textTheme.labelLarge,
         obscureText: obscureTextDefault,
-        keyboardType: TextInputType.name,
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+        ],
         decoration: InputDecoration(
           fillColor: Theme.of(context).inputDecorationTheme.fillColor,
           filled: Theme.of(context).inputDecorationTheme.filled,
           border: Theme.of(context).inputDecorationTheme.border,
-          suffixIcon: const Icon(Icons.calendar_month),
-          labelText: "Fecha de Nacimiento",
+          suffixIcon: Icon(widget.iconData),
+          labelText: widget.contextRow,
           labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
-          hintText: hintNameUser,
+          hintText: hintEditProfile,
           hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
-
         ),
-        readOnly: true,
-        onTap: (){
-          _selectDate();
-        },
         onSaved: (String? value) {
           debugPrint(
               'Value for field name saved as "$value"'); // TODO delete in other moment
         },
         validator: (String? value) {
-          return (value != null && value.contains('@')) ? 'Do not use the @ char.' : null;
+          return (value != null && value.contains('@'))
+              ? 'Do not use the @ char.'
+              : null;
         },
       ),
     );

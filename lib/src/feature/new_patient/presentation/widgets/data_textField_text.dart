@@ -4,9 +4,11 @@ import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class PatientDataTextField extends StatefulWidget {
 
-  const PatientDataTextField({super.key, required this.contextRow});
+  const PatientDataTextField({super.key, required this.contextRow, required this.controllerData, required this.iconData});
 
   final String contextRow;
+  final TextEditingController controllerData;
+  final IconData iconData;
 
   @override
   MyPatientDataTextFieldWidget createState() => MyPatientDataTextFieldWidget();
@@ -19,6 +21,7 @@ class PatientDataTextField extends StatefulWidget {
     return SizedBox(
         width: double.infinity,
         child: TextFormField(
+          controller: widget.controllerData,
           style: Theme.of(context).textTheme.labelLarge,
           obscureText: obscureTextDefault,
           keyboardType: TextInputType.name,
@@ -26,6 +29,7 @@ class PatientDataTextField extends StatefulWidget {
             fillColor: Theme.of(context).inputDecorationTheme.fillColor,
             filled: Theme.of(context).inputDecorationTheme.filled,
             border: Theme.of(context).inputDecorationTheme.border,
+            suffixIcon: Icon(widget.iconData),
             labelText: widget.contextRow,
             labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
             hintText: hintEditProfile,
@@ -42,15 +46,3 @@ class PatientDataTextField extends StatefulWidget {
     );
   }
 }
-
-//IconButton(
-//               icon: isEnabled ? const Icon(Icons.check) : const Icon(Icons.edit),
-//               color: Theme.of(context).iconTheme.color,
-//               onPressed: () {
-//                 setState(() {
-//                   isEnabled = !isEnabled;
-//                 });
-//                 print("SetSTATE");
-//                 print(isEnabled);
-//               },
-//             ),
