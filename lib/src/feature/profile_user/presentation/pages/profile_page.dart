@@ -4,6 +4,7 @@ import 'package:d_report/src/feature/main_page/domain/entities/patient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/drawer.dart';
 import '../../domain/entities/doctor.dart';
@@ -25,6 +26,7 @@ class MyProfilePageState extends State<ProfilePage> {
 
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
     User user = argument["userData"];
+    AuthUser authUser = argument["AuthCredentials"];
 
     Doctor doctor = Doctor(id: 1, firstName: "pepe",
         lastName: "Gonzales", dni: 123124,
@@ -50,7 +52,7 @@ class MyProfilePageState extends State<ProfilePage> {
               icon: const Icon(Icons.edit),
               onPressed: () {
                 print(user.userName);
-                print(user.userRole);
+                print(user.userRoleUid);
                 print(user.userEmail);
                 Navigator.of(context).pushNamed('/main/profile/edit-row', arguments: {
                   'userData': argument["userData"],
@@ -63,7 +65,7 @@ class MyProfilePageState extends State<ProfilePage> {
         automaticallyImplyLeading: true,
       ),
 
-      drawer: NavigatorDrawer(user: user),
+      drawer: NavigatorDrawer(user: user, authUser: authUser,),
 
       body: Center(
         child: ListView(
@@ -81,65 +83,29 @@ class MyProfilePageState extends State<ProfilePage> {
                       children: [
                         CircleAvatar(
                           radius: 65.0,
-                          backgroundColor: Theme.of(context).iconTheme.color,
+                          backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
                           child: Image.asset("assets/images/logo.png"),
                         ),
                       ]
                   ),
                   const SizedBox(height: 15,),
                   Text(
-                    '${user.userRole}. ${user.userName}',
+                    '${user.userRoleUid}. ${user.userName}',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Text(
                     '${user.userEmail}',
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context).textTheme.titleSmall,
                   )
                 ],
               ),
             ),
-            Container(
-              //padding: EdgeInsets.symmetric(
-              //  horizontal: size.width * 0.075,
-              //  vertical: size.height * 0.025,
-              //),
-                child: CustomCardProfileRow(defaultKey: "Nombre", defaultValue: "${doctor.firstName} ${doctor.lastName}",)
-            ),
-            Container(
-              //padding: EdgeInsets.symmetric(
-              //  horizontal: size.width * 0.075,
-              //  vertical: size.height * 0.025,
-              //),
-                child: CustomCardProfileRow(defaultKey: "Cedula", defaultValue: "123124",)
-            ),
-            Container(
-              //padding: EdgeInsets.symmetric(
-              //  horizontal: size.width * 0.075,
-              //  vertical: size.height * 0.025,
-              //),
-                child: CustomCardProfileRow(defaultKey: "Cumpleaños", defaultValue: "25/20/1980",)
-            ),
-            Container(
-              //padding: EdgeInsets.symmetric(
-              //  horizontal: size.width * 0.075,
-              //  vertical: size.height * 0.025,
-              //),
-                child: CustomCardProfileRow(defaultKey: "Genero", defaultValue: "Hombre",)
-            ),
-            Container(
-              //padding: EdgeInsets.symmetric(
-              //  horizontal: size.width * 0.075,
-              //  vertical: size.height * 0.025,
-              //),
-                child: CustomCardProfileRow(defaultKey: "Especialidad", defaultValue: "Doctor - Bacteriologo",)
-            ),
-            Container(
-              //padding: EdgeInsets.symmetric(
-              //  horizontal: size.width * 0.075,
-              //  vertical: size.height * 0.025,
-              //),
-                child: CustomCardProfileRow(defaultKey: "ID Usuario", defaultValue: "12412",)
-            ),
+            CustomCardProfileRow(defaultKey: "Nombre", defaultValue: "${doctor.firstName} ${doctor.lastName}",),
+            CustomCardProfileRow(defaultKey: "Cedula", defaultValue: "123124",),
+            CustomCardProfileRow(defaultKey: "Cumpleaños", defaultValue: "25/20/1980",),
+            CustomCardProfileRow(defaultKey: "Genero", defaultValue: "Hombre",),
+            CustomCardProfileRow(defaultKey: "Especialidad", defaultValue: "Doctor - Bacteriologo",),
+            CustomCardProfileRow(defaultKey: "ID Usuario", defaultValue: "12412",),
           ],
         )
         ),

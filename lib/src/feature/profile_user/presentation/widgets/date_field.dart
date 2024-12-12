@@ -4,7 +4,9 @@ import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class DateTextField extends StatefulWidget {
 
-  const DateTextField({super.key});
+  const DateTextField({super.key, required this.controllerData});
+
+  final TextEditingController controllerData;
 
   @override
   MyDateTextFieldWidget createState() => MyDateTextFieldWidget();
@@ -15,7 +17,6 @@ class MyDateTextFieldWidget extends State<DateTextField> {
   @override
   Widget build(BuildContext context) {
 
-    TextEditingController _dateController = TextEditingController();
 
     Future<void> _selectDate() async {
       DateTime? _picked = await showDatePicker(
@@ -27,7 +28,7 @@ class MyDateTextFieldWidget extends State<DateTextField> {
 
       if (_picked != null) {
         setState(() {
-          _dateController.text = _picked.toString().split(" ")[0];
+          widget.controllerData.text = _picked.toString().split(" ")[0];
         });
       }
     }
@@ -35,7 +36,7 @@ class MyDateTextFieldWidget extends State<DateTextField> {
     return SizedBox(
       width: double.infinity,
       child: TextFormField(
-        controller: _dateController,
+        controller: widget.controllerData,
         style: Theme.of(context).textTheme.labelLarge,
         obscureText: obscureTextDefault,
         keyboardType: TextInputType.name,

@@ -13,6 +13,9 @@ import '../widgets/validate-password_field.dart';
 
 final _formatKey2 = GlobalKey<FormState>();
 
+final TextEditingController _emailController = TextEditingController();
+final TextEditingController _passwordController = TextEditingController();
+
 class RegisterPage extends StatelessWidget{
 
   const RegisterPage({super.key});
@@ -71,21 +74,21 @@ class RegisterPage extends StatelessWidget{
                       horizontal: size.width * 0.075,
                       vertical: size.height * 0.025,
                     ),
-                    child: const UserAccountTextField()
+                    child: UserAccountTextField(controllerData: _emailController,)
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: size.width * 0.075,
                       vertical: size.height * 0.025,
                     ),
-                    child: const PasswordTextField(password: password)
+                    child: PasswordTextField(password: password, controllerData: _passwordController,)
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: size.width * 0.075,
                       vertical: size.height * 0.025,
                     ),
-                    child: const PasswordTextField(password: validatePassword)
+                    child: PasswordTextField(password: password, controllerData: _passwordController,)
                   ),
                   Container(
                     padding: EdgeInsets.only(

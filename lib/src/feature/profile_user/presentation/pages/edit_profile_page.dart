@@ -7,7 +7,7 @@ import '../../../../shared/domain/entities/user.dart';
 import '../widgets/date_field.dart';
 import '../widgets/dynamic_edit_field.dart';
 import '../widgets/data_textfield.dart';
-import '../widgets/genre-user_field.dart';
+import '../../../../shared/presentation/widget/genre-user_field.dart';
 
 class EditProfilePage extends StatefulWidget {
 
@@ -80,7 +80,7 @@ class EditProfilePage extends StatefulWidget {
                 children: [
                   CircleAvatar(
                     radius: 50.0,
-                    backgroundColor: Theme.of(context).iconTheme.color,
+                    backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
                     child: Image.asset("assets/images/logo.png"),
                   ),
                   Positioned(
@@ -164,7 +164,7 @@ class EditProfilePage extends StatefulWidget {
                         horizontal: size.width * 0.075,
                         vertical: size.height * 0.010,
                       ),
-                      child: TypeGenreDropdownField()
+                      child: Container()//TypeGenreDropdownField(controllerData: 'a',)
                   ),
                   Container(
                       padding: EdgeInsets.symmetric(

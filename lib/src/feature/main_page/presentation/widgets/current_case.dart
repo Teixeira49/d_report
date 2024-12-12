@@ -24,11 +24,9 @@ class CurrentCasesPage extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               itemCount: patients.length,
-              itemBuilder: ((context, index) =>
-              Card(
-                color: Colors.transparent,
-                child: CaseTile(context, patients[index])
-              )),
+              itemBuilder: (
+                (context, index) => CaseTile(context, patients[index])
+              ),
             ),
           ),
         ],

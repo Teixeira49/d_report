@@ -13,29 +13,31 @@ class CaseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // TODO REFACTOR
-    return ListTile(
-      title: Text(
-        dataPatient.getAllName(),
-        style: Theme.of(context).listTileTheme.titleTextStyle,
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 1.5,
+        horizontal: 3
       ),
-      subtitle: Text(
-        dataPatient.getMessage(),
-        style: Theme.of(context).listTileTheme.subtitleTextStyle,
+      child: ListTile(
+        title: Text(
+          dataPatient.getAllName(),
+          style: Theme.of(context).listTileTheme.titleTextStyle,
+        ),
+        subtitle: Text(
+          dataPatient.getMessage(),
+          style: Theme.of(context).listTileTheme.subtitleTextStyle,
+        ),
+        leading: const SizedBox(
+          height: double.maxFinite,
+          width: 5,
+        ),
+        onTap: () {
+          Navigator.of(context).pushNamed('/main/patients/details/',
+              arguments: {"data":dataPatient}
+          );
+        },
       ),
-      tileColor: Theme.of(context).listTileTheme.tileColor,
-      trailing: const Icon(
-        Icons.arrow_circle_right, color: Colors.grey, // TODO delete Colors
-      ),
-      leading: const SizedBox(
-        height: double.maxFinite,
-        width: 5,
-      ),
-      onTap: () {
-        Navigator.of(context).pushNamed('/main/patients/details/',
-            arguments: {"data":dataPatient}
-        );
-      },
-    );
+    )
+      ;
   }
 }

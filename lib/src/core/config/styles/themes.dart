@@ -15,11 +15,11 @@ abstract class AppTheme {
           fontSize: 20,
           fontWeight: FontWeight.bold,
           letterSpacing: 1.5,
-          color: Color.fromRGBO(44, 44, 44, 1.0),
-          fontFamily: "roboto"
+          color: Color.fromRGBO(17, 17, 17, 1.0),
+          fontFamily: "gotham"
         ),
         iconTheme: IconThemeData(
-            color: Color.fromRGBO(44, 44, 44, 1.0)
+            color: Color.fromRGBO(17, 17, 17, 1.0)
         ),
       ),
 
@@ -39,17 +39,35 @@ abstract class AppTheme {
 
       textTheme: const TextTheme(
         titleLarge: TextStyle(
-            color: Colors.white70,
+            color: Colors.white,
             fontFamily: "gotham"
         ),
+        titleMedium: TextStyle(
+            color: Colors.black54,
+            fontFamily: "gotham"
+        ),
+        titleSmall: TextStyle(
+            color: Colors.white,
+            fontFamily: "gotham"
+        ),
+        headlineLarge: TextStyle(
+          color: Colors.black,
+        ),
         headlineSmall: TextStyle(
-            color: Color.fromRGBO(58, 58, 58, 1.0)
+            color: Color.fromRGBO(17, 17, 17, 1.0),
+            fontFamily: "gotham",
+            fontWeight: FontWeight.bold,
+          fontSize: 20
         ),
         bodyLarge: TextStyle(
-            color: Color.fromRGBO(58, 58, 58, 1.0)
+            color: Color.fromRGBO(17, 17, 17, 1.0)
+        ),
+        bodyMedium: TextStyle(
+            color: Color.fromRGBO(17, 17, 17, 1.0),
+            fontFamily: "gotham"
         ),
         labelLarge: TextStyle(
-          color: Color.fromRGBO(58, 58, 58, 1.0),
+          color: Color.fromRGBO(17, 17, 17, 1.0),
           fontFamily: "Lato"
         )
       ),
@@ -114,13 +132,12 @@ abstract class AppTheme {
       ),
 
       datePickerTheme: DatePickerThemeData(
-        backgroundColor: const Color.fromRGBO(242, 248, 255, 1.0),
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25.5)
         ),
         //todayBackgroundColor: Color.fromRGBO(6, 135, 232, 1.0),
         headerBackgroundColor: const Color.fromRGBO(6, 135, 232, 1.0),
-        yearForegroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
         yearStyle: const TextStyle(
           color: Color.fromRGBO(58, 58, 58, 1.0),
           fontWeight: FontWeight.w700,
@@ -129,22 +146,26 @@ abstract class AppTheme {
           color: Color.fromRGBO(58, 58, 58, 1.0),
           fontWeight: FontWeight.w700,
         ),
-
         headerHelpStyle: const TextStyle(
           color: Color.fromRGBO(58, 58, 58, 1.0),
           fontWeight: FontWeight.w700,
         ),
-
         weekdayStyle: const TextStyle(
           color: Color.fromRGBO(58, 58, 58, 1.0),
           fontWeight: FontWeight.w700,
         ),
-
         dayForegroundColor: const MaterialStatePropertyAll<Color>(Color.fromRGBO(58, 58, 58, 1.0)),
-        //dayOverlayColor
         cancelButtonStyle: const ButtonStyle(
           foregroundColor: MaterialStatePropertyAll<Color>(Colors.red),
         ),
+      ),
+
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: Colors.black87,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        )
       )
 
     );
@@ -163,7 +184,7 @@ abstract class AppTheme {
           fontWeight: FontWeight.bold,
           letterSpacing: 1.5,
           color: Colors.white70,
-          fontFamily: "roboto"
+          fontFamily: "gotham"
         ),
         iconTheme: IconThemeData(
           color: Colors.white
@@ -189,11 +210,26 @@ abstract class AppTheme {
           fontFamily: "gotham",
           fontWeight: FontWeight.bold
         ),
+        titleMedium: TextStyle(
+          color: Colors.white70,
+          fontFamily: "gotham"
+        ),
+        titleSmall: TextStyle(
+          color: Colors.white,
+          fontFamily: "gotham"
+        ),
+        headlineLarge: TextStyle(
+            color: Colors.white
+        ),
         headlineSmall: TextStyle(
           color: Color.fromRGBO(58, 58, 58, 1.0)
         ),
         bodyLarge: TextStyle(
           color: Color.fromRGBO(58, 58, 58, 1.0)
+        ),
+        bodyMedium: TextStyle(
+          color: Colors.white70,
+          fontFamily: "gotham"
         ),
         labelLarge: TextStyle(
           color: Colors.white70,
@@ -242,7 +278,7 @@ abstract class AppTheme {
       ),
 
       listTileTheme: ListTileThemeData(
-        tileColor: const Color.fromRGBO(9, 33, 51, 1.0),
+        tileColor: const Color.fromRGBO(5, 23, 31, 0.9),
         textColor: Colors.white70,
         titleTextStyle: const TextStyle(
           fontWeight: FontWeight.bold,
@@ -256,7 +292,7 @@ abstract class AppTheme {
         ),
         iconColor: Colors.white54,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25.5)
+            borderRadius: BorderRadius.circular(15.5)
         ),
       ),
 
