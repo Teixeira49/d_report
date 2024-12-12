@@ -32,6 +32,7 @@ class MyLoginPageState extends State<LoginPage> {
     super.initState();
   }
 
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -80,23 +81,20 @@ class MyLoginPageState extends State<LoginPage> {
                 });
               }
             });
-            //return Container();
-            //} else if (state is AuthError) {
-            //  return Center(child: Text(state.errorSMS));
-            //}
-            //return Container();
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               // TODO MAke global
-              content: Text(
-                state.errorSMS,
-                textAlign: TextAlign.center,
-              ),
-              backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15))),
+              content: Row(
+                children: [
+                  Icon(Icons.warning_amber, color: Theme.of(context).colorScheme.secondary,),
+                  const Spacer(),
+                  Text(
+                    state.errorSMS,
+                    textAlign: TextAlign.center,
+                  ),
+                  const Spacer(),
+                ],
+              )
             ));
           }
         },
@@ -109,6 +107,7 @@ class MyLoginPageState extends State<LoginPage> {
                 ),
                 child: IntrinsicHeight(
                     child: Form(
+                      key: _formKey,
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
@@ -155,6 +154,7 @@ class MyLoginPageState extends State<LoginPage> {
                                 child: LoginButton(
                                   username: _emailController.text,
                                   password: _passwordController.text,
+                                  formKey: _formKey,
                                 )),
                             TextButton(
                               child: Text(registerData,

@@ -19,7 +19,7 @@ class MyPasswordTextFieldWidget extends State<PasswordTextField> {
 
     return SizedBox(
       width: double.infinity,
-      child: TextField(
+      child: TextFormField(
         controller: widget.controllerData,
         style: Theme.of(context).textTheme.labelLarge,
         obscureText: isObscured,
@@ -40,7 +40,12 @@ class MyPasswordTextFieldWidget extends State<PasswordTextField> {
           labelText: widget.password,
           labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
         ),
-        //onChanged: (value) => {},
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Por favor complete este campo';
+          }
+          return null;
+        },
       ),
     );
   }

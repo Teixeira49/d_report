@@ -24,6 +24,8 @@ class PatientDetailsPage extends StatelessWidget {
     //final size = MediaQuery.of(context).size;
     //double sizeIcon = size.shortestSide * 0.50;
 
+    //FocusScope.of(context).unfocus();
+
     dynamic arguments =
         ModalRoute.of(context)?.settings.arguments; // TODO Refactor Rename
 

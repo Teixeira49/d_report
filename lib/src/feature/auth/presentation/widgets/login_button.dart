@@ -7,10 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginButton extends StatelessWidget {
 
-  const LoginButton({super.key, required this.username, required this.password});
+  const LoginButton({super.key, required this.username, required this.password, required this.formKey});
 
   final String username;
   final String password;
+  final formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,8 @@ class LoginButton extends StatelessWidget {
           onPressed: () {
             if (username.isNotEmpty && password.isNotEmpty){
               context.read<AuthCubit>().login(username, password);
+            } else {
+              formKey.currentState?.validate();
             }
           },
         )
