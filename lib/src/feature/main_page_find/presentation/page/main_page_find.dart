@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -107,7 +108,6 @@ class MyMainPageFindState extends State<MainPageFind> {
                     //context.read<MyCasesCubit>().updateFilter(value);
                   },
                   onEditingComplete: () {},
-                  autofocus: true,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 20),
@@ -125,12 +125,87 @@ class MyMainPageFindState extends State<MainPageFind> {
               ),
             ),
             drawer: NavigatorDrawer(user: user, authUser: authUser),
-            body: Container(),
+            body: Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: size.height * 0.005,
+                    horizontal: size.width * 0.005),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                            child: TextButton(
+                          onPressed: () {},
+                          child: Text('Nombre'),
+                        )),
+                        Container(
+                            child: TextButton(
+                          onPressed: () {},
+                          child: Text('Cedula'),
+                        )),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                            child: TextButton(
+                          onPressed: () {},
+                          child: Text('Diagnostico'),
+                        )),
+                        Container(
+                            child: TextButton(
+                          onPressed: () {},
+                          child: Text('Entrada'),
+                        )),
+                        Container(
+                            child: TextButton(
+                          onPressed: () {},
+                          child: Text('Final'),
+                        )),
+                        Container(
+                            child: TextButton(
+                          onPressed: () {},
+                          child: Text('Status'),
+                        )),
+                      ],
+                    ),
+                    RefreshIndicator(
+                      onRefresh: () async {
+                        //context
+                        //    .read<MyCasesCubit>()
+                        //    .refreshCases(
+                        //    user.userProfileId, authUser.accessToken);
+                      },
+                      child: Container(),
+                    )
+                  ],
+                )
+                //return
+                ),
             bottomNavigationBar: BottomNavigationBar(
               onTap: (index) {
-                setState(() {
-                  _currentPage = index;
-                });
+                if (index != _currentPage) {
+                  switch (index) {
+                    case 1:
+                      Navigator.of(context).pushReplacementNamed(
+                          '/main/patients/find/',
+                          arguments: {
+                            "userData": user,
+                            "AuthCredentials": authUser
+                          });
+                      break;
+                    case 0:
+                      Navigator.of(context).pushReplacementNamed(
+                          '/main/patients/',
+                          arguments: {
+                            "userData": user,
+                            "AuthCredentials": authUser
+                          });
+                      break;
+                  }
+                }
               },
               backgroundColor:
                   ThemeData().bottomNavigationBarTheme.backgroundColor,

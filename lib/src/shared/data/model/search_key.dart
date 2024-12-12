@@ -12,6 +12,8 @@ enum SearchKeys {
   LASTNAME,
   FULL_NAME,
   DNI,
+  GUARDIAN_DNI,
+  ANY_DNI,
   BLOOD_TYPE,
   END_DATE,
   END_REASON

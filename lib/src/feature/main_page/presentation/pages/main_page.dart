@@ -82,8 +82,6 @@ class MyMainPageState extends State<MainPage> {
 
     final size = MediaQuery.of(context).size;
 
-
-
     //List<Patients> patients = [];
     /*List<Patient> regularP = [
       Patient(id: 1, name: "Jose", lastname: "Peres", age: 15, codHab: 'A-606'),
@@ -114,10 +112,8 @@ class MyMainPageState extends State<MainPage> {
             key: scaffoldKey,
             appBar: AppBar(
               automaticallyImplyLeading: false,
-              title: _isSearching
-                  ?
-
-                  Container(
+              title: _isSearching || _currentPage == 1
+                  ? Container(
                       padding: const EdgeInsets.only(right: 12),
                       width: double.infinity,
                       height: 40,
@@ -133,18 +129,15 @@ class MyMainPageState extends State<MainPage> {
                           ),
                         ],
                       ),
-                      child:
-
-                  TextField(
-                      controller: _searchController,
-                      focusNode: _focusNode,
-                      onChanged: (value) {
-                        context.read<MyCasesCubit>().updateFilter(value);
-                      },
-                      onEditingComplete: () {
-                      },
-                      autofocus: true,
-                      decoration: InputDecoration(
+                      child: TextField(
+                        controller: _searchController,
+                        focusNode: _focusNode,
+                        onChanged: (value) {
+                          context.read<MyCasesCubit>().updateFilter(value);
+                        },
+                        onEditingComplete: () {},
+                        autofocus: _currentPage == 1 ? false : true,
+                        decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 20),
                           hintText: 'Buscar Paciente',
@@ -156,10 +149,9 @@ class MyMainPageState extends State<MainPage> {
                           //    borderSide: BorderSide(color: Colors.white)),
                           //enabledBorder: UnderlineInputBorder(
                           //    borderSide: BorderSide(color: Colors.white)),
-                          ),
+                        ),
                       ),
                     )
-
                   : Row(
                       children: [
                         GestureDetector(
@@ -203,9 +195,7 @@ class MyMainPageState extends State<MainPage> {
                 padding: EdgeInsets.symmetric(
                     vertical: size.height * 0.005,
                     horizontal: size.width * 0.005),
-                child:
-                    //return
-                    RefreshIndicator(
+                child: RefreshIndicator(
                   onRefresh: () async {
                     context
                         .read<MyCasesCubit>()
@@ -251,7 +241,8 @@ class MyMainPageState extends State<MainPage> {
                                     horizontal: size.width * 0.010,
                                   ),
                                   child: ListTile(
-                                    title: const Text('Crear Caso - Nuevo Paciente'),
+                                    title: const Text(
+                                        'Crear Caso - Nuevo Paciente'),
                                     dense: true,
                                     tileColor: Colors.transparent,
                                     onTap: () {
@@ -270,8 +261,8 @@ class MyMainPageState extends State<MainPage> {
                                     horizontal: size.width * 0.010,
                                   ),
                                   child: ListTile(
-                                    title:
-                                        const Text('Crear Caso - Paciente Existente'),
+                                    title: const Text(
+                                        'Crear Caso - Paciente Existente'),
                                     dense: true,
                                     tileColor: Colors.transparent,
                                     onTap: () {
@@ -293,9 +284,26 @@ class MyMainPageState extends State<MainPage> {
             // Change a widget in other file
             bottomNavigationBar: BottomNavigationBar(
               onTap: (index) {
-                setState(() {
-                  _currentPage = index;
-                });
+                if (index != _currentPage) {
+                  switch (index) {
+                    case 1:
+                      Navigator.of(context).pushReplacementNamed(
+                          '/main/patients/find/',
+                          arguments: {
+                            "userData": user,
+                            "AuthCredentials": authUser
+                          });
+                      break;
+                    case 0:
+                      Navigator.of(context).pushReplacementNamed(
+                          '/main/patients/',
+                          arguments: {
+                            "userData": user,
+                            "AuthCredentials": authUser
+                          });
+                      break;
+                  }
+                }
               },
               backgroundColor:
                   ThemeData().bottomNavigationBarTheme.backgroundColor,

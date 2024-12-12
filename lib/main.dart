@@ -3,6 +3,7 @@ import 'package:d_report/src/feature/auth/presentation/pages/login_page.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/register_page.dart';
 import 'package:d_report/src/feature/find_patient/presentation/pages/find_patient_page.dart';
 import 'package:d_report/src/feature/main_page/presentation/pages/main_page.dart';
+import 'package:d_report/src/feature/main_page_find/presentation/page/main_page_find.dart';
 import 'package:d_report/src/feature/new_case/presentation/pages/new_case_page.dart';
 import 'package:d_report/src/feature/new_follow/presentation/pages/new_follow_case_page.dart';
 import 'package:d_report/src/feature/new_patient/presentation/pages/new_patient_page.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/auth/login/': (context) => const LoginPage(),
         '/auth/register/': (context) => const RegisterPage(),
         '/main/patients/': (context) => const MainPage(),
+        '/main/patients/find/': (context) => const MainPageFind(),
         '/main/patients/details/': (context) => const PatientDetailsPage(),
         '/main/patients/details/follow-case': (context) => const PatientFollowCaseDetailsPage(),
         '/main/patients/details/create-follow-case': (context) => const NewFollowCasePage(),
