@@ -158,6 +158,14 @@ abstract class AppTheme {
         cancelButtonStyle: const ButtonStyle(
           foregroundColor: MaterialStatePropertyAll<Color>(Colors.red),
         ),
+      ),
+
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: Colors.black87,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        )
       )
 
     );

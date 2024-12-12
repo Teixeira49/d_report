@@ -93,10 +93,16 @@ class MyCasesCubit extends Cubit<MyCasesState>{
 
 
   }
-  Future<void> refreshCases(docId, accessToken) async {
+  Future<void> refreshCases(int docId, String accessToken) async {
   //  _page = 1;
     //emit(MyCasesInitial());
     await fetchCases(docId, accessToken);
   }
 
+  void updateFilter(String filter) {
+    if (state is MyCasesLoaded) {
+      final loadedState = state as MyCasesLoaded;
+      emit(loadedState.copyWith(filter: filter));
+    }
+  }
 }
