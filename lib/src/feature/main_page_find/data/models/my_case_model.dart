@@ -1,4 +1,4 @@
- import '../../../../core/utils/constants/fields_constants.dart';
+import '../../../../core/utils/constants/fields_constants.dart';
 import '../../domain/entities/case_simple.dart';
 
 class MyCasesModel extends CaseSimple {

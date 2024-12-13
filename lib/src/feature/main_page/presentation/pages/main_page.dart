@@ -383,7 +383,7 @@ class MyMainPageState extends State<MainPage> {
             onPressed: () async {
               await context
                   .read<MyCasesCubit>()
-                  .fetchCases(user.userProfileId, authUser.accessToken);
+                  .refreshCases(user.userProfileId, authUser.accessToken);
             },
             child: const Text('Reintentar'),
           ),
