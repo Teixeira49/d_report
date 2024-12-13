@@ -10,4 +10,9 @@ class Helper {
   static String getFullNameInRow(String name, String lastName) {
     return '$name $lastName';
   }
+
+  static String capitalize(String text){
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1).toLowerCase();
+  }
 }
