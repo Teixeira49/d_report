@@ -1,6 +1,7 @@
 import 'package:d_report/src/core/config/styles/themes.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/login_page.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/register_page.dart';
+import 'package:d_report/src/feature/end_case/presentation/page/end_case_page.dart';
 import 'package:d_report/src/feature/find_patient/presentation/pages/find_patient_page.dart';
 import 'package:d_report/src/feature/main_page/presentation/pages/main_page.dart';
 import 'package:d_report/src/feature/main_page_find/presentation/page/main_page_find.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         '/main/patients/details/': (context) => const PatientDetailsPage(),
         '/main/patients/details/follow-case': (context) => const PatientFollowCaseDetailsPage(),
         '/main/patients/details/create-follow-case': (context) => const NewFollowCasePage(),
+        '/main/patients/details/end-case': (context) => const EndCasePage(),
         '/main/profile/': (context) => const ProfilePage(),
         '/main/profile/edit-row': (context) => const EditProfilePage(dataField: 'pepe',),
         '/main/config/': (context) => const NotFoundPage(),

@@ -40,8 +40,7 @@ class HeaderDetails extends StatelessWidget {
               horizontal: size.width * 0.05,
             ),
             child: Text(
-              '''Name: $namePatient
-Age: $age
+              '''Age: $age
 Status: $caseStatus''',
               textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.bodyMedium,

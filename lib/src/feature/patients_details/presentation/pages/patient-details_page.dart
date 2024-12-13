@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared/domain/entities/auth_user.dart';
-import '../../../../shared/domain/entities/user.dart';
 import '../../data/datasource/remote/all_case_remote_data_source.dart';
 import '../../data/repository/patient_repository.dart';
 import '../cubit/follow_report/follow_report_cubit.dart';
@@ -16,7 +15,6 @@ import '../widgets/follow_tile.dart';
 import '../widgets/header_details.dart';
 
 class PatientDetailsPage extends StatelessWidget {
-
   const PatientDetailsPage({super.key});
 
   @override
@@ -24,16 +22,12 @@ class PatientDetailsPage extends StatelessWidget {
     //final size = MediaQuery.of(context).size;
     //double sizeIcon = size.shortestSide * 0.50;
 
-    //FocusScope.of(context).unfocus();
-
     dynamic arguments =
         ModalRoute.of(context)?.settings.arguments; // TODO Refactor Rename
 
     int caseId = arguments['casKey'];
     String patFullName = arguments['patFullName'];
     AuthUser authUser = arguments["AuthCredentials"];
-
-    final size = MediaQuery.of(context).size;
 
     final patRemoteDataSource = AllCaseRemoteDataSourceImpl();
     final patRepository = PatientRepositoryImpl(patRemoteDataSource);
@@ -56,7 +50,15 @@ class PatientDetailsPage extends StatelessWidget {
           length: 3,
           child: Scaffold(
             appBar: AppBar(
-              title: const Text("Detalles del Caso"),
+              title: BlocBuilder<PatientDataCubit, PatientDataState>(
+                  builder: (context, state) {
+                if (state is PatientDataLoaded) {
+                  return Text(
+                      '${state.patient.patName} ${state.patient.patLastname}');
+                } else {
+                  return const Text("Detalles del Caso");
+                }
+              }),
               backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
               centerTitle: true,
               automaticallyImplyLeading: true,
@@ -65,15 +67,7 @@ class PatientDetailsPage extends StatelessWidget {
                 headerSliverBuilder: (context, _) {
                   return [
                     SliverList(
-                        delegate: SliverChildListDelegate([
-                      /*HeaderDetails(
-                        context,
-                        size,
-                        caseId.toString(),
-                        caseId,
-                    ),*/
-                      PatientInfo(3)
-                    ]))
+                        delegate: SliverChildListDelegate([PatientInfo(3)]))
                   ];
                 },
                 body: Column(
@@ -95,109 +89,21 @@ class PatientDetailsPage extends StatelessWidget {
                     Expanded(
                         child: TabBarView(
                       children: [
-                        /*
-                          SingleChildScrollView(
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const SizedBox(height: 10,),
-                                  CustomCardPatientRow(
-                                    widgetKey: "Fecha de Nacimiento",
-                                    widgetValue: '25-11-2007',
-                                    tileIcon: Icons.calendar_month,
-                                  ),
-                                  CustomCardPatientRow(
-                                    widgetKey: "Doc Identidad",
-                                    widgetValue: '123124124',
-                                    tileIcon: Icons.perm_identity,
-                                  ),
-                                  CustomCardPatientRow(
-                                    widgetKey: "Doc Identidad Representante",
-                                    widgetValue: '12312412',
-                                    tileIcon: Icons.family_restroom,
-                                  ),
-                                  CustomCardPatientRow(
-                                    widgetKey: "Genero",
-                                    widgetValue: 'Hombre',
-                                    tileIcon: Icons.male,
-                                  ),
-                                  CustomCardPatientRow(
-                                    widgetKey: "Tipo de Sangre",
-                                    widgetValue: 'Grupo A+',
-                                    tileIcon: Icons.water_drop,
-                                  ),
-                                ]
-                            ),
-                          ),*/
                         SingleChildScrollView(
                           child: PatientInfo(1),
                         ),
                         SingleChildScrollView(
                           child: PatientInfo(2),
-
-                          /*Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CustomCardResumeRow(
-                                    widgetKey: "Habitacion",
-                                    widgetValue: 'A3 - 302',
-                                  ),
-                                  CustomCardResumeRow(
-                                    widgetKey: "Fecha de Ingreso",
-                                    widgetValue: 'Grupo A+',
-                                  ),
-                                  CustomCardResumeRow(
-                                    widgetKey: "Sintomatologia",
-                                    widgetValue: 'Grupo A+',
-                                  ),
-                                  CustomCardResumeRow(
-                                    widgetKey: "Diagnostico inicial",
-                                    widgetValue: 'MuchoTexto',
-                                  ),
-                                  CustomCardResumeRow(
-                                    widgetKey: "Fecha Fin del Caso",
-                                    widgetValue: 'Grupo A+',
-                                  ),
-                                  CustomCardResumeRow(
-                                    widgetKey: "Diagnostico final",
-                                    widgetValue: 'Grupo A+',
-                                  ),
-                                ],
-                              )*/
                         ),
                         SingleChildScrollView(
                           child: FollowInfo(patFullName),
-                          /*Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SizedBox(height: 5,),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: size.width * 0.075,
-                                        vertical: size.height * 0.010,
-                                      ),
-                                      child: TextField(
-
-                                      ),
-                                    ),
-                                    ListView.builder(
-                                        itemCount: pepe.length,
-                                        shrinkWrap: true,
-                                        itemBuilder: (
-                                                (context, index) => FollowTile(context, 'a')
-                                        )
-                                    )
-                                  ]
-                              )*/
                         )
                       ],
                     ))
                   ],
                 )),
-            floatingActionButton: _FloatingActionButtonForTab(casId: caseId, docId: 23), // TODO Delete Hardcode number
+            floatingActionButton: _FloatingActionButtonForTab(
+                casId: caseId, docId: 23), // TODO Delete Hardcode number
           )),
     );
   }
@@ -211,11 +117,9 @@ class _FloatingActionButtonForTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final TabController tabController = DefaultTabController.of(context)!;
 
-    dynamic arguments =
-        ModalRoute.of(context)?.settings.arguments;
+    dynamic arguments = ModalRoute.of(context)?.settings.arguments;
     AuthUser authUser = arguments["AuthCredentials"];
 
     return AnimatedBuilder(
@@ -227,7 +131,11 @@ class _FloatingActionButtonForTab extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pushNamed(
                   '/main/patients/details/create-follow-case',
-                  arguments: {'docId': docId, 'casId': casId, 'AuthCredentials': authUser});
+                  arguments: {
+                    'docId': docId,
+                    'casId': casId,
+                    'AuthCredentials': authUser
+                  });
             },
             child: const Icon(Icons.add),
           ),
@@ -244,9 +152,7 @@ class FollowInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    dynamic arguments =
-        ModalRoute.of(context)?.settings.arguments;
+    dynamic arguments = ModalRoute.of(context)?.settings.arguments;
     AuthUser authUser = arguments["AuthCredentials"];
 
     return BlocBuilder<FollowReportCubit, FollowReportState>(
@@ -306,6 +212,8 @@ class PatientInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    dynamic arguments = ModalRoute.of(context)?.settings.arguments;
+    AuthUser authUser = arguments["AuthCredentials"];
     return BlocBuilder<PatientDataCubit, PatientDataState>(
         builder: (context, state) {
       if (state is PatientDataInitial) {
@@ -388,12 +296,77 @@ class PatientInfo extends StatelessWidget {
           ],
         );
       } else if (state is PatientDataLoaded && indexTab == 3) {
-        return HeaderDetails(
-            context,
-            MediaQuery.of(context).size,
-            '${state.patient.patName} ${state.patient.patLastname}',
-            state.patient.patBirthdayDate,
-            state.caseReport.casEndReason);
+        return Row(
+          children: [
+            HeaderDetails(
+                context,
+                MediaQuery.of(context).size,
+                '${state.patient.patName} ${state.patient.patLastname}',
+                state.patient.patBirthdayDate,
+                state.caseReport.casEndReason),
+            Spacer(),
+            Container(
+              child: TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: Text("Advertencia"),
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      content: Text(
+                          "Al dejar de seguir el caso, ya no saldra en su ventana principal"),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('Cancelar')),
+                        TextButton(
+                            onPressed: () {
+                            },
+                            child: Text('Confirmar'))
+                      ],
+                    ),
+                  );
+                },
+                child: Text('Dejar de Seguir'),
+              ),
+            ),
+            Container(
+              child: TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: Text("Advertencia"),
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      content: Text(
+                          "Finalizar el caso evitara que se puedan seguir haciendo operaciones, ¿Seguro que desea continuar?"),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('Cancelar')),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.of(context).pushNamed('/main/patients/details/end-case', arguments: {
+                                'authCredentials': authUser,
+                              });
+                            },
+                            child: Text('Confirmar'))
+                      ],
+                    ),
+                  );
+                },
+                child: Text('Finalizar'),
+              ),
+            )
+          ],
+        );
       } else {
         return Container();
       }
