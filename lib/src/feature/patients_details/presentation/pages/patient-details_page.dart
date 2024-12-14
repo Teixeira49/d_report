@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
+import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/floating_snackbars.dart';
 import '../../data/datasource/remote/all_case_remote_data_source.dart';
 import '../../data/repository/case_repository.dart';
@@ -50,7 +51,8 @@ class PatientDetailsPage extends StatelessWidget {
                 FollowReportCubit(followRepositoryImpl: cafRepository)
                   ..fetchFollowCaseDetails(caseId, authUser.accessToken)),
         BlocProvider(
-            create: (_) => EndAssignCubit(patientRepositoryImpl: patRepository))
+            create: (_) =>
+                EndAssignCubit(patientRepositoryImpl: patRepository))
       ],
       child: DefaultTabController(
           length: 3,
@@ -164,11 +166,9 @@ class FollowInfo extends StatelessWidget {
     return BlocBuilder<FollowReportCubit, FollowReportState>(
         builder: (context, state) {
       if (state is FollowCaseInitial || state is FollowCaseLoading) {
-        return Center(
-            child: CircularProgressIndicator(
-          // TODO MAKE GLOBAL
-          color: Theme.of(context).colorScheme.primary,
-        ));
+        return const Center(
+          child: CustomCircularProgressBar(),
+        );
       } else if (state is FollowCaseLoaded) {
         return ListView.builder(
           itemCount: state.followCase.length,
@@ -225,6 +225,7 @@ class PatientInfo extends StatelessWidget {
 
     return BlocBuilder<PatientDataCubit, PatientDataState>(
         builder: (context, state) {
+      print(context);
       if (state is PatientDataInitial || state is PatientDataLoading) {
         return Center(
             child: CircularProgressIndicator(
@@ -317,52 +318,58 @@ class PatientInfo extends StatelessWidget {
                 state.patient.patBirthdayDate,
                 state.caseReport.casEndReason),
             const Spacer(),
-            Container(
-              child: BlocConsumer<EndAssignCubit, EndAssignState>(
+            BlocConsumer<EndAssignCubit, EndAssignState>(
                 listener: (context, state) {
-                  if (state is EndAssignLoaded) {
-                    Navigator.pop(context);
-                    FloatingSnackBar.show(context, 'Se ha retirado del caso correctamente');
-                  } else if (state is EndAssignFail) {
-                    FloatingWarningSnackBar.show(context, state.errorSMS);
-                  }
-                },
-                builder: (context, state) {
-                  return TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: Text("Advertencia"),
-                          backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                          content: const Text(
-                            "Al dejar de seguir el caso, ya no saldra en su ventana principal",
-                            textAlign: TextAlign.justify,
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'Cancelar',
-                                style: TextStyle(
-                                    color: Theme.of(context).colorScheme.secondary),
-                              ),
-                            ),
-                            TextButton(onPressed: () {
-                              context.read<EndAssignCubit>().fetchEndAssignDetails(caseId, user.userProfileId, authUser.accessToken);
-                            }, child: Text('Confirmar'))
-                          ],
-                        ),
-                      );
-                    },
-                    child: Text('Dejar de Seguir'),
-                  );
-                },
-              )
-            ),
+                          print("a");
+                          if (state is EndAssignLoaded) {
+            Navigator.pop(context);
+            FloatingSnackBar.show(
+                context, 'Se ha retirado del caso correctamente');
+                          } else if (state is EndAssignFail) {
+            FloatingWarningSnackBar.show(context, state.errorSMS);
+                          }
+                        }, builder: (context, state) {
+                  print('superior $context');
+                          return TextButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext dialogContext) => AlertDialog(
+                  title: const Text("Advertencia"),
+                  backgroundColor:
+                      Theme.of(dialogContext).scaffoldBackgroundColor,
+                  content: const Text(
+                    "Al dejar de seguir el caso, ya no saldra en su ventana principal",
+                    textAlign: TextAlign.justify,
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(dialogContext);
+                      },
+                      child: Text(
+                        'Cancelar',
+                        style: TextStyle(
+                            color: Theme.of(dialogContext).colorScheme.secondary),
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(dialogContext).pop(true);
+                          print('inferior $context');
+                          context
+                              .read<EndAssignCubit>()
+                              .fetchEndAssignDetails(caseId,
+                                  user.userProfileId, authUser.accessToken);
+                        },
+                        child: const Text('Confirmar'))
+                  ],
+                ),
+              );
+            },
+            child: Text('Dejar de Seguir'),
+                          );
+                        }),
             Container(
               child: TextButton(
                 onPressed: () {

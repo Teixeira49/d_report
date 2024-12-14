@@ -368,7 +368,7 @@ class MyMainPageState extends State<MainPage> {
         child: ListView.builder(
             itemCount: filteredCases.length,
             itemBuilder: (context, index) =>
-                CaseTile(context, filteredCases[index], authUser)),
+                CaseTile(context, filteredCases[index], authUser, user)),
       );
     } else if (state is MyCasesLoadedButEmpty) {
       return Column(

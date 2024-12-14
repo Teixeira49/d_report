@@ -28,10 +28,10 @@ class FollowReportCubit extends Cubit<FollowReportState>{
 
       data.fold(
               (l) => emit(FollowCaseFail(errorSMS: l.message)),
-              (r) => () {
-                if (r.isEmpty) {
+              (r) {
+              if (r.isEmpty) {
                 emit(FollowCaseLoadedButEmpty(sms: "Este paciente no posee Seguimiento, porfavor, cree uno"));
-              }else {
+              } else {
                 emit(FollowCaseLoaded(followCase: r));
               }}
       );

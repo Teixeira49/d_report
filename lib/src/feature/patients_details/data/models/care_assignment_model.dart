@@ -12,7 +12,7 @@ class CareAssignModel extends CareAssign {
 
   factory CareAssignModel.fromJson(json) {
     return CareAssignModel(
-      casId: json['casId'],
+      casId: json['casId']['casId'],
       docId: json['docId'],
       caaPinned: json['caaPinned'],
       caaStartDate: json['caaStartDate'],
