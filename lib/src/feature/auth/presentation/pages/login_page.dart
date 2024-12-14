@@ -14,6 +14,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
+import '../../../../shared/presentation/widget/floating_snackbars.dart';
 import '../../data/datasource/remote/auth_user_remote_datasource.dart';
 import '../../data/repository/auth_user_repository_impl.dart';
 import '../cubit/login_auth_cubit/auth_user_cubit.dart';
@@ -83,20 +84,7 @@ class MyLoginPageState extends State<LoginPage> {
               }
             });
           } else if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              // TODO MAke global
-              content: Row(
-                children: [
-                  Icon(Icons.warning_amber, color: Theme.of(context).colorScheme.secondary,),
-                  const Spacer(),
-                  Text(
-                    state.errorSMS,
-                    textAlign: TextAlign.center,
-                  ),
-                  const Spacer(),
-                ],
-              )
-            ));
+            FloatingWarningSnackBar.show(context, state.errorSMS);
           }
         },
         builder: (context, state) {
