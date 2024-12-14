@@ -1,17 +1,23 @@
+import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 
+import '../../../../core/network/error/failures.dart';
 import '../../domain/entities/follows_in_case.dart';
+import '../../domain/repositories/follow_case_repository.dart';
 import '../datasource/remote/follow_case_remote_data_source.dart';
 
-//abstract class Repository {
-//  Future<Patient> getPatientData(int casId);
-//}
-
-class FollowRepositoryImpl { //implements Repository {
+class FollowRepositoryImpl implements FollowRepository {
   const FollowRepositoryImpl(this._followCaseRemoteDataSource);
 
   final FollowCaseRemoteDataSource _followCaseRemoteDataSource;
 
-  Future<List<FollowCase>> getCaseFollowsByCase(casId, accessToken) async {
-    return await _followCaseRemoteDataSource.getCaseFollowsByCase(casId, accessToken);
+  @override
+  Future<Either<Failure, List<FollowCase>>> getCaseFollowsByCase(casId, accessToken) async {
+    try {
+      final resp = await _followCaseRemoteDataSource.getCaseFollowsByCase(casId, accessToken);
+      return Right(resp);
+    } on DioException {
+      return Left(ServerFailure("Fallo en conexion al servidor"));
+    }
   }
 }

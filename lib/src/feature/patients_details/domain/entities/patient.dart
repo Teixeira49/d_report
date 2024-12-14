@@ -19,10 +19,10 @@ class Patient{
   int patId;
   String patName;
   String patLastname;
-  int patDni;
+  int? patDni;
   String patGender;
   String patBirthdayDate;
-  String patBirthdayPlace;
+  String? patBirthdayPlace;
   int patGuardianDni;
   String patBloodType;
 }

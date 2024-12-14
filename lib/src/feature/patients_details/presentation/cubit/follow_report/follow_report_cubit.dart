@@ -22,13 +22,19 @@ class FollowReportCubit extends Cubit<FollowReportState>{
 
     try{
 
+      emit(FollowCaseLoading());
+
       final data = await _followRepositoryImpl.getCaseFollowsByCase(casId, accessToken);
 
-      if (data.isEmpty) {
-        emit(FollowCaseLoadedButEmpty(sms: "Este paciente no posee Seguimiento, porfavor, cree uno"));
-      }else {
-        emit(FollowCaseLoaded(followCase: data));
-      }
+      data.fold(
+              (l) => emit(FollowCaseFail(errorSMS: l.message)),
+              (r) => () {
+                if (r.isEmpty) {
+                emit(FollowCaseLoadedButEmpty(sms: "Este paciente no posee Seguimiento, porfavor, cree uno"));
+              }else {
+                emit(FollowCaseLoaded(followCase: r));
+              }}
+      );
 
     }catch(e){
       print('Error: $e');
@@ -41,6 +47,14 @@ class FollowReportCubit extends Cubit<FollowReportState>{
   Future<void> refreshCases(casId, accessToken) async {
     emit(FollowCaseInitial());
     await fetchFollowCaseDetails(casId, accessToken);
+  }
+
+  Future<void> endThisCareAssign() async {
+    try {
+
+    } catch (e) {
+
+    }
   }
 
 }

@@ -5,6 +5,8 @@ abstract class FollowReportState {}
 
 class FollowCaseInitial extends FollowReportState {}
 
+class FollowCaseLoading extends FollowReportState {}
+
 class FollowCaseLoaded extends FollowReportState {
   final List<FollowCase> followCase;
   FollowCaseLoaded({required this.followCase});

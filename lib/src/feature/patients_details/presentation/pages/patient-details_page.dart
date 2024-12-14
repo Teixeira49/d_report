@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared/domain/entities/auth_user.dart';
+import '../../../../shared/domain/entities/user.dart';
+import '../../../../shared/presentation/widget/floating_snackbars.dart';
 import '../../data/datasource/remote/all_case_remote_data_source.dart';
-import '../../data/repository/patient_repository.dart';
+import '../../data/repository/case_repository.dart';
+import '../cubit/end_assign/end_assign_cubit.dart';
+import '../cubit/end_assign/end_assign_state.dart';
 import '../cubit/follow_report/follow_report_cubit.dart';
 import '../cubit/patient_data/patient_data_cubit.dart';
 import '../cubit/patient_data/patient_data_state.dart';
@@ -45,6 +49,8 @@ class PatientDetailsPage extends StatelessWidget {
             create: (_) =>
                 FollowReportCubit(followRepositoryImpl: cafRepository)
                   ..fetchFollowCaseDetails(caseId, authUser.accessToken)),
+        BlocProvider(
+            create: (_) => EndAssignCubit(patientRepositoryImpl: patRepository))
       ],
       child: DefaultTabController(
           length: 3,
@@ -157,7 +163,7 @@ class FollowInfo extends StatelessWidget {
 
     return BlocBuilder<FollowReportCubit, FollowReportState>(
         builder: (context, state) {
-      if (state is FollowCaseInitial) {
+      if (state is FollowCaseInitial || state is FollowCaseLoading) {
         return Center(
             child: CircularProgressIndicator(
           // TODO MAKE GLOBAL
@@ -214,9 +220,12 @@ class PatientInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     dynamic arguments = ModalRoute.of(context)?.settings.arguments;
     AuthUser authUser = arguments["AuthCredentials"];
+    User user = arguments["userData"];
+    int caseId = arguments['casKey'];
+
     return BlocBuilder<PatientDataCubit, PatientDataState>(
         builder: (context, state) {
-      if (state is PatientDataInitial) {
+      if (state is PatientDataInitial || state is PatientDataLoading) {
         return Center(
             child: CircularProgressIndicator(
           // TODO MAKE GLOBAL
@@ -232,10 +241,13 @@ class PatientInfo extends StatelessWidget {
               widgetValue: state.patient.patBirthdayDate.toString(),
               tileIcon: Icons.calendar_month,
             ),
-            CustomCardPatientRow(
-              widgetKey: "Doc Identidad",
-              widgetValue: state.patient.patDni.toString(),
-              tileIcon: Icons.perm_identity,
+            Visibility(
+              visible: state.patient.patDni != null,
+              child: CustomCardPatientRow(
+                widgetKey: "Doc Identidad",
+                widgetValue: state.patient.patDni.toString(),
+                tileIcon: Icons.perm_identity,
+              ),
             ),
             CustomCardPatientRow(
               widgetKey: "Doc Identidad Representante",
@@ -304,34 +316,52 @@ class PatientInfo extends StatelessWidget {
                 '${state.patient.patName} ${state.patient.patLastname}',
                 state.patient.patBirthdayDate,
                 state.caseReport.casEndReason),
-            Spacer(),
+            const Spacer(),
             Container(
-              child: TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: Text("Advertencia"),
-                      backgroundColor:
+              child: BlocConsumer<EndAssignCubit, EndAssignState>(
+                listener: (context, state) {
+                  if (state is EndAssignLoaded) {
+                    Navigator.pop(context);
+                    FloatingSnackBar.show(context, 'Se ha retirado del caso correctamente');
+                  } else if (state is EndAssignFail) {
+                    FloatingWarningSnackBar.show(context, state.errorSMS);
+                  }
+                },
+                builder: (context, state) {
+                  return TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: Text("Advertencia"),
+                          backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
-                      content: Text(
-                          "Al dejar de seguir el caso, ya no saldra en su ventana principal"),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text('Cancelar')),
-                        TextButton(
-                            onPressed: () {
-                            },
-                            child: Text('Confirmar'))
-                      ],
-                    ),
+                          content: const Text(
+                            "Al dejar de seguir el caso, ya no saldra en su ventana principal",
+                            textAlign: TextAlign.justify,
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'Cancelar',
+                                style: TextStyle(
+                                    color: Theme.of(context).colorScheme.secondary),
+                              ),
+                            ),
+                            TextButton(onPressed: () {
+                              context.read<EndAssignCubit>().fetchEndAssignDetails(caseId, user.userProfileId, authUser.accessToken);
+                            }, child: Text('Confirmar'))
+                          ],
+                        ),
+                      );
+                    },
+                    child: Text('Dejar de Seguir'),
                   );
                 },
-                child: Text('Dejar de Seguir'),
-              ),
+              )
             ),
             Container(
               child: TextButton(
@@ -342,20 +372,29 @@ class PatientInfo extends StatelessWidget {
                       title: Text("Advertencia"),
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
-                      content: Text(
-                          "Finalizar el caso evitara que se puedan seguir haciendo operaciones, ¿Seguro que desea continuar?"),
+                      content: const Text(
+                        "Finalizar el caso evitara que se puedan seguir haciendo operaciones, ¿Seguro que desea continuar?",
+                        textAlign: TextAlign.justify,
+                      ),
                       actions: [
                         TextButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text('Cancelar')),
+                            child: Text(
+                              'Cancelar',
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary),
+                            )),
                         TextButton(
                             onPressed: () {
                               Navigator.pop(context);
-                              Navigator.of(context).pushNamed('/main/patients/details/end-case', arguments: {
-                                'authCredentials': authUser,
-                              });
+                              Navigator.of(context).pushNamed(
+                                  '/main/patients/details/end-case',
+                                  arguments: {
+                                    'authCredentials': authUser,
+                                  });
                             },
                             child: Text('Confirmar'))
                       ],

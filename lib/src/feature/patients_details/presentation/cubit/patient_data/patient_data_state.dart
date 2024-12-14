@@ -8,6 +8,8 @@ abstract class PatientDataState {
 
 class PatientDataInitial extends PatientDataState {}
 
+class PatientDataLoading extends PatientDataState {}
+
 class PatientDataLoaded extends PatientDataState {
   final Patient patient;
   final CaseReport caseReport;
