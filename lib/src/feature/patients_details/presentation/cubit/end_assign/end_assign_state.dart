@@ -1,4 +1,3 @@
-
 import 'package:d_report/src/feature/patients_details/domain/entities/care_assignment.dart';
 
 abstract class EndAssignState {}
