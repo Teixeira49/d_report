@@ -20,6 +20,15 @@ class RegisterPage extends StatelessWidget{
 
   const RegisterPage({super.key});
 
+  // https://medium.com/flutter-community/create-custom-radio-input-in-flutter-8d94a273d374
+  // https://fluttergems.dev/packages/selectable_list/
+
+  // Agregar Para telefono tambien
+
+  // Agregar rol al que aplica con botones como los de arriba
+
+  // Agregar una lista de Especialidades, con un Otros
+
   @override
   Widget build(BuildContext context){
     final size = MediaQuery.of(context).size;
