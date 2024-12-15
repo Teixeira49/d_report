@@ -313,7 +313,7 @@ class PatientInfo extends StatelessWidget {
               tileIcon: Icons.people,
             ),
             Visibility(
-              visible: state.caseReport.casEndDate != null,
+              visible: state.caseReport.casEndFlag == true,
               child: CustomCardPatientRow(
                 widgetKey: "Fecha de Cierre",
                 widgetValue: state.caseReport.casEndDate.toString(),
@@ -321,7 +321,7 @@ class PatientInfo extends StatelessWidget {
               ),
             ),
             Visibility(
-              visible: state.caseReport.casEndDiagnosis != null,
+              visible: state.caseReport.casEndFlag == true,
               child: CustomCardPatientRow(
                 widgetKey: "Diagnostico de Salida",
                 widgetValue: state.caseReport.casEndDiagnosis.toString(),
