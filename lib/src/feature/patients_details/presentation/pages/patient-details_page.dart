@@ -350,7 +350,6 @@ class PatientInfo extends StatelessWidget {
                 FloatingWarningSnackBar.show(context, state.errorSMS);
               }
             }, builder: (context, state) {
-              print('superior $context');
               return TextButton(
                 onPressed: () {
                   showDialog(
@@ -379,7 +378,6 @@ class PatientInfo extends StatelessWidget {
                         TextButton(
                             onPressed: () {
                               Navigator.of(dialogContext).pop(true);
-                              print('inferior $context');
                               context
                                   .read<EndAssignCubit>()
                                   .fetchEndAssignDetails(caseId,
@@ -390,7 +388,7 @@ class PatientInfo extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Dejar de Seguir'),
+                child: const Text('Desvincular'),
               );
             }),
             Visibility(
