@@ -437,9 +437,48 @@ class PatientInfo extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text('Finalizar'),
+                child: const Text('Finalizar'),
               ),
             )),
+            Visibility(
+                visible: state.caseReport.casEndFlag == true && authUser.roleId == 3,
+                child: Container(
+                  child: TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text("Aviso"),
+                          backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                          content: const Text(
+                            "Al ejecutar esta accion, se reabrira el caso, y todos los ultimos asignados volveran a verlo en sus cuentas",
+                            textAlign: TextAlign.justify,
+                          ),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Cancelar',
+                                  style: TextStyle(
+                                      color:
+                                      Theme.of(context).colorScheme.secondary),
+                                )),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+
+                                },
+                                child: Text('Confirmar'))
+                          ],
+                        ),
+                      );
+                    },
+                    child: const Text('Reabrir Caso'),
+                  ),
+                )),
           ],
         );
       } else {
