@@ -1,6 +1,7 @@
 import 'package:d_report/src/feature/patients_details/data/datasource/remote/follow_case_remote_data_source.dart';
 import 'package:d_report/src/feature/patients_details/data/repository/follow_case_repository.dart';
 import 'package:d_report/src/feature/patients_details/presentation/cubit/follow_report/follow_report_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -51,8 +52,7 @@ class PatientDetailsPage extends StatelessWidget {
                 FollowReportCubit(followRepositoryImpl: cafRepository)
                   ..fetchFollowCaseDetails(caseId, authUser.accessToken)),
         BlocProvider(
-            create: (_) =>
-                EndAssignCubit(patientRepositoryImpl: patRepository))
+            create: (_) => EndAssignCubit(patientRepositoryImpl: patRepository))
       ],
       child: DefaultTabController(
           length: 3,
@@ -169,7 +169,9 @@ class FollowInfo extends StatelessWidget {
         return const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             CustomCircularProgressBar()
           ],
         );
@@ -298,7 +300,7 @@ class PatientInfo extends StatelessWidget {
             CustomCardPatientRow(
               widgetKey: "Diagnostico Inicial",
               widgetValue: state.caseReport.casDiagnosis.toString(),
-              tileIcon: Icons.local_hospital,
+              tileIcon: Icons.summarize,
             ),
             CustomCardPatientRow(
               widgetKey: "Area de Ingreso del Caso",
@@ -309,6 +311,22 @@ class PatientInfo extends StatelessWidget {
               widgetKey: "Origen de ingreso del paciente",
               widgetValue: state.caseReport.casMethodOfEntry.toString(),
               tileIcon: Icons.people,
+            ),
+            Visibility(
+              visible: state.caseReport.casEndDate != null,
+              child: CustomCardPatientRow(
+                widgetKey: "Fecha de Cierre",
+                widgetValue: state.caseReport.casEndDate.toString(),
+                tileIcon: Icons.date_range,
+              ),
+            ),
+            Visibility(
+              visible: state.caseReport.casEndDiagnosis != null,
+              child: CustomCardPatientRow(
+                widgetKey: "Diagnostico de Salida",
+                widgetValue: state.caseReport.casEndDiagnosis.toString(),
+                tileIcon: Icons.summarize,
+              ),
             ),
           ],
         );
@@ -324,56 +342,60 @@ class PatientInfo extends StatelessWidget {
             const Spacer(),
             BlocConsumer<EndAssignCubit, EndAssignState>(
                 listener: (context, state) {
-                          if (state is EndAssignLoaded) {
-            Navigator.pop(context);
-            FloatingSnackBar.show(
-                context, 'Se ha retirado del caso correctamente');
-                          } else if (state is EndAssignFail) {
-            FloatingWarningSnackBar.show(context, state.errorSMS);
-                          }
-                        }, builder: (context, state) {
-                  print('superior $context');
-                          return TextButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext dialogContext) => AlertDialog(
-                  title: const Text("Advertencia"),
-                  backgroundColor:
-                      Theme.of(dialogContext).scaffoldBackgroundColor,
-                  content: const Text(
-                    "Al dejar de seguir el caso, ya no saldra en su ventana principal",
-                    textAlign: TextAlign.justify,
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(dialogContext);
-                      },
-                      child: Text(
-                        'Cancelar',
-                        style: TextStyle(
-                            color: Theme.of(dialogContext).colorScheme.secondary),
+              if (state is EndAssignLoaded) {
+                Navigator.pop(context);
+                FloatingSnackBar.show(
+                    context, 'Se ha retirado del caso correctamente');
+              } else if (state is EndAssignFail) {
+                FloatingWarningSnackBar.show(context, state.errorSMS);
+              }
+            }, builder: (context, state) {
+              print('superior $context');
+              return TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext dialogContext) => AlertDialog(
+                      title: const Text("Advertencia"),
+                      backgroundColor:
+                          Theme.of(dialogContext).scaffoldBackgroundColor,
+                      content: const Text(
+                        "Al dejar de seguir el caso, ya no saldra en su ventana principal",
+                        textAlign: TextAlign.justify,
                       ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(dialogContext);
+                          },
+                          child: Text(
+                            'Cancelar',
+                            style: TextStyle(
+                                color: Theme.of(dialogContext)
+                                    .colorScheme
+                                    .secondary),
+                          ),
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop(true);
+                              print('inferior $context');
+                              context
+                                  .read<EndAssignCubit>()
+                                  .fetchEndAssignDetails(caseId,
+                                      user.userProfileId, authUser.accessToken);
+                            },
+                            child: const Text('Confirmar'))
+                      ],
                     ),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(dialogContext).pop(true);
-                          print('inferior $context');
-                          context
-                              .read<EndAssignCubit>()
-                              .fetchEndAssignDetails(caseId,
-                                  user.userProfileId, authUser.accessToken);
-                        },
-                        child: const Text('Confirmar'))
-                  ],
-                ),
+                  );
+                },
+                child: const Text('Dejar de Seguir'),
               );
-            },
-            child: const Text('Dejar de Seguir'),
-                          );
-                        }),
-            Container(
+            }),
+            Visibility(
+             visible: state.caseReport.casEndFlag != true,
+                child: Container(
               child: TextButton(
                 onPressed: () {
                   showDialog(
@@ -404,7 +426,8 @@ class PatientInfo extends StatelessWidget {
                                   '/main/patients/details/end-case',
                                   arguments: {
                                     'authCredentials': authUser,
-                                    'patName': '${state.patient.patName} ${state.patient.patLastname}',
+                                    'patName':
+                                        '${state.patient.patName} ${state.patient.patLastname}',
                                     'patId': state.patient.patId,
                                     'casKey': caseId,
                                   });
@@ -416,7 +439,7 @@ class PatientInfo extends StatelessWidget {
                 },
                 child: Text('Finalizar'),
               ),
-            )
+            )),
           ],
         );
       } else {
