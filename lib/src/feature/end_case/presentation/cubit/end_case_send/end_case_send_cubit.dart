@@ -4,9 +4,9 @@ import 'package:d_report/src/feature/end_case/domain/entities/end_case_dto.dart'
 import 'end_case_send_state.dart';
 
 
-class EndAssignCubit extends Cubit<SendEndCaseState>{
+class SendEndCaseCubit extends Cubit<SendEndCaseState>{
 
-  EndAssignCubit({required EndCaseRepositoryImpl endCaseRepositoryImpl}) : _endCaseRepositoryImpl = endCaseRepositoryImpl, super(SendEndCaseInitial());
+  SendEndCaseCubit({required EndCaseRepositoryImpl endCaseRepositoryImpl}) : _endCaseRepositoryImpl = endCaseRepositoryImpl, super(SendEndCaseInitial());
 
   bool _isFetching = false;
 
@@ -26,6 +26,8 @@ class EndAssignCubit extends Cubit<SendEndCaseState>{
               (l) => emit(SendEndCaseFail(errorSMS: l.message)),
               (r) => emit(SendEndCaseLoaded(caseReport: r))
       );
+
+      emit(SendEndCaseInitial());
 
     }catch(e){
       emit(SendEndCaseFail(errorSMS: "Error cargando los datos"));

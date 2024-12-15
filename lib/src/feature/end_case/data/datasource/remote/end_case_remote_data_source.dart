@@ -43,6 +43,6 @@ class EndCaseRemoteDataSourceImpl implements EndCaseRemoteDataSource{
         }
     ));
 
-    return CaseReportModel.fromJson(resp);
+    return CaseReportModel.fromJson(resp.data);
   }
 }

@@ -166,8 +166,12 @@ class FollowInfo extends StatelessWidget {
     return BlocBuilder<FollowReportCubit, FollowReportState>(
         builder: (context, state) {
       if (state is FollowCaseInitial || state is FollowCaseLoading) {
-        return const Center(
-          child: CustomCircularProgressBar(),
+        return const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 15,),
+            CustomCircularProgressBar()
+          ],
         );
       } else if (state is FollowCaseLoaded) {
         return ListView.builder(
@@ -320,7 +324,6 @@ class PatientInfo extends StatelessWidget {
             const Spacer(),
             BlocConsumer<EndAssignCubit, EndAssignState>(
                 listener: (context, state) {
-                          print("a");
                           if (state is EndAssignLoaded) {
             Navigator.pop(context);
             FloatingSnackBar.show(
@@ -367,7 +370,7 @@ class PatientInfo extends StatelessWidget {
                 ),
               );
             },
-            child: Text('Dejar de Seguir'),
+            child: const Text('Dejar de Seguir'),
                           );
                         }),
             Container(
@@ -376,7 +379,7 @@ class PatientInfo extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
-                      title: Text("Advertencia"),
+                      title: const Text("Advertencia"),
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
                       content: const Text(
@@ -401,6 +404,9 @@ class PatientInfo extends StatelessWidget {
                                   '/main/patients/details/end-case',
                                   arguments: {
                                     'authCredentials': authUser,
+                                    'patName': '${state.patient.patName} ${state.patient.patLastname}',
+                                    'patId': state.patient.patId,
+                                    'casKey': caseId,
                                   });
                             },
                             child: Text('Confirmar'))

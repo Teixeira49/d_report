@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/constants/fields_constants.dart';
+
 class StatusField extends StatelessWidget {
   const StatusField(
       {super.key,
@@ -17,7 +19,7 @@ class StatusField extends StatelessWidget {
       hint: const Text('Seleccione'),
       decoration: InputDecoration(
           border: InputBorder.none,),
-      items: ['Survive', 'Dead', 'Referral'].map((status) {
+      items: endCaseType.map((status) {
         return DropdownMenuItem(
             alignment: Alignment.centerLeft,
             value: status,
@@ -32,6 +34,13 @@ class StatusField extends StatelessWidget {
       onSaved: (String? value) {},
       isDense: true,
       isExpanded: true,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Elija una opcion';
+        }
+        return null;
+      },
+
     );
   }
 }

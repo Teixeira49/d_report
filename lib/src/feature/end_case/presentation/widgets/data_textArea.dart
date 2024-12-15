@@ -17,6 +17,7 @@ class MyCaseDataTextAreaWidget extends State<CaseDataTextArea> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+
       controller: widget.controllerData,
       style: Theme.of(context).textTheme.labelLarge,
       obscureText: obscureTextDefault,
@@ -35,10 +36,11 @@ class MyCaseDataTextAreaWidget extends State<CaseDataTextArea> {
         debugPrint(
             'Value for field name saved as "$value"'); // TODO delete in other moment
       },
-      validator: (String? value) {
-        return (value != null && value.contains('@'))
-            ? 'Do not use the @ char.'
-            : null;
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Por favor complete este campo';
+        }
+        return null;
       },
     );
   }

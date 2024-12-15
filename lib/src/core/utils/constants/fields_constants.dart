@@ -48,6 +48,8 @@ final List<String> bloodType = <String>["Rh Nulo","A+","A-","B+","B-","AB+","AB-
 
 final List<String> entryAreaType = <String>["Emergency", "Hospitalization", "Surgery"];
 
+final List<String> endCaseType = ['Sobrevivio', 'Murio', 'Referido'];
+
 final List<String> floorType = <String>["3","4","5","6"];
 
 const String role = "Roles";
