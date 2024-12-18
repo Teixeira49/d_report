@@ -96,67 +96,76 @@ class MyLoginPageState extends State<LoginPage> {
                 ),
                 child: IntrinsicHeight(
                     child: Form(
-                      key: _formKey,
+                        key: _formKey,
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.transparent),
-                            shape: BoxShape.circle),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.0075,
-                          vertical: size.height * 0.025,
-                        ),
-                        child: Image.asset("assets/images/logo.png",
-                            width: MediaQuery.of(context).size.width / 1.5,
-                            height: MediaQuery.of(context).size.width / 1.5),
-                      ),
-                      Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.075,
-                            vertical: size.height * 0.025,
-                          ),
-                          child: UserAccountTextField(
-                              controllerData: _emailController)),
-                      Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.075,
-                            vertical: size.height * 0.025,
-                          ),
-                          child: PasswordTextField(
-                              password: password,
-                              controllerData: _passwordController)),
-                      Expanded( // Make global el progress
-                        child: (state is AuthLoading) ? const
-
-                        Column(children: [SizedBox(height: 30,),
-                          CustomCircularProgressBar(),
-                          SizedBox(height: 30,)
-                        ]) : Column(
-                          children: [
-                            Container(
-                                padding: EdgeInsets.only(
-                                    top: size.height / 20, bottom: 0.25),
-                                child: LoginButton(
-                                  username: _emailController.text,
-                                  password: _passwordController.text,
-                                  formKey: _formKey,
-                                )),
-                            TextButton(
-                              child: Text(registerData,
-                                  style: TextStyle(
-                                      color: Theme.of(context).colorScheme.tertiary)),
-                              onPressed: () {
-                                Navigator.of(context).pushNamed('/auth/register/');
-                              },
-                            ),
-                          ],
-                        )
-                      )
-                    ])))),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border:
+                                        Border.all(color: Colors.transparent),
+                                    shape: BoxShape.circle),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.0075,
+                                  vertical: size.height * 0.025,
+                                ),
+                                child: Image.asset("assets/images/logo.png",
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.5,
+                                    height: MediaQuery.of(context).size.width /
+                                        1.5),
+                              ),
+                              Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.075,
+                                    vertical: size.height * 0.025,
+                                  ),
+                                  child: UserAccountTextField(
+                                      controllerData: _emailController)),
+                              Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.075,
+                                    vertical: size.height * 0.025,
+                                  ),
+                                  child: PasswordTextField(
+                                      password: password,
+                                      controllerData: _passwordController)),
+                              Expanded(
+                                  // Make global el progress
+                                  child: (state is AuthLoading)
+                                      ? const Column(children: [
+                                          SizedBox(
+                                            height: 30,
+                                          ),
+                                          CustomCircularProgressBar(),
+                                          SizedBox(
+                                            height: 30,
+                                          )
+                                        ])
+                                      : Column(
+                                          children: [
+                                            LoginButton(
+                                              username: _emailController.text,
+                                              password: _passwordController.text,
+                                              formKey: _formKey,
+                                              size: size,
+                                            ),
+                                            TextButton(
+                                              child: Text(registerData,
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .tertiary)),
+                                              onPressed: () {
+                                                Navigator.of(context).pushNamed(
+                                                    '/auth/register/');
+                                              },
+                                            ),
+                                          ],
+                                        ))
+                            ])))),
           ));
         },
       )),

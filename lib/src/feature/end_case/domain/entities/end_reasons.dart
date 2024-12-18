@@ -1,3 +1,1 @@
-enum EndReasons { DEAD, SURVIVE, REFERRAL }
-
-// TODO Implement later
+enum EndReasons { SURVIVE, DEAD, REFERRAL }

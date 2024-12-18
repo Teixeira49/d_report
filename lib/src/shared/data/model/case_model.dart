@@ -21,11 +21,12 @@ class CaseReportModel extends CaseReport {
 
   factory CaseReportModel.fromJson(json) {
 
-    var finishData = Helper.getDateSMSByString(json['casEnterDate']);
+    var finishEnterDate = Helper.getDateSMSByString(json['casEnterDate']);
+    var finishEndDate = json['casEndDate'] != null ? Helper.getDateSMSByString(json['casEndDate']) : null;
 
     return CaseReportModel(
         casId: json['casId'],
-        casEnterDate: finishData,
+        casEnterDate: finishEnterDate,
         casSymptomatology: json['casSymptomatology'],
         casPhysicalState: json['casPhysicalState'],
         casDiagnosis: json['casDiagnosis'],
@@ -34,7 +35,7 @@ class CaseReportModel extends CaseReport {
         casActualRoom: json['casActualRoom'],
         casEntryArea: json['casEntryArea'],
         casEndFlag: json['casEndFlag'],
-        casEndDate: json['casEndDate'],
+        casEndDate: finishEndDate,
         casEndReason: json['casEndReason'],
         casEndDiagnosis: json['casEndDiagnosis'],
     );

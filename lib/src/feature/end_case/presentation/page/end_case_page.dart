@@ -1,8 +1,15 @@
-import 'package:flutter/cupertino.dart';
+import 'package:d_report/src/feature/end_case/data/datasource/remote/end_case_remote_data_source.dart';
+import 'package:d_report/src/feature/end_case/data/repositories/end_case_repository.dart';
+import 'package:d_report/src/feature/end_case/presentation/cubit/end_case_send/end_case_send_state.dart';
+import 'package:d_report/src/shared/presentation/widget/circular_progress_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../widgets/card_patient_summary.dart';
+import '../../../../core/utils/constants/fields_constants.dart';
+import '../../../../shared/domain/entities/auth_user.dart';
+import '../../../../shared/presentation/widget/floating_snackbars.dart';
+import '../../domain/entities/end_reasons.dart';
+import '../cubit/end_case_send/end_case_send_cubit.dart';
 import '../widgets/data_textArea.dart';
 import '../widgets/end_case_status.dart';
 
@@ -16,6 +23,7 @@ class EndCasePage extends StatefulWidget {
 class MyEndCasePage extends State<EndCasePage> {
   final TextEditingController _endDiagnosisData = TextEditingController();
   final ValueNotifier<String?> _endStatusController = ValueNotifier(null);
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -26,61 +34,134 @@ class MyEndCasePage extends State<EndCasePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Fin del caso'),
-        automaticallyImplyLeading: true,
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        centerTitle: true,
-      ),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: Row(
-                children: [Text('Paciente'), Spacer(), Text('Jose    ')],
+    final remoteDataSource = EndCaseRemoteDataSourceImpl();
+    final repository = EndCaseRepositoryImpl(remoteDataSource);
+
+    final size = MediaQuery.of(context).size;
+
+    dynamic arguments = ModalRoute.of(context)?.settings.arguments;
+    AuthUser authUser = arguments["authCredentials"];
+    String patName = arguments["patName"];
+    int patId = arguments["patId"];
+    int casId = arguments["casKey"];
+
+    return BlocProvider(
+        create: (_) => SendEndCaseCubit(endCaseRepositoryImpl: repository),
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Fin del caso'),
+            automaticallyImplyLeading: true,
+            backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+            centerTitle: true,
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: size.height * 0.25,
               ),
+              child: IntrinsicHeight(
+                  child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      child: Row(
+                        children: [
+                          const Text(
+                            'Paciente:',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          const Spacer(),
+                          Text(patName),
+                          const SizedBox(
+                            width: 15,
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Estatus final:',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          const Spacer(),
+                          Flexible(
+                              child: StatusField(
+                            controllerDataDropDown: _endStatusController,
+                          ))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      child: Text(
+                        'Diagnostico',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    CaseDataTextArea(
+                      contextRow: 'Diagnostico Final',
+                      controllerData: _endDiagnosisData,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 40),
+                        child: const Text(
+                          "Utilice este espacio para narrar el final del caso, y describir el padecimiento que realmente tenia el paciente",
+                          textAlign: TextAlign.justify,
+                        )),
+                    const Spacer(),
+                    Expanded(
+                        child: BlocConsumer<SendEndCaseCubit, SendEndCaseState>(
+                      listener: (context, state) {
+                        if (state is SendEndCaseLoaded) {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        } else if (state is SendEndCaseTimeout) {
+                          FloatingWarningSnackBar.show(context, state.sms);
+                        } else if (state is SendEndCaseFail) {
+                          FloatingWarningSnackBar.show(context, state.errorSMS);
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is SendEndCaseInitial) {
+                          return TextButton(
+                              onPressed: () {
+                                if (_endDiagnosisData.text.isNotEmpty &&
+                                    _endStatusController.value!.isNotEmpty) {
+                                  String x = EndReasons.values[endCaseType.indexOf(_endStatusController.value.toString())].name;
+                                  context.read<SendEndCaseCubit>().sendEndCaseData(casId, patId, x, _endDiagnosisData.text, authUser.accessToken);
+                                } else {
+                                  _formKey.currentState?.validate();
+                                }
+                              },
+                              child: const Text('Finalizar'));
+                        } else if (state is SendEndCaseLoading) {
+                          return const Center(
+                            child: CustomCircularProgressBar(),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ))
+                  ],
+                ),
+              )),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: Row(
-                children: [
-                  Text('Estatus final'),
-                  Spacer(),
-                  Flexible(
-                      child: StatusField(
-                    controllerDataDropDown: _endStatusController,
-                  ))
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: Text('Diagnostico'),
-            ),
-            Container(
-                child: CaseDataTextArea(
-              contextRow: 'Diagnostico Final',
-              controllerData: _endDiagnosisData,
-            )),
-            Container(
-              padding: EdgeInsets.symmetric(
-               vertical: 20,
-                horizontal: 40
-              ),
-              child: Text( "Utilice este espacio para narrar el final del caso, y describir el padecimiento que realmente tenia el paciente", textAlign: TextAlign.justify,)
-            ),
-            Spacer(),
-            TextButton(onPressed: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pop();
-            }
-                , child: Text('Finalizar')),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }

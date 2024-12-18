@@ -6,45 +6,43 @@ import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginButton extends StatelessWidget {
+  const LoginButton(
+      {super.key,
+      required this.username,
+      required this.password,
+      required this.formKey,
+      required this.size});
 
-  const LoginButton({super.key, required this.username, required this.password, required this.formKey});
-
+  final Size size;
   final String username;
   final String password;
   final formKey;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        borderRadius: BorderRadius.circular(20.0),
-        clipBehavior: Clip.antiAlias,
-        color: Colors.transparent,
-
+    return Container(
+        padding: EdgeInsets.only(top: size.height / 20, bottom: 0.4),
+        width: size.width * 0.38,
+        height: size.height * 0.105,
         child: MaterialButton(
-          color: Theme
-              .of(context)
-              .colorScheme
-              .primary,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(22.0)),
-          focusColor: Theme
-              .of(context)
-              .colorScheme
-              .inversePrimary,
-          child: const Text(
-              loadData,
+          color: Theme.of(context).colorScheme.primary,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
+          //focusColor: Theme.of(context).colorScheme.inversePrimary,
+          child: Text(loadData,
+              textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Colors.white
-              )
-          ),
+                color: Theme.of(context).textTheme.titleLarge?.color,
+                fontFamily: Theme.of(context).textTheme.titleLarge?.fontFamily,
+                fontSize: 20
+              )),
           onPressed: () {
-            if (username.isNotEmpty && password.isNotEmpty){
+            if (username.isNotEmpty && password.isNotEmpty) {
               context.read<AuthCubit>().login(username, password);
             } else {
               formKey.currentState?.validate();
             }
           },
-        )
-    );
+        ));
   }
 }

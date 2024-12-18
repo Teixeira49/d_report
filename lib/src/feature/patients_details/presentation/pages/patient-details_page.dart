@@ -1,11 +1,13 @@
 import 'package:d_report/src/feature/patients_details/data/datasource/remote/follow_case_remote_data_source.dart';
 import 'package:d_report/src/feature/patients_details/data/repository/follow_case_repository.dart';
 import 'package:d_report/src/feature/patients_details/presentation/cubit/follow_report/follow_report_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
+import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/floating_snackbars.dart';
 import '../../data/datasource/remote/all_case_remote_data_source.dart';
 import '../../data/repository/case_repository.dart';
@@ -164,11 +166,15 @@ class FollowInfo extends StatelessWidget {
     return BlocBuilder<FollowReportCubit, FollowReportState>(
         builder: (context, state) {
       if (state is FollowCaseInitial || state is FollowCaseLoading) {
-        return Center(
-            child: CircularProgressIndicator(
-          // TODO MAKE GLOBAL
-          color: Theme.of(context).colorScheme.primary,
-        ));
+        return const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            CustomCircularProgressBar()
+          ],
+        );
       } else if (state is FollowCaseLoaded) {
         return ListView.builder(
           itemCount: state.followCase.length,
@@ -225,6 +231,7 @@ class PatientInfo extends StatelessWidget {
 
     return BlocBuilder<PatientDataCubit, PatientDataState>(
         builder: (context, state) {
+      print(context);
       if (state is PatientDataInitial || state is PatientDataLoading) {
         return Center(
             child: CircularProgressIndicator(
@@ -293,7 +300,7 @@ class PatientInfo extends StatelessWidget {
             CustomCardPatientRow(
               widgetKey: "Diagnostico Inicial",
               widgetValue: state.caseReport.casDiagnosis.toString(),
-              tileIcon: Icons.local_hospital,
+              tileIcon: Icons.summarize,
             ),
             CustomCardPatientRow(
               widgetKey: "Area de Ingreso del Caso",
@@ -304,6 +311,22 @@ class PatientInfo extends StatelessWidget {
               widgetKey: "Origen de ingreso del paciente",
               widgetValue: state.caseReport.casMethodOfEntry.toString(),
               tileIcon: Icons.people,
+            ),
+            Visibility(
+              visible: state.caseReport.casEndFlag == true,
+              child: CustomCardPatientRow(
+                widgetKey: "Fecha de Cierre",
+                widgetValue: state.caseReport.casEndDate.toString(),
+                tileIcon: Icons.date_range,
+              ),
+            ),
+            Visibility(
+              visible: state.caseReport.casEndFlag == true,
+              child: CustomCardPatientRow(
+                widgetKey: "Diagnostico de Salida",
+                widgetValue: state.caseReport.casEndDiagnosis.toString(),
+                tileIcon: Icons.summarize,
+              ),
             ),
           ],
         );
@@ -317,59 +340,66 @@ class PatientInfo extends StatelessWidget {
                 state.patient.patBirthdayDate,
                 state.caseReport.casEndReason),
             const Spacer(),
-            Container(
-              child: BlocConsumer<EndAssignCubit, EndAssignState>(
+            BlocConsumer<EndAssignCubit, EndAssignState>(
                 listener: (context, state) {
-                  if (state is EndAssignLoaded) {
-                    Navigator.pop(context);
-                    FloatingSnackBar.show(context, 'Se ha retirado del caso correctamente');
-                  } else if (state is EndAssignFail) {
-                    FloatingWarningSnackBar.show(context, state.errorSMS);
-                  }
-                },
-                builder: (context, state) {
-                  return TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: Text("Advertencia"),
-                          backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                          content: const Text(
-                            "Al dejar de seguir el caso, ya no saldra en su ventana principal",
-                            textAlign: TextAlign.justify,
+              if (state is EndAssignLoaded) {
+                Navigator.pop(context);
+                FloatingSnackBar.show(
+                    context, 'Se ha retirado del caso correctamente');
+              } else if (state is EndAssignFail) {
+                FloatingWarningSnackBar.show(context, state.errorSMS);
+              }
+            }, builder: (context, state) {
+              return TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext dialogContext) => AlertDialog(
+                      title: const Text("Advertencia"),
+                      backgroundColor:
+                          Theme.of(dialogContext).scaffoldBackgroundColor,
+                      content: const Text(
+                        "Al dejar de seguir el caso, ya no saldra en su ventana principal",
+                        textAlign: TextAlign.justify,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(dialogContext);
+                          },
+                          child: Text(
+                            'Cancelar',
+                            style: TextStyle(
+                                color: Theme.of(dialogContext)
+                                    .colorScheme
+                                    .secondary),
                           ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'Cancelar',
-                                style: TextStyle(
-                                    color: Theme.of(context).colorScheme.secondary),
-                              ),
-                            ),
-                            TextButton(onPressed: () {
-                              context.read<EndAssignCubit>().fetchEndAssignDetails(caseId, user.userProfileId, authUser.accessToken);
-                            }, child: Text('Confirmar'))
-                          ],
                         ),
-                      );
-                    },
-                    child: Text('Dejar de Seguir'),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop(true);
+                              context
+                                  .read<EndAssignCubit>()
+                                  .fetchEndAssignDetails(caseId,
+                                      user.userProfileId, authUser.accessToken);
+                            },
+                            child: const Text('Confirmar'))
+                      ],
+                    ),
                   );
                 },
-              )
-            ),
-            Container(
+                child: const Text('Desvincular'),
+              );
+            }),
+            Visibility(
+             visible: state.caseReport.casEndFlag != true,
+                child: Container(
               child: TextButton(
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
-                      title: Text("Advertencia"),
+                      title: const Text("Advertencia"),
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
                       content: const Text(
@@ -394,6 +424,10 @@ class PatientInfo extends StatelessWidget {
                                   '/main/patients/details/end-case',
                                   arguments: {
                                     'authCredentials': authUser,
+                                    'patName':
+                                        '${state.patient.patName} ${state.patient.patLastname}',
+                                    'patId': state.patient.patId,
+                                    'casKey': caseId,
                                   });
                             },
                             child: Text('Confirmar'))
@@ -401,9 +435,48 @@ class PatientInfo extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text('Finalizar'),
+                child: const Text('Finalizar'),
               ),
-            )
+            )),
+            Visibility(
+                visible: state.caseReport.casEndFlag == true && authUser.roleId == 3,
+                child: Container(
+                  child: TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text("Aviso"),
+                          backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                          content: const Text(
+                            "Al ejecutar esta accion, se reabrira el caso, y todos los ultimos asignados volveran a verlo en sus cuentas",
+                            textAlign: TextAlign.justify,
+                          ),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Cancelar',
+                                  style: TextStyle(
+                                      color:
+                                      Theme.of(context).colorScheme.secondary),
+                                )),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+
+                                },
+                                child: Text('Confirmar'))
+                          ],
+                        ),
+                      );
+                    },
+                    child: const Text('Reabrir Caso'),
+                  ),
+                )),
           ],
         );
       } else {
