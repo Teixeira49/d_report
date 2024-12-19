@@ -40,6 +40,7 @@ class MyRegisterPageState extends State<RegisterPage> {
   final ValueNotifier<String?> _genderController = ValueNotifier<String?>(null);
   final ValueNotifier<String?> _roleController = ValueNotifier<String?>(null);
 
+  final _formKey = GlobalKey<FormState>();
   final FocusNode _focusNode = FocusNode();
 
   List<Gender> genders = [
