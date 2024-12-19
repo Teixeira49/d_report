@@ -1,3 +1,7 @@
+const double sizeRegisterBalls = 12.5;
+
+const int totalRegisterPages = 4;
+
 const bool obscureTextDefault = false;
 
 const String caseDetails = "Detalles del Caso";

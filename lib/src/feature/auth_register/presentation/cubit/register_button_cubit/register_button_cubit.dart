@@ -12,13 +12,16 @@ class RegisterButtonCubit extends Cubit<RegisterButtonState> {
       emit(RegisterButtonLoading());
       if (currentState < 3) {
         emit(RegisterButtonLoaded('Siguiente Paso'));
-      } else if (currentState == 3) {
-        emit(RegisterButtonLoaded('Registrar cuenta'));
-      } else if (currentState == 4) {
-        emit(RegisterButtonLoaded('Finalizado'));
+      } else if (currentState >= 3) {
+        emit(RegisterButtonLoaded('Finalizar Registro'));
       }
     } catch (e) {
       emit(RegisterButtonError('Error en proceso de registro, intente mas tarde'));
     }
   }
+
+  void forceUpdateCubit(int currentState, ) {
+    selectOperation(currentState);
+  }
+
 }

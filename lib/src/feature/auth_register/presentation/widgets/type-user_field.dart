@@ -17,7 +17,7 @@ class TypeUserDropdownField extends StatelessWidget {
             filled: Theme.of(context).inputDecorationTheme.filled,
             border: Theme.of(context).inputDecorationTheme.border,
             suffixIcon: Icon(
-              Icons.person,
+              Icons.medical_services,
               color: Theme.of(context).iconTheme.color,
             ),
             labelText: role,
