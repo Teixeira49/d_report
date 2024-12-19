@@ -1,6 +1,6 @@
 import 'package:d_report/src/core/config/styles/themes.dart';
 import 'package:d_report/src/feature/auth/presentation/pages/login_page.dart';
-import 'package:d_report/src/feature/auth/presentation/pages/register_page.dart';
+import 'package:d_report/src/feature/auth_register/presentation/page/register_page.dart';
 import 'package:d_report/src/feature/end_case/presentation/page/end_case_page.dart';
 import 'package:d_report/src/feature/find_patient/presentation/pages/find_patient_page.dart';
 import 'package:d_report/src/feature/main_page/presentation/pages/main_page.dart';
