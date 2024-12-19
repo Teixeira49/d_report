@@ -1,5 +1,4 @@
 import 'package:d_report/src/feature/auth/presentation/cubit/login_auth_cubit/auth_user_state.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
@@ -12,13 +11,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import '../../../../core/network/network_info.dart';
-import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/floating_snackbars.dart';
 import '../../data/datasource/remote/auth_user_remote_datasource.dart';
 import '../../data/repository/auth_user_repository_impl.dart';
 import '../cubit/login_auth_cubit/auth_user_cubit.dart';
 import '../widgets/login_button.dart';
+import '../widgets/register_button.dart';
 import '../widgets/password_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -152,17 +151,7 @@ class MyLoginPageState extends State<LoginPage> {
                                               formKey: _formKey,
                                               size: size,
                                             ),
-                                            TextButton(
-                                              child: Text(registerData,
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .tertiary)),
-                                              onPressed: () {
-                                                Navigator.of(context).pushNamed(
-                                                    '/auth/register/');
-                                              },
-                                            ),
+                                            RegisterButton(size: size,)
                                           ],
                                         ))
                             ])))),

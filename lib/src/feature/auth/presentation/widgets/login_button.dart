@@ -21,8 +21,8 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(top: size.height / 20, bottom: 0.4),
-        width: size.width * 0.38,
+        padding: EdgeInsets.only(top: size.height / 20),
+        width: size.width * 0.40,
         height: size.height * 0.105,
         child: MaterialButton(
           color: Theme.of(context).colorScheme.primary,

@@ -31,7 +31,7 @@ abstract class AppTheme {
 
       scaffoldBackgroundColor: const Color.fromRGBO(255, 255, 255, 1.0),
 
-      splashColor: Colors.black26,
+      splashColor: Color.fromRGBO(87, 183, 255, 1.0),
 
       iconTheme: const IconThemeData(
         color: Color.fromRGBO(58, 58, 58, 1.0)
