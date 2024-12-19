@@ -52,7 +52,6 @@ class MyEndCasePage extends State<EndCasePage> {
             title: const Text('Fin del caso'),
             automaticallyImplyLeading: true,
             backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-            centerTitle: true,
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),

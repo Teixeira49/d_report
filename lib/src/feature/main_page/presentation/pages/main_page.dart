@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../shared/data/model/roles.dart';
 import '../../../../shared/domain/entities/user.dart';
+import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/drawer.dart';
 
 import '../../data/datasources/remote/my_cases_remote_data_sources.dart';
@@ -346,11 +347,8 @@ class MyMainPageState extends State<MainPage> {
     AuthUser authUser = argument["AuthCredentials"];
 
     if (state is MyCasesInitial || state is MyCasesLoading) {
-      return Center(
-          child: CircularProgressIndicator(
-        // TODO MAKE GLOBAL
-        color: Theme.of(context).colorScheme.primary,
-      ));
+      return const Center(
+          child: CustomCircularProgressBar());
     } else if (state is MyCasesLoaded) {
       final filteredCases = state.cases
           .where((caseItem) => caseItem.patName

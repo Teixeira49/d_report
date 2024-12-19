@@ -68,7 +68,6 @@ class PatientDetailsPage extends StatelessWidget {
                 }
               }),
               backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-              centerTitle: true,
               automaticallyImplyLeading: true,
             ),
             body: NestedScrollView(

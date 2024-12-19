@@ -52,7 +52,6 @@ class MyNewFollowCasePage extends State<NewFollowCasePage> {
                 .of(context)
                 .appBarTheme
                 .backgroundColor,
-            centerTitle: true,
             automaticallyImplyLeading: true,
           ),
           body: Center(

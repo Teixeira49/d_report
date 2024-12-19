@@ -62,7 +62,6 @@ class MyLoginPageState extends State<LoginPage> {
           title: const Text("D_Project"),
           backgroundColor: Theme.of(context).colorScheme.primary,
           //    .inversePrimary,
-          centerTitle: true,
           automaticallyImplyLeading: false,
         ),*/
 

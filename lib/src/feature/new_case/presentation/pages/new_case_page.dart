@@ -77,7 +77,6 @@ class MyNewCasePageState extends State<NewCasePage> {
             style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          centerTitle: true,
           automaticallyImplyLeading: true,
         ),
         body: BlocConsumer<NewCasePatientCubit, NewCasePatientState>(

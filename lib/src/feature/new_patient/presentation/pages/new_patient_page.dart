@@ -73,7 +73,6 @@ class MyNewPatientPageState extends State<NewPatientPage> {
             style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {
