@@ -109,7 +109,7 @@ class MyRegisterPageState extends State<RegisterPage> {
                       Navigator.pop(context);
                     }
                   },
-                  icon: const Icon(Icons.arrow_back)),
+                  icon: const Icon(Icons.arrow_back), color: Theme.of(context).colorScheme.primaryContainer,),
               title: Text(
                 registerData + space + user,
                 style: Theme.of(context).appBarTheme.titleTextStyle,
