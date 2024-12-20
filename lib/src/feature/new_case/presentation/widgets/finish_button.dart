@@ -15,7 +15,8 @@ class FinishRegisterCaseButton extends StatelessWidget {
       required this.casEntryArea,
       required this.patData,
       required this.docId,
-      required this.accessToken});
+      required this.accessToken,
+      required this.size,});
 
   final int docId;
   final String casSymptomatology;
@@ -26,21 +27,25 @@ class FinishRegisterCaseButton extends StatelessWidget {
   final String casEntryArea;
   final Map<String, dynamic> patData;
   final String accessToken;
+  final Size size;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        borderRadius: BorderRadius.circular(20.0),
-        clipBehavior: Clip.antiAlias,
-        color: Colors.transparent,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.tertiary,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(22.0)),
-          ),
-          child: Text("Guardar Paciente",
-              style: Theme.of(context).textTheme.titleSmall),
+    return Container(
+        padding: EdgeInsets.only(top: size.height / 20),
+        width: size.width * 0.50,
+        height: size.height * 0.105,
+        child: MaterialButton(
+          color: Theme.of(context).colorScheme.primary,
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
+          child:  Text("Guardar Paciente",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Theme.of(context).textTheme.titleLarge?.color,
+                  fontFamily: Theme.of(context).textTheme.titleLarge?.fontFamily,
+                  fontSize: 20
+              )),
           onPressed: () {
             print(docId.runtimeType);
             Map<String, dynamic> casData = {
