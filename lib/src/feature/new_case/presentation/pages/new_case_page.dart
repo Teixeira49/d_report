@@ -199,12 +199,8 @@ class MyNewCasePageState extends State<NewCasePage> {
             visible: keyboardEnabled == 0,
             child:
                 Positioned(
-                    bottom: 10,
-                    child:
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: size.height * 0.010),
-                      child: (state is NewCasePatientLoading)
+                    bottom: 30,
+                    child: (state is NewCasePatientLoading)
                           ? const CircularProgressIndicator()
                           : FinishRegisterCaseButton(
                         patData: patData,
@@ -227,7 +223,7 @@ class MyNewCasePageState extends State<NewCasePage> {
                         size: size,
                       ),
                     )
-                )),]);
+                ),]);
           },
         ),
       ),
