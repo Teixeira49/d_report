@@ -7,7 +7,7 @@ import '../../../domain/entities/patient.dart';
 import '../../model/patient_model.dart';
 
 abstract class FindPatientRemoteDataSource {
-  Future<List<Patient>> searchPatients(
+  Future<List<SearchPatient>> searchPatients(
       String query, int searchKey, String accessToken);
 }
 
@@ -21,7 +21,7 @@ class FindPatientRemoteDataSourceImpl implements FindPatientRemoteDataSource {
   bool get isFetching => _isFetching;
 
   @override
-  Future<List<Patient>> searchPatients(
+  Future<List<SearchPatient>> searchPatients(
       String query, int searchKey, String accessToken) async {
     if (!_isFetching) {
       _isFetching = true;
@@ -30,7 +30,7 @@ class FindPatientRemoteDataSourceImpl implements FindPatientRemoteDataSource {
     const r = RetryOptions(maxAttempts: 3);
 
     final resp = await r.retry(() => dio.get(
-            'http://192.168.30.196:9004/api/cases/search',
+            'http://192.168.30.196:9004/api/patients/search',
             options: Options(
               sendTimeout: const Duration(seconds: 2),
               receiveTimeout: const Duration(seconds: 2),
@@ -53,6 +53,7 @@ class FindPatientRemoteDataSourceImpl implements FindPatientRemoteDataSource {
 
     _page++;
 
+    print(resp.data);
     print('Mis items $items');
 
     return items;

@@ -1,5 +1,5 @@
+import 'package:d_report/src/core/helpers/helpers.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class HeaderDetails extends StatelessWidget {
   final context;
@@ -14,20 +14,8 @@ class HeaderDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var temp = agePatient.split('T')[0];
-    DateFormat time = DateFormat("yyyy-MM-dd");
-    DateTime birthdayTemp = time.parse(temp);
-    DateTime nowTemp = DateTime.now();
 
-    var age = nowTemp.year - birthdayTemp.year;
-    if (nowTemp.year - birthdayTemp.year <= 0 &&
-        (nowTemp.month - birthdayTemp.month == 0 &&
-            nowTemp.day - birthdayTemp.day < 0)) {
-      age--;
-    }
-    print(age);
-    print(birthdayTemp);
-
+    var age = Helper.getAgeByDateInString(agePatient);
     var caseStatus = status ?? "Activo";
 
     return Column(

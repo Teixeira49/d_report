@@ -16,7 +16,6 @@ class MyCasesLoaded extends MyCasesState {
   MyCasesLoaded({required this.cases, this.filter = ''});
 
   MyCasesLoaded copyWith({List<CaseSimple>? cases, String? filter}) {
-    print(this.filter);
     return MyCasesLoaded(
       cases: cases ?? this.cases,
       filter: filter ?? this.filter,

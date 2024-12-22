@@ -1,7 +1,6 @@
 import 'package:d_report/src/shared/domain/entities/auth_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:d_report/src/feature/main_page/domain/entities/patient.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../shared/data/model/roles.dart';
@@ -14,7 +13,6 @@ import '../../data/repositories/my_cases_repository_impl.dart';
 import '../cubit/my_cases/my_cases_cubit.dart';
 import '../cubit/my_cases/my_cases_state.dart';
 import '../widgets/case_tile_copy.dart';
-import '../widgets/current_case.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -60,7 +58,8 @@ class MyMainPageState extends State<MainPage> {
     setState(() {
       _isSearching = !_isSearching;
       if (_isSearching) {
-        Future.delayed(Duration(milliseconds: 100), () {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          // TODO Make Constant file
           _focusNode.requestFocus();
         });
       } else {
@@ -82,27 +81,6 @@ class MyMainPageState extends State<MainPage> {
     AuthUser authUser = argument["AuthCredentials"];
 
     final size = MediaQuery.of(context).size;
-
-    //List<Patients> patients = [];
-    /*List<Patient> regularP = [
-      Patient(id: 1, name: "Jose", lastname: "Peres", age: 15, codHab: 'A-606'),
-      Patient(id: 2, name: "Manu", lastname: "Peres", age: 15, codHab: 'A-606'),
-      Patient(
-          id: 3, name: "Miguel", lastname: "Peres", age: 15, codHab: 'A-606'),
-      Patient(id: 4, name: "Leo", lastname: "Peres", age: 15, codHab: 'A-606'),
-    ];
-    List<Patient> currentP = [
-      Patient(id: 5, name: "A", lastname: "Peres", age: 15, codHab: 'A-606'),
-      Patient(id: 6, name: "B", lastname: "Peres", age: 15, codHab: 'A-606'),
-      Patient(id: 7, name: "C", lastname: "Peres", age: 15, codHab: 'A-606'),
-      Patient(id: 8, name: "D", lastname: "Peres", age: 15, codHab: 'A-606'),
-    ];
-
-    List<Widget> pages = [
-      CurrentCasesPage(regularP),
-      CurrentCasesPage(currentP)
-    ];
-*/
 
     return BlocProvider(
         create: (_) => MyCasesCubit(repository)
@@ -146,13 +124,9 @@ class MyMainPageState extends State<MainPage> {
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none,
                           ),
-                          //focusedBorder: UnderlineInputBorder(
-                          //    borderSide: BorderSide(color: Colors.white)),
-                          //enabledBorder: UnderlineInputBorder(
-                          //    borderSide: BorderSide(color: Colors.white)),
                         ),
                       ),
-                    )
+                    ) // TODO MAKE WIDGET IN SHARE
                   : Row(
                       children: [
                         GestureDetector(
@@ -269,7 +243,11 @@ class MyMainPageState extends State<MainPage> {
                                     onTap: () {
                                       Navigator.pop(context);
                                       Navigator.of(context).pushNamed(
-                                          '/main/new-case/find-patient');
+                                          '/main/new-case/find-patient',
+                                          arguments: {
+                                            "userData": user,
+                                            "AuthCredentials": authUser,
+                                          });
                                     },
                                   ),
                                 )
@@ -296,12 +274,11 @@ class MyMainPageState extends State<MainPage> {
                           });
                       break;
                     case 0:
-                      Navigator.of(context).pushReplacementNamed(
-                          '/main/patients/',
-                          arguments: {
-                            "userData": user,
-                            "AuthCredentials": authUser
-                          });
+                      Navigator.of(context)
+                          .pushReplacementNamed('/main/patients/', arguments: {
+                        "userData": user,
+                        "AuthCredentials": authUser
+                      });
                       break;
                   }
                 }
@@ -314,12 +291,6 @@ class MyMainPageState extends State<MainPage> {
                   ThemeData().bottomNavigationBarTheme.selectedLabelStyle,
               currentIndex: _currentPage,
               items: [
-                /*BottomNavigationBarItem(
-              icon: Icon(
-                  Icons.stacked_bar_chart_rounded
-              ),
-              label: 'Statistics',
-            ),*/
                 BottomNavigationBarItem(
                   icon: _currentPage == 1
                       ? const Icon(Icons.other_houses_outlined)
@@ -347,8 +318,7 @@ class MyMainPageState extends State<MainPage> {
     AuthUser authUser = argument["AuthCredentials"];
 
     if (state is MyCasesInitial || state is MyCasesLoading) {
-      return const Center(
-          child: CustomCircularProgressBar());
+      return const Center(child: CustomCircularProgressBar());
     } else if (state is MyCasesLoaded) {
       final filteredCases = state.cases
           .where((caseItem) => caseItem.patName

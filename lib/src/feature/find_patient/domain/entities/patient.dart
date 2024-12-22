@@ -1,4 +1,4 @@
-class Patient {
+class SearchPatient {
 
   final String patName;
   final String patLastName;
@@ -8,8 +8,9 @@ class Patient {
   final String? patBirthdayPlace;
   final int patGuardianDni;
   final String patBloodType;
+  bool patIsSelected = false;
 
-  Patient(
+  SearchPatient(
       {
         required  this .patName,
         required  this .patLastName,

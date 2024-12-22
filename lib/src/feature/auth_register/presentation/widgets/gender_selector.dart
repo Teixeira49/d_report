@@ -1,5 +1,3 @@
-
-
 import 'package:d_report/src/feature/auth_register/domain/entities/gender.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';

@@ -16,9 +16,9 @@ class FindPatientRepositoryImpl implements FindPatientRepository {
   });
 
   @override
-  Future<Either<Failure, List<Patient>>> searchPatients(String query, int searchKey, String accessToken) async {
+  Future<Either<Failure, List<SearchPatient>>> searchPatients(String query, int searchKey, String accessToken) async {
     try {
-      final List<Patient> resp = await findPatientRemoteDataSource.searchPatients(query, searchKey, accessToken);
+      final List<SearchPatient> resp = await findPatientRemoteDataSource.searchPatients(query, searchKey, accessToken);
       return Right(resp);
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));
