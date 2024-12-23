@@ -176,7 +176,7 @@ class MyMainPageState extends State<MainPage> {
                         .read<MyCasesCubit>()
                         .refreshCases(user.userProfileId, authUser.accessToken);
                   },
-                  child: _buildCasesList(state),
+                  child: _buildCasesList(state, context),
                 ) //;
                 //},
                 //),
@@ -311,7 +311,7 @@ class MyMainPageState extends State<MainPage> {
         }));
   }
 
-  Widget _buildCasesList(MyCasesState state) {
+  Widget _buildCasesList(MyCasesState state, BuildContext context) {
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
 
     User user = argument["userData"];
