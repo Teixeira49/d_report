@@ -220,6 +220,7 @@ class MyMainPageState extends State<MainPage> {
                                         'Crear Caso - Nuevo Paciente'),
                                     dense: true,
                                     tileColor: Colors.transparent,
+                                    trailing: const Icon(Icons.create_new_folder),
                                     onTap: () {
                                       Navigator.pop(context);
                                       Navigator.of(context).pushNamed(
@@ -240,6 +241,7 @@ class MyMainPageState extends State<MainPage> {
                                         'Crear Caso - Paciente Existente'),
                                     dense: true,
                                     tileColor: Colors.transparent,
+                                    trailing: const Icon(Icons.folder_shared),
                                     onTap: () {
                                       Navigator.pop(context);
                                       Navigator.of(context).pushNamed(
