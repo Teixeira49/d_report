@@ -82,6 +82,16 @@ class MyNewPatientPageState extends State<NewPatientPage> {
               Navigator.pop(context);
             },
           ),
+          actions: [
+            IconButton(onPressed: () {
+              Navigator.of(context).pushReplacementNamed(
+                  '/main/new-case/find-patient',
+                  arguments: {
+                    "userData": user,
+                    "AuthCredentials": authUser,
+                  });
+            }, icon: const Icon(Icons.cached))
+          ],
         ),
         body: BlocConsumer<CheckPatientCubit, CheckPatientState>(
           listener: (context, state) {

@@ -1,4 +1,5 @@
 import 'package:d_report/src/feature/find_patient/data/datasource/remote/find_patient_remote_datasource.dart';
+import 'package:d_report/src/feature/find_patient/domain/entities/patient.dart';
 import 'package:d_report/src/shared/presentation/widget/circular_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../shared/data/model/search_key.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
+import '../../../../shared/presentation/widget/floating_snackbars.dart';
 import '../../data/repository/find_patient_repository_impl.dart';
 import '../cubit/search_patient/search_patient_cubit.dart';
 import '../cubit/search_patient/search_patient_state.dart';
@@ -26,8 +29,9 @@ class FindPatientPage extends StatefulWidget {
 
 class MyFindPatientPageState extends State<FindPatientPage> {
   bool _isSearching = false;
+  bool _finishSearch = false;
   TextInputType _inputSearchType = TextInputType.text;
-  int _selectedIndex = -1;
+  int _selectedIndex = SearchKeys.DEFAULT.index;
 
   int _tempIndexSelectedPatient = -1;
 
@@ -63,20 +67,39 @@ class MyFindPatientPageState extends State<FindPatientPage> {
 
   void _onButtonPressed(int index) {
     setState(() {
-      _searchController.clear();
-      _selectedIndex = index;
-      if (index == 1 || index == 2) {
-        _inputSearchType = TextInputType.number;
+      if (_selectedIndex != index) {
+        _searchController.clear();
+        _focusNode.unfocus();
+        _selectedIndex = index;
+        if (index == SearchKeys.DNI.index ||
+            index == SearchKeys.GUARDIAN_DNI.index) {
+          _inputSearchType = TextInputType.number;
+        } else {
+          _inputSearchType = TextInputType.text;
+        }
+        Future.delayed(const Duration(milliseconds: 100), () {
+          // TODO Make Constant file
+          _focusNode.requestFocus();
+        });
       } else {
+        _focusNode.unfocus();
+        _selectedIndex = SearchKeys.DEFAULT.index;
         _inputSearchType = TextInputType.text;
+        Future.delayed(const Duration(milliseconds: 100), () {
+          // TODO Make Constant file
+          _focusNode.requestFocus();
+        });
       }
     });
     if (!_isSearching) {
       Future.delayed(const Duration(milliseconds: 280), () {
+        // TODO MAKE CONSTANT
         _switchSearchState();
       });
     }
   }
+
+  List<SearchPatient> filteredCases = [];
 
   @override
   Widget build(BuildContext context) {
@@ -92,166 +115,189 @@ class MyFindPatientPageState extends State<FindPatientPage> {
     final repository = FindPatientRepositoryImpl(
         findPatientRemoteDataSource: findPatientCaseDataSource);
 
+    void finisherSearch() {
+      Map<String, dynamic> x = {
+        'patName': filteredCases[_tempIndexSelectedPatient].patName,
+        'patLastName':
+        filteredCases[_tempIndexSelectedPatient].patLastName,
+        'patDni': filteredCases[_tempIndexSelectedPatient].patDni,
+        'patGender': filteredCases[_tempIndexSelectedPatient].patGender,
+        'patBirthdayDate':
+        filteredCases[_tempIndexSelectedPatient].patBirthdayDate,
+        'patBirthdayPlace':
+        filteredCases[_tempIndexSelectedPatient].patBirthdayPlace,
+        'patGuardianDni':
+        filteredCases[_tempIndexSelectedPatient].patGuardianDni,
+        'patBloodType':
+        filteredCases[_tempIndexSelectedPatient].patBloodType,
+      };
+
+      Navigator.of(context)
+          .pushNamed('/main/new-case/add-case', arguments: {
+        "userData": user,
+        "AuthCredentials": authUser,
+        "patient": x,
+      });
+    }
     return BlocProvider(
         create: (_) => FindPatientCubit(repository),
         child: BlocConsumer<FindPatientCubit, FindPatientState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              return Scaffold(
-                  appBar: AppBar(
-                    title: _isSearching
-                        ? Container(
-                            padding: const EdgeInsets.only(right: 12),
-                            width: double.infinity,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).listTileTheme.tileColor,
-                              borderRadius: BorderRadius.circular(30),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: TextFormField(
-                              controller: _searchController,
-                              focusNode: _focusNode,
-                              keyboardType: _inputSearchType,
-                              onChanged: (value) {
-                                context.read<FindPatientCubit>().findPatients(
-                                    _searchController.text,
-                                    9,
-                                    authUser.accessToken); //_selectedIndex
-                              },
-                              onEditingComplete: () {},
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
-                                hintText: 'Buscar Paciente',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Text(
-                            registerData + space + patient,
-                            style: Theme.of(context).appBarTheme.titleTextStyle,
-                          ),
-                    backgroundColor:
-                        Theme.of(context).appBarTheme.backgroundColor,
-                    leading: IconButton(
-                      icon: !_isSearching
-                          ? const Icon(Icons.close)
-                          : const Icon(Icons.arrow_back),
-                      onPressed: () {
-                        if (_isSearching) {
-                          _switchSearchState();
-                        } else {
-                          Navigator.of(context).pop();
-                        }
-                      },
-                    ),
-                    actions: [
-                      !_isSearching
-                          ? IconButton(
-                              onPressed: () {
-                                _switchSearchState();
-                              },
-                              icon: const Icon(Icons.search))
-                          : Container()
-                    ],
-                  ),
-                  body: Column(
-                    //alignment: Alignment.topCenter,
-                    children: [
-                      //SingleChildScrollView(
-                      //child: //Column(
-                      //mainAxisAlignment: MainAxisAlignment.start,
-                      //mainAxisSize: MainAxisSize.max,
-                      //children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.010,
-                          vertical: size.height * 0.024,
-                        ),
-                        child: Text(
-                          "Buscar paciente ya registrado",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.075,
-                          vertical: size.height * 0.010,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomSelectButton(
-                              index: 1,
-                              name: 'Cedula Paciente',
-                              selectIndex: _selectedIndex,
-                              onPressed: () => _onButtonPressed(1),
-                            ),
-                            CustomSelectButton(
-                              index: 2,
-                              name: 'Cedula Reptt.',
-                              selectIndex: _selectedIndex,
-                              onPressed: () => _onButtonPressed(2),
-                            ),
-                            CustomSelectButton(
-                              index: 3,
-                              name: 'Nombre Paciente',
-                              selectIndex: _selectedIndex,
-                              onPressed: () => _onButtonPressed(3),
+            listener: (context, state) {
+          if (state is FindPatientFail) {
+            FloatingWarningSnackBar.show(context, state.errorSMS);
+          } else if (state is FindPatientTimeout) {
+            FloatingWarningSnackBar.show(context, state.errorSMS);
+          }
+        }, builder: (context, state) {
+          return Scaffold(
+              appBar: AppBar(
+                title: _isSearching
+                    ? Container(
+                        padding: const EdgeInsets.only(right: 12),
+                        width: double.infinity,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).listTileTheme.tileColor,
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
                             ),
                           ],
                         ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.1,
-                          vertical: size.height * 0.010,
-                        ),
-                        child: Text(
-                          "Seleccione la clave de busqueda que usara para encontrar su paciente.",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ),
-                      Expanded(child: _buildSearchedPatients(state)),
-                      //],
-                      //),
-                      //),
-                      /*Center(
-                        child: SingleChildScrollView(
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                              minHeight: size.height * 0.25,
-                            ),
-                            child: IntrinsicHeight(
-                              child: ListView(),
-                              ),
+                        child: TextFormField(
+                          controller: _searchController,
+                          focusNode: _focusNode,
+                          keyboardType: _inputSearchType,
+                          onChanged: (value) {
+                            _tempIndexSelectedPatient = -1;
+                            context.read<FindPatientCubit>().findPatients(
+                                _searchController.text,
+                                _selectedIndex,
+                                authUser.accessToken); //_selectedIndex
+                          },
+                          onEditingComplete: () {},
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            hintText: 'Buscar Paciente',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide.none,
                             ),
                           ),
-                        ),*/
-                      Visibility(
-                          visible: keyboardEnabled == 0,
-                          child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 30.0),
-                                child:
-                                    NextStateButton(size: size, selected: _tempIndexSelectedPatient),
-                              )))
-                    ],
-                  ));
-            }));
+                        ),
+                      )
+                    : Text(
+                        registerData + space + patient,
+                        style: Theme.of(context).appBarTheme.titleTextStyle,
+                      ),
+                backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                leading: IconButton(
+                  icon: !_isSearching
+                      ? const Icon(Icons.close)
+                      : const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    if (_isSearching) {
+                      _switchSearchState();
+                    } else {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+                actions: !_isSearching
+                    ? [
+                        IconButton(
+                            onPressed: () {
+                              _switchSearchState();
+                            },
+                            icon: const Icon(Icons.search)),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pushReplacementNamed(
+                                  '/main/new-case/new-patient',
+                                  arguments: {
+                                    "userData": user,
+                                    "AuthCredentials": authUser,
+                                  });
+                            },
+                            icon: const Icon(Icons.cached)),
+                      ]
+                    : [],
+              ),
+              body: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.010,
+                      vertical: size.height * 0.024,
+                    ),
+                    child: Text(
+                      "Buscar paciente ya registrado",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.075,
+                      vertical: size.height * 0.010,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomSelectButton(
+                          index: SearchKeys.DNI.index,
+                          name: 'Cedula Paciente',
+                          selectIndex: _selectedIndex,
+                          onPressed: () =>
+                              _onButtonPressed(SearchKeys.DNI.index),
+                        ),
+                        CustomSelectButton(
+                          index: SearchKeys.GUARDIAN_DNI.index,
+                          name: 'Cedula Reptt.',
+                          selectIndex: _selectedIndex,
+                          onPressed: () =>
+                              _onButtonPressed(SearchKeys.GUARDIAN_DNI.index),
+                        ),
+                        CustomSelectButton(
+                          index: SearchKeys.FULL_NAME.index,
+                          name: 'Nombre Paciente',
+                          selectIndex: _selectedIndex,
+                          onPressed: () =>
+                              _onButtonPressed(SearchKeys.FULL_NAME.index),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.1,
+                      vertical: size.height * 0.010,
+                    ),
+                    child: Text(
+                      "Seleccione la clave de busqueda que usara para encontrar su paciente.",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                  Expanded(child: _buildSearchedPatients(state)),
+                  Visibility(
+                      visible: keyboardEnabled == 0,
+                      child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 30.0),
+                            child: NextStateButton(
+                                size: size,
+                                selected: _tempIndexSelectedPatient,
+                                endFindPatient: finisherSearch,),
+                          )))
+                ],
+              ));
+        }));
   }
 
   Widget _buildSearchedPatients(FindPatientState state) {
@@ -272,11 +318,12 @@ class MyFindPatientPageState extends State<FindPatientPage> {
         child: CustomCircularProgressBar(),
       );
     } else if (state is FindPatientLoaded) {
-      var filteredCases = state.patients
+      filteredCases = (state.patients
           .where((caseItem) => caseItem.patName
               .toLowerCase()
               .contains(state.filter.toLowerCase()))
-          .toList();
+          .toList());
+
       return GestureDetector(
         onVerticalDragDown: (DragDownDetails details) {
           if (details.globalPosition.dy < 50) {
@@ -320,7 +367,7 @@ class MyFindPatientPageState extends State<FindPatientPage> {
           ],
         ),
       ));
-    } else if (state is FindPatientTimeout || state is FindPatientFail) {
+    } else if (state is FindPatientTimeout) {
       return Center(
           child: SingleChildScrollView(
               child: Column(
@@ -329,7 +376,19 @@ class MyFindPatientPageState extends State<FindPatientPage> {
           Container(
             child: Image.asset('assets/images/not_found_logo.png'),
           ),
-          const Text('Error en el Sistema'),
+          Text(state.errorSMS),
+        ],
+      )));
+    } else if (state is FindPatientFail) {
+      return Center(
+          child: SingleChildScrollView(
+              child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            child: Image.asset('assets/images/not_found_logo.png'),
+          ),
+          Text(state.errorSMS),
         ],
       )));
     } else {

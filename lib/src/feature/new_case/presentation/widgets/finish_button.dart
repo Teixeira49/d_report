@@ -59,6 +59,7 @@ class FinishRegisterCaseButton extends StatelessWidget {
               'casMethodOfEntry': 'New'
             };
 
+            print(casData);
             context
                 .read<NewCasePatientCubit>()
                 .createNewCaseByNewPatient(patData, casData, accessToken);

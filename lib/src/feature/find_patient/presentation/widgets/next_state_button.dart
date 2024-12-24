@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class NextStateButton extends StatelessWidget {
-  const NextStateButton({super.key, required this.size, required this.selected});
+  const NextStateButton({super.key, required this.size, required this.selected, required this.endFindPatient});
 
   final Size size;
   final int selected;
+  final VoidCallback endFindPatient;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +30,7 @@ class NextStateButton extends StatelessWidget {
           ),
           onPressed: () {
             if (selected != -1) {
-              Navigator.of(context).pushNamed(
-                '/main/new-case/add-case',
-              );
+              endFindPatient();
             }
           },
         )
