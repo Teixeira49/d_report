@@ -3,6 +3,7 @@ import 'package:retry/retry.dart';
 import 'package:dio/dio.dart';
 
 
+import '../../../../../core/utils/constants/network_constants.dart';
 import '../../../domain/entities/patient.dart';
 import '../../model/patient_model.dart';
 
@@ -30,7 +31,7 @@ class FindPatientRemoteDataSourceImpl implements FindPatientRemoteDataSource {
     const r = RetryOptions(maxAttempts: 3);
 
     final resp = await r.retry(() => dio.get(
-            'http://192.168.30.196:9004/api/patients/search',
+            '$apiUrl/patients/search',
             options: Options(
               sendTimeout: const Duration(seconds: 2),
               receiveTimeout: const Duration(seconds: 2),

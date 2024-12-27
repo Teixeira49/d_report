@@ -1,3 +1,4 @@
+import 'package:d_report/src/core/utils/constants/network_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
 
@@ -32,7 +33,7 @@ class FollowCaseDataSourceImpl implements FollowCaseRemoteDataSource{
     print(FollowModel.fromBodyJson(data).toJson());
 
     final resp = await r.retry(() => dio.post(
-      'http://192.168.30.196:9004/api/cases/operations/follows/add', // TODO Create a Global with route
+      '$apiUrl/cases/operations/follows/add',
       options: Options(
         sendTimeout: const Duration(seconds: 3),
         receiveTimeout: const Duration(seconds: 3),

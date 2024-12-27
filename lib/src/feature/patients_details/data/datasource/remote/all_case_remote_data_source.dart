@@ -1,3 +1,4 @@
+import 'package:d_report/src/core/utils/constants/network_constants.dart';
 import 'package:d_report/src/shared/data/model/case_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
@@ -32,7 +33,7 @@ class AllCaseRemoteDataSourceImpl implements AllCaseRemoteDataSource{
 
 
     final resp = await r.retry(() => dio.get(
-      'http://192.168.30.196:9004/api/cases/find-by/cas-id/$casId/',
+      '$apiUrl/cases/find-by/cas-id/$casId/',
       options: Options(
         sendTimeout: const Duration(seconds: 3),
         receiveTimeout: const Duration(seconds: 3),
@@ -54,8 +55,7 @@ class AllCaseRemoteDataSourceImpl implements AllCaseRemoteDataSource{
     const r = RetryOptions(maxAttempts: 3);
 
     final resp = await r.retry(() =>
-        dio.put('http://192.168.30.196:9004/api/cases/operations/end-assign',
-            // TODO Create a Global with route
+        dio.put('$apiUrl/cases/operations/end-assign',
             options: Options(
               sendTimeout: const Duration(seconds: 3),
               receiveTimeout: const Duration(seconds: 3),
