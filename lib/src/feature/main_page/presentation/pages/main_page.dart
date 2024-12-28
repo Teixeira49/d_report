@@ -93,7 +93,6 @@ class MyMainPageState extends State<MainPage> {
               automaticallyImplyLeading: false,
               title: _isSearching || _currentPage == 1
                   ? Container(
-                      padding: const EdgeInsets.only(right: 12),
                       width: double.infinity,
                       height: 40,
                       decoration: BoxDecoration(
@@ -120,6 +119,20 @@ class MyMainPageState extends State<MainPage> {
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 20),
                           hintText: 'Buscar Paciente',
+                          prefixIcon: IconButton(
+                            icon: const Icon(Icons.arrow_back),
+                            onPressed: () {
+                              switchSearchState();
+                              _searchController.clear();
+                              context.read<MyCasesCubit>().updateFilter('');
+                            },
+                          ),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              _searchController.clear();
+                            },
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none,
@@ -148,14 +161,7 @@ class MyMainPageState extends State<MainPage> {
                     ),
               actions: [
                 _isSearching
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          switchSearchState();
-                          _searchController.clear();
-                          context.read<MyCasesCubit>().updateFilter('');
-                        },
-                      )
+                    ? Container()
                     : IconButton(
                         icon: const Icon(Icons.search),
                         onPressed: () {
@@ -176,7 +182,10 @@ class MyMainPageState extends State<MainPage> {
                         .read<MyCasesCubit>()
                         .refreshCases(user.userProfileId, authUser.accessToken);
                   },
-                  child: _buildCasesList(state, context),
+                  child: Center(
+                    child: _buildCasesList(state, context),
+                  )
+
                 ) //;
                 //},
                 //),
@@ -341,26 +350,29 @@ class MyMainPageState extends State<MainPage> {
                 CaseTile(context, filteredCases[index], authUser, user)),
       );
     } else if (state is MyCasesLoadedButEmpty) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/images/not_found_logo.png",
-          ),
-          Text(state.sms),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () async {
-              await context
-                  .read<MyCasesCubit>()
-                  .refreshCases(user.userProfileId, authUser.accessToken);
-            },
-            child: const Text('Reintentar'),
-          ),
-        ],
+      return SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/images/not_found_logo.png",
+            ),
+            Text(state.sms),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                await context
+                    .read<MyCasesCubit>()
+                    .refreshCases(user.userProfileId, authUser.accessToken);
+              },
+              child: const Text('Reintentar'),
+            ),
+          ],
+        ),
       );
     } else if (state is MyCasesTimeout) {
-      return Column(
+      return SingleChildScrollView(
+          child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
@@ -377,9 +389,10 @@ class MyMainPageState extends State<MainPage> {
             child: const Text('Reintentar'),
           ),
         ],
-      );
+      ));
     } else if (state is MyCasesFail) {
-      return Column(
+      return SingleChildScrollView(
+          child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
@@ -399,7 +412,7 @@ class MyMainPageState extends State<MainPage> {
             child: const Text('Reintentar'),
           ),
         ],
-      );
+      ));
     } else {
       return Container();
     }
