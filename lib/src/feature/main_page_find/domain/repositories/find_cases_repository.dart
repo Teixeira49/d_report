@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import '../../../../core/network/error/failures.dart';
 import '../entities/case_simple.dart';
 
-abstract class MyCasesRepository {
+abstract class FindCasesRepository {
 
-  Future<Either<Failure, List<CaseSimple>>> getMyCasesById(int docId, String accessToken);
+  Future<Either<Failure, List<CaseSimple>>> searchCasesByKey(String query, int searchKey, String accessToken);
 
   Future<Either<Failure, bool>> saveLocalMyCase(Page<CaseSimple> caseSimple);
 

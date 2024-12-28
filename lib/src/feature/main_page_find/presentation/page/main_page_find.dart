@@ -2,13 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../shared/data/model/search_key.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
+import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/drawer.dart';
 import '../../data/datasources/my_cases_remote_data_sources.dart';
 import '../../data/repositories/my_cases_repository_impl.dart';
 import '../cubit/find_case/find_cases_cubit.dart';
 import '../cubit/find_case/find_cases_state.dart';
+import '../widget/case_tile_copy.dart';
 
 class MainPageFind extends StatefulWidget {
   const MainPageFind({super.key});
@@ -20,6 +23,7 @@ class MainPageFind extends StatefulWidget {
 class MyMainPageFindState extends State<MainPageFind> {
   int _currentPage = 1;
   bool _isSearching = false;
+  int _selectedIndex = SearchKeys.DEFAULT.index;
 
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
@@ -66,9 +70,9 @@ class MyMainPageFindState extends State<MainPageFind> {
 
   @override
   Widget build(BuildContext context) {
-    final remoteDataSource = MyCasesRemoteDataSourceImpl();
+    final remoteDataSource = FindCasesRemoteDataSourceImpl();
     final repository =
-        MyCasesRepositoryImpl(myCasesRemoteDataSource: remoteDataSource);
+        FindCasesRepositoryImpl(myCasesRemoteDataSource: remoteDataSource);
 
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
 
@@ -78,7 +82,7 @@ class MyMainPageFindState extends State<MainPageFind> {
     final size = MediaQuery.of(context).size;
 
     return BlocProvider(
-        create: (_) => FindCasesCubit(),
+        create: (_) => FindCasesCubit(repository),
         child: BlocBuilder<FindCasesCubit, FindCasesState>(
             builder: (context, state) {
           return Scaffold(
@@ -101,17 +105,27 @@ class MyMainPageFindState extends State<MainPageFind> {
                     ),
                   ],
                 ),
-                child: TextField(
+                child: //ListTile(),
+                TextFormField(
                   controller: _searchController,
                   focusNode: _focusNode,
                   onChanged: (value) {
-                    //context.read<MyCasesCubit>().updateFilter(value);
+                    context.read<FindCasesCubit>().fetchSearchCases(_searchController.text, _selectedIndex, authUser.accessToken);
                   },
                   onEditingComplete: () {},
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 20),
                     hintText: 'Buscar Paciente',
+                    prefixIcon: IconButton(
+                      icon: Icon(
+                          Icons.clear,
+                          color: Theme.of(context).iconTheme.color,
+                      ),
+                      onPressed: () {
+                        _searchController.clear();
+                      },
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                       borderSide: BorderSide.none,
@@ -173,12 +187,12 @@ class MyMainPageFindState extends State<MainPageFind> {
                     ),
                     RefreshIndicator(
                       onRefresh: () async {
-                        //context
-                        //    .read<MyCasesCubit>()
-                        //    .refreshCases(
-                        //    user.userProfileId, authUser.accessToken);
+                        context
+                            .read<FindCasesCubit>()
+                            .refreshCases(
+                            _searchController.text, _selectedIndex, authUser.accessToken);
                       },
-                      child: Container(),
+                      child: _buildCasesList(state, context),
                     )
                   ],
                 )
@@ -237,5 +251,99 @@ class MyMainPageFindState extends State<MainPageFind> {
             ),
           );
         }));
+  }
+
+  Widget _buildCasesList(FindCasesState state, BuildContext context) { // TODO RENAME
+    final argument = ModalRoute.of(context)!.settings.arguments as Map;
+
+    User user = argument["userData"];
+    AuthUser authUser = argument["AuthCredentials"];
+
+    if (state is FindCasesInitial) {
+      return Center(child: Container(child: Text("Ingrese una opcion para buscar"),));
+    } else if (state is FindCasesLoading) {
+      return const Center(child: CustomCircularProgressBar());
+    } else if (state is FindCasesLoaded) {
+      final filteredCases = state.cases
+          .where((caseItem) => caseItem.patName
+          .toLowerCase()
+          .contains(state.filter.toLowerCase()))
+          .toList();
+      return GestureDetector(
+        onVerticalDragDown: (DragDownDetails details) {
+          if (details.globalPosition.dy < 50) {
+            context
+                .read<FindCasesCubit>()
+                .fetchSearchCases(_searchController.text, _selectedIndex, authUser.accessToken);
+          }
+        },
+        child: ListView.builder(
+            itemCount: filteredCases.length,
+            itemBuilder: (context, index) =>
+                CaseTile(context, filteredCases[index], authUser, user)),
+      );
+    } else if (state is FindCasesLoadedButEmpty) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            "assets/images/not_found_logo.png",
+          ),
+          Text(state.sms),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () async {
+              await context
+                  .read<FindCasesCubit>()
+                  .refreshCases(_searchController.text, _selectedIndex, authUser.accessToken);
+            },
+            child: const Text('Reintentar'),
+          ),
+        ],
+      );
+    } else if (state is FindCasesTimeout) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            "assets/images/not_found_logo.png",
+          ),
+          //Text(state.sms),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () async {
+              await context
+                  .read<FindCasesCubit>()
+                  .refreshCases(_searchController.text, _selectedIndex, authUser.accessToken);
+            },
+            child: const Text('Reintentar'),
+          ),
+        ],
+      );
+    } else if (state is FindCasesFail) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            "assets/images/not_found_logo.png",
+          ),
+          Text(
+            state.errorSMS,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () async {
+              await context
+                  .read<FindCasesCubit>()
+                  .fetchSearchCases(_searchController.text, _selectedIndex, authUser.accessToken);
+            },
+            child: const Text('Reintentar'),
+          ),
+        ],
+      );
+    } else {
+      return Container();
+    }
   }
 }

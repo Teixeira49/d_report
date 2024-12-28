@@ -1,24 +1,39 @@
 import 'package:bloc/bloc.dart';
+import 'package:d_report/src/feature/main_page_find/domain/repositories/find_cases_repository.dart';
 
 import 'find_cases_state.dart';
 
 class FindCasesCubit extends Cubit<FindCasesState>{
 
-  FindCasesCubit() : super(FindCasesInitial());
+  FindCasesCubit(this._findCasesRepository) : super(FindCasesInitial());
 
   int _page = 1;
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
 
+  final FindCasesRepository _findCasesRepository;
 
-  Future<void> fetchCases(int docId) async {
+
+  Future<void> fetchSearchCases(String query, int searchKey, String accessToken) async {
 
     if(_isFetching) return;
     _isFetching = true;
 
     try {
 
+      emit(FindCasesLoading());
+
+      print('are[a');
+      final patients = await _findCasesRepository.searchCasesByKey(query, searchKey, accessToken);
+      print('are[a');
+
+      patients.fold(
+              (l) => emit(FindCasesFail(errorSMS: "Error del servidor")),
+              (r) => r.isNotEmpty
+              ? emit(FindCasesLoaded(cases: r))
+              : emit(FindCasesLoadedButEmpty(
+              sms: "Parece que no tienes casos pendientes")));
 
     }catch(e){
       print('Error: $e');
@@ -27,9 +42,9 @@ class FindCasesCubit extends Cubit<FindCasesState>{
       _isFetching = false;
     }
   }
-  Future<void> refreshCases(docId) async {
+  Future<void> refreshCases(String query, int searchKey, String accessToken) async {
     _page = 1;
     emit(FindCasesInitial());
-    await fetchCases(docId);
+    await fetchSearchCases(query, searchKey, accessToken);
   }
 }

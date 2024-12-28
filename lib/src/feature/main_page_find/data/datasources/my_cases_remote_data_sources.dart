@@ -28,9 +28,11 @@ class FindCasesRemoteDataSourceImpl implements FindCasesRemoteDataSource {
 
     const r = RetryOptions(maxAttempts: 3);
 
+    print('a');
+
     final resp = await r.retry(
             () => dio.get(
-          '$apiUrl/api/cases/search',
+          '$apiUrl/cases/search',
           options: Options(
             sendTimeout: const Duration(seconds: 2),
             receiveTimeout: const Duration(seconds: 2),
