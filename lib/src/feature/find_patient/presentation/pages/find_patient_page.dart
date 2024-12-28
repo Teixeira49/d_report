@@ -1,7 +1,6 @@
 import 'package:d_report/src/feature/find_patient/data/datasource/remote/find_patient_remote_datasource.dart';
 import 'package:d_report/src/feature/find_patient/domain/entities/patient.dart';
 import 'package:d_report/src/shared/presentation/widget/circular_progress_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
@@ -29,7 +28,6 @@ class FindPatientPage extends StatefulWidget {
 
 class MyFindPatientPageState extends State<FindPatientPage> {
   bool _isSearching = false;
-  bool _finishSearch = false;
   TextInputType _inputSearchType = TextInputType.text;
   int _selectedIndex = SearchKeys.DEFAULT.index;
 
@@ -153,7 +151,6 @@ class MyFindPatientPageState extends State<FindPatientPage> {
               appBar: AppBar(
                 title: _isSearching
                     ? Container(
-                        padding: const EdgeInsets.only(right: 12),
                         width: double.infinity,
                         height: 40,
                         decoration: BoxDecoration(
@@ -184,6 +181,19 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 20),
                             hintText: 'Buscar Paciente',
+                            //prefixIcon: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                _searchController.clear();
+                              },
+                              icon: const Icon(Icons.clear),
+                            ),
+                            prefixIcon: IconButton(
+                              onPressed: () {
+                                _switchSearchState();
+                              },
+                              icon: const Icon(Icons.arrow_back),
+                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30),
                               borderSide: BorderSide.none,
@@ -196,18 +206,7 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                         style: Theme.of(context).appBarTheme.titleTextStyle,
                       ),
                 backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-                leading: IconButton(
-                  icon: !_isSearching
-                      ? const Icon(Icons.close)
-                      : const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    if (_isSearching) {
-                      _switchSearchState();
-                    } else {
-                      Navigator.of(context).pop();
-                    }
-                  },
-                ),
+                automaticallyImplyLeading: !_isSearching,
                 actions: !_isSearching
                     ? [
                         IconButton(
