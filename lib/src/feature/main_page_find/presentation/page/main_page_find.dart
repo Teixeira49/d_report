@@ -1,3 +1,4 @@
+import 'package:d_report/src/feature/main_page_find/domain/entities/search_filter.dart';
 import 'package:d_report/src/feature/main_page_find/presentation/widget/select_filter_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import '../../data/repositories/my_cases_repository_impl.dart';
 import '../cubit/find_case/find_cases_cubit.dart';
 import '../cubit/find_case/find_cases_state.dart';
 import '../widget/case_tile_copy.dart';
+import '../widget/filter_search_window.dart';
 
 class MainPageFind extends StatefulWidget {
   const MainPageFind({super.key});
@@ -26,6 +28,7 @@ class MyMainPageFindState extends State<MainPageFind> {
   final int _currentPage = 1;
   bool _isSearching = false;
   int _selectedIndex = SearchKeys.DEFAULT.index;
+  SearchFilter _searchFilter = SearchFilter();
 
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
@@ -103,6 +106,11 @@ class MyMainPageFindState extends State<MainPageFind> {
         _switchSearchState();
       });
     }
+  }
+
+  void _isMoreParameters(int index){
+    _selectedIndex = SearchKeys.DEFAULT.index;
+    searchFilterWindow(context, _searchFilter);
   }
 
   @override
@@ -232,7 +240,7 @@ class MyMainPageFindState extends State<MainPageFind> {
                             index: -1,
                             name: 'Mas',
                             selectIndex: _selectedIndex,
-                            onPressed: _onButtonPressed,
+                            onPressed: _isMoreParameters,
                           ),
                         ],
                       ),

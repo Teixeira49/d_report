@@ -48,11 +48,17 @@ const String floor = "Piso";
 
 final List<String> genreType = <String>["Male","Female","Other"];
 
+final List<String> genreTypeFull = <String>["Hombre","Mujer","Other", 'Todos'];
+
 final List<String> bloodType = <String>["Rh Nulo","A+","A-","B+","B-","AB+","AB-","O+","O-","Other"];
 
 final List<String> entryAreaType = <String>["Emergency", "Hospitalization", "Surgery"];
 
 final List<String> endCaseType = ['Sobrevivio', 'Murio', 'Referido'];
+
+final List<String> endCaseTypeFull = ['Sobrevivio', 'Murio', 'Referido', 'Activo', 'Todos'];
+
+final List<String> caseStatusType = ['Activo', 'Finalizado', 'Todos'];
 
 final List<String> floorType = <String>["3","4","5","6"];
 

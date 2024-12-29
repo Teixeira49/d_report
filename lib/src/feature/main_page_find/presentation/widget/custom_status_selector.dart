@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/constants/fields_constants.dart';
-
-class StatusField extends StatelessWidget {
-  const StatusField(
+class CustomStatusSelector extends StatelessWidget {
+  const CustomStatusSelector(
       {super.key,
-      required this.controllerDataDropDown,});
+        required this.controllerDataDropDown, required this.options,});
 
   final ValueNotifier<String?> controllerDataDropDown;
+  final List<String> options;
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +17,8 @@ class StatusField extends StatelessWidget {
       borderRadius: const BorderRadius.all(Radius.circular(20)),
       hint: const Text('Seleccione'),
       decoration: const InputDecoration(
-          border: InputBorder.none,),
-      items: endCaseType.map((status) {
+        border: InputBorder.none,),
+      items: options.map((status) {
         return DropdownMenuItem(
             alignment: Alignment.centerLeft,
             value: status,
