@@ -127,11 +127,16 @@ class MyMainPageState extends State<MainPage> {
                               context.read<MyCasesCubit>().updateFilter('');
                             },
                           ),
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              _searchController.clear();
-                            },
+                          suffixIcon: Visibility(
+                            visible: _searchController.text.isNotEmpty, // TODO MAKE GLOBAL
+                            child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _searchController.clear();
+                                });
+                              },
+                              icon: const Icon(Icons.clear),
+                            ),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),

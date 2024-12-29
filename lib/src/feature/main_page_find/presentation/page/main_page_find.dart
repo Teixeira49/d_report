@@ -23,7 +23,7 @@ class MainPageFind extends StatefulWidget {
 }
 
 class MyMainPageFindState extends State<MainPageFind> {
-  int _currentPage = 1;
+  final int _currentPage = 1;
   bool _isSearching = false;
   int _selectedIndex = SearchKeys.DEFAULT.index;
 
@@ -157,14 +157,16 @@ class MyMainPageFindState extends State<MainPageFind> {
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 20),
                     hintText: 'Buscar Paciente',
-                    prefixIcon: IconButton(
-                      icon: Icon(
-                        Icons.clear,
-                        color: Theme.of(context).iconTheme.color,
+                    prefixIcon: Visibility(
+                      visible: _searchController.text.isNotEmpty, // TODO MAKE GLOBAL
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _searchController.clear();
+                          });
+                        },
+                        icon: const Icon(Icons.clear),
                       ),
-                      onPressed: () {
-                        _searchController.clear();
-                      },
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),

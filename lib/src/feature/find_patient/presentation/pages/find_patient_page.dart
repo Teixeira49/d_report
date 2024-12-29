@@ -182,11 +182,16 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                                 vertical: 10, horizontal: 20),
                             hintText: 'Buscar Paciente',
                             //prefixIcon: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                _searchController.clear();
-                              },
-                              icon: const Icon(Icons.clear),
+                            suffixIcon: Visibility(
+                              visible: _searchController.text.isNotEmpty, // TODO MAKE GLOBAL
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _searchController.clear();
+                                  });
+                                },
+                                icon: const Icon(Icons.clear),
+                              ),
                             ),
                             prefixIcon: IconButton(
                               onPressed: () {
