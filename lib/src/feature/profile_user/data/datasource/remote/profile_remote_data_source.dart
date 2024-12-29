@@ -3,6 +3,7 @@ import 'package:retry/retry.dart';
 
 import 'package:dio/dio.dart';
 
+import '../../../../../core/utils/constants/network_constants.dart';
 import '../../../domain/entities/doctor.dart';
 
 abstract class ProfileRemoteDataSource {
@@ -30,7 +31,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
     final resp = await r.retry(
             () => dio.get(
-          'http://192.168.30.196:9004/api/doctors/doctor/find-by/doc-id/$docId/',
+          '$apiUrl/doctors/doctor/find-by/doc-id/$docId/',
           options: Options(
             sendTimeout: const Duration(seconds: 2),
             receiveTimeout: const Duration(seconds: 2),
