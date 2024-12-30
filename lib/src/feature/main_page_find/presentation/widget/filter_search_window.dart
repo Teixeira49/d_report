@@ -1,5 +1,4 @@
 import 'package:d_report/src/feature/main_page_find/domain/entities/search_filter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/constants/fields_constants.dart';

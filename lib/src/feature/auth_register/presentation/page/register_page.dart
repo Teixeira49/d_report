@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../../shared/presentation/widget/floating_snackbars.dart';
+import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../../domain/entities/gender.dart';
 import '../cubit/register_button_cubit/register_button_state.dart';
 import '../widgets/firstname_field.dart';

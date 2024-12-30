@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../shared/data/model/search_key.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
-import '../../../../shared/presentation/widget/floating_snackbars.dart';
+import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../../data/repository/find_patient_repository_impl.dart';
 import '../cubit/search_patient/search_patient_cubit.dart';
 import '../cubit/search_patient/search_patient_state.dart';
