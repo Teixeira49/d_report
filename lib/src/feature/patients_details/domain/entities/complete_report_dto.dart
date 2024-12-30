@@ -1,6 +1,8 @@
 
-import 'package:d_report/src/shared/domain/entities/case_report.dart';
-import 'package:d_report/src/feature/patients_details/domain/entities/patient.dart';
+import 'package:d_report/src/shared/data/model/view_details_status.dart';
+
+import 'patient.dart';
+import 'case_report.dart';
 
 class CompleteCaseDTO{
 
@@ -8,9 +10,11 @@ class CompleteCaseDTO{
     {
       required this.comPatient,
       required this.comCaseReport,
+      required this.viewDetailsStatus,
     }
   );
 
   Patient comPatient;
   CaseReport comCaseReport;
+  ViewDetailsStatus viewDetailsStatus;
 }
