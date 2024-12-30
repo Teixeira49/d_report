@@ -1,5 +1,5 @@
 import 'package:d_report/src/feature/new_patient/presentation/cubit/new_patient/new_patient_case_state.dart';
-import 'package:d_report/src/shared/presentation/widget/floating_snackbars.dart';
+import 'package:d_report/src/shared/presentation/widget/floating_snack_bars.dart';
 
 import 'package:flutter/material.dart';
 

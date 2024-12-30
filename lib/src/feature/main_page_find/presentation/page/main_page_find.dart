@@ -124,6 +124,7 @@ class MyMainPageFindState extends State<MainPageFind> {
     User user = argument["userData"];
     AuthUser authUser = argument["AuthCredentials"];
 
+
     final size = MediaQuery.of(context).size;
 
     return BlocProvider(

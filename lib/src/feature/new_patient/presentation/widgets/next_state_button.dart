@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
-import '../../../../shared/presentation/widget/floating_snackbars.dart';
+import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../cubit/new_patient/new_patient_case_cubit.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';

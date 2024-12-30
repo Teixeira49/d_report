@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
-import '../../../../shared/presentation/widget/floating_snackbars.dart';
+import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../widgets/data_textArea.dart';
 import '../widgets/data_textField.dart';
 import '../widgets/entry_area_field.dart';
