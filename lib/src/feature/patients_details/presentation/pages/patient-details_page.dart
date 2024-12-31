@@ -22,6 +22,7 @@ import '../widgets/follow_tile.dart';
 import '../widgets/header_details.dart';
 
 class PatientDetailsPage extends StatelessWidget {
+
   const PatientDetailsPage({super.key});
 
   @override
@@ -221,6 +222,7 @@ class FollowInfo extends StatelessWidget {
 }
 
 class PatientInfo extends StatelessWidget {
+
   const PatientInfo(this.indexTab, {super.key});
 
   final int indexTab;
@@ -359,7 +361,9 @@ class PatientInfo extends StatelessWidget {
                   child: TextButton(
                     onPressed: () {
                       customWindowDialog(
-                        context,
+                        context, () => (miniContext.read<AssignUtilsCubit>()
+                          .fetchEndAssignDetails(caseId,
+                          user.userProfileId, authUser.accessToken)),
                       );
                     },
                     child: const Text('Desvincular'),

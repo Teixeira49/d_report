@@ -69,6 +69,8 @@ class MyMainPageState extends State<MainPage> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     final remoteDataSource = MyCasesRemoteDataSourceImpl();
@@ -81,6 +83,13 @@ class MyMainPageState extends State<MainPage> {
     AuthUser authUser = argument["AuthCredentials"];
 
     final size = MediaQuery.of(context).size;
+
+    /*.then((result) {
+    if (result != null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('Resultado: $result')),
+    );
+    }});*/
 
     return BlocProvider(
         create: (_) => MyCasesCubit(repository)

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/assign_utils/assign_utils_cubit.dart';
-
-Future<void> customWindowDialog(BuildContext context,) {
+Future<void> customWindowDialog(BuildContext context, Function function) {
 
   return showDialog(
     context: context,
@@ -30,11 +27,10 @@ Future<void> customWindowDialog(BuildContext context,) {
         ),
         TextButton(
             onPressed: () {
+              function();
               Navigator.of(dialogContext).pop(true);
-              //context.read<AssignUtilsCubit>()
-              //    .fetchEndAssignDetails(caseId,
-              //    user.userProfileId, authUser.accessToken);
-            },
+              Navigator.of(dialogContext).pop(true);
+              },
             child: const Text('Confirmar'))
       ],
     ),
