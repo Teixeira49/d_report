@@ -1,3 +1,4 @@
+import 'package:d_report/src/core/utils/constants/network_constants.dart';
 import 'package:d_report/src/feature/patients_details/data/models/follow_model.dart';
 import 'package:d_report/src/feature/patients_details/domain/entities/follows_in_case.dart';
 import 'package:dio/dio.dart';
@@ -25,8 +26,7 @@ class FollowCaseRemoteDataSourceImpl implements FollowCaseRemoteDataSource {
     const r = RetryOptions(maxAttempts: 3);
 
     final resp = await r.retry(() =>
-        dio.get('http://192.168.30.196:9004/api/cases/follows/view-follow',
-            // TODO Create a Global with route
+        dio.get('$apiUrl/cases/follows/view-follow',
             options: Options(
               sendTimeout: const Duration(seconds: 3),
               receiveTimeout: const Duration(seconds: 3),

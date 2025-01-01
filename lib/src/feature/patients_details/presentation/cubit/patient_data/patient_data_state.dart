@@ -1,5 +1,6 @@
 
-import '../../../../../shared/domain/entities/case_report.dart';
+import '../../../../../shared/data/model/view_details_status.dart';
+import '../../../domain/entities/case_report.dart';
 import '../../../domain/entities/patient.dart';
 
 abstract class PatientDataState {
@@ -13,7 +14,8 @@ class PatientDataLoading extends PatientDataState {}
 class PatientDataLoaded extends PatientDataState {
   final Patient patient;
   final CaseReport caseReport;
-  PatientDataLoaded({required this.patient, required this.caseReport});
+  final ViewDetailsStatus permissionStatus;
+  PatientDataLoaded({required this.patient, required this.caseReport, required this.permissionStatus});
 }
 
 class PatientDataLoadedButEmpty extends PatientDataState {

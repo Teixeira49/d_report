@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:d_report/src/feature/find_patient/presentation/cubit/search_patient/search_patient_state.dart';
 
-import '../../../domain/entities/patient.dart';
 import '../../../domain/repository/find_patient_reporitory.dart';
 
 class FindPatientCubit extends Cubit<FindPatientState> {

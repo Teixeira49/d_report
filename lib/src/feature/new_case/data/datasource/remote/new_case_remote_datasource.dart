@@ -4,6 +4,7 @@ import 'package:retry/retry.dart';
 
 import 'package:dio/dio.dart';
 
+import '../../../../../core/utils/constants/network_constants.dart';
 import '../../../../../shared/data/model/case_model.dart';
 import '../../../../../shared/domain/entities/case_report.dart';
 import '../../../domain/entities/add_case.dart';
@@ -41,7 +42,7 @@ class NewPatientCaseRemoteDataSourceImpl
     const r = RetryOptions(maxAttempts: 3);
 
     final resp = await r.retry(() => dio.post(
-        'http://192.168.30.196:9004/api/cases/patient/new/register-case/',
+        '$apiUrl/cases/patient/new/register-case/',
         options: Options(
           sendTimeout: const Duration(seconds: 2),
           receiveTimeout: const Duration(seconds: 2),

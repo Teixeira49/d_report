@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/network/error/failures.dart';
-import '../repositories/my_cases_repository.dart';
+import '../repositories/find_cases_repository.dart';
 
 class GetMyCasesUseCase {
 

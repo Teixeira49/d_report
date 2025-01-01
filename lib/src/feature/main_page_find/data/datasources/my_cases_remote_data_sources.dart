@@ -1,14 +1,15 @@
+import 'package:d_report/src/core/utils/constants/network_constants.dart';
 import 'package:retry/retry.dart';
 
 import 'package:dio/dio.dart';
 
 import '../models/my_case_model.dart';
 
-abstract class MyCasesRemoteDataSource {
-  Future<List<MyCasesModel>> getMyCases(int docId, String accessToken);
+abstract class FindCasesRemoteDataSource {
+  Future<List<MyCasesModel>> searchCases(String query, int searchKey, String accessToken);
 }
 
-class MyCasesRemoteDataSourceImpl implements MyCasesRemoteDataSource {
+class FindCasesRemoteDataSourceImpl implements FindCasesRemoteDataSource {
 
   final Dio dio = Dio();
 
@@ -19,7 +20,7 @@ class MyCasesRemoteDataSourceImpl implements MyCasesRemoteDataSource {
   bool get isFetching => _isFetching;
 
   @override
-  Future<List<MyCasesModel>> getMyCases(int docId, String accessToken) async {
+  Future<List<MyCasesModel>> searchCases(String query, int searchKey, String accessToken) async {
 
     if(!_isFetching) {
       _isFetching = true;
@@ -27,9 +28,11 @@ class MyCasesRemoteDataSourceImpl implements MyCasesRemoteDataSource {
 
     const r = RetryOptions(maxAttempts: 3);
 
+    print('a');
+
     final resp = await r.retry(
             () => dio.get(
-          'http://192.168.30.196:9004/api/cases/my-cases/$docId/',
+          '$apiUrl/cases/search',
           options: Options(
             sendTimeout: const Duration(seconds: 2),
             receiveTimeout: const Duration(seconds: 2),
@@ -38,8 +41,9 @@ class MyCasesRemoteDataSourceImpl implements MyCasesRemoteDataSource {
             },
           ),
           queryParameters: {
-            "pag": _page,
-            "limit": 10
+            'q': query,
+            'findBy': searchKey,
+            'pag': _page,
           },
         )
     );
@@ -54,14 +58,15 @@ class MyCasesRemoteDataSourceImpl implements MyCasesRemoteDataSource {
 
     _page++;
 
+    print(resp.data);
     print('Mis items $items');
     //}
     return items;
   }
 
-  Future<void> refreshCases(docId, accessToken) async {
+  Future<void> refreshCases(String query, int searchKey, accessToken) async {
     _page = 1;
-    await getMyCases(docId, accessToken);
+    await searchCases(query, searchKey, accessToken);
   }
 }
 

@@ -1,4 +1,5 @@
 
+import 'package:d_report/src/core/utils/constants/network_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
 
@@ -28,7 +29,7 @@ class FollowCaseDetailsRemoteDataSourceImpl implements FollowCaseDetailsRemoteDa
     const r = RetryOptions(maxAttempts: 3);
 
     final resp = await r.retry(() => dio.get(
-      'http://192.168.30.196:9004/api/cases/operations/follows/view/$cafId', // TODO Create a Global with route
+      '$apiUrl/cases/operations/follows/view/$cafId',
       options: Options(
         sendTimeout: const Duration(seconds: 3),
         receiveTimeout: const Duration(seconds: 3),
@@ -38,9 +39,7 @@ class FollowCaseDetailsRemoteDataSourceImpl implements FollowCaseDetailsRemoteDa
       ),
     ));
 
-    print('aaaaaaaaaa');
     print(resp.data);
-
 
     return FollowDetailedModel.fromJson(resp.data);
   }

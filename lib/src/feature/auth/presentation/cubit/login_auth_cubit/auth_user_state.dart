@@ -16,6 +16,8 @@ class AuthLoaded extends AuthState {
 
 class AuthPosted extends AuthState {}
 
+class AuthTimeOut extends AuthState {}
+
 class AuthError extends AuthState {
   final String errorSMS;
   AuthError(this.errorSMS);

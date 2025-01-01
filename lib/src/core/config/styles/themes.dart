@@ -15,11 +15,11 @@ abstract class AppTheme {
           fontSize: 20,
           fontWeight: FontWeight.bold,
           letterSpacing: 1.5,
-          color: Color.fromRGBO(17, 17, 17, 1.0),
+          color: Color.fromRGBO(255, 255, 255, 1.0),
           fontFamily: "gotham"
         ),
         iconTheme: IconThemeData(
-            color: Color.fromRGBO(17, 17, 17, 1.0)
+            color: Color.fromRGBO(255, 255, 255, 1.0)
         ),
       ),
 

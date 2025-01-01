@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 
 class Helper {
 
@@ -14,5 +15,20 @@ class Helper {
   static String capitalize(String text){
     if (text.isEmpty) return text;
     return text[0].toUpperCase() + text.substring(1).toLowerCase();
+  }
+
+  static int getAgeByDateInString(String dateTargetString) {
+    var temp = dateTargetString.split('T')[0];
+    DateFormat time = DateFormat("yyyy-MM-dd");
+    DateTime birthdayTemp = time.parse(temp);
+    DateTime nowTemp = DateTime.now();
+
+    var age = nowTemp.year - birthdayTemp.year;
+    if (nowTemp.year - birthdayTemp.year <= 0 &&
+        (nowTemp.month - birthdayTemp.month == 0 &&
+            nowTemp.day - birthdayTemp.day < 0)) {
+      age--;
+    }
+    return age;
   }
 }

@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
-import '../../../../shared/presentation/widget/floating_snackbars.dart';
+import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../../domain/entities/end_reasons.dart';
 import '../cubit/end_case_send/end_case_send_cubit.dart';
 import '../widgets/data_textArea.dart';
@@ -52,7 +52,6 @@ class MyEndCasePage extends State<EndCasePage> {
             title: const Text('Fin del caso'),
             automaticallyImplyLeading: true,
             backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-            centerTitle: true,
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),

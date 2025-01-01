@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
 
 import 'package:d_report/src/shared/data/model/case_model.dart';
+import '../../../../../core/utils/constants/network_constants.dart';
 import '../../../../../shared/domain/entities/case_report.dart';
 
 abstract class EndCaseRemoteDataSource {
@@ -28,7 +29,7 @@ class EndCaseRemoteDataSourceImpl implements EndCaseRemoteDataSource{
 
 
     final resp = await r.retry(() => dio.put(
-        'http://192.168.30.196:9004/api/cases/patient/close-case',
+        '$apiUrl/cases/patient/close-case',
         options: Options(
           sendTimeout: const Duration(seconds: 3),
           receiveTimeout: const Duration(seconds: 3),

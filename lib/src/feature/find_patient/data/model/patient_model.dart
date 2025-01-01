@@ -1,6 +1,6 @@
 import '../../domain/entities/patient.dart';
 
-class PatientModel extends Patient {
+class PatientModel extends SearchPatient {
   PatientModel({
     required super.patName,
     required super.patLastName,
@@ -38,7 +38,7 @@ class PatientModel extends Patient {
     };
   }
 
-  factory PatientModel.fromEntity(Patient patient) {
+  factory PatientModel.fromEntity(SearchPatient patient) {
     return PatientModel(
       patName: patient.patName,
       patLastName: patient.patLastName,

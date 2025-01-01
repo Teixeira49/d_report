@@ -6,8 +6,10 @@ import '../entities/complete_report_dto.dart';
 
 abstract class PatientRepository {
 
-  Future<Either<Failure, CompleteCaseDTO>> getPatientCaseData(int casId, String accessToken);
+  Future<Either<Failure, CompleteCaseDTO>> getPatientCaseData(int casId, int docId, String accessToken);
 
   Future<Either<Failure, CareAssign>> endAssignment(int casId, int docId, String accessToken);
+
+  Future<Either<Failure, CareAssign>> createAssignment(int casId, int docId, String accessToken);
 
 }

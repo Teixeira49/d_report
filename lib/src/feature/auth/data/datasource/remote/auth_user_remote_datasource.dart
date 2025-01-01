@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
 
+import '../../../../../core/utils/constants/network_constants.dart';
 import '../../../../../shared/data/model/auth_user_model.dart';
 import '../../../../../shared/data/model/user_model.dart';
 import '../../../../../shared/domain/entities/auth_user.dart';
@@ -20,8 +21,7 @@ class AuthUserRemoteDataSourceImpl implements AuthUserRemoteDataSource {
     const r = RetryOptions(maxAttempts: 3);
 
     final resp = await r.retry(
-        () => dio.post('http://192.168.30.196:9004/api/auth/login/signin',
-                // TODO Create a Global with route
+        () => dio.post('$apiUrl/auth/login/signin',
                 options: Options(
                   contentType: Headers.formUrlEncodedContentType,
                   sendTimeout: const Duration(seconds: 3),
@@ -43,8 +43,7 @@ class AuthUserRemoteDataSourceImpl implements AuthUserRemoteDataSource {
     const r = RetryOptions(maxAttempts: 3);
 
     final resp = await r.retry(() => dio.get(
-          'http://192.168.30.196:9004/api/doctors/doctor/find-by/email/$email/',
-          // TODO Create a Global with route
+          '$apiUrl/doctors/doctor/find-by/email/$email/',
           options: Options(
               sendTimeout: const Duration(seconds: 3),
               receiveTimeout: const Duration(seconds: 3),

@@ -1,3 +1,4 @@
+import 'package:d_report/src/core/utils/constants/network_constants.dart';
 import 'package:retry/retry.dart';
 
 import 'package:dio/dio.dart';
@@ -31,7 +32,7 @@ class NewPatientCaseRemoteDataSourceImpl implements NewPatientCaseRemoteDataSour
 
     final resp = await r.retry(
             () => dio.get(
-          'http://192.168.30.196:9004/api/patients/exist-patient/$patName/$patLastName/$patGuardianDni/',
+          '$apiUrl/patients/exist-patient/$patName/$patLastName/$patGuardianDni/',
           options: Options(
             sendTimeout: const Duration(seconds: 2),
             receiveTimeout: const Duration(seconds: 2),

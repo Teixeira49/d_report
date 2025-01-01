@@ -16,15 +16,15 @@ class PatientModel extends Patient {
 
   factory PatientModel.fromJson(json) {
     return PatientModel(
-      patName: json['patId']['patName'],
-      patLastname: json['patId']['patLastName'],
-      patId: json['patId']['patId'],
-      patBirthdayDate: json['patId']['patBirthdayDate'],
-      patBirthdayPlace: json['patId']['patBirthdayPlace'],
-      patBloodType: json['patId']['patBloodType'],
-      patDni: json['patId']['patDni'],
-      patGender: json['patId']['patGender'],
-      patGuardianDni: json['patId']['patGuardianDni']
+      patName: json['caseReport']['patId']['patName'],
+      patLastname: json['caseReport']['patId']['patLastName'],
+      patId: json['caseReport']['patId']['patId'],
+      patBirthdayDate: json['caseReport']['patId']['patBirthdayDate'],
+      patBirthdayPlace: json['caseReport']['patId']['patBirthdayPlace'],
+      patBloodType: json['caseReport']['patId']['patBloodType'],
+      patDni: json['caseReport']['patId']['patDni'],
+      patGender: json['caseReport']['patId']['patGender'],
+      patGuardianDni: json['caseReport']['patId']['patGuardianDni']
     );
   }
 

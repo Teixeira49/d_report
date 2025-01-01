@@ -66,7 +66,6 @@ class EditProfilePage extends StatefulWidget {
           style: Theme.of(context).appBarTheme.titleTextStyle,
       ),
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-      centerTitle: true,
         automaticallyImplyLeading: true,
       ),
 

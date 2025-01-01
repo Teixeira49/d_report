@@ -1,5 +1,6 @@
 import 'package:retry/retry.dart';
 
+import '../../../../../core/utils/constants/network_constants.dart';
 import '../../models/my_case_model.dart';
 import 'package:dio/dio.dart';
 
@@ -28,7 +29,7 @@ class MyCasesRemoteDataSourceImpl implements MyCasesRemoteDataSource {
 
     final resp = await r.retry(
             () => dio.get(
-          'http://192.168.30.196:9004/api/cases/my-cases/$docId/',
+          '$apiUrl/cases/my-cases/$docId/',
           options: Options(
             sendTimeout: const Duration(seconds: 2),
             receiveTimeout: const Duration(seconds: 2),

@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
+import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../widgets/data_textArea.dart';
 import '../widgets/data_textField.dart';
 import '../widgets/entry_area_field.dart';
@@ -57,6 +58,7 @@ class MyNewCasePageState extends State<NewCasePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final keyboardEnabled = MediaQuery.of(context).viewInsets.bottom;
 
     final newPatientCaseDataSource = NewPatientCaseRemoteDataSourceImpl();
     final repository = NewPatientCaseRepositoryImpl(
@@ -77,7 +79,6 @@ class MyNewCasePageState extends State<NewCasePage> {
             style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          centerTitle: true,
           automaticallyImplyLeading: true,
         ),
         body: BlocConsumer<NewCasePatientCubit, NewCasePatientState>(
@@ -90,66 +91,43 @@ class MyNewCasePageState extends State<NewCasePage> {
                 //  "AuthCredentials": authUser,
                 //  "patient": '',
                 //});
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                    'Paciente Registrado exitosamente en ${state.caseReport.casEntryArea}',
-                    textAlign: TextAlign.center, // TODO Make Global
-                  ),
-                  backgroundColor:
-                      Theme.of(context).appBarTheme.backgroundColor,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15))),
-                ));
+                FloatingWarningSnackBar.show(context, 'Paciente Registrado exitosamente en ${state.caseReport.casEntryArea}');
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               });
             } else if (state is NewCasePatientFail) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(
-                  state.errorSMS,
-                  textAlign: TextAlign.center, // TODO Make Global
-                ),
-                backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15))),
-              ));
+              FloatingWarningSnackBar.show(context, state.errorSMS);
             }
           },
           builder: (context, state) {
-            return Center(
+            return Stack(
+              alignment: Alignment.topCenter,
+              children: [
+              Center(
                 child: SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: size.height * 0.25,
                 ),
                 child: IntrinsicHeight(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.010,
-                            vertical: size.width * 0.020,
-                          ),
-                          child: Text(
-                            "Porfavor complete la información del paciente",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ),
-                      ),
+                  child:
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          Flexible(child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.010,
+                              vertical: size.width * 0.020,
+                            ),
+                            child: Text(
+                              "Porfavor complete la información del paciente",
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          )),
+                          Flexible(child: Text(
                             "Informacion del caso",
                             style: Theme.of(context).textTheme.titleMedium,
-                          ),
+                          ),),
                           Container(
                             padding: EdgeInsets.symmetric(
                               horizontal: size.width * 0.075,
@@ -209,43 +187,43 @@ class MyNewCasePageState extends State<NewCasePage> {
                             child: EntryAreaDropdownField(
                                 controllerData: _casEntryAreaController),
                           ),
+                          const SizedBox(height: 50,)
                         ],
                       ),
-                      Expanded(
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: size.height * 0.010),
-                              child: (state is NewCasePatientLoading)
-                                  ? const CircularProgressIndicator()
-                                  : FinishRegisterCaseButton(
-                                      patData: patData,
-                                      casSymptomatology:
-                                          _casSymptomatologyController.text,
-                                      casPhysicalState:
-                                          _casPhysicalStateController.text,
-                                      casDiagnosis:
-                                          _casDiagnosisController.text,
-                                      casActualRoom:
-                                          _casActualRoomController.text,
-                                      casFloorLevel: _casFloorLevelController
-                                          .value
-                                          .toString(),
-                                      casEntryArea: _casEntryAreaController
-                                          .value
-                                          .toString(),
-                                      docId: user.userProfileId,
-                                      accessToken: authUser.accessToken,
-                                    ),
-                            )
-                          ]))
-                    ],
+
                   ),
                 ),
               ),
-            ));
+            ),
+            Visibility(
+            visible: keyboardEnabled == 0,
+            child:
+                Positioned(
+                    bottom: 30,
+                    child: (state is NewCasePatientLoading)
+                          ? const CircularProgressIndicator()
+                          : FinishRegisterCaseButton(
+                        patData: patData,
+                        casSymptomatology:
+                        _casSymptomatologyController.text,
+                        casPhysicalState:
+                        _casPhysicalStateController.text,
+                        casDiagnosis:
+                        _casDiagnosisController.text,
+                        casActualRoom:
+                        _casActualRoomController.text,
+                        casFloorLevel: _casFloorLevelController
+                            .value
+                            .toString(),
+                        casEntryArea: _casEntryAreaController
+                            .value
+                            .toString(),
+                        docId: user.userProfileId,
+                        accessToken: authUser.accessToken,
+                        size: size,
+                      ),
+                    )
+                ),]);
           },
         ),
       ),
