@@ -1,3 +1,4 @@
+import '../../../../core/helpers/helpers.dart';
 import '../../domain/entities/patient.dart';
 
 class PatientModel extends Patient {
@@ -16,8 +17,8 @@ class PatientModel extends Patient {
 
   factory PatientModel.fromJson(json) {
     return PatientModel(
-      patName: json['caseReport']['patId']['patName'],
-      patLastname: json['caseReport']['patId']['patLastName'],
+      patName: Helper.capitalize(json['caseReport']['patId']['patName']),
+      patLastname: Helper.capitalize(json['caseReport']['patId']['patLastName']),
       patId: json['caseReport']['patId']['patId'],
       patBirthdayDate: json['caseReport']['patId']['patBirthdayDate'],
       patBirthdayPlace: json['caseReport']['patId']['patBirthdayPlace'],

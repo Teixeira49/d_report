@@ -1,5 +1,3 @@
-import 'package:d_report/src/core/helpers/helpers.dart';
-
 import '../../domain/entities/case_report.dart';
 
 class CaseReportModel extends CaseReport {
@@ -22,12 +20,9 @@ class CaseReportModel extends CaseReport {
 
   factory CaseReportModel.fromJson(json) {
 
-    var finishEnterDate = Helper.getDateSMSByString(json['caseReport']['casEnterDate']);
-    var finishEndDate = json['caseReport']['casEndDate'] != null ? Helper.getDateSMSByString(json['caseReport']['casEndDate']) : null;
-
     return CaseReportModel(
         casId: json['caseReport']['casId'],
-        casEnterDate: finishEnterDate,
+        casEnterDate: json['caseReport']['casEnterDate'],
         casSymptomatology: json['caseReport']['casSymptomatology'],
         casPhysicalState: json['caseReport']['casPhysicalState'],
         casDiagnosis: json['caseReport']['casDiagnosis'],
@@ -36,7 +31,7 @@ class CaseReportModel extends CaseReport {
         casActualRoom: json['caseReport']['casActualRoom'],
         casEntryArea: json['caseReport']['casEntryArea'],
         casEndFlag: json['caseReport']['casEndFlag'],
-        casEndDate: finishEndDate,
+        casEndDate: json['caseReport']['casEndDate'],
         casEndReason: json['caseReport']['casEndReason'],
         casEndDiagnosis: json['caseReport']['casEndDiagnosis'],
     );
