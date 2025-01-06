@@ -13,7 +13,6 @@ class PatientDataCubit extends Cubit<PatientDataState> {
 
   final PatientRepositoryImpl _patientRepositoryImpl;
 
-  //final GetPatientDataUseCase useCase;
 
   Future<void> fetchCaseDetails(int casId, int docId, String accessToken) async {
     try {
