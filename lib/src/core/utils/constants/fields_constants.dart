@@ -48,7 +48,7 @@ const String floor = "Piso";
 
 final List<String> genreType = <String>["Male","Female","Other"];
 
-final List<String> genreTypeFull = <String>["Hombre","Mujer","Other", 'Todos'];
+final List<String> genreTypeFull = <String>["Hombre","Mujer","Otros", 'Todos'];
 
 final List<String> bloodType = <String>["Rh Nulo","A+","A-","B+","B-","AB+","AB-","O+","O-","Other"];
 

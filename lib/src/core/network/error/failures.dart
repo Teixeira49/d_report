@@ -8,13 +8,17 @@ abstract class Failure {
 }
 
 class ServerFailure extends Failure {
-  ServerFailure(String message) : super(message);
+  ServerFailure(super.message);
 }
 
 class CacheFailure extends Failure {
-  CacheFailure(String message) : super(message);
+  CacheFailure(super.message);
+}
+
+class LocalProcessFailure extends Failure {
+  LocalProcessFailure(super.message);
 }
 
 class OtherFailure extends Failure {
-  OtherFailure(String message) : super(message);
+  OtherFailure(super.message);
 }
