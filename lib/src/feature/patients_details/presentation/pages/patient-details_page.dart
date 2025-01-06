@@ -1,22 +1,38 @@
+import 'dart:io';
+
 import 'package:d_report/src/feature/patients_details/data/datasource/remote/follow_case_remote_data_source.dart';
 import 'package:d_report/src/feature/patients_details/data/repository/follow_case_repository.dart';
+import 'package:d_report/src/feature/patients_details/presentation/cubit/file_generator/file_generator_cubit.dart';
 import 'package:d_report/src/feature/patients_details/presentation/cubit/follow_report/follow_report_state.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:open_file/open_file.dart';
 
+import '../../../../core/helpers/helpers.dart';
 import '../../../../shared/data/model/view_details_status.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
+
 import '../../data/datasource/remote/all_case_remote_data_source.dart';
 import '../../data/repository/case_repository.dart';
+
+import '../../domain/entities/downloader_config.dart';
+import '../../domain/usecases/download_record.dart';
+
 import '../cubit/assign_utils/assign_utils_cubit.dart';
 import '../cubit/assign_utils/assign_utils_state.dart';
+import '../cubit/file_generator/file_generator_state.dart';
 import '../cubit/follow_report/follow_report_cubit.dart';
 import '../cubit/patient_data/patient_data_cubit.dart';
 import '../cubit/patient_data/patient_data_state.dart';
+
 import '../widgets/card_patient_data.dart';
+import '../widgets/config_downloader_panel.dart';
 import '../widgets/custom_win_dialog.dart';
 import '../widgets/follow_tile.dart';
 import '../widgets/header_details.dart';
@@ -29,6 +45,8 @@ class PatientDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //final size = MediaQuery.of(context).size;
     //double sizeIcon = size.shortestSide * 0.50;
+
+    DownloaderConfig downloaderConfig = DownloaderConfig(false, false);
 
     dynamic arguments =
         ModalRoute.of(context)?.settings.arguments; // TODO Refactor Rename
@@ -44,6 +62,8 @@ class PatientDetailsPage extends StatelessWidget {
     final cafRemoteDataSource = FollowCaseRemoteDataSourceImpl();
     final cafRepository = FollowRepositoryImpl(cafRemoteDataSource);
 
+    final DownloadPatientRecordUseCase useCase = DownloadPatientRecordUseCase();
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -57,34 +77,75 @@ class PatientDetailsPage extends StatelessWidget {
                   ..fetchFollowCaseDetails(caseId, authUser.accessToken)),
         BlocProvider(
             create: (_) =>
-                AssignUtilsCubit(patientRepositoryImpl: patRepository))
+                AssignUtilsCubit(patientRepositoryImpl: patRepository)),
+        BlocProvider(create: (context) => FileGeneratorCubit(useCase)),
       ], // TODO Rename
       child: DefaultTabController(
-          length: 3,
-          child: Scaffold(
+        length: 3,
+        child: BlocBuilder<PatientDataCubit, PatientDataState>(
+            builder: (context, state) {
+          return Scaffold(
             appBar: AppBar(
-              title: BlocBuilder<PatientDataCubit, PatientDataState>(
-                  builder: (context, state) {
-                if (state is PatientDataLoaded) {
-                  return Text(
-                      '${state.patient.patName} ${state.patient.patLastname}');
-                } else {
-                  return const Text("Detalles del Caso");
-                }
-              }),
+              title: getTitleAppBar(state),
               backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
               automaticallyImplyLeading: true,
+              actions: [
+                Visibility(
+                    visible: state is PatientDataLoaded ? state.permissionStatus != ViewDetailsStatus.GUEST : false,
+                    child: BlocConsumer<FileGeneratorCubit, FileGeneratorState>(
+                      listener: (subContext, stateDownload) async {
+                        if (stateDownload is FileGeneratorLoaded) {
+                          final bytes = await stateDownload.pdf.save();
+                          var file = File('');
+                          if (Platform.isIOS) {
+                            final dir =
+                                await getApplicationDocumentsDirectory();
+                            file = File('${dir.path}/example.pdf');
+                          }
+                          if (Platform.isAndroid) {
+                            //var status = await Permission.storage.status;
+                            //print(status);
+                            //if (status != Permission.storage.isGranted) {
+                            //  status = (await Permission.storage.isGranted) as PermissionStatus;
+                            //  openAppSettings();
+                            //}
+                            //if (status.isGranted) { // TODO Repair permission system
+                            const downloadsFolderPath =
+                                '/storage/emulated/0/Download/';
+                            Directory dir = Directory(downloadsFolderPath);
+                            file = File('${dir.path}/Informe${getTitleDocument(state)}${Helper.getCodeByDate()}.pdf');
+                            //}
+                          }
+                          await file.writeAsBytes(bytes);
+                          print("piña colada ${file.path}");
+                        } else if (stateDownload is FileGeneratorFail) {
+                          print(stateDownload.errorSMS);
+                        }
+                      },
+                      builder: (subContext, stateDownload) {
+                        return IconButton(
+                            onPressed: () {
+                              if (state is PatientDataLoaded) {
+                                configDownloaderPanel(subContext, downloaderConfig, () => subContext
+                                    .read<FileGeneratorCubit>()
+                                    .downloadFile(state.patient, state.caseReport, user.userName, downloaderConfig.addDoctorSign, downloaderConfig.addPatientDetails));
+                              }
+                            },
+                            icon: const Icon(Icons.download));
+                      },
+                    ))
+              ],
             ),
             body: NestedScrollView(
                 headerSliverBuilder: (context, _) {
                   return [
                     SliverList(
-                        delegate: SliverChildListDelegate([PatientInfo(3)]))
+                        delegate: SliverChildListDelegate([patientInfo(context, state, authUser, user, caseId, 3)]))
                   ];
                 },
                 body: Column(
                   children: [
-                    TabBar(
+                    const TabBar(
                       tabs: [
                         Tab(text: "Paciente", icon: Icon(Icons.person)),
                         Tab(
@@ -102,10 +163,10 @@ class PatientDetailsPage extends StatelessWidget {
                         child: TabBarView(
                       children: [
                         SingleChildScrollView(
-                          child: PatientInfo(1),
+                          child: patientInfo(context, state, authUser, user, caseId, 1),
                         ),
                         SingleChildScrollView(
-                          child: PatientInfo(2),
+                          child: patientInfo(context, state, authUser, user, caseId, 2),
                         ),
                         SingleChildScrollView(
                           child: FollowInfo(patFullName),
@@ -115,8 +176,10 @@ class PatientDetailsPage extends StatelessWidget {
                   ],
                 )),
             floatingActionButton: _FloatingActionButtonForTab(
-                casId: caseId, docId: 23), // TODO Delete Hardcode number
-          )),
+                casId: caseId, docId: 23, authUser: authUser), // TODO Delete Hardcode number
+          );
+        }),
+      ),
     );
   }
 }
@@ -124,15 +187,13 @@ class PatientDetailsPage extends StatelessWidget {
 class _FloatingActionButtonForTab extends StatelessWidget {
   final int casId;
   final int docId;
+  final AuthUser authUser;
 
-  _FloatingActionButtonForTab({required this.casId, required this.docId});
+  const _FloatingActionButtonForTab({required this.casId, required this.docId, required this.authUser});
 
   @override
   Widget build(BuildContext context) {
-    final TabController tabController = DefaultTabController.of(context)!;
-
-    dynamic arguments = ModalRoute.of(context)?.settings.arguments;
-    AuthUser authUser = arguments["AuthCredentials"];
+    final TabController tabController = DefaultTabController.of(context);
 
     return AnimatedBuilder(
       animation: tabController,
@@ -154,6 +215,23 @@ class _FloatingActionButtonForTab extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+Widget getTitleAppBar(state){
+  if (state is PatientDataLoaded) {
+    return Text(
+        '${state.patient.patName} ${state.patient.patLastname}');
+  } else {
+    return const Text("Detalles del Caso");
+  }
+}
+
+String getTitleDocument(state){
+  if (state is PatientDataLoaded) {
+    return '-${state.caseReport.casEndFlag == true ? 'Egreso' : 'Avance'}-${state.patient.patName}-${state.patient.patLastname}-';
+  } else {
+    return "-Caso-";
   }
 }
 
@@ -221,8 +299,8 @@ class FollowInfo extends StatelessWidget {
   }
 }
 
-class PatientInfo extends StatelessWidget {
-
+Widget patientInfo(context, state, AuthUser authUser, User user, int caseId, int indexTab) {
+/*class PatientInfo extends StatelessWidget {
   const PatientInfo(this.indexTab, {super.key});
 
   final int indexTab;
@@ -236,8 +314,8 @@ class PatientInfo extends StatelessWidget {
 
     return BlocBuilder<PatientDataCubit, PatientDataState>(
         builder: (context, state) {
-      print(context);
-      if (state is PatientDataInitial || state is PatientDataLoading) {
+      print(context);*/
+      if ((state is PatientDataInitial || state is PatientDataLoading) && indexTab != 3) {
         return Center(
             child: CircularProgressIndicator(
           // TODO MAKE GLOBAL
@@ -294,7 +372,7 @@ class PatientInfo extends StatelessWidget {
             ),
             CustomCardPatientRow(
               widgetKey: "Fecha de Ingreso",
-              widgetValue: state.caseReport.casEnterDate.toString(),
+              widgetValue: Helper.getDateSMSByString(state.caseReport.casEnterDate.toString()),
               tileIcon: Icons.date_range,
             ),
             CustomCardPatientRow(
@@ -321,7 +399,7 @@ class PatientInfo extends StatelessWidget {
               visible: state.caseReport.casEndFlag == true,
               child: CustomCardPatientRow(
                 widgetKey: "Fecha de Cierre",
-                widgetValue: state.caseReport.casEndDate.toString(),
+                widgetValue: state.caseReport.casEndDate == null ? '' : Helper.getDateSMSByString(state.caseReport.casEndDate.toString()),
                 tileIcon: Icons.date_range,
               ),
             ),
@@ -361,9 +439,11 @@ class PatientInfo extends StatelessWidget {
                   child: TextButton(
                     onPressed: () {
                       customWindowDialog(
-                        context, () => (miniContext.read<AssignUtilsCubit>()
-                          .fetchEndAssignDetails(caseId,
-                          user.userProfileId, authUser.accessToken)),
+                        context,
+                        () => (miniContext
+                            .read<AssignUtilsCubit>()
+                            .fetchEndAssignDetails(caseId, user.userProfileId,
+                                authUser.accessToken)),
                       );
                     },
                     child: const Text('Desvincular'),
@@ -371,48 +451,47 @@ class PatientInfo extends StatelessWidget {
                 ),
                 Visibility(
                     visible: state.permissionStatus == ViewDetailsStatus.GUEST,
-                    child: Container(
-                        child: TextButton(
-                            onPressed: () {
-                              showDialog(
-                                context: miniContext,
-                                builder: (BuildContext subContext) =>
-                                    AlertDialog(
-                                  title: const Text("Agregar caso"),
-                                  backgroundColor: Theme.of(subContext)
-                                      .scaffoldBackgroundColor,
-                                  content: const Text(
-                                    "Pulsar esta opcion agregara a tu ventana principal el monitoreo de este caso, ¿Seguro que desea continuar?",
-                                    textAlign: TextAlign.justify,
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(subContext);
-                                        },
-                                        child: Text(
-                                          'Cancelar',
-                                          style: TextStyle(
-                                              color: Theme.of(subContext)
-                                                  .colorScheme
-                                                  .secondary),
-                                        )),
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(subContext);
-                                          miniContext
-                                              .read<AssignUtilsCubit>()
-                                              .createNewAssign(
-                                                  caseId,
-                                                  user.userProfileId,
-                                                  authUser.accessToken);
-                                        },
-                                        child: Text('Confirmar'))
-                                  ],
-                                ),
-                              );
-                            },
-                            child: const Text('Vincular')))),
+                    child: TextButton(
+                        onPressed: () { // TODO MAKE A INDIVIDUAL WIDGET
+                          showDialog(
+                            context: miniContext,
+                            builder: (BuildContext subContext) =>
+                                AlertDialog(
+                              title: const Text("Agregar caso"),
+                              backgroundColor: Theme.of(subContext)
+                                  .scaffoldBackgroundColor,
+                              content: const Text(
+                                "Pulsar esta opcion agregara a tu ventana principal el monitoreo de este caso, ¿Seguro que desea continuar?",
+                                textAlign: TextAlign.justify,
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(subContext);
+                                    },
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Theme.of(subContext)
+                                              .colorScheme
+                                              .secondary),
+                                    )),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(subContext);
+                                      miniContext
+                                          .read<AssignUtilsCubit>()
+                                          .createNewAssign(
+                                              caseId,
+                                              user.userProfileId,
+                                              authUser.accessToken);
+                                    },
+                                    child: Text('Confirmar'))
+                              ],
+                            ),
+                          );
+                        },
+                        child: const Text('Vincular'))),
                 Visibility(
                     visible: (state.caseReport.casEndFlag != true) &&
                         state.permissionStatus != ViewDetailsStatus.GUEST,
@@ -510,6 +589,6 @@ class PatientInfo extends StatelessWidget {
       } else {
         return Container();
       }
-    });
-  }
+    //});
+  //}
 }
