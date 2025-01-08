@@ -44,7 +44,7 @@ void configDownloaderPanel(BuildContext context,
             children: [
               const Text('Agregar Seguimiento:'),
               const SizedBox(
-                width: 10,
+                width: 16,
               ),
               Flexible(
                 child: ConfigFollowAdderSelector(
