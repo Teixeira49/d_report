@@ -14,7 +14,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
   final Dio dio = Dio();
 
-  int _page = 1;
+  int _page = 0;
 
   bool _isFetching = false;
 

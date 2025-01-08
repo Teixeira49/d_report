@@ -12,7 +12,7 @@ class MyCasesRemoteDataSourceImpl implements MyCasesRemoteDataSource {
 
   final Dio dio = Dio();
 
-  int _page = 1;
+  int _page = 0;
 
   bool _isFetching = false;
 
@@ -60,7 +60,7 @@ class MyCasesRemoteDataSourceImpl implements MyCasesRemoteDataSource {
   }
 
   Future<void> refreshCases(docId, accessToken) async {
-    _page = 1;
+    _page = 0;
     await getMyCases(docId, accessToken);
   }
 }
