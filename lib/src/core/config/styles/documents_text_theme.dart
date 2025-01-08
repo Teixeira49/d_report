@@ -16,6 +16,13 @@ class AppTextStyle {
     fontWeight: pw.FontWeight.bold,
   );
 
+  static final smallSubTitleBlack = pw.TextStyle(
+    fontSize: 12,
+    color: PdfColors.black,
+    fontWeight: pw.FontWeight.bold,
+    fontStyle: pw.FontStyle.italic,
+  );
+
   static final smallTableBlack = pw.TextStyle(
     fontSize: 12,
     color: PdfColors.black,

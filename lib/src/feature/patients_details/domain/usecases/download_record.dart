@@ -10,16 +10,17 @@ import '../../../../core/helpers/helpers.dart';
 import '../../../../core/network/error/failures.dart';
 import '../../../../core/utils/constants/export_file_constants.dart';
 import '../../../../core/utils/constants/fields_constants.dart';
+import '../entities/follows_in_case.dart';
 import '../entities/patient.dart';
 
 class DownloadPatientRecordUseCase {
-  Future<Either<Failure, Document>> call(
-      Patient patient, CaseReport caseReport, String docName, [bool addDoctorSign = false, bool addPatDetails = false]) async {
+  Future<Either<Failure, Document>> call(Patient patient, CaseReport caseReport,
+      String docName, List<FollowCase>? followCases,
+      [bool addDoctorSign = false,
+        bool addPatDetails = false,
+        String addFollows = 'Ninguno']) async {
     final image = MemoryImage(
-        (await rootBundle.load(assetLogoRoute))
-            .buffer
-            .asUint8List());
-
+        (await rootBundle.load(assetLogoRoute)).buffer.asUint8List());
     try {
       final pdf = Document();
       //final font = PdfFont.ttf(pdf.assetsFile, 'OpenSans-Regular.ttf');
@@ -28,11 +29,21 @@ class DownloadPatientRecordUseCase {
           pageTheme: pageTheme,
           header: (Context context) =>
               customDocHeader(pageTheme, image, patient, caseReport),
-          build: (Context context) => [
-            Center(child: Column(children: [titleDoc(caseReport.casEndFlag ?? selectorTitle), SizedBox(height: spaceHeightTitle),])),
+          build: (Context context) =>
+          [
+            Center(
+                child: Column(children: [
+                  titleDoc(caseReport.casEndFlag ?? selectorTitle),
+                  SizedBox(height: spaceHeightTitle),
+                ])),
             if (addPatDetails) moreAboutPatient(patient, caseReport),
             moreAboutCase(caseReport),
-            if (caseReport.casEndFlag ?? selectorTitle) moreAboutFinishCase(caseReport),
+            if (addFollows != 'Ninguno' && followCases != null)
+              moreAboutEvolutionCaseHeader(),
+            if (addFollows != 'Ninguno' && followCases != null)
+              moreAboutEvolutionCaseBody(followCases, addFollows),
+            if (caseReport.casEndFlag ?? selectorTitle)
+              moreAboutFinishCase(caseReport),
             if (addDoctorSign) Spacer(),
             if (addDoctorSign) signedDocument(docName),
           ],
@@ -45,15 +56,15 @@ class DownloadPatientRecordUseCase {
     }
   }
 
-  final pageTheme = PageTheme(
+  final pageTheme = const PageTheme(
     pageFormat: PdfPageFormat.a4,
     orientation: PageOrientation.portrait,
     //buildBackground: (context) {
     //}
   );
 
-  static Widget customDocHeader(
-          PageTheme pageTheme, image, Patient patient, CaseReport caseReport) =>
+  static Widget customDocHeader(PageTheme pageTheme, image, Patient patient,
+      CaseReport caseReport) =>
       Header(
         padding: const EdgeInsets.symmetric(vertical: 0.10),
         child: Container(
@@ -96,129 +107,125 @@ class DownloadPatientRecordUseCase {
     return '''${patient.getFullName()}
     Edad: ${Helper.getAgeByDateInString(patient.patBirthdayDate)} - Peso: 40 Kg
     Historia: ${caseReport.casId}
-    F.I: ${Helper.getDateWithoutHour(DateTime.parse(caseReport.casEnterDate))}''';
+    F.I: ${Helper.getDateWithoutHour(
+        DateTime.parse(caseReport.casEnterDate))}''';
   }
 
-  static Widget customDocFooter() => Footer(
+  static Widget customDocFooter() =>
+      Footer(
           trailing: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-        Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: Text(
-                'Reporte emitido el:\n${Helper.getDateWithoutHour(DateTime.now())} ',
-                textAlign: TextAlign.end)),
-        Container(
-          height: spaceSizeQRBar,
-          width: spaceSizeQRBar,
-          child: BarcodeWidget(
-            barcode: Barcode.qrCode(),
-            data: footerQRData,
-          ),
-        ),
-      ]));
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                child: Text(
+                    'Reporte emitido el:\n${Helper.getDateWithoutHour(
+                        DateTime.now())} ',
+                    textAlign: TextAlign.end)),
+            Container(
+              height: spaceSizeQRBar,
+              width: spaceSizeQRBar,
+              child: BarcodeWidget(
+                barcode: Barcode.qrCode(),
+                data: footerQRData,
+              ),
+            ),
+          ]));
 
-  static Widget titleDoc(bool endCase) => Container(
-        child: Text(!endCase ? 'Informe de Avance:' : 'Informe de Egreso:', style: AppTextStyle.mediumTitleBlack),
+  static Widget titleDoc(bool endCase) =>
+      Container(
+        child: Text(!endCase ? 'Informe de Avance:' : 'Informe de Egreso:',
+            style: AppTextStyle.mediumTitleBlack),
       );
 
-  static Widget moreAboutPatient(Patient patient, CaseReport caseReport) => Column(
-    children: [
-      Table(
-          children: [
-            TableRow(
-                verticalAlignment: TableCellVerticalAlignment.middle,
-                children: [
-                  RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(
-                          text: 'Grupo sanguineo:',
-                          style: AppTextStyle.smallTitleBlack,
-                          children: [
-                            TextSpan(
-                              text: ' ${patient.patBloodType}.',
-                              style: AppTextStyle.smallTableBlack,
-                            ),
-                          ]
-                      )
-                  ),
-                  RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(
-                          text: 'Genero:',
-                          style: AppTextStyle.smallTitleBlack,
-                          children: [
-                            TextSpan(
-                              text: ' ${patient.patGender == genreType[0] ? genreTypeFull[0] : patient.patGender == genreType[1] ? genreTypeFull[1] : genreTypeFull[2]}.',
-                              style: AppTextStyle.smallTableBlack,
-                            ),
-                          ]
-                      )
-                  ),
-                  RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(
-                          text: 'Cumpleaños:',
-                          style: AppTextStyle.smallTitleBlack,
-                          children: [
-                            TextSpan(
-                              text: ' ${Helper.getDateWithoutHour(DateTime.parse(patient.patBirthdayDate))}.',
-                              style: AppTextStyle.smallTableBlack,
-                            ),
-                          ]
-                      )
-                  )
-                ]
-            ),
-            TableRow(
-                verticalAlignment: TableCellVerticalAlignment.middle,
-                children: [
-                  RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(
-                          text: 'Peso:',
-                          style: AppTextStyle.smallTitleBlack,
-                          children: [
-                            TextSpan(
-                              text: ' 40 kgs.',
-                              style: AppTextStyle.smallTableBlack,
-                            )
-                          ]
-                      )
-                  ),
-                  RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(
-                          text: 'Altura:',
-                          style: AppTextStyle.smallTitleBlack,
-                          children: [
-                            TextSpan(
-                              text: ' 1.60 mts.',
-                              style: AppTextStyle.smallTableBlack,
-                            )
-                          ]
-                      )
-                  ),
-                  RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(
-                          text: 'Habitacion:',
-                          style: AppTextStyle.smallTitleBlack,
-                          children: [
-                            TextSpan(
-                              text: ' ${caseReport.casActualRoom}.',
-                              style: AppTextStyle.smallTableBlack,
-                            )
-                          ]
-                      )
-                  )
-                ]
-            )
-          ]
-      ),
-      SizedBox(height: spaceHeight),
-    ]
-  );
+  static Widget moreAboutPatient(Patient patient, CaseReport caseReport) =>
+      Column(children: [
+        Table(children: [
+          TableRow(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              children: [
+                RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                        text: 'Grupo sanguineo:',
+                        style: AppTextStyle.smallTitleBlack,
+                        children: [
+                          TextSpan(
+                            text: ' ${patient.patBloodType}.',
+                            style: AppTextStyle.smallTableBlack,
+                          ),
+                        ])),
+                RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                        text: 'Genero:',
+                        style: AppTextStyle.smallTitleBlack,
+                        children: [
+                          TextSpan(
+                            text:
+                            ' ${patient.patGender == genreType[0]
+                                ? genreTypeFull[0]
+                                : patient.patGender == genreType[1]
+                                ? genreTypeFull[1]
+                                : genreTypeFull[2]}.',
+                            style: AppTextStyle.smallTableBlack,
+                          ),
+                        ])),
+                RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                        text: 'Cumpleaños:',
+                        style: AppTextStyle.smallTitleBlack,
+                        children: [
+                          TextSpan(
+                            text:
+                            ' ${Helper.getDateWithoutHour(
+                                DateTime.parse(patient.patBirthdayDate))}.',
+                            style: AppTextStyle.smallTableBlack,
+                          ),
+                        ]))
+              ]),
+          TableRow(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              children: [
+                RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                        text: 'Peso:',
+                        style: AppTextStyle.smallTitleBlack,
+                        children: [
+                          TextSpan(
+                            text: ' 40 kgs.',
+                            style: AppTextStyle.smallTableBlack,
+                          )
+                        ])),
+                RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                        text: 'Altura:',
+                        style: AppTextStyle.smallTitleBlack,
+                        children: [
+                          TextSpan(
+                            text: ' 1.60 mts.',
+                            style: AppTextStyle.smallTableBlack,
+                          )
+                        ])),
+                RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                        text: 'Habitacion:',
+                        style: AppTextStyle.smallTitleBlack,
+                        children: [
+                          TextSpan(
+                            text: ' ${caseReport.casActualRoom}.',
+                            style: AppTextStyle.smallTableBlack,
+                          )
+                        ]))
+              ])
+        ]),
+        SizedBox(height: spaceHeight),
+      ]);
 
-  static Widget moreAboutCase(CaseReport caseReport) => Column(
+  static Widget moreAboutCase(CaseReport caseReport) =>
+      Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -230,11 +237,14 @@ class DownloadPatientRecordUseCase {
                     style: AppTextStyle.smallTitleBlack),
                 TextSpan(
                     text:
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
                     style: AppTextStyle.smallBlack), // TODO CHANGE
                 TextSpan(
                     text:
-                        ' (${caseReport.casMethodOfEntry == 'New' ? 'Ingresado' : 'Referido'} ${Helper.getDateSMSByString(caseReport.casEnterDate, true)}).',
+                    ' (${caseReport.casMethodOfEntry == 'New'
+                        ? 'Ingresado'
+                        : 'Referido'} ${Helper.getDateSMSByString(
+                        caseReport.casEnterDate, true)}).',
                     style: AppTextStyle.smallBlack),
               ]),
             ),
@@ -242,102 +252,153 @@ class DownloadPatientRecordUseCase {
             RichText(
                 textAlign: TextAlign.justify,
                 text: TextSpan(children: [
-              TextSpan(
-                text: 'Examen fisico inicial: ',
-                style: AppTextStyle.smallTitleBlack,
-              ),
-              TextSpan(
-                text:
+                  TextSpan(
+                    text: 'Examen fisico inicial: ',
+                    style: AppTextStyle.smallTitleBlack,
+                  ),
+                  TextSpan(
+                    text:
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-                style: AppTextStyle.smallBlack,
-              ),
-            ])),
+                    style: AppTextStyle.smallBlack,
+                  ),
+                ])),
             SizedBox(height: spaceHeight),
             RichText(
                 textAlign: TextAlign.justify,
                 text: TextSpan(children: [
-              TextSpan(
-                text: 'Sintomatologia Inicial: ',
-                style: AppTextStyle.smallTitleBlack,
-              ),
-              TextSpan(
-                text: '${caseReport.casSymptomatology}.',
-                style: AppTextStyle.smallBlack,
-              )
-            ])),
+                  TextSpan(
+                    text: 'Sintomatologia Inicial: ',
+                    style: AppTextStyle.smallTitleBlack,
+                  ),
+                  TextSpan(
+                    text: '${caseReport.casSymptomatology}.',
+                    style: AppTextStyle.smallBlack,
+                  )
+                ])),
             SizedBox(height: spaceHeight),
             RichText(
                 textAlign: TextAlign.justify,
                 text: TextSpan(children: [
-              TextSpan(
-                text: 'Diagnostico de Ingreso: ',
-                style: AppTextStyle.smallTitleBlack,
-              ),
-              TextSpan(
-                text: '${caseReport.casDiagnosis}.',
-                style: AppTextStyle.smallBlack,
-              )
-            ])),
+                  TextSpan(
+                    text: 'Diagnostico de Ingreso: ',
+                    style: AppTextStyle.smallTitleBlack,
+                  ),
+                  TextSpan(
+                    text: '${caseReport.casDiagnosis}.',
+                    style: AppTextStyle.smallBlack,
+                  )
+                ])),
+            SizedBox(height: spaceHeight / 3),
+          ]);
+
+  static Widget moreAboutEvolutionCaseHeader() =>
+      Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Divider(color: PdfColors.grey,),
+            SizedBox(height: spaceHeight / 3),
+            Text(
+              'Seguimiento del Caso:\n\n',
+              style: AppTextStyle.smallTitleBlack,
+            )
+          ]
+      );
+
+
+  static Widget moreAboutEvolutionCaseBody(List<FollowCase> followCases,
+      String addFollows) =>
+      ListView.builder(
+          itemCount: followCases.length,
+          itemBuilder: (context, index) {
+            return Container(
+                child: RichText(
+                    textAlign: TextAlign.justify,
+                    textDirection: TextDirection.ltr,
+                    text: TextSpan(children: [
+                      WidgetSpan(
+                        child: Container(
+                          width: 5,
+                          height: 5,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 2),
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: PdfColors.black),
+                        ),
+                      ),
+                      TextSpan(
+                        text: '${followCases[index].cafReportTitle}: ',
+                        style: AppTextStyle.smallTitleBlack,
+                      ),
+                      TextSpan(
+                        text: 'Lorem ipsum dolor sit amet, ...',
+                        //followCases[index].cafReportType,
+                        style: AppTextStyle.smallBlack,
+                      ),
+                      if (addFollows == addCaseFollowType[2])
+                        TextSpan(
+                            text: '. De: ${followCases[index].docId}',
+                            style: AppTextStyle.smallSubTitleBlack),
+                      TextSpan(
+                          text: ' (${followCases[index].cafReportDate}).\n\n',
+                          style: AppTextStyle.smallSubTitleBlack),
+                    ])));
+          });
+
+  static Widget moreAboutFinishCase(CaseReport caseReport) =>
+      Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: spaceHeight / 3),
+            Divider(color: PdfColors.grey),
+            SizedBox(height: spaceHeight / 3),
+            Table(children: [
+              TableRow(children: [
+                RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: 'Fecha de Egreso: ',
+                        style: AppTextStyle.smallTitleBlack,
+                      ),
+                      TextSpan(
+                        text: '${caseReport.casEndDate}.',
+                        style: AppTextStyle.smallBlack,
+                      )
+                    ])),
+                RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: 'Razon de Egreso: ',
+                        style: AppTextStyle.smallTitleBlack,
+                      ),
+                      TextSpan(
+                        text: '${caseReport.casEndReason}.',
+                        style: AppTextStyle.smallBlack,
+                      )
+                    ])),
+              ])
+            ]),
+            SizedBox(height: spaceHeight),
+            RichText(
+                textAlign: TextAlign.justify,
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: 'Diagnostico de Salida: ',
+                    style: AppTextStyle.smallTitleBlack,
+                  ),
+                  TextSpan(
+                    text: '${caseReport.casEndDiagnosis}.',
+                    style: AppTextStyle.smallBlack,
+                  )
+                ])),
             SizedBox(height: spaceHeight),
           ]);
 
-  static Widget moreAboutEvolutionCase() => Column(children: []);
-
-  static Widget moreAboutFinishCase(CaseReport caseReport) => Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Table(
-          children: [
-            TableRow(
-                children: [
-                  RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(children: [
-                        TextSpan(
-                          text: 'Fecha de Egreso: ',
-                          style: AppTextStyle.smallTitleBlack,
-                        ),
-                        TextSpan(
-                          text: '${caseReport.casEndDate}.',
-                          style: AppTextStyle.smallBlack,
-                        )
-                      ])),
-                  RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(children: [
-                        TextSpan(
-                          text: 'Razon de Egreso: ',
-                          style: AppTextStyle.smallTitleBlack,
-                        ),
-                        TextSpan(
-                          text: '${caseReport.casEndReason}.',
-                          style: AppTextStyle.smallBlack,
-                        )
-                      ])),
-                ]
-            )
-          ]
-        ),
-        SizedBox(height: spaceHeight),
-        RichText(
-            textAlign: TextAlign.justify,
-            text: TextSpan(children: [
-              TextSpan(
-                text: 'Diagnostico de Salida: ',
-                style: AppTextStyle.smallTitleBlack,
-              ),
-              TextSpan(
-                text: '${caseReport.casEndDiagnosis}.',
-                style: AppTextStyle.smallBlack,
-              )
-            ])),
-        SizedBox(height: spaceHeight),
-      ]);
-
-  static Widget signedDocument(String docName) => Column(
-    mainAxisSize: MainAxisSize.min,
-      children: [
+  static Widget signedDocument(String docName) =>
+      Column(mainAxisSize: MainAxisSize.min, children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -355,6 +416,5 @@ class DownloadPatientRecordUseCase {
           ],
         ),
         SizedBox(height: spaceHeight * 2),
-      ]
-  );
+      ]);
 }

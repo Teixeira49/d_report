@@ -6,10 +6,12 @@ import 'package:retry/retry.dart';
 
 abstract class FollowCaseRemoteDataSource {
   Future<List<FollowCase>> getCaseFollowsByCase(int casId, String accessToken);
+
+  Future<List<FollowCase>> getAllCaseFollowsByCase(int casId, int? docId, String accessToken);
 }
 
 class FollowCaseRemoteDataSourceImpl implements FollowCaseRemoteDataSource {
-  int _page = 1;
+  int _page = 0;
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
@@ -55,7 +57,59 @@ class FollowCaseRemoteDataSourceImpl implements FollowCaseRemoteDataSource {
   }
 
   Future<void> refreshFollowCases(casId, accessToken) async {
-    _page = 1;
+    _page = 0;
     await getCaseFollowsByCase(casId, accessToken);
+  }
+
+  @override
+  Future<List<FollowCase>> getAllCaseFollowsByCase(
+      int casId, int? docId, String accessToken) async {
+
+    if (!_isFetching) {
+      _isFetching = true;
+    }
+
+    final List<FollowCase> totalCase = [];
+
+    const r = RetryOptions(maxAttempts: 3);
+
+    var temp = 0;
+
+    final queryParams = {
+      "id": casId,
+      "pag": temp,
+      //"size"
+      //'isRev'
+    };
+
+    if (docId != null) {
+      queryParams["docId"] = docId;
+    }
+
+    while (isLast) {
+      final resp = await r.retry(() =>
+          dio.get('$apiUrl/cases/follows/view-follow',
+              options: Options(
+                sendTimeout: const Duration(seconds: 3),
+                receiveTimeout: const Duration(seconds: 3),
+                headers: {
+                  'Authorization': 'Bearer $accessToken',
+                },
+              ),
+              queryParameters: queryParams));
+
+      final List<FollowCase> items = (resp.data["content"] as List)
+          .map((item) => FollowModel.fromJson(item))
+          .toList();
+
+      totalCase.addAll(items);
+
+      if (resp.data['last'] == isLast){
+        break;
+      }
+      temp++;
+    }
+    return totalCase;
+
   }
 }

@@ -6,7 +6,7 @@ const double spaceHeight = 10.0;
 
 const double spaceHeightTitle = 16.0;
 
-const double spaceSizeQRBar = 50.0;
+const double spaceSizeQRBar = 40.0;
 
 const String assetLogoRoute = 'assets/images/document/logo.webp';
 

@@ -24,6 +24,7 @@ import '../../data/repository/case_repository.dart';
 import '../../domain/entities/downloader_config.dart';
 import '../../domain/usecases/download_record.dart';
 
+import '../../domain/usecases/get_downloadable_follows.dart';
 import '../cubit/assign_utils/assign_utils_cubit.dart';
 import '../cubit/assign_utils/assign_utils_state.dart';
 import '../cubit/file_generator/file_generator_state.dart';
@@ -46,7 +47,7 @@ class PatientDetailsPage extends StatelessWidget {
     //final size = MediaQuery.of(context).size;
     //double sizeIcon = size.shortestSide * 0.50;
 
-    DownloaderConfig downloaderConfig = DownloaderConfig(false, false);
+    DownloaderConfig downloaderConfig = DownloaderConfig(false, false, ValueNotifier(null));
 
     dynamic arguments =
         ModalRoute.of(context)?.settings.arguments; // TODO Refactor Rename
@@ -57,12 +58,13 @@ class PatientDetailsPage extends StatelessWidget {
     User user = arguments["userData"];
 
     final patRemoteDataSource = AllCaseRemoteDataSourceImpl();
-    final patRepository = PatientRepositoryImpl(patRemoteDataSource);
+    final patRepository = PatientRepositoryImpl(patRemoteDataSource); // TODO Try to add in a Singleton
 
     final cafRemoteDataSource = FollowCaseRemoteDataSourceImpl();
     final cafRepository = FollowRepositoryImpl(cafRemoteDataSource);
 
-    final DownloadPatientRecordUseCase useCase = DownloadPatientRecordUseCase();
+    final DownloadPatientRecordUseCase downloadPatientRecordUseCase = DownloadPatientRecordUseCase();
+    final GetDownloadableFollowsUseCase getDownloadableFollowsUseCase = GetDownloadableFollowsUseCase(cafRepository);
 
     return MultiBlocProvider(
       providers: [
@@ -78,7 +80,7 @@ class PatientDetailsPage extends StatelessWidget {
         BlocProvider(
             create: (_) =>
                 AssignUtilsCubit(patientRepositoryImpl: patRepository)),
-        BlocProvider(create: (context) => FileGeneratorCubit(useCase)),
+        BlocProvider(create: (context) => FileGeneratorCubit(downloadPatientRecordUseCase, getDownloadableFollowsUseCase)),
       ], // TODO Rename
       child: DefaultTabController(
         length: 3,
@@ -125,10 +127,10 @@ class PatientDetailsPage extends StatelessWidget {
                       builder: (subContext, stateDownload) {
                         return IconButton(
                             onPressed: () {
-                              if (state is PatientDataLoaded) {
+                              if (state is PatientDataLoaded){
                                 configDownloaderPanel(subContext, downloaderConfig, () => subContext
                                     .read<FileGeneratorCubit>()
-                                    .downloadFile(state.patient, state.caseReport, user.userName, downloaderConfig.addDoctorSign, downloaderConfig.addPatientDetails));
+                                    .downloadFile(state.patient, state.caseReport, user, authUser, downloaderConfig.addDoctorSign, downloaderConfig.addPatientDetails, downloaderConfig.followController.value));
                               }
                             },
                             icon: const Icon(Icons.download));

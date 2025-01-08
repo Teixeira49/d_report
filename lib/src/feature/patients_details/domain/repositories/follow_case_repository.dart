@@ -7,4 +7,5 @@ abstract class FollowRepository {
 
   Future<Either<Failure, List<FollowCase>>> getCaseFollowsByCase(int casId, String accessToken);
 
+  Future<Either<Failure, List<FollowCase>>> getAllCaseFollowsByCase(int casId, int? docId, String accessToken);
 }

@@ -56,13 +56,15 @@ final List<String> entryAreaType = <String>["Emergency", "Hospitalization", "Sur
 
 final List<String> endCaseType = ['Sobrevivio', 'Murio', 'Referido'];
 
-final List<String> endCaseTypeFull = ['Sobrevivio', 'Murio', 'Referido', 'Activo', 'Todos'];
+final List<String> endCaseTypeFull = ['Sobrevivio', 'Murio', 'Referido', 'Activo', 'Todos']; // TODO Sobrevivio?  JAJAJJAJA
 
 final List<String> caseStatusType = ['Activo', 'Finalizado', 'Todos'];
 
-final List<String> floorType = <String>["3","4","5","6"];
+final List<String> addCaseFollowType = ['Ninguno', 'Solo Mios', 'Todos'];
 
-const String role = "Roles";
+final List<String> floorType = <String>["3","4","5","6"]; // TODO Cambiar a que la lista se genere sola
+
+const String role = "Roles"; // TODO Crear su propio archivo de constantes
 
 const String hintRole = 'Please, select one role';
 
@@ -72,4 +74,4 @@ const String space = " ";
 
 const String edit = "Editar Perfil";
 
-final List<String> userType = <String>["Doctor","Resident","Administrator"];
+final List<String> userType = <String>["Doctor","Resident","Administrator"]; // TODO Crear su propio archivo de constantes

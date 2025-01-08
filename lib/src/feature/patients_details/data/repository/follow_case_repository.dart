@@ -20,4 +20,14 @@ class FollowRepositoryImpl implements FollowRepository {
       return Left(ServerFailure("Fallo en conexion al servidor"));
     }
   }
+
+  @override
+  Future<Either<Failure, List<FollowCase>>> getAllCaseFollowsByCase(casId, docId, accessToken) async {
+    try {
+      final resp = await _followCaseRemoteDataSource.getAllCaseFollowsByCase(casId, docId, accessToken);
+      return Right(resp);
+    } on DioException {
+      return Left(ServerFailure("Fallo en conexion al servidor"));
+    }
+  }
 }
