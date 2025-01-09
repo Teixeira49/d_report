@@ -7,7 +7,7 @@ class FindCasesCubit extends Cubit<FindCasesState>{
 
   FindCasesCubit(this._findCasesRepository) : super(FindCasesInitial());
 
-  int _page = 1;
+  int _page = 0;
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
@@ -43,7 +43,7 @@ class FindCasesCubit extends Cubit<FindCasesState>{
     }
   }
   Future<void> refreshCases(String query, int searchKey, String accessToken) async {
-    _page = 1;
+    _page = 0;
     emit(FindCasesInitial());
     await fetchSearchCases(query, searchKey, accessToken);
   }

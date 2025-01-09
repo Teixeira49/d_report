@@ -42,19 +42,10 @@ class FollowReportCubit extends Cubit<FollowReportState>{
     }finally{
       _isFetching = false;
     }
-
   }
+
   Future<void> refreshCases(casId, accessToken) async {
     emit(FollowCaseInitial());
     await fetchFollowCaseDetails(casId, accessToken);
   }
-
-  Future<void> endThisCareAssign() async {
-    try {
-
-    } catch (e) {
-
-    }
-  }
-
 }

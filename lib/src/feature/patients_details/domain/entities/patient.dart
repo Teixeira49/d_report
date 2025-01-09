@@ -25,4 +25,8 @@ class Patient{
   String? patBirthdayPlace;
   int patGuardianDni;
   String patBloodType;
+
+  String getFullName() {
+    return '$patName $patLastname';
+  }
 }

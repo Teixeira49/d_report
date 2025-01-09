@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
 
+import '../../../../../my_flutter_app_icons.dart';
 import '../../../../shared/data/model/roles.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
@@ -243,7 +244,7 @@ class MyMainPageState extends State<MainPage> {
                                         'Crear Caso - Nuevo Paciente'),
                                     dense: true,
                                     tileColor: Colors.transparent,
-                                    trailing: const Icon(Icons.create_new_folder),
+                                    trailing: const Icon(MyFlutterApp.user_plus),
                                     onTap: () {
                                       Navigator.pop(context);
                                       Navigator.of(context).pushNamed(
@@ -264,7 +265,7 @@ class MyMainPageState extends State<MainPage> {
                                         'Crear Caso - Paciente Existente'),
                                     dense: true,
                                     tileColor: Colors.transparent,
-                                    trailing: const Icon(Icons.folder_shared),
+                                    trailing: const Icon(MyFlutterApp.user_check),
                                     onTap: () {
                                       Navigator.pop(context);
                                       Navigator.of(context).pushNamed(

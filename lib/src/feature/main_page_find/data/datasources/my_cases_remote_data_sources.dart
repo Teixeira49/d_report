@@ -13,7 +13,7 @@ class FindCasesRemoteDataSourceImpl implements FindCasesRemoteDataSource {
 
   final Dio dio = Dio();
 
-  int _page = 1;
+  int _page = 0;
 
   bool _isFetching = false;
 
@@ -65,7 +65,7 @@ class FindCasesRemoteDataSourceImpl implements FindCasesRemoteDataSource {
   }
 
   Future<void> refreshCases(String query, int searchKey, accessToken) async {
-    _page = 1;
+    _page = 0;
     await searchCases(query, searchKey, accessToken);
   }
 }

@@ -2,10 +2,33 @@ import 'package:intl/intl.dart';
 
 class Helper {
 
-  static String getDateSMSByString(String dateTargetString) {
+  static String getCodeByDate() {
+    return '${DateTime.now()}'.replaceAll(':', '').replaceAll('.', '').replaceAll('-', '').replaceAll(' ', '-');
+  }
+
+  static String getDateSMSByString(String dateTargetString, [bool isRev = false]) {
     DateTime parsedDate = DateTime.parse(dateTargetString);
     List<String> parsedDataList = parsedDate.toLocal().toIso8601String().split('T');
+    if (isRev) {
+      DateFormat date = DateFormat("dd/MM/yyyy");
+      parsedDataList[0] = date.format(DateTime.parse(parsedDataList[0]));
+    }
     return "El ${parsedDataList[0]} a las ${parsedDataList[1].split(".")[0]} horas";
+  }
+
+  static String getDateWithoutHour(DateTime dateTime){
+    return '${addZero(dateTime.day)}/${addZero(dateTime.month)}/${dateTime.year}';
+  }
+
+  static String cutDateByString(String dateTarget) {
+    dateTarget = dateTarget.substring(3,13);
+    DateTime parsedDate = DateTime.parse(dateTarget);
+    DateFormat date = DateFormat("dd/MM/yyyy");
+    return date.format(parsedDate);
+  }
+
+  static String addZero(int date) {
+    return date < 10 ? '0$date' : '$date';
   }
 
   static String getFullNameInRow(String name, String lastName) {
@@ -31,4 +54,15 @@ class Helper {
     }
     return age;
   }
+
+  static String writeHeight(int originHeight) {
+    final fixedHeight = (originHeight / 100);
+    return fixedHeight.toStringAsFixed(2);
+  }
+
+  static String writeWeight(int originWeight) {
+    final fixedWeight = (originWeight / 1000);
+    return fixedWeight.toStringAsFixed(2);
+  }
+
 }

@@ -1,3 +1,4 @@
+import 'package:d_report/src/feature/patients_details/domain/entities/follows_detailed_case.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
@@ -15,6 +16,16 @@ class FollowRepositoryImpl implements FollowRepository {
   Future<Either<Failure, List<FollowCase>>> getCaseFollowsByCase(casId, accessToken) async {
     try {
       final resp = await _followCaseRemoteDataSource.getCaseFollowsByCase(casId, accessToken);
+      return Right(resp);
+    } on DioException {
+      return Left(ServerFailure("Fallo en conexion al servidor"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<FollowDetailedCase>>> getAllCaseFollowsByCase(casId, docId, accessToken) async {
+    try {
+      final resp = await _followCaseRemoteDataSource.getAllCaseFollowsByCase(casId, docId, accessToken);
       return Right(resp);
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));

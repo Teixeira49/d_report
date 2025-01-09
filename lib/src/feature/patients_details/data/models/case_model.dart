@@ -1,5 +1,3 @@
-import 'package:d_report/src/core/helpers/helpers.dart';
-
 import '../../domain/entities/case_report.dart';
 
 class CaseReportModel extends CaseReport {
@@ -18,16 +16,15 @@ class CaseReportModel extends CaseReport {
     required super .casEndDate,
     required super .casEndReason,
     required super .casEndDiagnosis,
+    required super .patHeight,
+    required super .patWeight,
   });
 
   factory CaseReportModel.fromJson(json) {
 
-    var finishEnterDate = Helper.getDateSMSByString(json['caseReport']['casEnterDate']);
-    var finishEndDate = json['caseReport']['casEndDate'] != null ? Helper.getDateSMSByString(json['caseReport']['casEndDate']) : null;
-
     return CaseReportModel(
         casId: json['caseReport']['casId'],
-        casEnterDate: finishEnterDate,
+        casEnterDate: json['caseReport']['casEnterDate'],
         casSymptomatology: json['caseReport']['casSymptomatology'],
         casPhysicalState: json['caseReport']['casPhysicalState'],
         casDiagnosis: json['caseReport']['casDiagnosis'],
@@ -36,9 +33,11 @@ class CaseReportModel extends CaseReport {
         casActualRoom: json['caseReport']['casActualRoom'],
         casEntryArea: json['caseReport']['casEntryArea'],
         casEndFlag: json['caseReport']['casEndFlag'],
-        casEndDate: finishEndDate,
+        casEndDate: json['caseReport']['casEndDate'],
         casEndReason: json['caseReport']['casEndReason'],
         casEndDiagnosis: json['caseReport']['casEndDiagnosis'],
+        patHeight: json['caseReport']['patHeight'],
+        patWeight: json['caseReport']['patWeight'],
     );
   }
 
@@ -56,7 +55,9 @@ class CaseReportModel extends CaseReport {
       'casEndFlag': casEndFlag,
       'casEndDate': casEndDate,
       'casEndReason': casEndReason,
-      'casEndDiagnosis': casEndDiagnosis
+      'casEndDiagnosis': casEndDiagnosis,
+      'patHeight': patHeight,
+      'patWeight': patWeight
     };
   }
 
@@ -74,7 +75,9 @@ class CaseReportModel extends CaseReport {
       casEndFlag: caseReport.casEndFlag,
       casEndDate: caseReport.casEndDate,
       casEndReason: caseReport.casEndReason,
-      casEndDiagnosis: caseReport.casEndDiagnosis
+      casEndDiagnosis: caseReport.casEndDiagnosis,
+      patHeight: caseReport.patHeight,
+      patWeight: caseReport.patWeight,
     );
   }
 }
