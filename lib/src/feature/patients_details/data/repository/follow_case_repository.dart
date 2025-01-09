@@ -1,3 +1,4 @@
+import 'package:d_report/src/feature/patients_details/domain/entities/follows_detailed_case.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
@@ -22,7 +23,7 @@ class FollowRepositoryImpl implements FollowRepository {
   }
 
   @override
-  Future<Either<Failure, List<FollowCase>>> getAllCaseFollowsByCase(casId, docId, accessToken) async {
+  Future<Either<Failure, List<FollowDetailedCase>>> getAllCaseFollowsByCase(casId, docId, accessToken) async {
     try {
       final resp = await _followCaseRemoteDataSource.getAllCaseFollowsByCase(casId, docId, accessToken);
       return Right(resp);

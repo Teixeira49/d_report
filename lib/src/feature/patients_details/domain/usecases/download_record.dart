@@ -1,4 +1,5 @@
 import 'package:d_report/src/feature/patients_details/domain/entities/case_report.dart';
+import 'package:d_report/src/feature/patients_details/domain/entities/follows_detailed_case.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
@@ -10,15 +11,14 @@ import '../../../../core/helpers/helpers.dart';
 import '../../../../core/network/error/failures.dart';
 import '../../../../core/utils/constants/export_file_constants.dart';
 import '../../../../core/utils/constants/fields_constants.dart';
-import '../entities/follows_in_case.dart';
 import '../entities/patient.dart';
 
 class DownloadPatientRecordUseCase {
   Future<Either<Failure, Document>> call(Patient patient, CaseReport caseReport,
-      String docName, List<FollowCase>? followCases,
+      String docName, List<FollowDetailedCase>? followCases,
       [bool addDoctorSign = false,
-        bool addPatDetails = false,
-        String addFollows = 'Ninguno']) async {
+      bool addPatDetails = false,
+      String addFollows = 'Ninguno']) async {
     final image = MemoryImage(
         (await rootBundle.load(assetLogoRoute)).buffer.asUint8List());
     try {
@@ -29,13 +29,8 @@ class DownloadPatientRecordUseCase {
           pageTheme: pageTheme,
           header: (Context context) =>
               customDocHeader(pageTheme, image, patient, caseReport),
-          build: (Context context) =>
-          [
-            Center(
-                child: Column(children: [
-                  titleDoc(caseReport.casEndFlag ?? selectorTitle),
-                  SizedBox(height: spaceHeightTitle),
-                ])),
+          build: (Context context) => [
+            titleDoc(caseReport.casEndFlag ?? selectorTitle),
             if (addPatDetails) moreAboutPatient(patient, caseReport),
             moreAboutCase(caseReport),
             if (addFollows != 'Ninguno' && followCases != null)
@@ -63,8 +58,8 @@ class DownloadPatientRecordUseCase {
     //}
   );
 
-  static Widget customDocHeader(PageTheme pageTheme, image, Patient patient,
-      CaseReport caseReport) =>
+  static Widget customDocHeader(
+          PageTheme pageTheme, image, Patient patient, CaseReport caseReport) =>
       Header(
         padding: const EdgeInsets.symmetric(vertical: 0.10),
         child: Container(
@@ -105,36 +100,35 @@ class DownloadPatientRecordUseCase {
 
   static String customTextIdentifier(Patient patient, CaseReport caseReport) {
     return '''${patient.getFullName()}
-    Edad: ${Helper.getAgeByDateInString(patient.patBirthdayDate)} - Peso: 40 Kg
+    Edad: ${Helper.getAgeByDateInString(patient.patBirthdayDate)} - Peso: ${Helper.writeWeight(caseReport.patWeight)} Kg
     Historia: ${caseReport.casId}
-    F.I: ${Helper.getDateWithoutHour(
-        DateTime.parse(caseReport.casEnterDate))}''';
+    F.I: ${Helper.getDateWithoutHour(DateTime.parse(caseReport.casEnterDate))}''';
   }
 
-  static Widget customDocFooter() =>
-      Footer(
+  static Widget customDocFooter() => Footer(
           trailing: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-            Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                child: Text(
-                    'Reporte emitido el:\n${Helper.getDateWithoutHour(
-                        DateTime.now())} ',
-                    textAlign: TextAlign.end)),
-            Container(
-              height: spaceSizeQRBar,
-              width: spaceSizeQRBar,
-              child: BarcodeWidget(
-                barcode: Barcode.qrCode(),
-                data: footerQRData,
-              ),
-            ),
-          ]));
+        Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            child: Text(
+                'Reporte emitido el:\n${Helper.getDateWithoutHour(DateTime.now())} ',
+                textAlign: TextAlign.end)),
+        Container(
+          height: spaceSizeQRBar,
+          width: spaceSizeQRBar,
+          child: BarcodeWidget(
+            barcode: Barcode.qrCode(),
+            data: footerQRData,
+          ),
+        ),
+      ]));
 
-  static Widget titleDoc(bool endCase) =>
-      Container(
-        child: Text(!endCase ? 'Informe de Avance:' : 'Informe de Egreso:',
-            style: AppTextStyle.mediumTitleBlack),
-      );
+  static Widget titleDoc(bool endCase) =>  Center(
+      child: Column(children: [
+        Container(
+            child: Text(!endCase ? 'Informe de Avance:' : 'Informe de Egreso:',
+                style: AppTextStyle.mediumTitleBlack),),
+        SizedBox(height: spaceHeightTitle),
+      ]));
 
   static Widget moreAboutPatient(Patient patient, CaseReport caseReport) =>
       Column(children: [
@@ -161,11 +155,7 @@ class DownloadPatientRecordUseCase {
                         children: [
                           TextSpan(
                             text:
-                            ' ${patient.patGender == genreType[0]
-                                ? genreTypeFull[0]
-                                : patient.patGender == genreType[1]
-                                ? genreTypeFull[1]
-                                : genreTypeFull[2]}.',
+                                ' ${patient.patGender == genreType[0] ? genreTypeFull[0] : patient.patGender == genreType[1] ? genreTypeFull[1] : genreTypeFull[2]}.',
                             style: AppTextStyle.smallTableBlack,
                           ),
                         ])),
@@ -177,8 +167,7 @@ class DownloadPatientRecordUseCase {
                         children: [
                           TextSpan(
                             text:
-                            ' ${Helper.getDateWithoutHour(
-                                DateTime.parse(patient.patBirthdayDate))}.',
+                                ' ${Helper.getDateWithoutHour(DateTime.parse(patient.patBirthdayDate))}.',
                             style: AppTextStyle.smallTableBlack,
                           ),
                         ]))
@@ -193,7 +182,7 @@ class DownloadPatientRecordUseCase {
                         style: AppTextStyle.smallTitleBlack,
                         children: [
                           TextSpan(
-                            text: ' 40 kgs.',
+                            text: ' ${Helper.writeWeight(caseReport.patWeight)} kgs.',
                             style: AppTextStyle.smallTableBlack,
                           )
                         ])),
@@ -204,7 +193,7 @@ class DownloadPatientRecordUseCase {
                         style: AppTextStyle.smallTitleBlack,
                         children: [
                           TextSpan(
-                            text: ' 1.60 mts.',
+                            text: '${Helper.writeHeight(caseReport.patHeight)} mts.',
                             style: AppTextStyle.smallTableBlack,
                           )
                         ])),
@@ -224,8 +213,7 @@ class DownloadPatientRecordUseCase {
         SizedBox(height: spaceHeight),
       ]);
 
-  static Widget moreAboutCase(CaseReport caseReport) =>
-      Column(
+  static Widget moreAboutCase(CaseReport caseReport) => Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -237,14 +225,11 @@ class DownloadPatientRecordUseCase {
                     style: AppTextStyle.smallTitleBlack),
                 TextSpan(
                     text:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
                     style: AppTextStyle.smallBlack), // TODO CHANGE
                 TextSpan(
                     text:
-                    ' (${caseReport.casMethodOfEntry == 'New'
-                        ? 'Ingresado'
-                        : 'Referido'} ${Helper.getDateSMSByString(
-                        caseReport.casEnterDate, true)}).',
+                        ' (${caseReport.casMethodOfEntry == 'New' ? 'Ingresado' : 'Referido'} ${Helper.getDateSMSByString(caseReport.casEnterDate, true)}).',
                     style: AppTextStyle.smallBlack),
               ]),
             ),
@@ -258,7 +243,7 @@ class DownloadPatientRecordUseCase {
                   ),
                   TextSpan(
                     text:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
                     style: AppTextStyle.smallBlack,
                   ),
                 ])),
@@ -291,30 +276,30 @@ class DownloadPatientRecordUseCase {
             SizedBox(height: spaceHeight / 3),
           ]);
 
-  static Widget moreAboutEvolutionCaseHeader() =>
-      Column(
+  static Widget moreAboutEvolutionCaseHeader() => Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Divider(color: PdfColors.grey,),
+            Divider(
+              color: PdfColors.grey,
+            ),
             SizedBox(height: spaceHeight / 3),
             Text(
               'Seguimiento del Caso:\n\n',
               style: AppTextStyle.smallTitleBlack,
             )
-          ]
-      );
+          ]);
 
-
-  static Widget moreAboutEvolutionCaseBody(List<FollowCase> followCases,
-      String addFollows) =>
+  static Widget moreAboutEvolutionCaseBody(
+          List<FollowDetailedCase> followCases, String addFollows) =>
       ListView.builder(
           itemCount: followCases.length,
           itemBuilder: (context, index) {
             return Container(
+              alignment: Alignment.topLeft,
                 child: RichText(
                     textAlign: TextAlign.justify,
-                    textDirection: TextDirection.ltr,
+                    //textDirection: TextDirection.ltr,
                     text: TextSpan(children: [
                       WidgetSpan(
                         child: Container(
@@ -331,22 +316,22 @@ class DownloadPatientRecordUseCase {
                         style: AppTextStyle.smallTitleBlack,
                       ),
                       TextSpan(
-                        text: 'Lorem ipsum dolor sit amet, ...',
+                        text: followCases[index].cafReportInfo,
                         //followCases[index].cafReportType,
                         style: AppTextStyle.smallBlack,
                       ),
                       if (addFollows == addCaseFollowType[2])
                         TextSpan(
-                            text: '. De: ${followCases[index].docId}',
+                            text: '. De: ${followCases[index].docFullName}',
                             style: AppTextStyle.smallSubTitleBlack),
                       TextSpan(
-                          text: ' (${followCases[index].cafReportDate}).\n\n',
+                          text:
+                              ' (${followCases[index].cafReportDate}${followCases[index].cafReportUpdateTime != followCases[index].cafReportDate ? ' - Actualizado el ${followCases[index].cafReportDate}' : null}).\n\n',
                           style: AppTextStyle.smallSubTitleBlack),
                     ])));
           });
 
-  static Widget moreAboutFinishCase(CaseReport caseReport) =>
-      Column(
+  static Widget moreAboutFinishCase(CaseReport caseReport) => Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -411,7 +396,7 @@ class DownloadPatientRecordUseCase {
                       TextSpan(
                         text: '\nDoc. $docName.',
                         style: AppTextStyle.smallBlack,
-                      )
+                      ),
                     ])),
           ],
         ),

@@ -16,6 +16,8 @@ class CaseReport{
         required this.casEndDate,
         required this.casEndReason,
         required this.casEndDiagnosis,
+        required this.patHeight,
+        required this.patWeight,
       }
     );
 
@@ -32,4 +34,6 @@ class CaseReport{
   String? casEndDate;
   String? casEndReason;
   String? casEndDiagnosis;
+  int patHeight;
+  int patWeight;
 }

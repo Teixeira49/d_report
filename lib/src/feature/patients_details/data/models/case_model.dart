@@ -16,6 +16,8 @@ class CaseReportModel extends CaseReport {
     required super .casEndDate,
     required super .casEndReason,
     required super .casEndDiagnosis,
+    required super .patHeight,
+    required super .patWeight,
   });
 
   factory CaseReportModel.fromJson(json) {
@@ -34,6 +36,8 @@ class CaseReportModel extends CaseReport {
         casEndDate: json['caseReport']['casEndDate'],
         casEndReason: json['caseReport']['casEndReason'],
         casEndDiagnosis: json['caseReport']['casEndDiagnosis'],
+        patHeight: json['caseReport']['patHeight'],
+        patWeight: json['caseReport']['patWeight'],
     );
   }
 
@@ -51,7 +55,9 @@ class CaseReportModel extends CaseReport {
       'casEndFlag': casEndFlag,
       'casEndDate': casEndDate,
       'casEndReason': casEndReason,
-      'casEndDiagnosis': casEndDiagnosis
+      'casEndDiagnosis': casEndDiagnosis,
+      'patHeight': patHeight,
+      'patWeight': patWeight
     };
   }
 
@@ -69,7 +75,9 @@ class CaseReportModel extends CaseReport {
       casEndFlag: caseReport.casEndFlag,
       casEndDate: caseReport.casEndDate,
       casEndReason: caseReport.casEndReason,
-      casEndDiagnosis: caseReport.casEndDiagnosis
+      casEndDiagnosis: caseReport.casEndDiagnosis,
+      patHeight: caseReport.patHeight,
+      patWeight: caseReport.patWeight,
     );
   }
 }

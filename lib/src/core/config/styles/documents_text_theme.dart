@@ -57,7 +57,7 @@ class AppTextStyle {
   );
 
   static final headerDecoratedBlack = pw.TextStyle(
-    fontSize: 10,
+    fontSize: 9,
     color: PdfColors.black,
     fontWeight: pw.FontWeight.bold,
     fontStyle: pw.FontStyle.italic,

@@ -8,11 +8,12 @@ import 'package:flutter/material.dart';
 class FollowTile extends StatelessWidget {
   final context;
   final String patFullName;
+  final Map<String, dynamic>? patientDetails;
   final FollowCase followData;
   final AuthUser authUser;
 
   const FollowTile(
-      this.context, this.followData, this.patFullName, this.authUser,
+      this.context, this.followData, this.patFullName, this.patientDetails, this.authUser,
       {super.key});
 
   @override
@@ -37,7 +38,8 @@ class FollowTile extends StatelessWidget {
               .pushNamed('/main/patients/details/follow-case', arguments: {
             "cafId": followData.cafId,
             'patFullName': patFullName,
-            'AuthCredentials': authUser
+            'patientDetails': patientDetails,
+            'AuthCredentials': authUser,
           });
         },
       ),

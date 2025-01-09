@@ -1,9 +1,9 @@
 
+import 'package:d_report/src/feature/patients_details/domain/entities/follows_detailed_case.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/network/error/failures.dart';
 import '../../data/repository/follow_case_repository.dart';
-import '../entities/follows_in_case.dart';
 
 class GetDownloadableFollowsUseCase {
 
@@ -11,7 +11,7 @@ class GetDownloadableFollowsUseCase {
 
   final FollowRepositoryImpl _followRepositoryImpl;
 
-  Future<Either<Failure, List<FollowCase>>> call(int casId, int? docId, String accessToken) async {
+  Future<Either<Failure, List<FollowDetailedCase>>> call(int casId, int? docId, String accessToken) async {
 
     try {
 

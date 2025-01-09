@@ -1,3 +1,4 @@
+import 'package:d_report/src/feature/patients_details/domain/entities/follows_detailed_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/utils/constants/fields_constants.dart';
@@ -7,7 +8,6 @@ import '../../../../../shared/domain/entities/user.dart';
 
 import '../../../domain/entities/patient.dart';
 import '../../../domain/entities/case_report.dart';
-import '../../../domain/entities/follows_in_case.dart';
 
 import '../../../domain/usecases/download_record.dart';
 import '../../../domain/usecases/get_downloadable_follows.dart';
@@ -36,7 +36,7 @@ class FileGeneratorCubit extends Cubit<FileGeneratorState> {
 
       emit(FileGeneratorLoading());
 
-      List<FollowCase> followCases = [];
+      List<FollowDetailedCase> followCases = [];
 
       if (addFollows != addCaseFollowType[0]) {
         var follows = await getDownloadableFollowsUseCase.call(
