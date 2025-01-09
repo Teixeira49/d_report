@@ -4,6 +4,7 @@ class FollowDetailedCase{
   FollowDetailedCase(
       {
         required this.cafId,
+        required this.casId,
         required this.cafReportType,
         required this.cafReportInfo,
         required this.cafReportDate,
@@ -15,6 +16,7 @@ class FollowDetailedCase{
       );
 
   int cafId;
+  int casId;
   String cafReportType;
   String cafReportInfo;
   String cafReportDate;

@@ -6,6 +6,7 @@ class FollowDetailedModel extends FollowDetailedCase {
 
   FollowDetailedModel({
     required  super .cafId,
+    required  super.casId,
     required  super .cafReportType,
     required  super .cafReportInfo,
     required  super .cafReportDate,
@@ -20,6 +21,7 @@ class FollowDetailedModel extends FollowDetailedCase {
         cafReportType: json['cafReportType'],
         cafReportInfo: json['cafReportInfo'],
         cafId: json['cafId'],
+        casId: json['casId'],
         cafReportDate: Helper.getDateSMSByString(json['cafReportDate']),
         docFullName: Helper.getFullNameInRow(json['docId']['docFirstName'], json['docId']['docLastName']) ,
         docSpecialty: json['docId']['docSpecialty'],
@@ -31,6 +33,7 @@ class FollowDetailedModel extends FollowDetailedCase {
   Map<String, dynamic> toJson() {
     return {
       'cafId': cafId,
+      'casId': casId,
       'cafReportType': cafReportType,
       'cafReportInfo': cafReportInfo,
       'cafReportDate': cafReportDate,
@@ -44,6 +47,7 @@ class FollowDetailedModel extends FollowDetailedCase {
   factory FollowDetailedModel.fromEntity(FollowDetailedCase followDetailedCase) {
     return FollowDetailedModel(
       cafId: followDetailedCase.cafId,
+      casId: followDetailedCase.casId,
       cafReportType: followDetailedCase.cafReportType,
       cafReportInfo: followDetailedCase.cafReportInfo,
       cafReportDate: followDetailedCase.cafReportDate,

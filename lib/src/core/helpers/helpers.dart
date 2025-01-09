@@ -20,6 +20,13 @@ class Helper {
     return '${addZero(dateTime.day)}/${addZero(dateTime.month)}/${dateTime.year}';
   }
 
+  static String cutDateByString(String dateTarget) {
+    dateTarget = dateTarget.substring(3,13);
+    DateTime parsedDate = DateTime.parse(dateTarget);
+    DateFormat date = DateFormat("dd/MM/yyyy");
+    return date.format(parsedDate);
+  }
+
   static String addZero(int date) {
     return date < 10 ? '0$date' : '$date';
   }
@@ -47,4 +54,15 @@ class Helper {
     }
     return age;
   }
+
+  static String writeHeight(int originHeight) {
+    final fixedHeight = (originHeight / 100);
+    return fixedHeight.toStringAsFixed(2);
+  }
+
+  static String writeWeight(int originWeight) {
+    final fixedWeight = (originWeight / 1000);
+    return fixedWeight.toStringAsFixed(2);
+  }
+
 }
