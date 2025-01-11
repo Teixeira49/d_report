@@ -19,6 +19,7 @@ import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 
+import '../../../../shared/presentation/widget/loading_show_dialog.dart';
 import '../../data/datasource/remote/all_case_remote_data_source.dart';
 import '../../data/repository/case_repository.dart';
 
@@ -98,12 +99,18 @@ class PatientDetailsPage extends StatelessWidget {
               backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
               automaticallyImplyLeading: true,
               actions: [
+                IconButton(onPressed: () => {
+                  Navigator.of(context).pushNamed("/main/patients/details/edit-case")
+                }, icon: Icon(Icons.edit)),
                 Visibility(
                     visible: state is PatientDataLoaded
                         ? state.permissionStatus != ViewDetailsStatus.GUEST
                         : false,
                     child: BlocConsumer<FileGeneratorCubit, FileGeneratorState>(
                       listener: (subContext, stateDownload) async {
+                        if (stateDownload is FileGeneratorLoading) {
+                          LoadingShowDialog.show(context);
+                        }
                         if (stateDownload is FileGeneratorLoaded) {
                           final bytes = await stateDownload.pdf.save();
                           var file = File('');
@@ -128,9 +135,16 @@ class PatientDetailsPage extends StatelessWidget {
                             //}
                           }
                           await file.writeAsBytes(bytes);
-                          print("piña colada ${file.path}");
+                          Navigator.of(context, rootNavigator: true).pop();
+                          FloatingSnackBar.show(
+                              subContext,
+                              'Informe guardado con exito.',
+                              Icons.check,
+                              Colors.green); // TODO Safe color in styes folder
                         } else if (stateDownload is FileGeneratorFail) {
-                          print(stateDownload.errorSMS);
+                          Navigator.of(context, rootNavigator: true).pop();
+                          FloatingWarningSnackBar.show(
+                              subContext, stateDownload.errorSMS);
                         }
                       },
                       builder: (subContext, stateDownload) {
