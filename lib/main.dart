@@ -9,7 +9,7 @@ import 'package:d_report/src/feature/new_case/presentation/pages/new_case_page.d
 import 'package:d_report/src/feature/new_follow/presentation/pages/new_follow_case_page.dart';
 import 'package:d_report/src/feature/new_patient/presentation/pages/new_patient_page.dart';
 import 'package:d_report/src/feature/not_found/presentation/pages/not-found_page.dart';
-import 'package:d_report/src/feature/patient_case_edit_pat_guardian/presentation/pages/patient_case_edit_case_page.dart';
+import 'package:d_report/src/feature/patient_case_edit_case/presentation/pages/patient_case_edit_case_page.dart';
 import 'package:d_report/src/feature/patient_case_edit_selector/presentation/pages/patient_case_selector_page.dart';
 import 'package:d_report/src/feature/patient_case_follow_details/presentation/pages/patient_case_follow_details_page.dart';
 import 'package:d_report/src/feature/patients_details/presentation/pages/patient-details_page.dart';

@@ -42,7 +42,7 @@ class PatientEditPageSelector extends StatelessWidget {
               arguments: arguments,
             ),
             ButtonTile(
-              titleOptionText: 'Informacion del caso',
+              titleOptionText: 'Informacion del Caso',
               descOptionText:
                   'Motivo de Consulta, Sintomatologia, Estado Fisico, Diagnostico Inicial.',
               iconData: Icons.assignment,
@@ -51,16 +51,16 @@ class PatientEditPageSelector extends StatelessWidget {
               getIndex: 0,
             ),
             ButtonTile(
-              titleOptionText: 'Ingreso del del Caso',
+              titleOptionText: 'Area de Ingreso',
               descOptionText:
               'Habitacion, Area de Ingreso de Caso, Origen de Ingreso del paciente.',
-              iconData: Icons.assignment,
+              iconData: Icons.door_front_door,
               route: 'case',
               arguments: arguments,
               getIndex: 1,
             ),
             ButtonTile(
-              titleOptionText: 'Cierre del caso',
+              titleOptionText: 'Cierre del Caso',
               descOptionText: 'Razon de Cierre, Diagnostico Final.',
               iconData: Icons.assignment_turned_in,
               route: 'case-end',

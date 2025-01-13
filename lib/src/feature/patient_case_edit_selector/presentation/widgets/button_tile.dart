@@ -31,6 +31,7 @@ class ButtonTile extends StatelessWidget {
           ),
           onTap: () {
 
+            arguments['title'] = titleOptionText;
             if (getIndex != null) {
               arguments['id'] = getIndex;
               print(getIndex);
