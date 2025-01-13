@@ -100,7 +100,10 @@ class PatientDetailsPage extends StatelessWidget {
               automaticallyImplyLeading: true,
               actions: [
                 IconButton(onPressed: () => {
-                  Navigator.of(context).pushNamed("/main/patients/details/edit-case")
+                  Navigator.of(context).pushNamed("/main/patients/details/edit-case", arguments: {
+                    'AuthCredentials': authUser,
+                    'casKey': caseId
+                  })
                 }, icon: Icon(Icons.edit)),
                 Visibility(
                     visible: state is PatientDataLoaded

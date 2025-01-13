@@ -57,7 +57,6 @@ class FileGeneratorCubit extends Cubit<FileGeneratorState> {
       data.fold((l) => emit(FileGeneratorFail(errorSMS: l.message)),
           (r) => emit(FileGeneratorLoaded(pdf: r)));
     } catch (e) {
-      print('Error: $e');
       emit(FileGeneratorFail(errorSMS: "Error cargando los datos"));
     } finally {
       _isFetching = false;

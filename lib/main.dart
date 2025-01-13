@@ -9,6 +9,7 @@ import 'package:d_report/src/feature/new_case/presentation/pages/new_case_page.d
 import 'package:d_report/src/feature/new_follow/presentation/pages/new_follow_case_page.dart';
 import 'package:d_report/src/feature/new_patient/presentation/pages/new_patient_page.dart';
 import 'package:d_report/src/feature/not_found/presentation/pages/not-found_page.dart';
+import 'package:d_report/src/feature/patient_case_edit_pat_guardian/presentation/pages/patient_case_edit_case_page.dart';
 import 'package:d_report/src/feature/patient_case_edit_selector/presentation/pages/patient_case_selector_page.dart';
 import 'package:d_report/src/feature/patient_case_follow_details/presentation/pages/patient_case_follow_details_page.dart';
 import 'package:d_report/src/feature/patients_details/presentation/pages/patient-details_page.dart';
@@ -48,10 +49,10 @@ class MyApp extends StatelessWidget {
         '/main/patients/details/edit-case': (context) => const PatientEditPageSelector(),
         '/main/patients/details/edit-case/patient': (context) => const PatientEditPageSelector(),
         '/main/patients/details/edit-case/patient-guardian': (context) => const PatientEditPageSelector(),
-        '/main/patients/details/edit-case/case': (context) => const PatientEditPageSelector(),
+        '/main/patients/details/edit-case/case': (context) => const EditCaseCasePage(),
         '/main/patients/details/end-case': (context) => const EndCasePage(),
         '/main/profile/': (context) => const ProfilePage(),
-        '/main/profile/edit-row': (context) => const EditProfilePage(dataField: 'pepe',),
+        '/main/profile/edit-row': (context) => const EditProfilePage(dataField: 'pepe',), // TODO CHANGE
         '/main/config/': (context) => const NotFoundPage(),
         '/main/new-case/new-patient': (context) => const NewPatientPage(),
         '/main/new-case/find-patient': (context) => const FindPatientPage(),
