@@ -5,5 +5,5 @@ import '../entities/case_report_edit_request.dart';
 
 abstract class CaseEditRepository {
 
-    Future<Either<Failure, CaseReportEditRequest>> postCaseRequest(String accessToken);
+    Future<Either<Failure, CaseReportEditRequest>> postCaseRequest(CaseReportEditRequest caseReportEditRequest, int part, String accessToken);
 }

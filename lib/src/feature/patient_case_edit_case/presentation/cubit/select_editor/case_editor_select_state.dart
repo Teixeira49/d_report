@@ -1,21 +1,32 @@
-abstract class CaseEditorSelectState {
-  CaseEditorSelectState copyWith({required String newTitle});
+import '../../../domain/entities/case_report.dart';
 
-  String getSelection();
+abstract class CaseEditorSelectState {
+  CaseEditorSelectState copyWith({String newTitle, CaseReport newCaseReport});
+
+  String getSelectionTitle();
+
+  CaseReport? getSelectionCase();
 }
 
 class CaseEditorSelectRows extends CaseEditorSelectState {
   final String title;
+  final CaseReport? caseReport;
 
-  CaseEditorSelectRows({this.title = ''});
+  CaseEditorSelectRows({this.title = '', this.caseReport});
 
   @override
-  CaseEditorSelectRows copyWith({String? newTitle}) {
-    return CaseEditorSelectRows(title: newTitle ?? title);
+  CaseEditorSelectRows copyWith({String? newTitle, CaseReport? newCaseReport}) {
+    return CaseEditorSelectRows(
+        title: newTitle ?? title, caseReport: newCaseReport ?? caseReport);
   }
 
   @override
-  String getSelection() {
+  String getSelectionTitle() {
     return title;
+  }
+
+  @override
+  CaseReport? getSelectionCase() {
+    return caseReport;
   }
 }

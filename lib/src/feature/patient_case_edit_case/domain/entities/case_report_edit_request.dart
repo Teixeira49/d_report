@@ -22,6 +22,6 @@ class CaseReportEditRequest {
   String casMethodOfEntry;
   String casActualRoom;
   String casEntryArea;
-  String casEndReason;
-  String casEndDiagnosis;
+  String? casEndReason;
+  String? casEndDiagnosis;
 }

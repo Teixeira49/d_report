@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../core/network/error/failures.dart';
 import '../entities/case_report_edit_request.dart';
@@ -10,9 +11,9 @@ class PostCaseDateUseCase {
 
   final CaseEditRepository _caseEditRepository;
 
-  Future<Either<Failure, CaseReportEditRequest>> call(CaseReportEditRequest caseReportEditRequest, int part, String accessToken) async {
+  Future<Either<Failure, CaseReportEditRequest>> call(String accessToken) async {
     try {
-      var data = await _caseEditRepository.postCaseRequest(caseReportEditRequest, part, accessToken);
+      var data = await _caseEditRepository.postCaseRequest(accessToken);
       return data.fold(
               (l) => Left(ServerFailure(l.message)),
               (r) => Right(r)

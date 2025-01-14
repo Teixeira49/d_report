@@ -31,15 +31,6 @@ class MyCaseDataTextAreaWidget extends State<CaseDataTextArea> {
         hintText: hintEditProfile,
         hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
       ),
-      onSaved: (String? value) {
-        debugPrint(
-            'Value for field name saved as "$value"'); // TODO delete in other moment
-      },
-      validator: (String? value) {
-        return (value != null && value.contains('@'))
-            ? 'Do not use the @ char.'
-            : null;
-      },
     );
   }
 }

@@ -13,15 +13,15 @@ class CaseEditRepositoryImpl implements CaseEditRepository {
   final CaseEditRequestRemoteDataSource _caseEditRequestRemoteDataSource; // TOOD Sospecho esto va en el normal y no en el Impl
 
   @override
-  Future<Either<Failure, CaseReportEditRequest>> postCaseRequest(String accessToken) async {
+  Future<Either<Failure, CaseReportEditRequest>> postCaseRequest(CaseReportEditRequest caseReportEditRequest, int part, String accessToken) async {
 
     try {
-      final caseReportData = await _caseEditRequestRemoteDataSource.postCaseEditRequest(accessToken);
+      final caseReportData = await _caseEditRequestRemoteDataSource.postCaseEditRequest(caseReportEditRequest, part, accessToken);
       return Right(caseReportData);
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));
     } catch (e) {
-      return Left(OtherFailure("Fallo en conexion al servidor"));
+      return Left(OtherFailure("Fallo recibiendo actualizacion"));
     }
   }
 }

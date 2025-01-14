@@ -6,12 +6,14 @@ import '../../../domain/entities/case_report_edit_request.dart';
 import '../../models/case_report_edit_request_model.dart';
 
 abstract class CaseEditRequestRemoteDataSource {
-
-  Future<CaseReportEditRequest> postCaseEditRequest(String accessToken);
+  Future<CaseReportEditRequest> postCaseEditRequest(
+      CaseReportEditRequest caseReportEditRequest,
+      int part,
+      String accessToken);
 }
 
-class CaseEditRequestRemoteDataSourceImpl implements CaseEditRequestRemoteDataSource {
-
+class CaseEditRequestRemoteDataSourceImpl
+    implements CaseEditRequestRemoteDataSource {
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
@@ -19,15 +21,18 @@ class CaseEditRequestRemoteDataSourceImpl implements CaseEditRequestRemoteDataSo
   final Dio dio = Dio();
 
   @override
-  Future<CaseReportEditRequest> postCaseEditRequest(String accessToken) async {
-    if(!_isFetching) {
+  Future<CaseReportEditRequest> postCaseEditRequest(
+      CaseReportEditRequest caseReportEditRequest,
+      int part,
+      String accessToken) async {
+    if (!_isFetching) {
       _isFetching = true;
     }
 
     const r = RetryOptions(maxAttempts: 3);
 
-    final resp = await r.retry(() => dio.post(
-        '$apiUrl/cases/operations/case-details',
+    final resp = await r.retry(() => dio.put(
+        '$apiUrl/cases/patient/update-case',
         options: Options(
           sendTimeout: const Duration(seconds: 3),
           receiveTimeout: const Duration(seconds: 3),
@@ -35,9 +40,9 @@ class CaseEditRequestRemoteDataSourceImpl implements CaseEditRequestRemoteDataSo
             'Authorization': 'Bearer $accessToken',
           },
         ),
-    ));
+        data: CaseReportEditRequestModel.fromEntity(caseReportEditRequest)
+            .toSubJson(part)));
 
     return CaseReportEditRequestModel.fromJson(resp.data);
   }
-
 }

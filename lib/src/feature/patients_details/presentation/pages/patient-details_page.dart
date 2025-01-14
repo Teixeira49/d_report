@@ -1,10 +1,6 @@
 import 'dart:io';
 
 import 'package:d_report/my_flutter_app_icons.dart';
-import 'package:d_report/src/feature/patients_details/data/datasource/remote/follow_case_remote_data_source.dart';
-import 'package:d_report/src/feature/patients_details/data/repository/follow_case_repository.dart';
-import 'package:d_report/src/feature/patients_details/presentation/cubit/file_generator/file_generator_cubit.dart';
-import 'package:d_report/src/feature/patients_details/presentation/cubit/follow_report/follow_report_state.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,24 +9,31 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:open_file/open_file.dart';
 
 import '../../../../core/helpers/helpers.dart';
+
 import '../../../../shared/data/model/view_details_status.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
-
 import '../../../../shared/presentation/widget/loading_show_dialog.dart';
+
 import '../../data/datasource/remote/all_case_remote_data_source.dart';
+import '../../data/datasource/remote/follow_case_remote_data_source.dart';
+import '../../data/models/case_model.dart';
+import '../../data/models/patient_model.dart';
 import '../../data/repository/case_repository.dart';
+import '../../data/repository/follow_case_repository.dart';
 
 import '../../domain/entities/downloader_config.dart';
 import '../../domain/usecases/download_record.dart';
-
 import '../../domain/usecases/get_downloadable_follows.dart';
+
 import '../cubit/assign_utils/assign_utils_cubit.dart';
 import '../cubit/assign_utils/assign_utils_state.dart';
+import '../cubit/file_generator/file_generator_cubit.dart';
 import '../cubit/file_generator/file_generator_state.dart';
 import '../cubit/follow_report/follow_report_cubit.dart';
+import '../cubit/follow_report/follow_report_state.dart';
 import '../cubit/patient_data/patient_data_cubit.dart';
 import '../cubit/patient_data/patient_data_state.dart';
 
@@ -99,12 +102,25 @@ class PatientDetailsPage extends StatelessWidget {
               backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
               automaticallyImplyLeading: true,
               actions: [
-                IconButton(onPressed: () => {
-                  Navigator.of(context).pushNamed("/main/patients/details/edit-case", arguments: {
-                    'AuthCredentials': authUser,
-                    'casKey': caseId
-                  })
-                }, icon: Icon(Icons.edit)),
+                IconButton(
+                    onPressed: () => {
+                          if (state is PatientDataLoaded)
+                            {
+                              Navigator.of(context).pushNamed(
+                                  "/main/patients/details/edit-case",
+                                  arguments: {
+                                    'casKey': CaseReportModel.fromEntity(state.caseReport).toJson(),
+                                    'patKey': PatientModel.fromEntity(state.patient).toJson(),
+                                    'AuthCredentials': authUser,
+                                  })
+                            }
+                          else
+                            {
+                              FloatingWarningSnackBar.show(context,
+                                  'Espere a que carguen los datos para editar')
+                            }
+                        },
+                    icon: Icon(Icons.edit)),
                 Visibility(
                     visible: state is PatientDataLoaded
                         ? state.permissionStatus != ViewDetailsStatus.GUEST
@@ -112,7 +128,7 @@ class PatientDetailsPage extends StatelessWidget {
                     child: BlocConsumer<FileGeneratorCubit, FileGeneratorState>(
                       listener: (subContext, stateDownload) async {
                         if (stateDownload is FileGeneratorLoading) {
-                          LoadingShowDialog.show(context);
+                          LoadingShowDialog.show(context, 'Descargando Informe');
                         }
                         if (stateDownload is FileGeneratorLoaded) {
                           final bytes = await stateDownload.pdf.save();

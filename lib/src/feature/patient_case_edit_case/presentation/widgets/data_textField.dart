@@ -4,7 +4,7 @@ import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class CaseDataTextField extends StatefulWidget {
 
-  const CaseDataTextField({super.key, required this.contextRow, required this.controllerData});
+  const CaseDataTextField({super.key, required this.contextRow, required this.controllerData,});
 
   final String contextRow;
   final TextEditingController controllerData;
@@ -33,13 +33,6 @@ class CaseDataTextField extends StatefulWidget {
             hintText: hintEditProfile,
             hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
           ),
-          onSaved: (String? value) {
-            debugPrint(
-                'Value for field name saved as "$value"'); // TODO delete in other moment
-          },
-          validator: (String? value) {
-            return (value != null && value.contains('@')) ? 'Do not use the @ char.' : null;
-          },
         ),
     );
   }

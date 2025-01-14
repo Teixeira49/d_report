@@ -75,3 +75,9 @@ const String space = " ";
 const String edit = "Editar Perfil";
 
 final List<String> userType = <String>["Doctor","Resident","Administrator"]; // TODO Crear su propio archivo de constantes
+
+final Map<int, List<String>> checkEqualityUpdate = {
+  0: ['casSymptomatology', 'casPhysicalState', 'casDiagnosis'],
+  1: ['casActualRoom', 'casEntryArea'], //'casMethodOfEntry',
+  2: ['casEndReason', 'casEndDiagnosis'],
+}; // TODO DELETE StudyIMG

@@ -20,7 +20,7 @@ class CaseReportEditRequestModel extends CaseReportEditRequest {
   factory CaseReportEditRequestModel.fromJson(json) {
     return CaseReportEditRequestModel(
         casId: json['casId'],
-        patId: json['patId'],
+        patId: json['patId']['patId'],
         casSymptomatology: json['casSymptomatology'],
         casPhysicalState: json['casPhysicalState'],
         casDiagnosis: json['casDiagnosis'],
@@ -47,6 +47,32 @@ class CaseReportEditRequestModel extends CaseReportEditRequest {
       "casEndReason": casEndReason,
       "casEndDiagnosis": casEndDiagnosis
     };
+  }
+
+  Map<String, dynamic> toSubJson(int part) {
+    switch (part) {
+      case 0:
+        return {
+          "casId": casId,
+          "casSymptomatology": casSymptomatology,
+          "casPhysicalState": casPhysicalState,
+          "casDiagnosis": casDiagnosis,
+        }; // "casStudyImg": casStudyImg,
+      case 1:
+        return {
+          "casId": casId,
+          "casActualRoom": casActualRoom,
+          "casEntryArea": casEntryArea,
+        }; // "casMethodOfEntry": casMethodOfEntry,
+      case 2:
+      return {
+        "casId": casId,
+        "casEndReason": casEndReason,
+        "casEndDiagnosis": casEndDiagnosis
+      };
+      default:
+        return toJson();
+    }
   }
 
   factory CaseReportEditRequestModel.fromEntity(CaseReportEditRequest caseReportEditRequest) {

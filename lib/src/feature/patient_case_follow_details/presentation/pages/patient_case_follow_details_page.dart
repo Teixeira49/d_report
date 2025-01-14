@@ -74,7 +74,7 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
                     child: BlocConsumer<FileGeneratorCubit, FileGeneratorState>(
                         listener: (subContext, subState) async {
                       if (subState is FileGeneratorLoading) {
-                        LoadingShowDialog.show(context);
+                        LoadingShowDialog.show(context, 'Descargando Archivo');
                       }
                       if (subState is FileGeneratorLoaded) {
                         final bytes = await subState.pdf.save();

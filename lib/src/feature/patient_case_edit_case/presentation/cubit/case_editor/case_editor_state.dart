@@ -23,3 +23,8 @@ class CaseEditorFail extends CaseEditorState {
   final String errorSMS;
   CaseEditorFail({required this.errorSMS});
 }
+
+class CaseEditorWithoutUpdate extends CaseEditorState {
+  final String errorSMS;
+  CaseEditorWithoutUpdate({required this.errorSMS});
+}
