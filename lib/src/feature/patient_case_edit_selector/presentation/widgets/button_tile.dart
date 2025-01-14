@@ -34,7 +34,6 @@ class ButtonTile extends StatelessWidget {
             arguments['title'] = titleOptionText;
             if (getIndex != null) {
               arguments['id'] = getIndex;
-              print(getIndex);
             }
 
             Navigator.of(context).pushNamed(

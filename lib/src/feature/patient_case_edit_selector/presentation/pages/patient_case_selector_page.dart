@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../shared/domain/entities/auth_user.dart';
 import '../widgets/button_tile.dart';
 
 class PatientEditPageSelector extends StatelessWidget {
@@ -8,7 +7,6 @@ class PatientEditPageSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
 
     dynamic arguments =
         ModalRoute.of(context)?.settings.arguments; // TODO Refactor Rename
