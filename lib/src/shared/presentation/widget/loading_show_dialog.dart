@@ -3,7 +3,7 @@ import 'circular_progress_bar.dart';
 
 class LoadingShowDialog {
 
-  static void show(BuildContext context,) {
+  static void show(BuildContext context, String message) {
     showDialog(
         context: context,
         builder: (BuildContext dialogContext) =>
@@ -18,7 +18,7 @@ class LoadingShowDialog {
                     const SizedBox(height: 10),
                     const CustomCircularProgressBar(),
                     const SizedBox(height: 18),
-                    Text('Descargando Informe', style: Theme
+                    Text(message, style: Theme
                         .of(dialogContext)
                         .textTheme
                         .titleMedium,),
