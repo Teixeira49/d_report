@@ -21,6 +21,7 @@ import '../cubit/select_editor/case_editor_select_cubit.dart';
 
 import '../widgets/data_textArea.dart';
 import '../widgets/data_textField.dart';
+import '../widgets/end_case_status.dart';
 import '../widgets/entry_area_field.dart';
 import '../widgets/floor_field.dart';
 import '../widgets/next_state_button.dart';
@@ -93,7 +94,9 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
       if (args['casKey']['casEndReason'] != null) {
         _endStatusController.value = args['casKey']['casEndReason'];
       }
-      //_endDiagnosisController.text = args['casEndDiagnosis'];
+      if (args['casKey']['casEndDiagnosis'] != null) {
+        _endDiagnosisController.text = args['casKey']['casEndDiagnosis'];
+      }
     }
     super.didChangeDependencies();
     _isInit = false;
@@ -366,19 +369,19 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
                                       horizontal: size.width * 0.075,
                                       vertical: size.height * 0.010,
                                     ),
-                                    child: FloorMixedField(
+                                    child: StatusField(
                                       controllerDataDropDown:
-                                      _roomValueController,
-                                      controllerDataTextField:
-                                      _roomNumberController,
+                                      _endStatusController,
                                     )),
                                 Container(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: size.width * 0.075,
                                     vertical: size.height * 0.010,
                                   ),
-                                  child: EntryAreaDropdownField(
-                                      controllerData: _entryAreaController),
+                                  child: CaseDataTextArea(
+                                      contextRow: 'Diagnostico Final',
+                                      controllerData: _endDiagnosisController,
+                                  maxLinesHeight: 6,),
                                 ),
                               ],
                             ),
