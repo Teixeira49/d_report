@@ -6,13 +6,13 @@ import '../repositories/patient_edit_reporitory.dart';
 
 class PostPatientDataUseCase {
 
-  PostPatientDataUseCase(this._caseEditRepository);
+  PostPatientDataUseCase(this._patientEditRepository);
 
-  final PatientEditRepository _caseEditRepository;
+  final PatientEditRepository _patientEditRepository;
 
   Future<Either<Failure, PatientEditRequest>> call(PatientEditRequest patientEditRequest, int part, String accessToken) async {
     try {
-      var data = await _caseEditRepository.postPatientRequest(patientEditRequest, part, accessToken);
+      var data = await _patientEditRepository.postPatientRequest(patientEditRequest, part, accessToken);
       return data.fold(
               (l) => Left(ServerFailure(l.message)),
               (r) => Right(r)

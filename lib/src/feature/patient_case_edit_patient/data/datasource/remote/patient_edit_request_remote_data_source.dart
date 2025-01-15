@@ -43,8 +43,6 @@ class PatientEditRequestRemoteDataSourceImpl
         data: PatientEditRequestModel.fromEntity(patientEditRequest)
             .toSubJson(part)));
 
-    print(resp.data);
-
     return PatientEditRequestModel.fromJson(resp.data);
   }
 }

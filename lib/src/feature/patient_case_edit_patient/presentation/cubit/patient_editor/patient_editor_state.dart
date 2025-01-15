@@ -26,6 +26,5 @@ class PatientEditorFail extends PatientEditorState {
 
 class PatientEditorWithoutUpdate extends PatientEditorState {
   final String errorSMS;
-
   PatientEditorWithoutUpdate({required this.errorSMS});
 }
