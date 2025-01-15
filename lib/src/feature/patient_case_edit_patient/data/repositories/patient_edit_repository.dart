@@ -15,10 +15,10 @@ class PatientEditRepositoryImpl implements PatientEditRepository {
   final PatientEditRequestRemoteDataSource _patientEditRequestRemoteDataSource; // TOOD Sospecho esto va en el normal y no en el Impl
 
   @override
-  Future<Either<Failure, PatientEditRequest>> postPatientRequest(String accessToken) async {
+  Future<Either<Failure, PatientEditRequest>> postPatientRequest(PatientEditRequest patientEditRequest, int part, String accessToken) async {
 
     try {
-      final caseReportData = await _patientEditRequestRemoteDataSource.postPatientEditRequest(accessToken);
+      final caseReportData = await _patientEditRequestRemoteDataSource.postPatientEditRequest(patientEditRequest, part, accessToken);
       return Right(caseReportData);
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));

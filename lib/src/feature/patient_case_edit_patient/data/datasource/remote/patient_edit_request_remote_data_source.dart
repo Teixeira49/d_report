@@ -6,12 +6,12 @@ import '../../../domain/entities/patient_edit_request.dart';
 import '../../models/patient_report_edit_request_model.dart';
 
 abstract class PatientEditRequestRemoteDataSource {
-
-  Future<PatientEditRequest> postPatientEditRequest(String accessToken);
+  Future<PatientEditRequest> postPatientEditRequest(
+      PatientEditRequest patientEditRequest, int part, String accessToken);
 }
 
-class CaseEditRequestRemoteDataSourceImpl implements PatientEditRequestRemoteDataSource {
-
+class PatientEditRequestRemoteDataSourceImpl
+    implements PatientEditRequestRemoteDataSource {
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
@@ -19,15 +19,17 @@ class CaseEditRequestRemoteDataSourceImpl implements PatientEditRequestRemoteDat
   final Dio dio = Dio();
 
   @override
-  Future<PatientEditRequest> postPatientEditRequest(String accessToken) async {
-    if(!_isFetching) {
+  Future<PatientEditRequest> postPatientEditRequest(
+      PatientEditRequest patientEditRequest,
+      int part,
+      String accessToken) async {
+    if (!_isFetching) {
       _isFetching = true;
     }
 
     const r = RetryOptions(maxAttempts: 3);
 
-    final resp = await r.retry(() => dio.put(
-        '$apiUrl/patients/edit',
+    final resp = await r.retry(() => dio.put('$apiUrl/patients/edit',
         options: Options(
           sendTimeout: const Duration(seconds: 3),
           receiveTimeout: const Duration(seconds: 3),
@@ -35,9 +37,9 @@ class CaseEditRequestRemoteDataSourceImpl implements PatientEditRequestRemoteDat
             'Authorization': 'Bearer $accessToken',
           },
         ),
-    ));
+        data: PatientEditRequestModel.fromEntity(patientEditRequest)
+            .toSubJson(part)));
 
     return PatientEditRequestModel.fromJson(resp.data);
   }
-
 }

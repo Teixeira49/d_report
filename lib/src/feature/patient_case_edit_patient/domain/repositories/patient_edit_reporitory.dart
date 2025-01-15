@@ -5,5 +5,5 @@ import '../entities/patient_edit_request.dart';
 
 abstract class PatientEditRepository {
 
-    Future<Either<Failure, PatientEditRequest>> postPatientRequest(String accessToken);
+    Future<Either<Failure, PatientEditRequest>> postPatientRequest(PatientEditRequest patientEditRequest, int part, String accessToken);
 }

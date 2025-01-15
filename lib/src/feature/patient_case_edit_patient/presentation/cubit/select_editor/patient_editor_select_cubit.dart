@@ -4,18 +4,18 @@ import '../../../domain/entities/patient.dart';
 import '../../../domain/use_cases/create_instance_patient.dart';
 import 'patient_editor_select_state.dart';
 
-class CaseEditorSelectCubit extends Cubit<PatientEditorSelectState> {
+class PatientEditorSelectCubit extends Cubit<PatientEditorSelectState> {
 
   final CreateInstancePatientUseCase _createInstanceCaseReportUseCase;
 
-  CaseEditorSelectCubit(this._createInstanceCaseReportUseCase) : super(PatientEditorSelectRows());
+  PatientEditorSelectCubit(this._createInstanceCaseReportUseCase) : super(PatientEditorSelectRows());
 
   void onModifySelection(String title, dynamic caseJson) {
     Patient patient = _createInstanceCaseReportUseCase.call(caseJson);
     emit(state.copyWith(newTitle: title, newCaseReport: patient));
   }
 
-  void setOriginalCase(dynamic caseJson) {
+  void setOriginalPatient(dynamic caseJson) {
     Patient patient = _createInstanceCaseReportUseCase.call(caseJson);
     emit(state.copyWith(newCaseReport: patient));
   }
@@ -27,7 +27,7 @@ class CaseEditorSelectCubit extends Cubit<PatientEditorSelectState> {
     return '';
   }
 
-  Patient? getSelectionCase() {
+  Patient? getSelectionPatient() {
     return state.getSelectionPat();
   }
 

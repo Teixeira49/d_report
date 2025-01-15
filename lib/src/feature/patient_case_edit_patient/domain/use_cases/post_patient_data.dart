@@ -10,9 +10,9 @@ class PostPatientDataUseCase {
 
   final PatientEditRepository _caseEditRepository;
 
-  Future<Either<Failure, PatientEditRequest>> call(String accessToken) async {
+  Future<Either<Failure, PatientEditRequest>> call(PatientEditRequest patientEditRequest, int part, String accessToken) async {
     try {
-      var data = await _caseEditRepository.postPatientRequest(accessToken);
+      var data = await _caseEditRepository.postPatientRequest(patientEditRequest, part, accessToken);
       return data.fold(
               (l) => Left(ServerFailure(l.message)),
               (r) => Right(r)

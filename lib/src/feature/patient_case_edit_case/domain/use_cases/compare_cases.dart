@@ -16,7 +16,7 @@ class CompareCasesUseCase {
 
     String? error = 'Porfavor, realice modificaciones al caso.';
 
-    List<String> caseRows = checkEqualityUpdate[part]!;
+    List<String> caseRows = checkEqualityUpdateCase[part]!;
 
     for (var i in caseRows) {
       if (originalCaseJson[i].toLowerCase() !=
