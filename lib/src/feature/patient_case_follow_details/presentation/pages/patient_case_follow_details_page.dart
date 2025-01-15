@@ -187,7 +187,7 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
                   ? CustomCardResumeRow(
                       widgetKey: "Caracteristicas del paciente",
                       widgetValue:
-                          'Peso: ${Helper.writeWeight(patDetails['patWeight'])} kg  -  Estatura: ${Helper.writeHeight(patDetails['patHeight'])} m\nGrupo Sanguineo: ${patDetails['bloodType']}',
+                          'Peso: ${Helper.writeWeightByInt(patDetails['patWeight'])} kg  -  Estatura: ${Helper.writeHeightByInt(patDetails['patHeight'])} m\nGrupo Sanguineo: ${patDetails['bloodType']}',
                     )
                   : Container(),
               CustomCardResumeRow(
