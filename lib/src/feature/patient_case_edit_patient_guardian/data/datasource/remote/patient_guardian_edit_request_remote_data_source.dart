@@ -5,12 +5,12 @@ import '../../../../../core/utils/constants/network_constants.dart';
 import '../../../domain/entities/patient_guardian_edit_request.dart';
 import '../../models/patient_guardian_edit_request_model.dart';
 
-abstract class CaseEditRequestRemoteDataSource {
+abstract class PatientGuardianEditRequestRemoteDataSource {
 
-  Future<CaseReportEditRequest> postCaseEditRequest(String accessToken);
+  Future<PatientGuardianEditRequest> postPatientGuardianEditRequest(PatientGuardianEditRequest patientGuardianEditRequest, String accessToken);
 }
 
-class CaseEditRequestRemoteDataSourceImpl implements CaseEditRequestRemoteDataSource {
+class PatientGuardianEditRequestRemoteDataSourceImpl implements PatientGuardianEditRequestRemoteDataSource {
 
   bool _isFetching = false;
 
@@ -19,7 +19,7 @@ class CaseEditRequestRemoteDataSourceImpl implements CaseEditRequestRemoteDataSo
   final Dio dio = Dio();
 
   @override
-  Future<CaseReportEditRequest> postCaseEditRequest(String accessToken) async {
+  Future<PatientGuardianEditRequest> postPatientGuardianEditRequest(PatientGuardianEditRequest patientGuardianEditRequest, String accessToken) async {
     if(!_isFetching) {
       _isFetching = true;
     }
@@ -27,7 +27,7 @@ class CaseEditRequestRemoteDataSourceImpl implements CaseEditRequestRemoteDataSo
     const r = RetryOptions(maxAttempts: 3);
 
     final resp = await r.retry(() => dio.post(
-        '$apiUrl/cases/operations/case-details',
+        '$apiUrl/patients/guardians/edit',
         options: Options(
           sendTimeout: const Duration(seconds: 3),
           receiveTimeout: const Duration(seconds: 3),
@@ -35,9 +35,10 @@ class CaseEditRequestRemoteDataSourceImpl implements CaseEditRequestRemoteDataSo
             'Authorization': 'Bearer $accessToken',
           },
         ),
-    ));
+        data: PatientGuardianEditRequestModel.fromEntity(patientGuardianEditRequest)
+            .toJson()));
 
-    return CaseReportEditRequestModel.fromJson(resp.data);
+    return PatientGuardianEditRequestModel.fromJson(resp.data);
   }
 
 }

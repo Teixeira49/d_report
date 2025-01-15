@@ -1,27 +1,15 @@
-class CaseReportEditRequest {
-  CaseReportEditRequest({
-    required this.casId,
-    required this.patId,
-    required this.casSymptomatology,
-    required this.casPhysicalState,
-    required this.casDiagnosis,
-    required this.casStudyImg,
-    required this.casMethodOfEntry,
-    required this.casActualRoom,
-    required this.casEntryArea,
-    required this.casEndReason,
-    required this.casEndDiagnosis,
+class PatientGuardianEditRequest {
+  PatientGuardianEditRequest({
+    required this.patGuId,
+    required this.patGuDni,
+    required this.patGuAddress,
+    required this.patGuTlf,
+    required this.patGuEmail,
   });
 
-  int casId;
-  int patId;
-  String casSymptomatology;
-  String casPhysicalState;
-  String casDiagnosis;
-  String casStudyImg;
-  String casMethodOfEntry;
-  String casActualRoom;
-  String casEntryArea;
-  String casEndReason;
-  String casEndDiagnosis;
+  int patGuId;
+  int patGuDni;
+  String? patGuAddress;
+  String patGuTlf;
+  String? patGuEmail;
 }

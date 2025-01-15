@@ -1,19 +1,18 @@
+import 'package:d_report/src/feature/patient_case_edit_patient_guardian/domain/entities/patient_guardian_edit_request.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/services.dart';
 
 import '../../../../core/network/error/failures.dart';
-import '../entities/patient_guardian_edit_request.dart';
 import '../repositories/patient_guardian_edit_reporitory.dart';
 
-class PostCaseDateUseCase {
+class PostPatientGuardianDateUseCase {
 
-  PostCaseDateUseCase(this._caseEditRepository);
+  PostPatientGuardianDateUseCase(this._patientGuardianEditRepository);
 
-  final CaseEditRepository _caseEditRepository;
+  final PatientGuardianEditRepository _patientGuardianEditRepository;
 
-  Future<Either<Failure, CaseReportEditRequest>> call(String accessToken) async {
+  Future<Either<Failure, PatientGuardianEditRequest>> call(PatientGuardianEditRequest patientGuardianEditRequest, String accessToken) async {
     try {
-      var data = await _caseEditRepository.postCaseRequest(accessToken);
+      var data = await _patientGuardianEditRepository.postPatGuardianRequest(patientGuardianEditRequest, accessToken);
       return data.fold(
               (l) => Left(ServerFailure(l.message)),
               (r) => Right(r)

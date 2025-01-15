@@ -1,25 +1,29 @@
-
 import '../../../domain/entities/patient_guardian_edit_request.dart';
 
-abstract class CaseEditorState {
+abstract class PatientGuardianEditorState {
 
 }
 
-class CaseEditorInitial extends CaseEditorState {}
+class PatientGuardianEditorInitial extends PatientGuardianEditorState {}
 
-class CaseEditorLoading extends CaseEditorState {}
+class PatientGuardianEditorLoading extends PatientGuardianEditorState {}
 
-class CaseEditorPosted extends CaseEditorState {
-  CaseReportEditRequest caseReportEditRequest;
-  CaseEditorPosted({required this.caseReportEditRequest});
+class PatientGuardianEditorPosted extends PatientGuardianEditorState {
+  PatientGuardianEditRequest patientGuardianEditRequest;
+  PatientGuardianEditorPosted({required this.patientGuardianEditRequest});
 }
 
-class CaseEditorTimeout extends CaseEditorState {
+class PatientGuardianEditorTimeout extends PatientGuardianEditorState {
   final String sms;
-  CaseEditorTimeout({required this.sms});
+  PatientGuardianEditorTimeout({required this.sms});
 }
 
-class CaseEditorFail extends CaseEditorState {
+class PatientGuardianEditorFail extends PatientGuardianEditorState {
   final String errorSMS;
-  CaseEditorFail({required this.errorSMS});
+  PatientGuardianEditorFail({required this.errorSMS});
+}
+
+class PatientGuardianEditorWithoutUpdate extends PatientGuardianEditorState {
+  final String errorSMS;
+  PatientGuardianEditorWithoutUpdate({required this.errorSMS});
 }
