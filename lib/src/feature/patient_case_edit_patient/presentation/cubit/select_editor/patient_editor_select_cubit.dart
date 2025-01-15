@@ -16,6 +16,10 @@ class PatientEditorSelectCubit extends Cubit<PatientEditorSelectState> {
   }
 
   void setOriginalPatient(dynamic caseJson) {
+    caseJson['patName'] = caseJson['patFirstName'];// TODO Impl a unique politic please for fix this.
+    caseJson['patSecName'] = caseJson['patSecondName'];
+    caseJson['patLastName'] = caseJson['patLastname'];
+    caseJson['patSecSurName'] = caseJson['patSecondSurname'];
     Patient patient = _createInstanceCaseReportUseCase.call(caseJson);
     emit(state.copyWith(newCaseReport: patient));
   }

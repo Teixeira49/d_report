@@ -20,18 +20,18 @@ class PatientEditRequestModel extends PatientEditRequest {
   factory PatientEditRequestModel.fromJson(json) {
     return PatientEditRequestModel(
         patId: json['patId'],
-        patFirstName: json['patFirstName'],
-        patSecondName: json['patSecondName'],
-        patLastname: json['patLastname'],
-        patSecondSurname: json['patSecondSurname'],
+        patFirstName: json['patName'],
+        patSecondName: json['patSecName'],
+        patLastname: json['patLastName'],
+        patSecondSurname: json['patSecSurName'],
         patBirthdayDate: json['patBirthdayDate'],
         patBirthdayPlace: json['patBirthdayPlace'],
         patBloodType: json['patBloodType'],
         patDni: json['patDni'],
         patGender: json['patGender'],
         patGuardianDni: json['patGuardianDni'],
-        patWeight: json['patWeight'],
-        patHeight: json['patHeight']
+        patWeight: 4500,// json['patWeight'],
+        patHeight: 15//json['patHeight']
     );}
 
   Map<String, dynamic> toJson() {
@@ -64,10 +64,12 @@ class PatientEditRequestModel extends PatientEditRequest {
         };
       case 1:
         return {
+          "patId": patId,
           'patBirthdayDate': patBirthdayDate,
           'patBirthdayPlace': patBirthdayPlace,
           'patDni': patDni,
           'patGender': patGender,
+          'patBloodType': patBloodType,
           //'patWeight': patWeight,
           //'patHeight': patHeight,
         };

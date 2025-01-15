@@ -2,8 +2,10 @@ import 'package:d_report/src/feature/patient_case_edit_patient/domain/use_cases/
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/helpers/helpers.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
+import '../../../../shared/presentation/widget/genre-user_field.dart';
 import '../../../../shared/presentation/widget/loading_show_dialog.dart';
 import '../../data/datasource/remote/patient_edit_request_remote_data_source.dart';
 import '../../data/models/patient_report_edit_request_model.dart';
@@ -17,7 +19,7 @@ import '../cubit/select_editor/patient_editor_select_cubit.dart';
 import '../cubit/select_editor/patient_editor_select_state.dart';
 import '../widgets/blood_type_field.dart';
 import '../widgets/data_textField.dart';
-import '../widgets/genre-user_field.dart';
+import '../widgets/date_field.dart';
 import '../widgets/next_state_button.dart';
 
 class EditCasePatientPage extends StatefulWidget {
@@ -76,7 +78,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
         _lastSurnameNameController.text = args['patKey']['patSecondSurname'];
       }
       if (args['patKey']['patDni'] != null) {
-        _dniController.text = args['patKey']['patDni'];
+        _dniController.text = (args['patKey']['patDni']).toString();
       }
       if (args['patKey']['patGender'] != null) {
         _genderTypeController.value = args['patKey']['patGender'];
@@ -88,16 +90,19 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
         _birthdayPlaceController.text = args['patKey']['patBirthdayPlace'];
       }
       if (args['patKey']['patGuardianDni'] != null) {
-        _guardianDniController.text = args['patKey']['patGuardianDni'];
+        _guardianDniController.text =
+            (args['patKey']['patGuardianDni']).toString();
       }
       if (args['patKey']['patBloodType'] != null) {
         _bloodTypeController.value = args['patKey']['patBloodType'];
       }
-      if (args['patKey']['patWeight'] != null) {
-        _weightDateController.text = args['patKey']['patWeight'];
+      if (args['casKey']['patWeight'] != null) {
+        _weightDateController.text =
+            Helper.writeWeightByInt(args['casKey']['patWeight']);
       }
-      if (args['patKey']['patHeight'] != null) {
-        _heightController.text = args['patKey']['patHeight'];
+      if (args['casKey']['patHeight'] != null) {
+        _heightController.text =
+            Helper.writeHeightByInt(args['casKey']['patHeight']);
       }
     }
     super.didChangeDependencies();
@@ -124,18 +129,20 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
   PatientEditRequest _submitForm(int patKey) {
     return PatientEditRequest(
         patId: patKey,
-        patFirstName: '',
-        patSecondName: '',
-        patLastname: '',
-        patSecondSurname: '',
-        patDni: null,
-        patBirthdayDate: '',
-        patGender: '',
-        patBirthdayPlace: '',
-        patBloodType: '',
-        patGuardianDni: 1,
-        patWeight: null,
-        patHeight: null);
+        patFirstName: _firstNameController.text,
+        patSecondName: _secondNameController.text,
+        patLastname: _lastNameController.text,
+        patSecondSurname: _lastSurnameNameController.text,
+        patDni: int.parse(_dniController.text),
+        patBirthdayDate: _birthdayDateController.text,
+        patGender: _genderTypeController.value ?? '',
+        patBirthdayPlace: _birthdayPlaceController.text,
+        patBloodType: _bloodTypeController.value ?? '',
+        patGuardianDni: int.parse(_guardianDniController.text),
+        patWeight: int.parse(
+            Helper.writeWeightByDouble(double.parse(_weightDateController.text), true)),
+        patHeight: int.parse(
+            Helper.writeHeightByDouble(double.parse(_heightController.text), true)),);
   }
 
   @override
@@ -172,8 +179,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
               create: (_) =>
                   PatientEditorSelectCubit(createInstancePatientUseCase)
                     ..onModifySelection(
-                        arguments['title'].toString().toLowerCase(),
-                        patient))
+                        arguments['title'].toString().toLowerCase(), patient))
         ],
         child: BlocBuilder<PatientEditorSelectCubit, PatientEditorSelectState>(
             builder: (contextSelector, stateSelector) {
@@ -205,10 +211,9 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                     Icons.check,
                     Colors.green); // TODO Safe color in styles folder
               });
-              dynamic patientEditRequest =
-                  PatientEditRequestModel.fromEntity(
-                          statePatientEditor.patientEditRequest)
-                      .toJson();
+              dynamic patientEditRequest = PatientEditRequestModel.fromEntity(
+                      statePatientEditor.patientEditRequest)
+                 .toJson();
               contextSelector
                   .read<PatientEditorSelectCubit>()
                   .setOriginalPatient(patientEditRequest);
@@ -258,8 +263,8 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                   ),
                                   child: CaseDataTextField(
                                     contextRow: 'Primer Nombre',
-                                    controllerData:
-                                        _firstNameController,
+                                    controllerData: _firstNameController,
+                                    textInputType: TextInputType.name,
                                   ),
                                 ),
                                 Container(
@@ -270,6 +275,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                   child: CaseDataTextField(
                                     contextRow: 'Segundo Nombre',
                                     controllerData: _secondNameController,
+                                    textInputType: TextInputType.name,
                                   ),
                                 ),
                                 Container(
@@ -280,6 +286,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                   child: CaseDataTextField(
                                     contextRow: 'Primer Apellido',
                                     controllerData: _lastNameController,
+                                    textInputType: TextInputType.name,
                                   ),
                                 ),
                                 Container(
@@ -290,6 +297,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                   child: CaseDataTextField(
                                     contextRow: 'Segundo Apellido',
                                     controllerData: _lastSurnameNameController,
+                                    textInputType: TextInputType.name,
                                   ),
                                 ),
                               ],
@@ -327,13 +335,9 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                       horizontal: size.width * 0.075,
                                       vertical: size.height * 0.010,
                                     ),
-                                    child: Row(
-                                      children: [
-                                        CaseDataTextField(
-                                          contextRow: 'Fecha de Nacimiento',
-                                          controllerData: _birthdayDateController,
-                                        )
-                                      ],
+                                    child: DateTextField(
+                                      contextRow: 'Fecha de Nacimiento',
+                                      controllerData: _birthdayDateController,
                                     )),
                                 Container(
                                   padding: EdgeInsets.symmetric(
@@ -343,6 +347,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                   child: CaseDataTextField(
                                     contextRow: 'Lugar de Nacimiento',
                                     controllerData: _birthdayPlaceController,
+                                    textInputType: TextInputType.text,
                                   ),
                                 ),
                                 Container(
@@ -354,13 +359,53 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                       children: [
                                         Expanded(
                                             child: TypeGenreDropdownField(
-                                              controllerData: _genderTypeController,
-                                            )
+                                          controllerData: _genderTypeController,
+                                        )),
+                                        const SizedBox(
+                                          width: 10,
                                         ),
                                         Expanded(
                                             child: TypeBloodDropdownField(
-                                              controllerData: _bloodTypeController,
-                                            )
+                                          controllerData: _bloodTypeController,
+                                        ))
+                                      ],
+                                    )),
+                                Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.075,
+                                      vertical: size.height * 0.010,
+                                    ),
+                                    child: CaseDataTextField(
+                                      contextRow: 'Cedula del Paciente',
+                                      controllerData: _dniController,
+                                      textInputType: TextInputType.number,
+                                    )),
+                                Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.075,
+                                      vertical: size.height * 0.010,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: CaseDataTextField(
+                                            contextRow: 'Peso (kilogramos)',
+                                            controllerData:
+                                                _weightDateController,
+                                            textInputType: TextInputType.number,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          child: CaseDataTextField(
+                                            contextRow: 'Altura (metros)',
+                                            controllerData: _heightController,
+                                            textInputType: TextInputType.number,
+                                          ),
                                         )
                                       ],
                                     )),

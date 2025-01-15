@@ -19,22 +19,22 @@ class PatientModel extends Patient {
   factory PatientModel.fromJson(json) {
     return PatientModel(
         patId: json['patId'],
-        patName: json['patFirstName'],
-        patLastname: json['patLastName'],
+        patName: json['patName'],
+        patLastname: json['patLastname'],
         patBirthdayDate: json['patBirthdayDate'],
         patBirthdayPlace: json['patBirthdayPlace'],
         patBloodType: json['patBloodType'],
         patDni: json['patDni'],
         patGender: json['patGender'],
         patGuardianDni: json['patGuardianDni'],
-        patWeight: json['casKey']['patWeight'],
-        patHeight: json['casKey']['patHeight']);
+        patWeight: json['patWeight'],
+        patHeight: json['patHeight']);
   }
 
   Map<String, dynamic> toJson() {
     return {
       'patId': patId,
-      'patName': patName,
+      'patFirstName': patName,
       'patLastname': patLastname,
       'patBirthdayDate': patBirthdayDate,
       'patBirthdayPlace': patBirthdayPlace,

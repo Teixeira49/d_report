@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class DateTextField extends StatefulWidget {
+  const DateTextField({super.key, required this.contextRow, required this.controllerData});
 
-  const DateTextField({super.key, required this.controllerData});
-
+  final String contextRow;
   final TextEditingController controllerData;
 
   @override
@@ -44,7 +44,7 @@ class MyDateTextFieldWidget extends State<DateTextField> {
           filled: Theme.of(context).inputDecorationTheme.filled,
           border: Theme.of(context).inputDecorationTheme.border,
           suffixIcon: const Icon(Icons.calendar_month),
-          labelText: "Fecha de Nacimiento",
+          labelText: widget.contextRow,
           labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
           hintText: hintNameUser,
           hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,

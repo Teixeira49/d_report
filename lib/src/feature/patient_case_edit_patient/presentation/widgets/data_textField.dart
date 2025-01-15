@@ -4,10 +4,11 @@ import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class CaseDataTextField extends StatefulWidget {
 
-  const CaseDataTextField({super.key, required this.contextRow, required this.controllerData,});
+  const CaseDataTextField({super.key, required this.contextRow, required this.controllerData, required this.textInputType,});
 
   final String contextRow;
   final TextEditingController controllerData;
+  final TextInputType textInputType;
 
   @override
   MyCaseDataTextFieldWidget createState() => MyCaseDataTextFieldWidget();

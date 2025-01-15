@@ -429,7 +429,7 @@ Widget patientInfo(
         CustomCardPatientRow(
             widgetKey: 'Altura y Peso',
             widgetValue:
-                '${Helper.writeHeight(state.caseReport.patHeight)} mts y ${Helper.writeWeight(state.caseReport.patWeight)} kgs',
+                '${Helper.writeHeightByInt(state.caseReport.patHeight)} mts y ${Helper.writeWeightByInt(state.caseReport.patWeight)} kgs',
             tileIcon: MyFlutterApp.ruler),
         CustomCardPatientRow(
           widgetKey: "Tipo de Sangre",

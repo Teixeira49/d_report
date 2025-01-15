@@ -29,6 +29,9 @@ class PatientEditRequestRemoteDataSourceImpl
 
     const r = RetryOptions(maxAttempts: 3);
 
+    print(PatientEditRequestModel.fromEntity(patientEditRequest)
+        .toSubJson(part));
+
     final resp = await r.retry(() => dio.put('$apiUrl/patients/edit',
         options: Options(
           sendTimeout: const Duration(seconds: 3),
@@ -39,6 +42,8 @@ class PatientEditRequestRemoteDataSourceImpl
         ),
         data: PatientEditRequestModel.fromEntity(patientEditRequest)
             .toSubJson(part)));
+
+    print(resp.data);
 
     return PatientEditRequestModel.fromJson(resp.data);
   }

@@ -24,6 +24,18 @@ class PatientEditPageSelector extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
+            Visibility(
+              visible: false,
+                child: ButtonTile(
+                  titleOptionText: 'Basico del Paciente',
+                  descOptionText:
+                  'Nombre, Apellido.',
+                  iconData: Icons.person,
+                  route: 'patient',
+                  arguments: arguments,
+                  getIndex: 0,
+                ),
+            ),
             ButtonTile(
               titleOptionText: 'Paciente',
               descOptionText:
@@ -31,6 +43,7 @@ class PatientEditPageSelector extends StatelessWidget {
               iconData: Icons.person,
               route: 'patient',
               arguments: arguments,
+              getIndex: 1,
             ),
             ButtonTile(
               titleOptionText: 'Representante',
@@ -61,7 +74,7 @@ class PatientEditPageSelector extends StatelessWidget {
               titleOptionText: 'Cierre del Caso',
               descOptionText: 'Razon de Cierre, Diagnostico Final.',
               iconData: Icons.assignment_turned_in,
-              route: 'case-end',
+              route: 'case',
               arguments: arguments,
               getIndex: 2,
             ),

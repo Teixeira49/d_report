@@ -9,14 +9,16 @@ class ComparePatientsUseCase {
 
   String? call(Patient originalPat, PatientEditRequest updatePat, int part) {
     dynamic originalPatJson = PatientModel.fromEntity(originalPat).toJson();
-    dynamic updatePatJson = PatientEditRequestModel.fromEntity(updatePat).toJson();
+    dynamic updatePatJson =
+        PatientEditRequestModel.fromEntity(updatePat).toJson();
 
     String? error = 'Porfavor, realice modificaciones al Paciente.';
 
     List<String> patRows = checkEqualityUpdatePatient[part]!;
 
     for (var i in patRows) {
-      if (originalPatJson[i].toLowerCase() != updatePatJson[i].toLowerCase()) {
+      if (originalPatJson[i].toString().toLowerCase() !=
+          updatePatJson[i].toString().toLowerCase()) {
         if (updatePatJson[i] == '') {
           error = 'Porfavor, no deje campos por rellenar.';
         } else {

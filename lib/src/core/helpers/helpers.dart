@@ -55,14 +55,23 @@ class Helper {
     return age;
   }
 
-  static String writeHeight(int originHeight) {
-    final fixedHeight = (originHeight / 100);
+  static String writeHeightByInt(int originHeight, [bool reverse = false]) {
+    final fixedHeight = reverse ? (originHeight * 100) : (originHeight / 100);
     return fixedHeight.toStringAsFixed(2);
   }
 
-  static String writeWeight(int originWeight) {
-    final fixedWeight = (originWeight / 1000);
+  static String writeWeightByInt(int originWeight, [bool reverse = false]) {
+    final fixedWeight = reverse ? (originWeight * 1000) : (originWeight / 1000);
     return fixedWeight.toStringAsFixed(2);
   }
 
+  static String writeHeightByDouble(double originHeight, [bool reverse = false]) {
+    final fixedHeight = reverse ? (originHeight * 100) : (originHeight / 100);
+    return fixedHeight.round().toStringAsFixed(0);
+  }
+
+  static String writeWeightByDouble(double originWeight, [bool reverse = false]) {
+    final fixedWeight = reverse ? (originWeight * 1000) : (originWeight / 1000);
+    return fixedWeight.round().toStringAsFixed(0);
+  }
 }

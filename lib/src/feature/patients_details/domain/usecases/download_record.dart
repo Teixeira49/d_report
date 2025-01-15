@@ -100,7 +100,7 @@ class DownloadPatientRecordUseCase {
 
   static String customTextIdentifier(Patient patient, CaseReport caseReport) {
     return '''${patient.getFullName()}
-    Edad: ${Helper.getAgeByDateInString(patient.patBirthdayDate)} - Peso: ${Helper.writeWeight(caseReport.patWeight)} Kg
+    Edad: ${Helper.getAgeByDateInString(patient.patBirthdayDate)} - Peso: ${Helper.writeWeightByInt(caseReport.patWeight)} Kg
     Historia: ${caseReport.casId}
     F.I: ${Helper.getDateWithoutHour(DateTime.parse(caseReport.casEnterDate))}''';
   }
@@ -182,7 +182,7 @@ class DownloadPatientRecordUseCase {
                         style: AppTextStyle.smallTitleBlack,
                         children: [
                           TextSpan(
-                            text: ' ${Helper.writeWeight(caseReport.patWeight)} kgs.',
+                            text: ' ${Helper.writeWeightByInt(caseReport.patWeight)} kgs.',
                             style: AppTextStyle.smallTableBlack,
                           )
                         ])),
@@ -193,7 +193,7 @@ class DownloadPatientRecordUseCase {
                         style: AppTextStyle.smallTitleBlack,
                         children: [
                           TextSpan(
-                            text: '${Helper.writeHeight(caseReport.patHeight)} mts.',
+                            text: '${Helper.writeHeightByInt(caseReport.patHeight)} mts.',
                             style: AppTextStyle.smallTableBlack,
                           )
                         ])),
