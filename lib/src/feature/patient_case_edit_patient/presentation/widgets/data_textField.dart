@@ -24,7 +24,7 @@ class CaseDataTextField extends StatefulWidget {
           controller: widget.controllerData,
           style: Theme.of(context).textTheme.labelLarge,
           obscureText: obscureTextDefault,
-          keyboardType: TextInputType.name,
+          keyboardType: widget.textInputType,
           decoration: InputDecoration(
             fillColor: Theme.of(context).inputDecorationTheme.fillColor,
             filled: Theme.of(context).inputDecorationTheme.filled,
