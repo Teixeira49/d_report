@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../core/network/error/failures.dart';
-import '../entities/case_report_edit_request.dart';
-import '../repositories/case_edit_reporitory.dart';
+import '../entities/patient_guardian_edit_request.dart';
+import '../repositories/patient_guardian_edit_reporitory.dart';
 
 class PostCaseDateUseCase {
 

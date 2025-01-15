@@ -1,4 +1,3 @@
-import '../../../../core/helpers/helpers.dart';
 import '../../domain/entities/patient.dart';
 
 class PatientModel extends Patient {

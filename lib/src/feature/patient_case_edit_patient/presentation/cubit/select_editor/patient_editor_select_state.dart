@@ -1,7 +1,7 @@
 import '../../../domain/entities/patient.dart';
 
 abstract class PatientEditorSelectState {
-  PatientEditorSelectState copyWith({String newTitle, Patient newCaseReport});
+  PatientEditorSelectState copyWith({String newTitle, Patient newPatient});
 
   String getSelectionTitle();
 
@@ -15,9 +15,9 @@ class PatientEditorSelectRows extends PatientEditorSelectState {
   PatientEditorSelectRows({this.title = '', this.patient});
 
   @override
-  PatientEditorSelectRows copyWith({String? newTitle, Patient? newCaseReport}) {
+  PatientEditorSelectRows copyWith({String? newTitle, Patient? newPatient}) {
     return PatientEditorSelectRows(
-        title: newTitle ?? title, patient: newCaseReport ?? patient);
+        title: newTitle ?? title, patient: newPatient ?? patient);
   }
 
   @override

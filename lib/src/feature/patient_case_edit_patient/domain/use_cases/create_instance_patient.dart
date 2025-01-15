@@ -5,7 +5,7 @@ class CreateInstancePatientUseCase {
 
   CreateInstancePatientUseCase();
 
-  Patient call(dynamic caseJson) {
-    return PatientModel.fromJson(caseJson);
+  Patient call(dynamic patientJson) {
+    return PatientModel.fromJson(patientJson);
   }
 }

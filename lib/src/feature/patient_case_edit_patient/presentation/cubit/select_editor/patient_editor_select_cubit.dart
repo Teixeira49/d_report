@@ -10,18 +10,18 @@ class PatientEditorSelectCubit extends Cubit<PatientEditorSelectState> {
 
   PatientEditorSelectCubit(this._createInstanceCaseReportUseCase) : super(PatientEditorSelectRows());
 
-  void onModifySelection(String title, dynamic caseJson) {
-    Patient patient = _createInstanceCaseReportUseCase.call(caseJson);
-    emit(state.copyWith(newTitle: title, newCaseReport: patient));
+  void onModifySelection(String title, dynamic patientJson) {
+    Patient patient = _createInstanceCaseReportUseCase.call(patientJson);
+    emit(state.copyWith(newTitle: title, newPatient: patient));
   }
 
-  void setOriginalPatient(dynamic caseJson) {
-    caseJson['patName'] = caseJson['patFirstName'];// TODO Impl a unique politic please for fix this.
-    caseJson['patSecName'] = caseJson['patSecondName'];
-    caseJson['patLastName'] = caseJson['patLastname'];
-    caseJson['patSecSurName'] = caseJson['patSecondSurname'];
-    Patient patient = _createInstanceCaseReportUseCase.call(caseJson);
-    emit(state.copyWith(newCaseReport: patient));
+  void setOriginalPatient(dynamic patientJson) {
+    patientJson['patName'] = patientJson['patFirstName'];// TODO Impl a unique politic please for fix this.
+    patientJson['patSecName'] = patientJson['patSecondName'];
+    patientJson['patLastName'] = patientJson['patLastname'];
+    patientJson['patSecSurName'] = patientJson['patSecondSurname'];
+    Patient patient = _createInstanceCaseReportUseCase.call(patientJson);
+    emit(state.copyWith(newPatient: patient));
   }
 
   String getSelectionTitle() {
