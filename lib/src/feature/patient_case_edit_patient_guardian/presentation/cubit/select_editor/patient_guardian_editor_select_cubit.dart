@@ -13,13 +13,13 @@ class PatientGuardianEditorSelectCubit
   PatientGuardianEditorSelectCubit(this._createInstanceCaseReportUseCase)
       : super(PatientGuardianEditorSelectRows());
 
-  void onModifySelection(String title, dynamic patientJson) {
-    PatientGuardian patientGuardian = _createInstanceCaseReportUseCase.call(patientJson);
+  void onModifySelection(String title, dynamic patientGuJson) {
+    PatientGuardian patientGuardian = _createInstanceCaseReportUseCase.call(patientGuJson);
     emit(state.copyWith(newTitle: title, newPatientGuardian: patientGuardian));
   }
 
-  void setOriginalPatient(dynamic patientJson) {
-    PatientGuardian patientGuardian = _createInstanceCaseReportUseCase.call(patientJson);
+  void setOriginalPatient(dynamic patientGuJson) {
+    PatientGuardian patientGuardian = _createInstanceCaseReportUseCase.call(patientGuJson);
     emit(state.copyWith(newPatientGuardian: patientGuardian));
   }
 
