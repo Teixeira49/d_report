@@ -2,6 +2,7 @@ import 'package:d_report/src/feature/patient_case_edit_case/presentation/cubit/s
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
@@ -92,7 +93,7 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
         _referralController.value = args['casKey']['casMethodOfEntry'];
       }
       if (args['casKey']['casEndReason'] != null) {
-        _endStatusController.value = args['casKey']['casEndReason'];
+        _endStatusController.value = endCaseTypeMeta[args['casKey']['casEndReason']];
       }
       if (args['casKey']['casEndDiagnosis'] != null) {
         _endDiagnosisController.text = args['casKey']['casEndDiagnosis'];
@@ -157,6 +158,8 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
     Map<String, dynamic> caseReport = arguments['casKey'];
     int patient = arguments['patKey']['patId'];
     int part = arguments['id'];
+
+    print(arguments['casKey']['casEndReason']);
 
     return MultiBlocProvider(
         providers: [

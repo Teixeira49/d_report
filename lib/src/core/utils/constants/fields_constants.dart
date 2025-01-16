@@ -56,6 +56,8 @@ final List<String> entryAreaType = <String>["Emergency", "Hospitalization", "Sur
 
 final List<String> endCaseType = ['Sobrevivio', 'Murio', 'Referido'];
 
+final Map<String, String> endCaseTypeMeta = {'SURVIVE': 'Sobrevivio', 'DEAD': 'Murio', 'REFERRAL':'Referido'};
+
 final List<String> endCaseTypeFull = ['Sobrevivio', 'Murio', 'Referido', 'Activo', 'Todos']; // TODO Sobrevivio?  JAJAJJAJA
 
 final List<String> caseStatusType = ['Activo', 'Finalizado', 'Todos'];

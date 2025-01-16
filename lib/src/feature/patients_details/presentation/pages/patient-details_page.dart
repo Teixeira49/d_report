@@ -120,7 +120,7 @@ class PatientDetailsPage extends StatelessWidget {
                                   'Espere a que carguen los datos para editar')
                             }
                         },
-                    icon: Icon(Icons.edit)),
+                    icon: const Icon(Icons.edit)),
                 Visibility(
                     visible: state is PatientDataLoaded
                         ? state.permissionStatus != ViewDetailsStatus.GUEST

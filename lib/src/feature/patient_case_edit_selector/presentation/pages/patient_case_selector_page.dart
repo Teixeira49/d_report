@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../shared/domain/entities/auth_user.dart';
 import '../widgets/button_tile.dart';
 
 class PatientEditPageSelector extends StatelessWidget {
@@ -10,6 +11,8 @@ class PatientEditPageSelector extends StatelessWidget {
 
     dynamic arguments =
         ModalRoute.of(context)?.settings.arguments; // TODO Refactor Rename
+
+    AuthUser authUser = arguments["AuthCredentials"]; // TODO Rename
 
     return Scaffold(
       appBar: AppBar(
@@ -25,9 +28,9 @@ class PatientEditPageSelector extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             Visibility(
-              visible: false,
+              visible: authUser.roleId == 3,
                 child: ButtonTile(
-                  titleOptionText: 'Basico del Paciente',
+                  titleOptionText: 'Nombre del Paciente',
                   descOptionText:
                   'Nombre, Apellido.',
                   iconData: Icons.person,
@@ -70,13 +73,16 @@ class PatientEditPageSelector extends StatelessWidget {
               arguments: arguments,
               getIndex: 1,
             ),
-            ButtonTile(
-              titleOptionText: 'Cierre del Caso',
-              descOptionText: 'Razon de Cierre, Diagnostico Final.',
-              iconData: Icons.assignment_turned_in,
-              route: 'case',
-              arguments: arguments,
-              getIndex: 2,
+            Visibility(
+              visible: authUser.roleId == 3 || arguments['casKey']['casEndFlag'] == true,
+                child: ButtonTile(
+                  titleOptionText: 'Cierre del Caso',
+                  descOptionText: 'Razon de Cierre, Diagnostico Final.',
+                  iconData: Icons.assignment_turned_in,
+                  route: 'case',
+                  arguments: arguments,
+                  getIndex: 2,
+                ),
             ),
           ],
         ),
