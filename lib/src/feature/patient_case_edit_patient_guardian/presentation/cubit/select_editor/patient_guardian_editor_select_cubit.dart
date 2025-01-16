@@ -18,7 +18,7 @@ class PatientGuardianEditorSelectCubit
     emit(state.copyWith(newTitle: title, newPatientGuardian: patientGuardian));
   }
 
-  void setOriginalPatient(dynamic patientGuJson) {
+  void setOriginalPatientGuardian(dynamic patientGuJson) {
     PatientGuardian patientGuardian = _createInstanceCaseReportUseCase.call(patientGuJson);
     emit(state.copyWith(newPatientGuardian: patientGuardian));
   }
