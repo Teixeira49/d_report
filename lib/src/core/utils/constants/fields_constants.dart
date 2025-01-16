@@ -56,6 +56,8 @@ final List<String> entryAreaType = <String>["Emergency", "Hospitalization", "Sur
 
 final List<String> endCaseType = ['Sobrevivio', 'Murio', 'Referido'];
 
+final Map<String, String> endCaseTypeMeta = {'SURVIVE': 'Sobrevivio', 'DEAD': 'Murio', 'REFERRAL':'Referido'};
+
 final List<String> endCaseTypeFull = ['Sobrevivio', 'Murio', 'Referido', 'Activo', 'Todos']; // TODO Sobrevivio?  JAJAJJAJA
 
 final List<String> caseStatusType = ['Activo', 'Finalizado', 'Todos'];
@@ -75,3 +77,14 @@ const String space = " ";
 const String edit = "Editar Perfil";
 
 final List<String> userType = <String>["Doctor","Resident","Administrator"]; // TODO Crear su propio archivo de constantes
+
+final Map<int, List<String>> checkEqualityUpdateCase = {
+  0: ['casSymptomatology', 'casPhysicalState', 'casDiagnosis'],
+  1: ['casActualRoom', 'casEntryArea'], //'casMethodOfEntry',
+  2: ['casEndReason', 'casEndDiagnosis'],
+}; // TODO DELETE StudyIMG
+
+final Map<int, List<String>> checkEqualityUpdatePatient = {
+  0: ['patFirstName', 'patSecondName', 'patLastname', 'patSecondSurname'],
+  1: ['patBirthdayDate', 'patBirthdayPlace', 'patBloodType', 'patDni', 'patGender', 'patWeight', 'patHeight'], //'casMethodOfEntry',
+}; // TODO DELETE StudyIMG and create other constant file

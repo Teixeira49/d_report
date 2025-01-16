@@ -97,7 +97,7 @@ class DownloadCaseFollowRecordUseCase {
   static String customTextIdentifier(FollowDetailedCase followDetailedCase,
       String patName, Map<String, dynamic>? patDetails) {
     return '''$patName
-    ${patDetails != null ? 'Edad: ${Helper.getAgeByDateInString(patDetails['birthday'])} - Peso: ${Helper.writeWeight(patDetails['patWeight'])} Kg' : 'Re. Seguimiento'}
+    ${patDetails != null ? 'Edad: ${Helper.getAgeByDateInString(patDetails['birthday'])} - Peso: ${Helper.writeWeightByInt(patDetails['patWeight'])} Kg' : 'Re. Seguimiento'}
     Historia: ${followDetailedCase.cafId}
     F.S: ${Helper.cutDateByString(followDetailedCase.cafReportDate)}''';
   }
@@ -150,7 +150,7 @@ class DownloadCaseFollowRecordUseCase {
                                 children: [
                                   TextSpan(
                                     text:
-                                        '${Helper.writeHeight(patDetails['patHeight'])} mts',
+                                        '${Helper.writeHeightByInt(patDetails['patHeight'])} mts',
                                     style: AppTextStyle.smallBlack,
                                   )
                                 ]))),
@@ -164,7 +164,7 @@ class DownloadCaseFollowRecordUseCase {
                                 children: [
                                   TextSpan(
                                     text:
-                                        '${Helper.writeWeight(patDetails['patWeight'])} kg',
+                                        '${Helper.writeWeightByInt(patDetails['patWeight'])} kg',
                                     style: AppTextStyle.smallBlack,
                                   )
                                 ]))),

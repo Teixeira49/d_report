@@ -12,6 +12,8 @@ import 'package:path_provider/path_provider.dart';
 import '../../../../core/helpers/helpers.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
+import '../../../../shared/presentation/widget/floating_snack_bars.dart';
+import '../../../../shared/presentation/widget/loading_show_dialog.dart';
 import '../../domain/entities/downloader_config.dart';
 import '../cubit/file_generator/file_generator_cubit.dart';
 import '../cubit/file_generator/file_generator_state.dart';
@@ -71,6 +73,9 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
                     visible: state is FollowDetailedCaseLoaded,
                     child: BlocConsumer<FileGeneratorCubit, FileGeneratorState>(
                         listener: (subContext, subState) async {
+                      if (subState is FileGeneratorLoading) {
+                        LoadingShowDialog.show(context, 'Descargando Archivo');
+                      }
                       if (subState is FileGeneratorLoaded) {
                         final bytes = await subState.pdf.save();
                         var file = File('');
@@ -94,9 +99,10 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
                           //}
                         }
                         await file.writeAsBytes(bytes);
-                        print("piña colada ${file.path}");
-                      } else if (subState is FileGeneratorFail){
-                        print(subState.errorSMS);
+                        Navigator.of(context, rootNavigator: true).pop();
+                        FloatingSnackBar.show(subContext, 'Informe guardado con exito.', Icons.check, Colors.green); // TODO Safe color in styes folder
+                      } else if (subState is FileGeneratorFail) {
+                        FloatingWarningSnackBar.show(subContext, subState.errorSMS);
                       }
                     }, builder: (subContext, subState) {
                       return IconButton(
@@ -181,7 +187,7 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
                   ? CustomCardResumeRow(
                       widgetKey: "Caracteristicas del paciente",
                       widgetValue:
-                          'Peso: ${Helper.writeWeight(patDetails['patWeight'])} kg  -  Estatura: ${Helper.writeHeight(patDetails['patHeight'])} m\nGrupo Sanguineo: ${patDetails['bloodType']}',
+                          'Peso: ${Helper.writeWeightByInt(patDetails['patWeight'])} kg  -  Estatura: ${Helper.writeHeightByInt(patDetails['patHeight'])} m\nGrupo Sanguineo: ${patDetails['bloodType']}',
                     )
                   : Container(),
               CustomCardResumeRow(
