@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../shared/presentation/cubit/theme_cubit.dart';
 
 class ButtonSettingsTileDynamicIcon extends StatelessWidget {
 
@@ -36,8 +40,9 @@ class ButtonSettingsTileDynamicIcon extends StatelessWidget {
           trailing: const Icon(
             Icons.arrow_forward_ios
           ),
-          onTap: () {
-
+          onTap: () async {
+            int prefs = await BlocProvider.of<ThemeCubit>(context).getTheme();
+            arguments['number'] = prefs;
             Navigator.of(context).pushNamed(
                 route,
                 arguments: arguments);

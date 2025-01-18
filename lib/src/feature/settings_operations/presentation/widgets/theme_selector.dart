@@ -20,9 +20,9 @@ class CustomRadioTheme extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.all(5.0),
         color:
-            id == isSelectedId ? Theme.of(context).primaryColor : Colors.white,
+            id == isSelectedId ? Colors.blue : Colors.white,
         child: Container(
-            height: 70,
+            height: 150,
             width: 100,
             alignment: Alignment.center,
             margin: const EdgeInsets.all(5.0),

@@ -52,13 +52,13 @@ class SettingsPage extends StatelessWidget {
                           Icons.invert_colors,
                           color: Theme.of(context).iconTheme.color,
                         ),
-                        children: const [
+                        children: [
                           ButtonSettingsTileDynamicIcon(
                             titleOptionText: 'Tema de la aplicacion',
                             iconLight: Icons.light_mode,
                             iconDark: Icons.dark_mode,
                             route: '/main/config/edit/',
-                            arguments: {},
+                            arguments: argument,
                             getIndex: 1,
                           ),
                         ],
