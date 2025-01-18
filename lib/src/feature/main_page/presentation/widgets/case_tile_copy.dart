@@ -32,17 +32,14 @@ class CaseTile extends StatelessWidget {
           height: double.maxFinite,
           width: 5,
         ),
-        onTap: () async {
-          final result = await Navigator.of(context).pushNamed('/main/patients/details/',
+        onTap: () {
+           Navigator.of(context).pushNamed('/main/patients/details/',
               arguments: {
                 "casKey": int.parse(dataPatientRow.casId),
                 'patFullName': dataPatientRow.patName,
                 'AuthCredentials': authUser,
                 'userData': user
               });
-          if (result == true) {
-            context.read<MyCasesCubit>().refreshCases(user.userProfileId, authUser.accessToken);
-          }
         },
       ),
     );

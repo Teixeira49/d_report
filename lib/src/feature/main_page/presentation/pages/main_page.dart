@@ -1,5 +1,6 @@
 import 'package:d_report/src/shared/domain/entities/auth_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:animations/animations.dart';
 
 import 'package:flutter/material.dart';
 

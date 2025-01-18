@@ -1,6 +1,3 @@
-import 'package:d_report/src/core/utils/constants/fields_constants.dart';
-
-import 'package:d_report/src/feature/main_page/domain/entities/patient.dart';
 import 'package:d_report/src/feature/profile_user/data/datasource/remote/profile_remote_data_source.dart';
 import 'package:d_report/src/feature/profile_user/data/repositories/profile_repository_impl.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +14,6 @@ import '../../domain/entities/doctor.dart';
 import '../cubit/profile_data/profile_data_cubit.dart';
 import '../cubit/profile_data/profile_data_state.dart';
 import '../widgets/custom_card_profile.dart';
-import '../widgets/data_textfield.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -29,7 +25,6 @@ class ProfilePage extends StatefulWidget {
 class MyProfilePageState extends State<ProfilePage> {
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  final _formatKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +45,6 @@ class MyProfilePageState extends State<ProfilePage> {
         genre: "Male",
         range: "Doctor",
         speciality: "Bacteriologo");
-
-    final size = MediaQuery.of(context).size;
 
     return BlocProvider(
       create: (_) => ProfileDataCubit(profileRepositoryImpl: repository)..getDoctorProfile(user.userProfileId, authUser.accessToken),
