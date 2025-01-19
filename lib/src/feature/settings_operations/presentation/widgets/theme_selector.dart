@@ -18,15 +18,15 @@ class CustomRadioTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(5.0),
-        color:
-            id == isSelectedId ? Colors.blue : Colors.white,
+        margin: const EdgeInsets.all(5.0),
+        color: id == isSelectedId ? Colors.blue : Colors.white,
+        elevation: 10,
         child: Container(
-            height: 150,
-            width: 100,
-            alignment: Alignment.center,
-            margin: const EdgeInsets.all(5.0),
-            child: MaterialButton(
+          height: 150,
+          width: 100,
+          alignment: Alignment.center,
+          margin: const EdgeInsets.all(5.0),
+          child: MaterialButton(
               onPressed: onPressed,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -42,9 +42,9 @@ class CustomRadioTheme extends StatelessWidget {
                     name,
                     style: TextStyle(
                         color: id == isSelectedId ? Colors.white : Colors.grey),
-                  )
+                  ),
                 ],
-              ),
-            )));
+              )),
+        ));
   }
 }

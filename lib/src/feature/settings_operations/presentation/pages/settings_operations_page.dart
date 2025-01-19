@@ -1,7 +1,8 @@
+import 'package:d_report/src/core/utils/constants/text_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../../shared/presentation/cubit/theme_cubit.dart';
 import '../widgets/theme_selector.dart';
@@ -20,21 +21,23 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
   late final PageController _pageController;
 
   bool _isInit = true;
-  int indexButton = -1;
+  int indexButton = 0;
+  String _version = 'Cargando...';
 
   @override
   void initState() {
     _isInit = true;
     super.initState();
+    _loadVersion();
   }
 
   @override
-  void didChangeDependencies()  {
+  void didChangeDependencies() {
     if (_isInit) {
       dynamic args = ModalRoute.of(context)!.settings.arguments;
       initialPage = (args['id'] != null) ? args['id'] : 1;
       _pageController = PageController(initialPage: initialPage);
-      themeC =  (args['number'] != null) ? args['number'] : 0;
+      themeC = (args['number'] != null) ? args['number'] : 0;
       indexButton = themeC;
     }
     super.didChangeDependencies();
@@ -43,7 +46,15 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
 
   @override
   void dispose() {
+    _pageController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      _version = '${packageInfo.version}+${packageInfo.buildNumber}';
+    });
   }
 
   @override
@@ -59,7 +70,7 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
       providers: [BlocProvider(create: (_) => ThemeCubit())],
       child: Scaffold(
           appBar: AppBar(
-            title: const Text('Configuracion'),
+              title: const Text('Configuracion'),
           ),
           body: PageView(
             controller: _pageController,
@@ -77,7 +88,7 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
                       ),
                       Text(
                         'Tema de aplicacion',
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(
                         height: 55,
@@ -149,13 +160,15 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
                                   color: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
-                                      ?.color),
+                                      ?.color
+                              ),
                             ),
                             const SizedBox(width: 8),
-                            const Expanded(
+                            Expanded(
                               child: Text(
                                 'Se ajustara la apariencia de la aplicacion segun la configuracion escogida.',
                                 textAlign: TextAlign.justify,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             )
                           ],
@@ -164,6 +177,109 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
                       const Spacer()
                     ],
                   ),
+                ),
+              ),
+              SingleChildScrollView(
+                  child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: size.height * 0.25,
+                      ),
+                      child: IntrinsicHeight(
+                          child: Container(
+                              margin: const EdgeInsets.all(24),
+                              // TODO CREATE CONSTANT
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const SizedBox(height: 24,),
+                                  Text(
+                                    'Politicas de Privacidad',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall,
+                                  ),
+                                  const Divider(),
+                                  const SizedBox(height: 24,),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 24),
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                    const BorderRadius.all(Radius.circular(20)),
+                                    color: Theme.of(context).colorScheme.onPrimary,
+                                    boxShadow: [BoxShadow(
+                                      color: Colors.grey.withOpacity(0.45),
+                                      blurRadius: 11,
+                                      offset: const Offset(0, 3),
+                                    )]
+                                ),
+                                child: Text(
+                                  termsOfPrivacy,
+                                  style:
+                                  Theme.of(context).textTheme.bodyMedium,
+                                  textAlign: TextAlign.justify,
+                                ),
+                              )
+
+                                ],
+                              ))))),
+              Container(
+                margin: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 55,
+                    ),
+                    Text(
+                      'Version de la aplicacion',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(
+                      height: 55,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(24 * 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 36),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20)),
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        boxShadow: [BoxShadow(
+                          color: Colors.grey.withOpacity(0.45),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: const Offset(0, 3), // Cambia la posición de la
+                        )]
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 125,
+                            height: 125,
+                            child: Image.asset('assets/images/logo.png'),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            'Version: $_version',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const Text(
+                            '\nTodos los derechos reservados.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               )
             ],

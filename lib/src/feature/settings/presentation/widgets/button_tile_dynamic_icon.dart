@@ -30,9 +30,16 @@ class ButtonSettingsTileDynamicIcon extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(top: 10, left: 12, right: 12),
+      decoration: BoxDecoration(
+          borderRadius:
+          const BorderRadius.all(Radius.circular(20)),
+          color: Theme.of(context).listTileTheme.tileColor,
+
+      ),
       child:
         ListTile(
           title: Text(titleOptionText),
+          tileColor: Theme.of(context).listTileTheme.tileColor,
           leading: Container(
             padding: const EdgeInsets.only(right: 4),
             child: Icon(themeColor == 1 ? iconLight : iconDark),
@@ -43,6 +50,9 @@ class ButtonSettingsTileDynamicIcon extends StatelessWidget {
           onTap: () async {
             int prefs = await BlocProvider.of<ThemeCubit>(context).getTheme();
             arguments['number'] = prefs;
+            if (getIndex != null) {
+              arguments['id'] = getIndex;
+            }
             Navigator.of(context).pushNamed(
                 route,
                 arguments: arguments);

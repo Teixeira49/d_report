@@ -39,6 +39,11 @@ class _MyButtonSettingsTileWithLinkButton
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.only(top: 10, left: 12, right: 12),
+        decoration: BoxDecoration(
+            borderRadius:
+            const BorderRadius.all(Radius.circular(20)),
+            color: Theme.of(context).listTileTheme.tileColor,
+        ),
         child: ListTile(
           title: Text(widget.titleOptionText),
           leading: Container(

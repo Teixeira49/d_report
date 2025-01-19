@@ -56,7 +56,7 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
           builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
-              title: Text('Seguimiento'),
+              title: const Text('Detalles de Evolucion'),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.edit),

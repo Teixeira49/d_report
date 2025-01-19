@@ -5,17 +5,26 @@ class ButtonSettingsTile extends StatelessWidget {
     super.key,
     required this.titleOptionText,
     required this.iconData,
-    this.voidCallback,
+    required this.route,
+    this.getIndex,
+    required this.arguments
   });
 
   final String titleOptionText;
   final IconData iconData;
-  final VoidCallback? voidCallback;
+  final String route;
+  final int? getIndex;
+  final dynamic arguments;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 10, left: 12, right: 12),
+      decoration: BoxDecoration(
+          borderRadius:
+          const BorderRadius.all(Radius.circular(20)),
+          color: Theme.of(context).listTileTheme.tileColor,
+      ),
       child: ListTile(
         title: Text(titleOptionText),
         leading: Container(
@@ -24,7 +33,12 @@ class ButtonSettingsTile extends StatelessWidget {
         ),
         trailing: const Icon(Icons.arrow_forward_ios),
         onTap: () {
-          voidCallback;
+          if (getIndex != null) {
+            arguments['id'] = getIndex;
+          }
+          Navigator.of(context).pushNamed(
+              route,
+              arguments: arguments);
         },
       ),
     );
