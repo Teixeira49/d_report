@@ -1,9 +1,11 @@
+import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 import 'package:d_report/src/feature/profile_user/data/datasource/remote/profile_remote_data_source.dart';
 import 'package:d_report/src/feature/profile_user/data/repositories/profile_repository_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../my_flutter_app_icons.dart';
 import '../../../../core/helpers/helpers.dart';
 import '../../../../shared/data/model/roles.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
@@ -23,7 +25,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class MyProfilePageState extends State<ProfilePage> {
-
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -47,7 +48,8 @@ class MyProfilePageState extends State<ProfilePage> {
         speciality: "Bacteriologo");
 
     return BlocProvider(
-      create: (_) => ProfileDataCubit(profileRepositoryImpl: repository)..getDoctorProfile(user.userProfileId, authUser.accessToken),
+      create: (_) => ProfileDataCubit(profileRepositoryImpl: repository)
+        ..getDoctorProfile(user.userProfileId, authUser.accessToken),
       child: Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
@@ -56,9 +58,6 @@ class MyProfilePageState extends State<ProfilePage> {
             IconButton(
               icon: const Icon(Icons.edit),
               onPressed: () {
-                print(user.userName);
-                print(user.userRoleUid);
-                print(user.userEmail);
                 Navigator.of(context)
                     .pushNamed('/main/profile/edit-row', arguments: {
                   'userData': argument["userData"],
@@ -81,6 +80,19 @@ class MyProfilePageState extends State<ProfilePage> {
               child: CustomCircularProgressBar(),
             );
           } else if (state is ProfileDataLoaded) {
+            String genreTranslated = translateGenreType[state.doctor.genre] ?? 'Indefinido';
+            IconData gender;
+            switch(state.doctor.genre){
+              case 'Male':
+                gender = Icons.male;
+                break;
+              case 'Female':
+                gender = Icons.female;
+                break;
+              default:
+                gender = MyFlutterApp.genderless;
+                break;
+            }
             return RefreshIndicator(
                 onRefresh: () async {
                   context
@@ -93,8 +105,15 @@ class MyProfilePageState extends State<ProfilePage> {
                     Container(
                       height: 225,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).appBarTheme.backgroundColor,
-                      ),
+                          color: Theme.of(context).appBarTheme.backgroundColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 11,
+                              offset: const Offset(0, 3),
+                            )
+                          ]),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -122,29 +141,36 @@ class MyProfilePageState extends State<ProfilePage> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 16,),
                     CustomCardProfileRow(
                       defaultKey: "Nombre",
                       defaultValue: "${state.doctor.firstName} ${state.doctor.lastName}",
+                      trailingIcon: Icons.account_circle,
                     ),
                     CustomCardProfileRow(
                       defaultKey: "Cedula",
                       defaultValue: state.doctor.dni.toString(),
+                      trailingIcon: Icons.contact_emergency,
                     ),
                     CustomCardProfileRow(
                       defaultKey: "Cumpleaños",
                       defaultValue: state.doctor.birthday,
+                      trailingIcon: Icons.calendar_month,
                     ),
                     CustomCardProfileRow(
                       defaultKey: "Genero",
-                      defaultValue: state.doctor.genre,
+                      defaultValue: genreTranslated,
+                      trailingIcon: gender,
                     ),
                     CustomCardProfileRow(
                       defaultKey: "Especialidad",
                       defaultValue: "Doctor - ${state.doctor.speciality}",
+                      trailingIcon: MyFlutterApp.user_md
                     ),
                     CustomCardProfileRow(
                       defaultKey: "ID Usuario",
                       defaultValue: state.doctor.id.toString(),
+                      trailingIcon: Icons.verified_user,
                     ),
                   ],
                 )));

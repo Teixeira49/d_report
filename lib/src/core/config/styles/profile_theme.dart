@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-abstract class ProfileTheme {
-  static ThemeData get light {
-    return ThemeData(
-
+final ThemeData profileLightTheme = ThemeData(
+      brightness: Brightness.light,
       listTileTheme: ListTileThemeData(
         tileColor: const Color.fromRGBO(242, 248, 255, 1.0),
         textColor: Colors.black,
@@ -24,8 +22,9 @@ abstract class ProfileTheme {
       ),
     );
 
-  } static ThemeData get dark {
-    return ThemeData(
+
+
+final ThemeData profileDarkTheme = ThemeData(
 
       listTileTheme: ListTileThemeData(
         tileColor: const Color.fromRGBO(9, 33, 51, 1.0),
@@ -47,5 +46,4 @@ abstract class ProfileTheme {
       ),
 
     );
-  }
-}
+

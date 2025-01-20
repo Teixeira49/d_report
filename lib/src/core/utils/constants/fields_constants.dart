@@ -78,6 +78,12 @@ const String edit = "Editar Perfil";
 
 final List<String> userType = <String>["Doctor","Resident","Administrator"]; // TODO Crear su propio archivo de constantes
 
+final Map<String, String> translateGenreType = {
+  'Male': 'Hombre',
+  'Female': 'Mujer',
+  'Other': 'Otro'
+};
+
 final Map<int, List<String>> checkEqualityUpdateCase = {
   0: ['casSymptomatology', 'casPhysicalState', 'casDiagnosis'],
   1: ['casActualRoom', 'casEntryArea'], //'casMethodOfEntry',
