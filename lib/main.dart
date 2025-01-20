@@ -15,7 +15,7 @@ import 'package:d_report/src/feature/patient_case_edit_patient_guardian/presenta
 import 'package:d_report/src/feature/patient_case_edit_selector/presentation/pages/patient_case_selector_page.dart';
 import 'package:d_report/src/feature/patient_case_follow_details/presentation/pages/patient_case_follow_details_page.dart';
 import 'package:d_report/src/feature/patients_details/presentation/pages/patient-details_page.dart';
-import 'package:d_report/src/feature/profile_user/presentation/pages/edit_profile_page.dart';
+import 'package:d_report/src/feature/profile_user_edit/presentation/pages/edit_profile_page.dart';
 import 'package:d_report/src/feature/profile_user/presentation/pages/profile_page.dart';
 import 'package:d_report/src/feature/settings/presentation/pages/settings_page.dart';
 import 'package:d_report/src/feature/settings_operations/presentation/pages/settings_operations_page.dart';

@@ -1,6 +1,3 @@
-
-import 'package:d_report/src/feature/patients_details/domain/entities/follows_in_case.dart';
-
 import '../../../domain/entities/doctor.dart';
 
 abstract class ProfileDataState {}

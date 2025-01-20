@@ -3,9 +3,8 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/network/error/failures.dart';
 import '../entities/doctor.dart';
 
-abstract class ProfileRepository {
+abstract class ProfileEditRepository {
 
-  Future<Either<Failure, Doctor>> getDoctorProfileById(int docId, String accessToken);
+  Future<Either<Failure, Doctor>> putDoctorProfile(int docId, String accessToken);
 
 }
-
