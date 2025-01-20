@@ -1,7 +1,6 @@
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 import 'package:d_report/src/feature/profile_user/data/datasource/remote/profile_remote_data_source.dart';
 import 'package:d_report/src/feature/profile_user/data/repositories/profile_repository_impl.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,6 +32,7 @@ class MyProfilePageState extends State<ProfilePage> {
     final repository =
         ProfileRepositoryImpl(profileRemoteDataSource: profileDataSource);
 
+    final size = MediaQuery.of(context).size;
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
     User user = argument["userData"];
     AuthUser authUser = argument["AuthCredentials"];
@@ -76,13 +76,20 @@ class MyProfilePageState extends State<ProfilePage> {
         body: BlocBuilder<ProfileDataCubit, ProfileDataState>(
             builder: (context, state) {
           if (state is ProfileDataInitial || state is ProfileDataLoading) {
-            return const Center(
-              child: CustomCircularProgressBar(),
-            );
+            return RefreshIndicator(
+                onRefresh: () async {
+                  context
+                      .read<ProfileDataCubit>()
+                      .refreshProfile(user.userProfileId, authUser.accessToken);
+                },
+                child: const Center(
+                  child: CustomCircularProgressBar(),
+                ));
           } else if (state is ProfileDataLoaded) {
-            String genreTranslated = translateGenreType[state.doctor.genre] ?? 'Indefinido';
+            String genreTranslated =
+                translateGenreType[state.doctor.genre] ?? 'Indefinido';
             IconData gender;
-            switch(state.doctor.genre){
+            switch (state.doctor.genre) {
               case 'Male':
                 gender = Icons.male;
                 break;
@@ -124,7 +131,8 @@ class MyProfilePageState extends State<ProfilePage> {
                               backgroundColor: Theme.of(context)
                                   .colorScheme
                                   .tertiaryContainer,
-                              child: Image.asset("assets/images/logo.png"),
+                              child: Image.asset(
+                                  "assets/images/document/logo.webp"),
                             ),
                           ]),
                           const SizedBox(
@@ -141,10 +149,13 @@ class MyProfilePageState extends State<ProfilePage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16,),
+                    const SizedBox(
+                      height: 16,
+                    ),
                     CustomCardProfileRow(
                       defaultKey: "Nombre",
-                      defaultValue: "${state.doctor.firstName} ${state.doctor.lastName}",
+                      defaultValue:
+                          "${state.doctor.firstName} ${state.doctor.lastName}",
                       trailingIcon: Icons.account_circle,
                     ),
                     CustomCardProfileRow(
@@ -163,10 +174,9 @@ class MyProfilePageState extends State<ProfilePage> {
                       trailingIcon: gender,
                     ),
                     CustomCardProfileRow(
-                      defaultKey: "Especialidad",
-                      defaultValue: "Doctor - ${state.doctor.speciality}",
-                      trailingIcon: MyFlutterApp.user_md
-                    ),
+                        defaultKey: "Especialidad",
+                        defaultValue: "Doctor - ${state.doctor.speciality}",
+                        trailingIcon: MyFlutterApp.user_md),
                     CustomCardProfileRow(
                       defaultKey: "ID Usuario",
                       defaultValue: state.doctor.id.toString(),
@@ -175,8 +185,98 @@ class MyProfilePageState extends State<ProfilePage> {
                   ],
                 )));
           } else if (state is ProfileDataFail) {
-            print('pote');
-            return Container();
+            return RefreshIndicator(
+              onRefresh: () async {
+                context
+                    .read<ProfileDataCubit>()
+                    .refreshProfile(user.userProfileId, authUser.accessToken);
+              },
+              child: Center(
+                child: ListView(children: [
+                  Container(
+                    height: 225,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).appBarTheme.backgroundColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 11,
+                            offset: const Offset(0, 3),
+                          )
+                        ]),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Stack(children: [
+                          CircleAvatar(
+                            radius: 65.0,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                            child: Image.asset("assets/images/logo.png"),
+                          ),
+                        ]),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          '${Helper.capitalize(UserRole.values[authUser.roleId].name)}. ${user.userName}',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        Text(
+                          user.userEmail,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(18),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/images/not_found_logo.png",
+                          ),
+                          Text(
+                            state.errorSMS,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: size.height / 20),
+                            width: size.width * 0.40,
+                            height: size.height * 0.105,
+                            child: MaterialButton(
+                              color: Theme.of(context).colorScheme.primary,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(22.0)),
+                              elevation: 10,
+                              onPressed: () async {
+                                await context
+                                    .read<ProfileDataCubit>()
+                                    .refreshProfile(user.userProfileId,
+                                        authUser.accessToken);
+                              },
+                              child: Text('Reintentar',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.color,
+                                      fontFamily: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.fontFamily,
+                                      fontSize: 20)),
+                            ),
+                          )
+                        ]),
+                  )
+                ]),
+              ),
+            );
           } else {
             return Container();
           }
