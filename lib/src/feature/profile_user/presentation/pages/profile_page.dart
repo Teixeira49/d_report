@@ -97,7 +97,7 @@ class MyProfilePageState extends State<ProfilePage> {
                         color: Theme.of(context).appBarTheme.backgroundColor,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
+                            color: Theme.of(context).colorScheme.shadow.withOpacity(0.55),
                             spreadRadius: 5,
                             blurRadius: 11,
                             offset: const Offset(0, 3),
@@ -171,7 +171,7 @@ class MyProfilePageState extends State<ProfilePage> {
                           color: Theme.of(context).appBarTheme.backgroundColor,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
+                              color: Theme.of(context).colorScheme.shadow.withOpacity(0.55),
                               spreadRadius: 5,
                               blurRadius: 11,
                               offset: const Offset(0, 3),
@@ -290,7 +290,7 @@ class MyProfilePageState extends State<ProfilePage> {
                         color: Theme.of(context).appBarTheme.backgroundColor,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
+                            color: Theme.of(context).colorScheme.shadow.withOpacity(0.55),
                             spreadRadius: 5,
                             blurRadius: 11,
                             offset: const Offset(0, 3),

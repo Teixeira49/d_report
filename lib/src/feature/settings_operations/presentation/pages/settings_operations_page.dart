@@ -209,7 +209,7 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
                                     const BorderRadius.all(Radius.circular(20)),
                                     color: Theme.of(context).colorScheme.onPrimary,
                                     boxShadow: [BoxShadow(
-                                      color: Colors.grey.withOpacity(0.45),
+                                      color: Theme.of(context).colorScheme.shadow.withOpacity(0.45),
                                       blurRadius: 11,
                                       offset: const Offset(0, 3),
                                     )]
@@ -248,10 +248,10 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
                             const BorderRadius.all(Radius.circular(20)),
                         color: Theme.of(context).colorScheme.onPrimary,
                         boxShadow: [BoxShadow(
-                          color: Colors.grey.withOpacity(0.45),
+                          color: Theme.of(context).colorScheme.shadow.withOpacity(0.45),
                           spreadRadius: 5,
                           blurRadius: 7,
-                          offset: const Offset(0, 3), // Cambia la posición de la
+                          offset: const Offset(0, 3),
                         )]
                       ),
                       child: Column(

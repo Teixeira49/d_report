@@ -24,6 +24,14 @@ class MyNavigatorDrawerState extends State<NavigatorDrawer> {
         DrawerHeader(
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.55),
+                  spreadRadius: 3,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ],
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

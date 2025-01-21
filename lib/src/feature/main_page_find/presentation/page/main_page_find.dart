@@ -144,7 +144,7 @@ class MyMainPageFindState extends State<MainPageFind> {
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
+                      color: Theme.of(context).colorScheme.shadow.withOpacity(0.55),
                       spreadRadius: 2,
                       blurRadius: 5,
                       offset: const Offset(0, 3),

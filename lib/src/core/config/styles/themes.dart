@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 abstract class AppTheme {
   static ThemeData get light {
     return ThemeData(
+
         fontFamily: 'gotham',
+
         primaryColor: const Color.fromRGBO(6, 147, 253, 1),
+
         appBarTheme: const AppBarTheme(
-          elevation: 0,
+          elevation: 10,
           backgroundColor: Color.fromRGBO(20, 154, 255, 1.0),
           titleTextStyle: TextStyle(
               fontSize: 20,
@@ -16,14 +19,19 @@ abstract class AppTheme {
               fontFamily: "gotham"),
           iconTheme: IconThemeData(color: Color.fromRGBO(255, 255, 255, 1.0)),
         ),
+
         drawerTheme: const DrawerThemeData(
           backgroundColor: Color.fromRGBO(242, 248, 255, 1.0),
           surfaceTintColor: Colors.red,
           shadowColor: Colors.black,
         ),
+
         scaffoldBackgroundColor: const Color.fromRGBO(255, 255, 255, 1.0),
+
         splashColor: const Color.fromRGBO(87, 183, 255, 1.0),
+
         iconTheme: const IconThemeData(color: Color.fromRGBO(58, 58, 58, 1.0)),
+
         textTheme: const TextTheme(
             titleLarge: TextStyle(color: Colors.white, fontFamily: "gotham"),
             titleMedium: TextStyle(color: Colors.black54, fontFamily: "gotham"),
@@ -41,6 +49,7 @@ abstract class AppTheme {
                 color: Color.fromRGBO(17, 17, 17, 1.0), fontFamily: "gotham"),
             labelLarge: TextStyle(
                 color: Color.fromRGBO(17, 17, 17, 1.0), fontFamily: "Lato")),
+
         inputDecorationTheme: const InputDecorationTheme(
             fillColor: Colors.white70,
             filled: true,
@@ -55,6 +64,7 @@ abstract class AppTheme {
               color: Color.fromRGBO(58, 58, 58, 1.0),
               fontWeight: FontWeight.w700,
             )),
+
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary: const Color.fromRGBO(6, 135, 232, 1.0),
           onPrimary: const Color.fromRGBO(233, 248, 255, 1.0),
@@ -67,16 +77,21 @@ abstract class AppTheme {
           onTertiary: const Color.fromRGBO(255, 84, 84, 1.0),
           tertiaryContainer: Colors.white,
           outline: const Color.fromRGBO(192, 192, 192, 1.0),
+          shadow: const Color.fromRGBO(135, 152, 152, 1.0),
           brightness: Brightness.light,
         ),
+
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.red,
         ),
+
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-            backgroundColor: Color.fromRGBO(6, 135, 232, 1.0),
-            selectedItemColor: Colors.white,
-            selectedLabelStyle: TextStyle(color: Colors.black),
-            unselectedItemColor: Colors.black54),
+          backgroundColor: Color.fromRGBO(6, 135, 232, 1.0),
+          selectedItemColor: Colors.white,
+          selectedLabelStyle: TextStyle(color: Colors.black),
+          unselectedItemColor: Colors.black54,
+          elevation: 10
+        ),
 
         expansionTileTheme: ExpansionTileThemeData(
             shape: RoundedRectangleBorder(
@@ -103,12 +118,15 @@ abstract class AppTheme {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.5)),
         ),
-        cardTheme:
-            CardTheme(elevation: 10, shadowColor: Colors.grey.withOpacity(0.5)),
+
+        cardTheme: CardTheme(
+            elevation: 10,
+            shadowColor: Colors.grey.withOpacity(0.5)),
+
         datePickerTheme: DatePickerThemeData(
           backgroundColor: Colors.white,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.5)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.5)),
           //todayBackgroundColor: Color.fromRGBO(6, 135, 232, 1.0),
           headerBackgroundColor: const Color.fromRGBO(6, 135, 232, 1.0),
           yearStyle: const TextStyle(
@@ -143,10 +161,13 @@ abstract class AppTheme {
 
   static ThemeData get dark {
     return ThemeData(
+
         fontFamily: 'gotham',
+
         primaryColor: const Color.fromRGBO(5, 21, 30, 1.0),
+
         appBarTheme: const AppBarTheme(
-          elevation: 0,
+          elevation: 10,
           color: Color.fromRGBO(5, 21, 30, 1.0),
           titleTextStyle: TextStyle(
               fontSize: 20,
@@ -244,11 +265,14 @@ abstract class AppTheme {
           subtitleTextStyle: const TextStyle(
               fontStyle: FontStyle.italic, fontSize: 14, height: 1.35),
           iconColor: Colors.white54,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.5)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.5)),
         ),
-        cardTheme:
-            CardTheme(elevation: 10, shadowColor: Colors.grey.withOpacity(0.5)),
+
+        cardTheme: CardTheme(
+            elevation: 10,
+            shadowColor: Colors.grey.withOpacity(0.5)),
+
         datePickerTheme: DatePickerThemeData(
           backgroundColor: const Color.fromRGBO(7, 26, 38, 1.0),
           shape:
@@ -267,21 +291,23 @@ abstract class AppTheme {
             fontWeight: FontWeight.w700,
           ),
 
-          todayForegroundColor:
-              const MaterialStatePropertyAll<Color>(Colors.white),
+          todayForegroundColor: const MaterialStatePropertyAll<Color>(
+              Colors.white),
+
           headerHelpStyle: const TextStyle(
             color: Colors.white70,
             fontWeight: FontWeight.w700,
           ),
+
           dayOverlayColor: const MaterialStatePropertyAll<Color>(Colors.white),
           weekdayStyle: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w700,
           ),
 
-          dayForegroundColor:
-              const MaterialStatePropertyAll<Color>(Colors.white70),
-          //dayOverlayColor
+          dayForegroundColor: const MaterialStatePropertyAll<Color>(
+              Colors.white70),
+
           cancelButtonStyle: const ButtonStyle(
             foregroundColor: MaterialStatePropertyAll<Color>(Colors.red),
           ),
