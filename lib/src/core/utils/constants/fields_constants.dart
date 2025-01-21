@@ -46,6 +46,10 @@ const String hintArea = "Porfavor diga en que area fue internado";
 
 const String floor = "Piso";
 
+const String birthday = 'Cumpleaños';
+
+const String hintBirthday = "Cuando cumples";
+
 final List<String> genreType = <String>["Male","Female","Other"];
 
 final List<String> genreTypeFull = <String>["Hombre","Mujer","Otros", 'Todos'];

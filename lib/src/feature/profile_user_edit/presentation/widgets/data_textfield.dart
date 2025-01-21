@@ -4,10 +4,13 @@ import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class DataTextField extends StatefulWidget {
 
-  const DataTextField({super.key, required this.defaultName, required this.contextRow});
+  const DataTextField({super.key, required this.defaultName, required this.contextRow, required this.typeData, required this.iconData, required this.controller});
 
   final String defaultName;
+  final TextInputType typeData;
   final String contextRow;
+  final IconData iconData;
+  final TextEditingController controller;
 
   @override
   MyDataTextFieldWidget createState() => MyDataTextFieldWidget();
@@ -23,13 +26,13 @@ class DataTextField extends StatefulWidget {
           style: Theme.of(context).textTheme.labelLarge,
           obscureText: obscureTextDefault,
           initialValue: widget.defaultName,
-          keyboardType: TextInputType.name,
+          keyboardType: widget.typeData,
           decoration: InputDecoration(
             fillColor: Theme.of(context).inputDecorationTheme.fillColor,
             filled: Theme.of(context).inputDecorationTheme.filled,
             border: Theme.of(context).inputDecorationTheme.border,
             suffixIcon: Icon(
-              Icons.person,
+              widget.iconData,
               color: Theme.of(context).iconTheme.color,
             ),
             labelText: widget.contextRow,

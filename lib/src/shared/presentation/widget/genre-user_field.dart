@@ -1,3 +1,4 @@
+import 'package:d_report/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
@@ -7,19 +8,19 @@ class TypeGenreDropdownField extends StatefulWidget {
 
   final ValueNotifier<String?> controllerData;
 
+  @override
   MyTypeGenreDropdownField createState() => MyTypeGenreDropdownField();
 
 } class MyTypeGenreDropdownField extends State<TypeGenreDropdownField> {
 
-  IconData defaultIcon = Icons.person;
+  IconData defaultIcon = MyFlutterApp.genderless;
   IconData iconSelector(String? value) {
-    print(value);
     if (value == "Male") {
       return Icons.male_outlined;
     } else if (value == "Female") {
       return Icons.female_outlined;
     } else {
-      return Icons.circle_outlined;
+      return MyFlutterApp.transgender;
     }
   }
 

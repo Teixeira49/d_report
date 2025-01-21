@@ -1,6 +1,7 @@
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 import 'package:d_report/src/feature/profile_user/data/datasource/remote/profile_remote_data_source.dart';
 import 'package:d_report/src/feature/profile_user/data/repositories/profile_repository_impl.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,16 +56,23 @@ class MyProfilePageState extends State<ProfilePage> {
         appBar: AppBar(
           title: const Text("Perfil"),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () {
-                Navigator.of(context)
-                    .pushNamed('/main/profile/edit-row', arguments: {
-                  'userData': argument["userData"],
-                  'doctorData': doctor,
-                });
-              },
-            )
+            BlocBuilder<ProfileDataCubit, ProfileDataState>(
+                builder: (context, state) {
+              if (state is ProfileDataLoaded) {
+                return IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed('/main/profile/edit-row', arguments: {
+                      'userData': argument["userData"],
+                      'doctorData': doctor,
+                    });
+                  },
+                );
+              } else {
+                return Container();
+              }
+            }),
           ],
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           automaticallyImplyLeading: true,
@@ -82,9 +90,57 @@ class MyProfilePageState extends State<ProfilePage> {
                       .read<ProfileDataCubit>()
                       .refreshProfile(user.userProfileId, authUser.accessToken);
                 },
-                child: const Center(
-                  child: CustomCircularProgressBar(),
-                ));
+                child: ListView(children: [
+                  Container(
+                    height: 225,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).appBarTheme.backgroundColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 11,
+                            offset: const Offset(0, 3),
+                          )
+                        ]),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Stack(children: [
+                          CircleAvatar(
+                            radius: 65.0,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                            child: Image.asset("assets/images/logo.png"),
+                          ),
+                        ]),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          '${Helper.capitalize(UserRole.values[authUser.roleId].name)}. ${user.userName}',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        Text(
+                          user.userEmail,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                   Column(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       crossAxisAlignment: CrossAxisAlignment.center,
+                       mainAxisSize: MainAxisSize.max,
+                       children: [
+                         SizedBox(height: size.height / 4,),
+                         const CustomCircularProgressBar(),
+                       ],
+                     ),
+
+
+                ]));
           } else if (state is ProfileDataLoaded) {
             String genreTranslated =
                 translateGenreType[state.doctor.genre] ?? 'Indefinido';
@@ -158,25 +214,60 @@ class MyProfilePageState extends State<ProfilePage> {
                           "${state.doctor.firstName} ${state.doctor.lastName}",
                       trailingIcon: Icons.account_circle,
                     ),
+                    Divider(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primaryContainer
+                          .withOpacity(0.35),
+                      height: 14,
+                    ),
                     CustomCardProfileRow(
                       defaultKey: "Cedula",
                       defaultValue: state.doctor.dni.toString(),
                       trailingIcon: Icons.contact_emergency,
+                    ),
+                    Divider(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primaryContainer
+                          .withOpacity(0.35),
+                      height: 14,
                     ),
                     CustomCardProfileRow(
                       defaultKey: "Cumpleaños",
                       defaultValue: state.doctor.birthday,
                       trailingIcon: Icons.calendar_month,
                     ),
+                    Divider(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primaryContainer
+                          .withOpacity(0.35),
+                      height: 14,
+                    ),
                     CustomCardProfileRow(
                       defaultKey: "Genero",
                       defaultValue: genreTranslated,
                       trailingIcon: gender,
                     ),
+                    Divider(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primaryContainer
+                          .withOpacity(0.35),
+                      height: 14,
+                    ),
                     CustomCardProfileRow(
                         defaultKey: "Especialidad",
                         defaultValue: "Doctor - ${state.doctor.speciality}",
                         trailingIcon: MyFlutterApp.user_md),
+                    Divider(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primaryContainer
+                          .withOpacity(0.35),
+                      height: 14,
+                    ),
                     CustomCardProfileRow(
                       defaultKey: "ID Usuario",
                       defaultValue: state.doctor.id.toString(),
@@ -244,6 +335,7 @@ class MyProfilePageState extends State<ProfilePage> {
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           Container(
+                            // TODO MAKE A WIDGET
                             padding: EdgeInsets.only(top: size.height / 20),
                             width: size.width * 0.40,
                             height: size.height * 0.105,
@@ -252,6 +344,8 @@ class MyProfilePageState extends State<ProfilePage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(22.0)),
                               elevation: 10,
+                              focusColor:
+                                  Theme.of(context).colorScheme.inversePrimary,
                               onPressed: () async {
                                 await context
                                     .read<ProfileDataCubit>()
