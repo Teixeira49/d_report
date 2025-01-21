@@ -62,6 +62,7 @@ class MyLoginPageState extends State<LoginPage> {
         networkInfo: NetworkInfoImpl(network));
 
     final size = MediaQuery.of(context).size;
+    final keyboardEnabled = MediaQuery.of(context).viewInsets.bottom;
 
     return BlocProvider(
       create: (_) => AuthCubit(repository),
@@ -90,6 +91,7 @@ class MyLoginPageState extends State<LoginPage> {
           builder: (context, state) {
             return Center(
                 child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
               child: ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: size.height * 0.25,
@@ -169,14 +171,25 @@ class MyLoginPageState extends State<LoginPage> {
             ));
           },
         ),
-        bottomSheet: Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const Icon(Icons.copyright, size: 14,),
-            const SizedBox(width: 6,),
-            Text("Version: ${_version != 'Cargando...' ? _version : ''}. Hospital J.M. de los Rios."),
-          ],),
-        ),
+        bottomSheet: Visibility(
+            visible: keyboardEnabled == 0,
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.copyright,
+                    size: 14,
+                  ),
+                  const SizedBox(
+                    width: 6,
+                  ),
+                  Text(
+                      "Version: ${_version != 'Cargando...' ? _version : ''}. Hospital J.M. de los Rios."),
+                ],
+              ),
+            )),
       ),
     );
   }
