@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
             themeMode: themeMode,
-            // Edit for change theme color
+            themeAnimationCurve: Curves.elasticIn,
             debugShowCheckedModeBanner: false,
             routes: {
               '/auth/login/': (context) => const LoginPage(),
@@ -76,29 +76,8 @@ class MyApp extends StatelessWidget {
             },
             initialRoute: '/auth/login/',
             onUnknownRoute: (RouteSettings setting) {
-              //settings: setting;
               return MaterialPageRoute(builder: (context) => const NotFoundPage());
             },
-            /*onGenerateRoute: (settings) {
-        switch (settings.name) {
-
-          case '/main/profile/':
-            return PageRouteBuilder(
-              settings: settings,
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  const ProfilePage(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-            );
-          default:
-            return null;
-        }
-      },*/
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
