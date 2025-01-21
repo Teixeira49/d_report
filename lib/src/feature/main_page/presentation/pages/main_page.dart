@@ -2,8 +2,6 @@ import 'package:d_report/src/shared/domain/entities/auth_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
-
-import '../../../../../my_flutter_app_icons.dart';
 import '../../../../shared/data/model/roles.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
@@ -15,6 +13,7 @@ import '../cubit/my_cases/my_cases_cubit.dart';
 import '../cubit/my_cases/my_cases_state.dart';
 import '../widgets/bottom_bar_panel.dart';
 import '../widgets/case_tile_copy.dart';
+import '../widgets/floating_button_add_patient.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -190,7 +189,7 @@ class MyMainPageState extends State<MainPage> {
                           user.userProfileId, authUser.accessToken);
                     },
                     child: Center(
-                      child: _buildCasesList(state, context),
+                      child: _buildCasesList(state, context, size),
                     )) //;
                 //},
                 //),
@@ -204,81 +203,17 @@ class MyMainPageState extends State<MainPage> {
             //   },
             // ),
 
-            floatingActionButton: Visibility(
-              visible: ((_currentPage == 0) &&
-                  (authUser.roleId == UserRole.DOCTOR.index) &&
-                  !_isSearching),
-              child: FloatingActionButton(
-                backgroundColor:
-                    ThemeData().floatingActionButtonTheme.backgroundColor,
-                child: const Icon(Icons.add),
-                onPressed: () {
-                  showModalBottomSheet<void>(
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return SizedBox(
-                          height: 110,
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.010,
-                                  ),
-                                  child: ListTile(
-                                    title: const Text(
-                                        'Crear Caso - Nuevo Paciente'),
-                                    dense: true,
-                                    tileColor: Colors.transparent,
-                                    trailing:
-                                        const Icon(MyFlutterApp.user_plus),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      Navigator.of(context).pushNamed(
-                                          '/main/new-case/new-patient',
-                                          arguments: {
-                                            "userData": user,
-                                            "AuthCredentials": authUser,
-                                          });
-                                    },
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.010,
-                                  ),
-                                  child: ListTile(
-                                    title: const Text(
-                                        'Crear Caso - Paciente Existente'),
-                                    dense: true,
-                                    tileColor: Colors.transparent,
-                                    trailing:
-                                        const Icon(MyFlutterApp.user_check),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      Navigator.of(context).pushNamed(
-                                          '/main/new-case/find-patient',
-                                          arguments: {
-                                            "userData": user,
-                                            "AuthCredentials": authUser,
-                                          });
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      });
-                },
-              ),
+            floatingActionButton: FloatingActionButtonAddPatient(
+              roleId: authUser.roleId,
+              currentPage: _currentPage,
+              isSearching: _isSearching,
+              size: size,
+              parseArguments: {
+                "userData": user,
+                "AuthCredentials": authUser,
+              },
             ),
 
-            // Change a widget in other file
             bottomNavigationBar: BottomBarMainPanel(
               currentPage: _currentPage,
               parseArguments: {"userData": user, "AuthCredentials": authUser},
@@ -289,7 +224,7 @@ class MyMainPageState extends State<MainPage> {
         }));
   }
 
-  Widget _buildCasesList(MyCasesState state, BuildContext context) {
+  Widget _buildCasesList(MyCasesState state, BuildContext context, Size size) {
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
 
     User user = argument["userData"];
@@ -312,6 +247,7 @@ class MyMainPageState extends State<MainPage> {
           }
         },
         child: ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
             itemCount: filteredCases.length,
             itemBuilder: (context, index) =>
                 CaseTile(context, filteredCases[index], authUser, user)),
@@ -324,15 +260,35 @@ class MyMainPageState extends State<MainPage> {
             Image.asset(
               "assets/images/not_found_logo.png",
             ),
-            Text(state.sms),
+            Text(state.sms, style: Theme.of(context).textTheme.titleMedium,),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                await context
-                    .read<MyCasesCubit>()
-                    .refreshCases(user.userProfileId, authUser.accessToken);
-              },
-              child: const Text('Reintentar'),
+            Container(
+              // TODO MAKE A WIDGET
+              padding: EdgeInsets.only(top: size.height / 20),
+              width: size.width * 0.40,
+              height: size.height * 0.105,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  elevation: const MaterialStatePropertyAll<double>(7.5),
+                  shadowColor: MaterialStatePropertyAll<Color>(
+                      Theme.of(context).colorScheme.shadow),
+                ),
+                onPressed: () async {
+                  await context
+                      .read<MyCasesCubit>()
+                      .refreshCases(user.userProfileId, authUser.accessToken);
+                },
+                child: Text('Reintentar',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Theme.of(context)
+                            .colorScheme.primary,
+                        fontFamily: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.fontFamily,
+                        fontSize: 20)),
+              ),
             ),
           ],
         ),

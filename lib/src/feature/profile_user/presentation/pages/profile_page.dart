@@ -3,6 +3,7 @@ import 'package:d_report/src/feature/profile_user/data/datasource/remote/profile
 import 'package:d_report/src/feature/profile_user/data/repositories/profile_repository_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../my_flutter_app_icons.dart';
@@ -328,12 +329,17 @@ class MyProfilePageState extends State<ProfilePage> {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            "assets/images/not_found_logo.png",
+                          const SizedBox(height: 24,),
+                          Text('Ha ocurrido un problema', style: Theme.of(context).textTheme.headlineSmall,), // TODO MAKE CONSTANT
+                          SizedBox(
+                            height: 320,
+                            child: Image.asset(
+                              "assets/images/not_found_logo.png",
+                            ),
                           ),
                           Text(
                             state.errorSMS,
-                            style: Theme.of(context).textTheme.headlineSmall,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Container(
                             // TODO MAKE A WIDGET
@@ -341,7 +347,7 @@ class MyProfilePageState extends State<ProfilePage> {
                             width: size.width * 0.40,
                             height: size.height * 0.105,
                             child: MaterialButton(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Theme.of(context).colorScheme.onTertiaryContainer,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(22.0)),
                               elevation: 10,
@@ -357,18 +363,17 @@ class MyProfilePageState extends State<ProfilePage> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge
-                                          ?.color,
+                                          .colorScheme.primary,
                                       fontFamily: Theme.of(context)
                                           .textTheme
                                           .titleLarge
                                           ?.fontFamily,
                                       fontSize: 20)),
                             ),
-                          )
+                          ),
+                          const SizedBox(height: 24,)
                         ]),
-                  )
+                  ),
                 ]),
               ),
             );

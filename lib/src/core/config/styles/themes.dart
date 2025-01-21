@@ -77,6 +77,7 @@ abstract class AppTheme {
           tertiary: Colors.red,
           onTertiary: const Color.fromRGBO(255, 84, 84, 1.0),
           tertiaryContainer: Colors.white,
+          onTertiaryContainer: const Color.fromRGBO(227, 241, 248, 1.0),
           outline: const Color.fromRGBO(192, 192, 192, 1.0),
           shadow: const Color.fromRGBO(135, 152, 152, 1.0),
           brightness: Brightness.light,
@@ -84,6 +85,10 @@ abstract class AppTheme {
 
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
+          focusColor: Color.fromRGBO(255, 84, 84, 1.0),
+          iconSize: 27,
+          elevation: 7.5,
         ),
 
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
-
 class BottomBarMainPanel extends StatelessWidget {
   const BottomBarMainPanel(
       {super.key, required this.currentPage, this.parseArguments});

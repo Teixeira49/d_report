@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../../shared/presentation/cubit/theme_cubit.dart';
+import '../../../../shared/presentation/widget/bullet.dart';
 import '../widgets/theme_selector.dart';
 
 class SettingsOperationsPage extends StatefulWidget {
@@ -70,7 +71,7 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
       providers: [BlocProvider(create: (_) => ThemeCubit())],
       child: Scaffold(
           appBar: AppBar(
-              title: const Text('Configuracion'),
+            title: const Text('Configuracion'),
           ),
           body: PageView(
             controller: _pageController,
@@ -150,18 +151,10 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 5,
-                              height: 5,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 7),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.color
-                              ),
+                            const BulletDecorator(
+                              sizeBullet: 5,
+                              marginHorizontal: 5,
+                              marginVertical: 7,
                             ),
                             const SizedBox(width: 8),
                             Expanded(
@@ -192,7 +185,9 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  const SizedBox(height: 24,),
+                                  const SizedBox(
+                                    height: 24,
+                                  ),
                                   Text(
                                     'Politicas de Privacidad',
                                     style: Theme.of(context)
@@ -200,28 +195,36 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
                                         .headlineSmall,
                                   ),
                                   const Divider(),
-                                  const SizedBox(height: 24,),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 24),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                    const BorderRadius.all(Radius.circular(20)),
-                                    color: Theme.of(context).colorScheme.onPrimary,
-                                    boxShadow: [BoxShadow(
-                                      color: Theme.of(context).colorScheme.shadow.withOpacity(0.45),
-                                      blurRadius: 11,
-                                      offset: const Offset(0, 3),
-                                    )]
-                                ),
-                                child: Text(
-                                  termsOfPrivacy,
-                                  style:
-                                  Theme.of(context).textTheme.bodyMedium,
-                                  textAlign: TextAlign.justify,
-                                ),
-                              )
-
+                                  const SizedBox(
+                                    height: 24,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 24, vertical: 24),
+                                    decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(20)),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .shadow
+                                                .withOpacity(0.45),
+                                            blurRadius: 11,
+                                            offset: const Offset(0, 3),
+                                          )
+                                        ]),
+                                    child: Text(
+                                      termsOfPrivacy,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                  )
                                 ],
                               ))))),
               Container(
@@ -244,16 +247,20 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 24, vertical: 36),
                       decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        boxShadow: [BoxShadow(
-                          color: Theme.of(context).colorScheme.shadow.withOpacity(0.45),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3),
-                        )]
-                      ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .shadow
+                                  .withOpacity(0.45),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: const Offset(0, 3),
+                            )
+                          ]),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
