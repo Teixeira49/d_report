@@ -55,6 +55,7 @@ class MyProfilePageState extends State<ProfilePage> {
         key: scaffoldKey,
         appBar: AppBar(
           title: const Text("Perfil"),
+          shadowColor: Colors.transparent,
           actions: [
             BlocBuilder<ProfileDataCubit, ProfileDataState>(
                 builder: (context, state) {

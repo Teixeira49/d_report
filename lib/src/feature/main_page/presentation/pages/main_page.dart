@@ -1,6 +1,5 @@
 import 'package:d_report/src/shared/domain/entities/auth_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:animations/animations.dart';
 
 import 'package:flutter/material.dart';
 
@@ -14,6 +13,7 @@ import '../../data/datasources/remote/my_cases_remote_data_sources.dart';
 import '../../data/repositories/my_cases_repository_impl.dart';
 import '../cubit/my_cases/my_cases_cubit.dart';
 import '../cubit/my_cases/my_cases_state.dart';
+import '../widgets/bottom_bar_panel.dart';
 import '../widgets/case_tile_copy.dart';
 
 class MainPage extends StatefulWidget {
@@ -24,7 +24,7 @@ class MainPage extends StatefulWidget {
 }
 
 class MyMainPageState extends State<MainPage> {
-  int _currentPage = 0;
+  final int _currentPage = 0;
   bool _isSearching = false;
 
   final ScrollController _scrollController = ScrollController();
@@ -47,12 +47,10 @@ class MyMainPageState extends State<MainPage> {
   }
 
   void _onScroll() {
-    print('pepe');
     if (_scrollController.position.pixels >=
         _scrollController
             .position.maxScrollExtent /*!context.read<MyCasesCubit>().si*/) {
       //context.read<MyCasesCubit>().fetchCases();
-      print("Scroll");
     }
   }
 
@@ -71,8 +69,6 @@ class MyMainPageState extends State<MainPage> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final remoteDataSource = MyCasesRemoteDataSourceImpl();
@@ -85,13 +81,6 @@ class MyMainPageState extends State<MainPage> {
     AuthUser authUser = argument["AuthCredentials"];
 
     final size = MediaQuery.of(context).size;
-
-    /*.then((result) {
-    if (result != null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text('Resultado: $result')),
-    );
-    }});*/
 
     return BlocProvider(
         create: (_) => MyCasesCubit(repository)
@@ -111,7 +100,10 @@ class MyMainPageState extends State<MainPage> {
                         borderRadius: BorderRadius.circular(30),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .shadow
+                                .withOpacity(0.55),
                             spreadRadius: 2,
                             blurRadius: 5,
                             offset: const Offset(0, 3),
@@ -139,7 +131,7 @@ class MyMainPageState extends State<MainPage> {
                             },
                           ),
                           suffixIcon: Visibility(
-                            visible: _searchController.text.isNotEmpty, // TODO MAKE GLOBAL
+                            visible: _searchController.text.isNotEmpty,
                             child: IconButton(
                               onPressed: () {
                                 setState(() {
@@ -155,7 +147,7 @@ class MyMainPageState extends State<MainPage> {
                           ),
                         ),
                       ),
-                    ) // TODO MAKE WIDGET IN SHARE
+                    )
                   : Row(
                       children: [
                         GestureDetector(
@@ -193,16 +185,13 @@ class MyMainPageState extends State<MainPage> {
                     vertical: size.height * 0.005,
                     horizontal: size.width * 0.005),
                 child: RefreshIndicator(
-                  onRefresh: () async {
-                    context
-                        .read<MyCasesCubit>()
-                        .refreshCases(user.userProfileId, authUser.accessToken);
-                  },
-                  child: Center(
-                    child: _buildCasesList(state, context),
-                  )
-
-                ) //;
+                    onRefresh: () async {
+                      context.read<MyCasesCubit>().refreshCases(
+                          user.userProfileId, authUser.accessToken);
+                    },
+                    child: Center(
+                      child: _buildCasesList(state, context),
+                    )) //;
                 //},
                 //),
                 ),
@@ -245,7 +234,8 @@ class MyMainPageState extends State<MainPage> {
                                         'Crear Caso - Nuevo Paciente'),
                                     dense: true,
                                     tileColor: Colors.transparent,
-                                    trailing: const Icon(MyFlutterApp.user_plus),
+                                    trailing:
+                                        const Icon(MyFlutterApp.user_plus),
                                     onTap: () {
                                       Navigator.pop(context);
                                       Navigator.of(context).pushNamed(
@@ -266,7 +256,8 @@ class MyMainPageState extends State<MainPage> {
                                         'Crear Caso - Paciente Existente'),
                                     dense: true,
                                     tileColor: Colors.transparent,
-                                    trailing: const Icon(MyFlutterApp.user_check),
+                                    trailing:
+                                        const Icon(MyFlutterApp.user_check),
                                     onTap: () {
                                       Navigator.pop(context);
                                       Navigator.of(context).pushNamed(
@@ -288,49 +279,9 @@ class MyMainPageState extends State<MainPage> {
             ),
 
             // Change a widget in other file
-            bottomNavigationBar: BottomNavigationBar(
-              onTap: (index) {
-                if (index != _currentPage) {
-                  switch (index) {
-                    case 1:
-                      Navigator.of(context).pushReplacementNamed(
-                          '/main/patients/find/',
-                          arguments: {
-                            "userData": user,
-                            "AuthCredentials": authUser
-                          });
-                      break;
-                    case 0:
-                      Navigator.of(context)
-                          .pushReplacementNamed('/main/patients/', arguments: {
-                        "userData": user,
-                        "AuthCredentials": authUser
-                      });
-                      break;
-                  }
-                }
-              },
-              backgroundColor:
-                  ThemeData().bottomNavigationBarTheme.backgroundColor,
-              selectedItemColor:
-                  ThemeData().bottomNavigationBarTheme.selectedItemColor,
-              selectedLabelStyle:
-                  ThemeData().bottomNavigationBarTheme.selectedLabelStyle,
-              currentIndex: _currentPage,
-              items: [
-                BottomNavigationBarItem(
-                  icon: _currentPage == 1
-                      ? const Icon(Icons.other_houses_outlined)
-                      : const Icon(Icons.other_houses),
-                  label: 'Mis Casos',
-                ),
-                BottomNavigationBarItem(
-                  icon: _currentPage == 1
-                      ? const Icon(Icons.folder_copy)
-                      : const Icon(Icons.folder_copy_outlined),
-                  label: 'Buscar Expediente',
-                ),
-              ],
+            bottomNavigationBar: BottomBarMainPanel(
+              currentPage: _currentPage,
+              parseArguments: {"userData": user, "AuthCredentials": authUser},
             ),
 
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,

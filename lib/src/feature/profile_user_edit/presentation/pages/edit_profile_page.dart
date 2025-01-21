@@ -95,6 +95,7 @@ class MyEditProfilePageState extends State<EditProfilePage> {
               edit,
               style: Theme.of(context).appBarTheme.titleTextStyle,
             ),
+            shadowColor: Colors.transparent,
             backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
             automaticallyImplyLeading: true,
             elevation: 10,

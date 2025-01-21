@@ -9,8 +9,9 @@ abstract class AppTheme {
         primaryColor: const Color.fromRGBO(6, 147, 253, 1),
 
         appBarTheme: const AppBarTheme(
-          elevation: 10,
+          elevation: 7.5,
           backgroundColor: Color.fromRGBO(20, 154, 255, 1.0),
+          shadowColor: Color.fromRGBO(97, 155, 201, 0.7490196078431373),
           titleTextStyle: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -90,7 +91,7 @@ abstract class AppTheme {
           selectedItemColor: Colors.white,
           selectedLabelStyle: TextStyle(color: Colors.black),
           unselectedItemColor: Colors.black54,
-          elevation: 10
+          elevation: 10,
         ),
 
         expansionTileTheme: ExpansionTileThemeData(

@@ -1,69 +1,70 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+class BottomBarMainPanel extends StatelessWidget {
+  const BottomBarMainPanel(
+      {super.key, required this.currentPage, this.parseArguments});
 
-class BottomBarPanel extends StatefulWidget {
-
-  final int _initPage;
-
-  const BottomBarPanel(this._initPage, {super.key});
-
-  @override
-  BottomBarPanelState createState() => BottomBarPanelState();
-
-  get initPage {
-    return _initPage;
-  }
-}
-
-class BottomBarPanelState extends State<BottomBarPanel> {
-
+  final int currentPage;
+  final dynamic parseArguments;
 
   @override
-  Widget build(BuildContext context){
-
-    //final size = MediaQuery //TODO DELETE
-    //    .of(context)
-    //    .size;
-    final initialState = Provider.of<BottomBarPanel>(context);
-    var currentPage = initialState.initPage;
-
+  Widget build(BuildContext context) {
     return BottomNavigationBar(
       onTap: (index) {
-        setState(() {
-          currentPage = index;
-        });
+        if (index != currentPage) {
+          switch (index) {
+            case 1:
+              Navigator.of(context).pushReplacementNamed('/main/patients/find/',
+                  arguments: parseArguments);
+              break;
+            case 0:
+              Navigator.of(context).pushReplacementNamed('/main/patients/',
+                  arguments: parseArguments);
+              break;
+          }
+        }
       },
       backgroundColor: ThemeData().bottomNavigationBarTheme.backgroundColor,
       selectedItemColor: ThemeData().bottomNavigationBarTheme.selectedItemColor,
+      selectedLabelStyle:
+          ThemeData().bottomNavigationBarTheme.selectedLabelStyle,
       currentIndex: currentPage,
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(
-              Icons.stacked_bar_chart_rounded
+          activeIcon: Container(
+            width: 60,
+            height: 32,
+            decoration: BoxDecoration(
+              color: Theme.of(context)
+                  .colorScheme
+                  .onPrimaryContainer
+                  .withOpacity(0.55),
+              borderRadius: const BorderRadius.all(Radius.elliptical(20, 30)),
+            ),
+            child: const Icon(Icons.house),
           ),
-          label: 'Statistics',
+          icon: const Icon(Icons.house_outlined),
+          label: 'Mis Casos',
         ),
         BottomNavigationBarItem(
-          icon: Icon(
-              Icons.other_houses_outlined
+          activeIcon: Container(
+            width: 60,
+            height: 32,
+            decoration: BoxDecoration(
+              color: Theme.of(context)
+                  .colorScheme
+                  .onPrimaryContainer
+                  .withOpacity(0.55),
+              borderRadius: const BorderRadius.all(Radius.elliptical(20, 30)),
+            ),
+            child: const Icon(Icons.folder_copy),
           ),
-          label: 'Active Cases',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-              Icons.folder_copy
-          ),
-          label: 'Search Case',
+          icon: const Icon(Icons.folder_copy_outlined),
+          label: 'Buscar Expediente',
         ),
       ],
-
     );
   }
 }
-
-
-
