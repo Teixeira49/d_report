@@ -24,16 +24,16 @@ class FindCasesCubit extends Cubit<FindCasesState>{
 
       emit(FindCasesLoading());
 
-      print('are[a');
+      print('are[a $query');
       final patients = await _findCasesRepository.searchCasesByKey(query, searchKey, accessToken);
-      print('are[a');
+      print('casos $patients');
 
       patients.fold(
               (l) => emit(FindCasesFail(errorSMS: "Error del servidor")),
               (r) => r.isNotEmpty
               ? emit(FindCasesLoaded(cases: r))
               : emit(FindCasesLoadedButEmpty(
-              sms: "Parece que no tienes casos pendientes")));
+              sms: "No se ha podido encontrar el caso")));
 
     }catch(e){
       print('Error: $e');
@@ -42,6 +42,7 @@ class FindCasesCubit extends Cubit<FindCasesState>{
       _isFetching = false;
     }
   }
+
   Future<void> refreshCases(String query, int searchKey, String accessToken) async {
     _page = 0;
     emit(FindCasesInitial());

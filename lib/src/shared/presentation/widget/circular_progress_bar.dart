@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 class CustomCircularProgressBar extends StatelessWidget {
 
-  const CustomCircularProgressBar({super.key});
+  const CustomCircularProgressBar({super.key, this.labelText});
+
+  final String? labelText;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +19,7 @@ class CustomCircularProgressBar extends StatelessWidget {
         strokeWidth: 5.5,
         strokeAlign: BorderSide.strokeAlignInside,
         color: Theme.of(context).colorScheme.secondary,
+        semanticsLabel: labelText,
       ),
     );
   }

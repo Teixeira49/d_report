@@ -8,6 +8,8 @@ abstract class MyCasesRepository {
 
   Future<Either<Failure, List<CaseSimple>>> getMyCasesById(int docId, String accessToken);
 
+  Future<void> getRefreshMyCasesById();
+
   Future<Either<Failure, bool>> saveLocalMyCase(Page<CaseSimple> caseSimple);
 
   Future<Either<Failure, List<CaseSimple>>> getSearchInMyCases(String patName);

@@ -101,6 +101,8 @@ flutter:
     - assets/images/logo.png
     - assets/images/not_found_logo.png
     - assets/images/document/logo.webp
+    - assets/images/folder_search/folder_dark.png
+    - assets/images/folder_search/folder_light.png
     - assets/images/register/profile.png
     - assets/images/register/gender.png
     - assets/images/register/security.png

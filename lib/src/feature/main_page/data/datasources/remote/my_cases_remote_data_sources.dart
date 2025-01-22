@@ -6,6 +6,8 @@ import 'package:dio/dio.dart';
 
 abstract class MyCasesRemoteDataSource {
   Future<List<MyCasesModel>> getMyCases(int docId, String accessToken);
+
+  Future<void> getRefreshMyCases();
 }
 
 class MyCasesRemoteDataSourceImpl implements MyCasesRemoteDataSource {
@@ -59,9 +61,9 @@ class MyCasesRemoteDataSourceImpl implements MyCasesRemoteDataSource {
     return items;
   }
 
-  Future<void> refreshCases(docId, accessToken) async {
+  @override
+  Future<void> getRefreshMyCases() async {
     _page = 0;
-    await getMyCases(docId, accessToken);
   }
 }
 

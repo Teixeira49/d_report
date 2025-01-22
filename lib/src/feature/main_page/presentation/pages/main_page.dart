@@ -12,7 +12,8 @@ import '../../data/repositories/my_cases_repository_impl.dart';
 import '../cubit/my_cases/my_cases_cubit.dart';
 import '../cubit/my_cases/my_cases_state.dart';
 import '../widgets/bottom_bar_panel.dart';
-import '../widgets/case_tile_copy.dart';
+import '../widgets/case_tile.dart';
+import '../widgets/error_button.dart';
 import '../widgets/floating_button_add_patient.dart';
 
 class MainPage extends StatefulWidget {
@@ -231,7 +232,10 @@ class MyMainPageState extends State<MainPage> {
     AuthUser authUser = argument["AuthCredentials"];
 
     if (state is MyCasesInitial || state is MyCasesLoading) {
-      return const Center(child: CustomCircularProgressBar());
+      return const Center(
+          child: CustomCircularProgressBar(
+        labelText: 'Buscando Casos',
+      ));
     } else if (state is MyCasesLoaded) {
       final filteredCases = state.cases
           .where((caseItem) => caseItem.patName
@@ -254,15 +258,28 @@ class MyMainPageState extends State<MainPage> {
       );
     } else if (state is MyCasesLoadedButEmpty) {
       return SingleChildScrollView(
+          child: Container(
+        margin: const EdgeInsets.all(24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               "assets/images/not_found_logo.png",
             ),
-            Text(state.sms, style: Theme.of(context).textTheme.titleMedium,),
+            Text(
+              state.sms,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: 20),
-            Container(
+            ErrorElevatedButton(
+              size: size,
+              function: () async {
+                await context
+                    .read<MyCasesCubit>()
+                    .refreshCases(user.userProfileId, authUser.accessToken);
+              },
+            ),
+            /*Container(
               // TODO MAKE A WIDGET
               padding: EdgeInsets.only(top: size.height / 20),
               width: size.width * 0.40,
@@ -289,53 +306,86 @@ class MyMainPageState extends State<MainPage> {
                             ?.fontFamily,
                         fontSize: 20)),
               ),
-            ),
+            ),*/
           ],
         ),
-      );
+      ));
     } else if (state is MyCasesTimeout) {
       return SingleChildScrollView(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/images/not_found_logo.png",
-          ),
-          Text(state.sms),
-          const SizedBox(height: 20),
-          ElevatedButton(
+          child: Container(
+              margin: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '¡Algo ha salido Mal!',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(
+                    height: 360,
+                    child: Image.asset(
+                      "assets/images/not_found_logo.png",
+                    ),
+                  ),
+                  Text(
+                    state.sms,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  /*ElevatedButton(
             onPressed: () async {
               await context
                   .read<MyCasesCubit>()
                   .refreshCases(user.userProfileId, authUser.accessToken);
             },
             child: const Text('Reintentar'),
-          ),
-        ],
-      ));
+          ),*/
+                  ErrorElevatedButton(
+                    size: size,
+                    function: () async {
+                      await context.read<MyCasesCubit>().refreshCases(
+                          user.userProfileId, authUser.accessToken);
+                    },
+                  ),
+                ],
+              )));
     } else if (state is MyCasesFail) {
       return SingleChildScrollView(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/images/not_found_logo.png",
-          ),
-          Text(
-            state.errorSMS,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
+          child: Container(
+              margin: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '¡Algo ha salido Mal!',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(
+                    height: 360,
+                    child: Image.asset(
+                      "assets/images/not_found_logo.png",
+                    ),
+                  ),
+                  Text(
+                    state.errorSMS,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  /*ElevatedButton(
             onPressed: () async {
               await context
                   .read<MyCasesCubit>()
                   .fetchCases(user.userProfileId, authUser.accessToken);
             },
             child: const Text('Reintentar'),
-          ),
-        ],
-      ));
+          ),*/
+                  ErrorElevatedButton(
+                    size: size,
+                    function: () async {
+                      await context.read<MyCasesCubit>().refreshCases(
+                          user.userProfileId, authUser.accessToken);
+                    },
+                  ),
+                ],
+              )));
     } else {
       return Container();
     }
