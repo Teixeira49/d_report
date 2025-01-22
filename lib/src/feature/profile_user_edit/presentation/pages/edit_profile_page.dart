@@ -58,7 +58,6 @@ class MyEditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     //final size = MediaQuery.of(context).size;
-    //double sizeIcon = size.shortestSide * 0.50;
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
 
     User user = argument["userData"];

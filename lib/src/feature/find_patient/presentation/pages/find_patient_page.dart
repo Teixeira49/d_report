@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../my_flutter_app_icons.dart';
 import '../../../../shared/data/model/search_key.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
@@ -228,7 +229,7 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                                     "AuthCredentials": authUser,
                                   });
                             },
-                            icon: const Icon(Icons.cached)),
+                            icon: const Icon(MyFlutterApp.user_plus, size: 18,)),
                       ]
                     : [],
               ),
