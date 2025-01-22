@@ -39,6 +39,8 @@ class NextStateButton extends StatelessWidget {
           color: Theme.of(context).colorScheme.primary,
           shape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
+          elevation: 10,
+          focusColor: Theme.of(context).colorScheme.inversePrimary,
           child:  Text('Continuar',
               textAlign: TextAlign.center,
               style: TextStyle(

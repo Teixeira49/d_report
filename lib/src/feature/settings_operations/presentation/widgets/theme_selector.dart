@@ -28,6 +28,8 @@ class CustomRadioTheme extends StatelessWidget {
           margin: const EdgeInsets.all(5.0),
           child: MaterialButton(
               onPressed: onPressed,
+              elevation: 10,
+              focusColor: Theme.of(context).colorScheme.inversePrimary,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

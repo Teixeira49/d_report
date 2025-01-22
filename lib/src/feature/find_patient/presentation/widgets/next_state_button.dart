@@ -19,6 +19,8 @@ class NextStateButton extends StatelessWidget {
           color: selected != -1 ? Theme.of(context).colorScheme.primary : Colors.blueGrey,
           shape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
+          elevation: 10,
+          focusColor: Theme.of(context).colorScheme.inversePrimary,
           child: Text(
               continueRegister,
               textAlign: TextAlign.center,

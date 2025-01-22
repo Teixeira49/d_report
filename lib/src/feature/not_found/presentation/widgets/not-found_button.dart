@@ -14,6 +14,8 @@ class NotFoundExitButton extends StatelessWidget {
           color: Colors.deepOrange,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(22.0)),
+          elevation: 10,
+          focusColor: Theme.of(context).colorScheme.inversePrimary,
           focusColor: Colors.red,
           minWidth: 90,
           height: 50,

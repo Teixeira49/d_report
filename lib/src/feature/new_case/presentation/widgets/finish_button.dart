@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../shared/domain/entities/user.dart';
 import '../cubit/new_patient/new_patient_case_cubit.dart';
 
 class FinishRegisterCaseButton extends StatelessWidget {
@@ -39,6 +38,8 @@ class FinishRegisterCaseButton extends StatelessWidget {
           color: Theme.of(context).colorScheme.primary,
           shape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
+          elevation: 10,
+          focusColor: Theme.of(context).colorScheme.inversePrimary,
           child:  Text("Guardar Paciente",
               textAlign: TextAlign.center,
               style: TextStyle(
