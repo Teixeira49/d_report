@@ -48,7 +48,7 @@ class SettingsPage extends StatelessWidget {
                   children: [
                     ButtonSettingsTileDynamicIcon(
                       titleOptionText: 'Tema de la aplicacion',
-                      iconLight: Icons.light_mode,
+                      iconLight: Icons.brightness_medium,
                       iconDark: Icons.dark_mode,
                       route: '/main/config/edit/',
                       arguments: argument,

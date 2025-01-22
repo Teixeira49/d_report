@@ -130,8 +130,8 @@ class MySettingOperationsState extends State<SettingsOperationsPage> {
                           CustomRadioTheme(
                               isSelectedId: indexButton,
                               id: 0,
-                              icon: Icons.invert_colors,
-                              name: 'Sistema',
+                              icon: Icons.brightness_auto,
+                              name: 'Sistema', // other https://api.flutter.dev/flutter/material/Icons/contrast-constant.html
                               onPressed: () {
                                 context
                                     .read<ThemeCubit>()
