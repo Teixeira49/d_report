@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:d_report/my_flutter_app_icons.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,7 @@ import '../../../../core/helpers/helpers.dart';
 import '../../../../shared/data/model/view_details_status.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
+import '../../../../shared/presentation/widget/bullet.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../../../../shared/presentation/widget/loading_show_dialog.dart';
@@ -56,6 +58,7 @@ class PatientDetailsPage extends StatelessWidget {
 
     dynamic arguments =
         ModalRoute.of(context)?.settings.arguments; // TODO Refactor Rename
+    final size = MediaQuery.of(context).size;
 
     int caseId = arguments['casKey'];
     String patFullName = arguments['patFullName'];
@@ -109,8 +112,12 @@ class PatientDetailsPage extends StatelessWidget {
                               Navigator.of(context).pushNamed(
                                   "/main/patients/details/edit-case",
                                   arguments: {
-                                    'casKey': CaseReportModel.fromEntity(state.caseReport).toJson(),
-                                    'patKey': PatientModel.fromEntity(state.patient).toJson(),
+                                    'casKey': CaseReportModel.fromEntity(
+                                            state.caseReport)
+                                        .toJson(),
+                                    'patKey':
+                                        PatientModel.fromEntity(state.patient)
+                                            .toJson(),
                                     'AuthCredentials': authUser,
                                   })
                             }
@@ -128,7 +135,8 @@ class PatientDetailsPage extends StatelessWidget {
                     child: BlocConsumer<FileGeneratorCubit, FileGeneratorState>(
                       listener: (subContext, stateDownload) async {
                         if (stateDownload is FileGeneratorLoading) {
-                          LoadingShowDialog.show(context, 'Descargando Informe');
+                          LoadingShowDialog.show(
+                              context, 'Descargando Informe');
                         }
                         if (stateDownload is FileGeneratorLoaded) {
                           final bytes = await stateDownload.pdf.save();
@@ -196,7 +204,8 @@ class PatientDetailsPage extends StatelessWidget {
                   return [
                     SliverList(
                         delegate: SliverChildListDelegate([
-                      patientInfo(context, state, authUser, user, caseId, 3)
+                      patientInfo(
+                          context, state, authUser, user, caseId, 3, size),
                     ]))
                   ];
                 },
@@ -209,7 +218,7 @@ class PatientDetailsPage extends StatelessWidget {
                             text: "Resumen",
                             icon: Icon(Icons.library_books) //auto_stories
                             ),
-                        Tab(text: "Seguimiento", icon: Icon(Icons.medication)),
+                        Tab(text: "Evolucion", icon: Icon(Icons.medication)),
                         //Tab(
                         //  text: "Seguimiento", Ordenes
                         //  icon: Icon(Icons.biotech) biotech
@@ -221,11 +230,11 @@ class PatientDetailsPage extends StatelessWidget {
                       children: [
                         SingleChildScrollView(
                           child: patientInfo(
-                              context, state, authUser, user, caseId, 1),
+                              context, state, authUser, user, caseId, 1, size),
                         ),
                         SingleChildScrollView(
                           child: patientInfo(
-                              context, state, authUser, user, caseId, 2),
+                              context, state, authUser, user, caseId, 2, size),
                         ),
                         SingleChildScrollView(
                           child: FollowInfo(
@@ -237,7 +246,8 @@ class PatientDetailsPage extends StatelessWidget {
                                       'patHeight': state.caseReport.patHeight,
                                       'patWeight': state.caseReport.patWeight,
                                     }
-                                  : null),
+                                  : null,
+                              size),
                         )
                       ],
                     ))
@@ -306,10 +316,11 @@ String getTitleDocument(state) {
 }
 
 class FollowInfo extends StatelessWidget {
-  const FollowInfo(this.patName, this.patientDetails, {super.key});
+  const FollowInfo(this.patName, this.patientDetails, this.size, {super.key});
 
   final String patName;
   final Map<String, dynamic>? patientDetails;
+  final Size size;
 
   @override
   Widget build(BuildContext context) {
@@ -319,13 +330,13 @@ class FollowInfo extends StatelessWidget {
     return BlocBuilder<FollowReportCubit, FollowReportState>(
         builder: (context, state) {
       if (state is FollowCaseInitial || state is FollowCaseLoading) {
-        return const Column(
+        return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 15,
+              height: size.height / 6,
             ),
-            CustomCircularProgressBar()
+            const CustomCircularProgressBar()
           ],
         );
       } else if (state is FollowCaseLoaded) {
@@ -341,28 +352,57 @@ class FollowInfo extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
+              margin: const EdgeInsets.all(24),
               padding: EdgeInsets.symmetric(
                 horizontal: MediaQuery.of(context).size.width * 0.075,
                 vertical: MediaQuery.of(context).size.height * 0.010,
               ),
-              child: Text(state.sms),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const BulletDecorator(
+                    sizeBullet: 5,
+                    marginHorizontal: 5,
+                    marginVertical: 8,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                      child: Text(
+                    state.sms,
+                    textAlign: TextAlign.justify,
+                  ))
+                ],
+              ),
             )
           ],
         );
       } else if (state is FollowCaseFail) {
         return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.075,
-                vertical: MediaQuery.of(context).size.height * 0.010,
-              ),
-              child: Text(state.errorSMS),
-            )
-          ],
-        );
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                  margin: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '¡Algo ha salido Mal!',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      SizedBox(
+                        child: Image.asset(
+                          "assets/images/not_found_logo.png",
+                        ),
+                      ),
+                      Text(
+                        state.errorSMS,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
+                  ))
+            ]);
       } else {
         return Container();
       }
@@ -370,8 +410,8 @@ class FollowInfo extends StatelessWidget {
   }
 }
 
-Widget patientInfo(
-    context, state, AuthUser authUser, User user, int caseId, int indexTab) {
+Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
+    int indexTab, Size size) {
 /*class PatientInfo extends StatelessWidget {
   const PatientInfo(this.indexTab, {super.key});
 
@@ -390,18 +430,26 @@ Widget patientInfo(
   if ((state is PatientDataInitial || state is PatientDataLoading) &&
       indexTab != 3) {
     return Center(
-        child: CircularProgressIndicator(
-      // TODO MAKE GLOBAL
-      color: Theme.of(context).colorScheme.primary,
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: size.height / 4,
+        ),
+        const CustomCircularProgressBar()
+      ],
     ));
   } else if (state is PatientDataLoaded && indexTab == 1) {
+    var age =
+        Helper.getAgeByDateInString(state.patient.patBirthdayDate.toString());
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         CustomCardPatientRow(
           widgetKey: "Fecha de Nacimiento",
-          widgetValue: state.patient.patBirthdayDate.toString(),
+          widgetValue:
+              '${state.patient.patBirthdayDate.toString()} ($age años)',
           tileIcon: Icons.calendar_month,
         ),
         Visibility(
@@ -427,10 +475,13 @@ Widget patientInfo(
                   : MyFlutterApp.transgender_alt),
         ),
         CustomCardPatientRow(
-            widgetKey: 'Altura y Peso',
-            widgetValue:
-                '${Helper.writeHeightByInt(state.caseReport.patHeight)} mts y ${Helper.writeWeightByInt(state.caseReport.patWeight)} kgs',
-            tileIcon: MyFlutterApp.ruler),
+          widgetKey: 'Altura y Peso',
+          widgetValue:
+              '${Helper.writeHeightByInt(state.caseReport.patHeight)} mts y ${Helper.writeWeightByInt(state.caseReport.patWeight)} kgs',
+          tileIcon: MyFlutterApp.ruler,
+          sizeIcon: 22,
+          redirectIcon: 4,
+        ),
         CustomCardPatientRow(
           widgetKey: "Tipo de Sangre",
           widgetValue: 'Grupo ${state.patient.patBloodType}',
@@ -496,178 +547,226 @@ Widget patientInfo(
       ],
     );
   } else if (state is PatientDataLoaded && indexTab == 3) {
-    return Row(children: [
-      HeaderDetails(
-          context,
-          MediaQuery.of(context).size,
-          '${state.patient.patName} ${state.patient.patLastname}',
-          state.patient.patBirthdayDate,
-          state.caseReport.casEndReason),
-      const Spacer(),
-      BlocConsumer<AssignUtilsCubit, AssignUtilsState>(
-          listener: (miniContext, miniState) {
-        if (miniState is AssignUtilsLoaded) {
-          Navigator.pop(miniContext);
-          FloatingSnackBar.show(
-              miniContext, 'Se ha retirado del caso correctamente');
-        } else if (miniState is AssignUtilsFail) {
-          FloatingWarningSnackBar.show(miniContext, miniState.errorSMS);
-        }
-      }, builder: (miniContext, miniState) {
-        return Row(
-          children: [
-            Visibility(
-              visible: state.permissionStatus != ViewDetailsStatus.GUEST,
-              child: TextButton(
-                onPressed: () {
-                  customWindowDialog(
-                    context,
-                    () => (miniContext
-                        .read<AssignUtilsCubit>()
-                        .fetchEndAssignDetails(
-                            caseId, user.userProfileId, authUser.accessToken)),
-                  );
-                },
-                child: const Text('Desvincular'),
+    return Container(
+        margin: const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 12),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          HeaderDetails(context, state.caseReport.casEndReason),
+          BlocConsumer<AssignUtilsCubit, AssignUtilsState>(
+              listener: (miniContext, miniState) {
+            if (miniState is AssignUtilsLoaded) {
+              Navigator.pop(miniContext);
+              FloatingSnackBar.show(
+                  miniContext, 'Se ha retirado del caso correctamente');
+            } else if (miniState is AssignUtilsFail) {
+              FloatingWarningSnackBar.show(miniContext, miniState.errorSMS);
+            }
+          }, builder: (miniContext, miniState) {
+            return Container(
+              margin: const EdgeInsets.only(top: 2),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Visibility(
+                    visible: state.permissionStatus != ViewDetailsStatus.GUEST,
+                    child: Expanded(
+                      child: MaterialButton(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22.0)),
+                        elevation: 10,
+                        onPressed: () {
+                          customWindowDialog(
+                            context,
+                            () => (miniContext
+                                .read<AssignUtilsCubit>()
+                                .fetchEndAssignDetails(caseId,
+                                    user.userProfileId, authUser.accessToken)),
+                          );
+                        },
+                        child: Text(
+                          'Desvincular',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                      visible:
+                          state.permissionStatus == ViewDetailsStatus.GUEST,
+                      child: Expanded(
+                          child: MaterialButton(
+                        color: Theme.of(context).colorScheme.primary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22.0)),
+                        elevation: 10,
+                        onPressed: () {
+                          // TODO MAKE A INDIVIDUAL WIDGET
+                          showDialog(
+                            context: miniContext,
+                            builder: (BuildContext subContext) => AlertDialog(
+                              title: const Text("Agregar caso"),
+                              backgroundColor:
+                                  Theme.of(subContext).scaffoldBackgroundColor,
+                              content: const Text(
+                                "Pulsar esta opcion agregara a tu ventana principal el monitoreo de este caso, ¿Seguro que desea continuar?",
+                                textAlign: TextAlign.justify,
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(subContext);
+                                    },
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Theme.of(subContext)
+                                              .colorScheme
+                                              .secondary),
+                                    )),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(subContext);
+                                      miniContext
+                                          .read<AssignUtilsCubit>()
+                                          .createNewAssign(
+                                              caseId,
+                                              user.userProfileId,
+                                              authUser.accessToken);
+                                    },
+                                    child: const Text('Confirmar'))
+                              ],
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'Vincular',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                      ))),
+                  SizedBox(
+                    width: (((state.caseReport.casEndFlag != true) ||
+                                (state.caseReport.casEndFlag == true &&
+                                    authUser.roleId == 3)) &&
+                            state.permissionStatus != ViewDetailsStatus.GUEST)
+                        ? 12
+                        : 0,
+                  ),
+                  Visibility(
+                      visible: (state.caseReport.casEndFlag != true) &&
+                          state.permissionStatus != ViewDetailsStatus.GUEST,
+                      child: Expanded(
+                          child: MaterialButton(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22.0)),
+                        elevation: 10,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text("Advertencia"),
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              content: const Text(
+                                "Finalizar el caso evitara que se puedan seguir haciendo operaciones, ¿Seguro que desea continuar?",
+                                textAlign: TextAlign.justify,
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary),
+                                    )),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.of(context).pushNamed(
+                                          '/main/patients/details/end-case',
+                                          arguments: {
+                                            'authCredentials': authUser,
+                                            'patName':
+                                                '${state.patient.patName} ${state.patient.patLastname}',
+                                            'patId': state.patient.patId,
+                                            'casKey': caseId,
+                                          });
+                                    },
+                                    child: const Text('Confirmar'))
+                              ],
+                            ),
+                          );
+                        },
+                        child: Text('Finalizar',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            )),
+                      ))),
+                  Visibility(
+                      visible: state.caseReport.casEndFlag == true &&
+                          authUser.roleId == 3 &&
+                          state.permissionStatus != ViewDetailsStatus.GUEST,
+                      child: Expanded(
+                          child: MaterialButton(
+                        color: Theme.of(context).colorScheme.primary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22.0)),
+                        elevation: 10,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text("Aviso"),
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              content: const Text(
+                                "Al ejecutar esta accion, se reabrira el caso, y todos los ultimos asignados volveran a verlo en sus cuentas",
+                                textAlign: TextAlign.justify,
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary),
+                                    )),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Confirmar'))
+                              ],
+                            ),
+                          );
+                        },
+                        child: Text('Reabrir Caso',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    Theme.of(context).colorScheme.onPrimary)),
+                      ))),
+                ],
               ),
-            ),
-            Visibility(
-                visible: state.permissionStatus == ViewDetailsStatus.GUEST,
-                child: TextButton(
-                    onPressed: () {
-                      // TODO MAKE A INDIVIDUAL WIDGET
-                      showDialog(
-                        context: miniContext,
-                        builder: (BuildContext subContext) => AlertDialog(
-                          title: const Text("Agregar caso"),
-                          backgroundColor:
-                              Theme.of(subContext).scaffoldBackgroundColor,
-                          content: const Text(
-                            "Pulsar esta opcion agregara a tu ventana principal el monitoreo de este caso, ¿Seguro que desea continuar?",
-                            textAlign: TextAlign.justify,
-                          ),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(subContext);
-                                },
-                                child: Text(
-                                  'Cancelar',
-                                  style: TextStyle(
-                                      color: Theme.of(subContext)
-                                          .colorScheme
-                                          .secondary),
-                                )),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(subContext);
-                                  miniContext
-                                      .read<AssignUtilsCubit>()
-                                      .createNewAssign(
-                                          caseId,
-                                          user.userProfileId,
-                                          authUser.accessToken);
-                                },
-                                child: Text('Confirmar'))
-                          ],
-                        ),
-                      );
-                    },
-                    child: const Text('Vincular'))),
-            Visibility(
-                visible: (state.caseReport.casEndFlag != true) &&
-                    state.permissionStatus != ViewDetailsStatus.GUEST,
-                child: Container(
-                  child: TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: const Text("Advertencia"),
-                          backgroundColor:
-                              Theme.of(context).scaffoldBackgroundColor,
-                          content: const Text(
-                            "Finalizar el caso evitara que se puedan seguir haciendo operaciones, ¿Seguro que desea continuar?",
-                            textAlign: TextAlign.justify,
-                          ),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'Cancelar',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary),
-                                )),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.of(context).pushNamed(
-                                      '/main/patients/details/end-case',
-                                      arguments: {
-                                        'authCredentials': authUser,
-                                        'patName':
-                                            '${state.patient.patName} ${state.patient.patLastname}',
-                                        'patId': state.patient.patId,
-                                        'casKey': caseId,
-                                      });
-                                },
-                                child: Text('Confirmar'))
-                          ],
-                        ),
-                      );
-                    },
-                    child: const Text('Finalizar'),
-                  ),
-                )),
-            Visibility(
-                visible: state.caseReport.casEndFlag == true &&
-                    authUser.roleId == 3 &&
-                    state.permissionStatus != ViewDetailsStatus.GUEST,
-                child: Container(
-                  child: TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: const Text("Aviso"),
-                          backgroundColor:
-                              Theme.of(context).scaffoldBackgroundColor,
-                          content: const Text(
-                            "Al ejecutar esta accion, se reabrira el caso, y todos los ultimos asignados volveran a verlo en sus cuentas",
-                            textAlign: TextAlign.justify,
-                          ),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'Cancelar',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary),
-                                )),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Confirmar'))
-                          ],
-                        ),
-                      );
-                    },
-                    child: const Text('Reabrir Caso'),
-                  ),
-                )),
-          ],
-        );
-      })
-    ]);
+            );
+          }),
+        ]));
   } else {
     return Container();
   }

@@ -6,12 +6,16 @@ class BulletDecorator extends StatelessWidget {
       required this.sizeBullet,
       this.alignment,
       required this.marginHorizontal,
-      required this.marginVertical});
+      required this.marginVertical,
+      this.gradientSystem,
+      this.shadowSystem});
 
   final double sizeBullet;
   final Alignment? alignment;
   final double marginHorizontal;
   final double marginVertical;
+  final List<Color>? gradientSystem;
+  final List<BoxShadow>? shadowSystem;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,10 @@ class BulletDecorator extends StatelessWidget {
           horizontal: marginHorizontal, vertical: marginVertical),
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Theme.of(context).textTheme.bodyMedium?.color),
+          color: Theme.of(context).textTheme.bodyMedium?.color,
+          gradient: (gradientSystem != null) ? LinearGradient(begin: Alignment.topRight, end: Alignment.bottomLeft, colors: gradientSystem!): null,
+        boxShadow: (gradientSystem != null) ? shadowSystem : null
+      ),
     );
   }
 }
