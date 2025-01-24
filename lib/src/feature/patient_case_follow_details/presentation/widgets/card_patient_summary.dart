@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/config/styles/profile_theme.dart';
 
-class CustomCardResumeRow extends StatefulWidget {
+class CustomCardResumeRow extends StatefulWidget { // TODO Change for Stateless
 
   const CustomCardResumeRow({
     super.key,
     required this.widgetKey,
-    required this.widgetValue,
+    this.widgetValue,
+    this.iconData,
   });
 
   final String widgetKey;
-  final String widgetValue;
+  final String? widgetValue;
+  final IconData? iconData;
 
   @override
   MyCustomCardResumeRowWidget createState() => MyCustomCardResumeRowWidget();
@@ -27,15 +29,12 @@ class MyCustomCardResumeRowWidget extends State<CustomCardResumeRow> {
         tileColor: Colors.transparent,
         dense: false,
         minLeadingWidth: 5,
-        leading: const SizedBox(
-          height: double.maxFinite,
-          width: 7,
-        ),
+        leading: (widget.iconData != null) ? Icon(widget.iconData, size: 24,) : null,
         title: Text(widget.widgetKey),
-        subtitle: Text(
-          widget.widgetValue,
+        subtitle: (widget.widgetValue != null) ? Text(
+          widget.widgetValue!,
           style: Theme.of(context).textTheme.bodyMedium,
-        ),
+        ) : null,
       )
     );
   }
