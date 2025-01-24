@@ -58,11 +58,11 @@ final List<String> bloodType = <String>["Rh Nulo","A+","A-","B+","B-","AB+","AB-
 
 final List<String> entryAreaType = <String>["Emergency", "Hospitalization", "Surgery"];
 
-final List<String> endCaseType = ['Sobrevivio', 'Murio', 'Referido'];
+final List<String> endCaseType = ['Recuperado', 'Murio', 'Referido'];
 
-final Map<String, String> endCaseTypeMeta = {'SURVIVE': 'Sobrevivio', 'DEAD': 'Murio', 'REFERRAL':'Referido'};
+final Map<String, String> endCaseTypeMeta = {'SURVIVE': 'Recuperado', 'DEAD': 'Murio', 'REFERRAL':'Referido'};
 
-final List<String> endCaseTypeFull = ['Sobrevivio', 'Murio', 'Referido', 'Activo', 'Todos']; // TODO Sobrevivio?  JAJAJJAJA
+final List<String> endCaseTypeFull = ['Recuperado', 'Murio', 'Referido', 'Activo', 'Todos']; // TODO Sobrevivio?  JAJAJJAJA
 
 final List<String> caseStatusType = ['Activo', 'Finalizado', 'Todos'];
 

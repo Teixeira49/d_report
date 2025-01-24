@@ -28,7 +28,6 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     DownloaderConfig downloaderConfig = DownloaderConfig(false, false);
 
-    final size = MediaQuery.of(context).size;
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
 
     final cafId = argument['cafId'];

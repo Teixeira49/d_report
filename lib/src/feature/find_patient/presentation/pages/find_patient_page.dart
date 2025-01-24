@@ -236,20 +236,27 @@ class MyFindPatientPageState extends State<FindPatientPage> {
               body: Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.010,
-                      vertical: size.height * 0.024,
+                    padding: EdgeInsets.only(
+                      top: size.height * 0.044,
+                      bottom: size.height * 0.024,
                     ),
-                    child: Text(
-                      "Buscar paciente ya registrado",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Buscar paciente ya registrado",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    )
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: size.width * 0.075,
                       vertical: size.height * 0.010,
                     ),
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -282,6 +289,7 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                       horizontal: size.width * 0.1,
                       vertical: size.height * 0.010,
                     ),
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     child: Text(
                       "Seleccione la clave de busqueda que usara para encontrar su paciente.",
                       textAlign: TextAlign.center,
@@ -336,7 +344,10 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                 _searchController.text, _selectedIndex, authUser.accessToken);
           }
         },
-        child: ListView.builder(
+        child: SafeArea(
+          bottom: false,
+          minimum: const EdgeInsets.symmetric(horizontal: 24,vertical: 4),
+            child: ListView.builder(
             shrinkWrap: true,
             itemCount: filteredCases.length,
             itemBuilder: (context, index) {
@@ -357,7 +368,7 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                 },
                 child: CaseTile(context, filteredCases[index], authUser, user),
               );
-            }),
+            })),
       );
     } else if (state is FindPatientLoadedButEmpty) {
       return Center(

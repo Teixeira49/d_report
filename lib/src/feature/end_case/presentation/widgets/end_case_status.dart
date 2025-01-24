@@ -16,8 +16,10 @@ class StatusField extends StatelessWidget {
       style: Theme.of(context).textTheme.labelLarge,
       dropdownColor: Theme.of(context).inputDecorationTheme.fillColor,
       borderRadius: const BorderRadius.all(Radius.circular(20)),
+      alignment: AlignmentDirectional.center,
       hint: const Text('Seleccione'),
       decoration: const InputDecoration(
+        //fillColor: Colors.green,
           border: InputBorder.none,),
       items: endCaseType.map((status) {
         return DropdownMenuItem(
