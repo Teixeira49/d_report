@@ -108,7 +108,7 @@ class HeaderDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            '6',
+                            '6', // poner condicion de que si son mas de 99 salga M+
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.onPrimary),

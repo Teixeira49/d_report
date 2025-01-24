@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
-import 'package:hive/hive.dart';
 
 class FetchUpdateButton extends StatelessWidget {
   const FetchUpdateButton(

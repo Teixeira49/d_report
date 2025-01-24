@@ -1,9 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:d_report/src/shared/presentation/widget/bullet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared/domain/entities/auth_user.dart';
+import '../../../../shared/presentation/widget/circular_progress_bar.dart';
+import '../../../../shared/presentation/widget/floating_snack_bars.dart';
+import '../../../../shared/presentation/widget/loading_show_dialog.dart';
 import '../../data/datasource/remote/new_follow_remote_datasource.dart';
 import '../../domain/repository/new_follow_repository.dart';
 import '../cubit/upload_follow/upload_follow_cubit.dart';
@@ -35,125 +37,177 @@ class MyNewFollowCasePage extends State<NewFollowCasePage> {
     final remoteDataSource = FollowCaseDataSourceImpl();
     final repository = FollowCaseRepositoryImpl(remoteDataSource);
 
-    final size = MediaQuery
-        .of(context)
-        .size;
+    final size = MediaQuery.of(context).size;
+    final keyboardEnabled = MediaQuery.of(context).viewInsets.bottom;
 
     dynamic arguments = ModalRoute.of(context)?.settings.arguments;
     int casId = arguments['casId'];
     int docId = arguments['docId'];
+    String patName = arguments['patName'];
     AuthUser authUser = arguments['AuthCredentials'];
 
     return BlocProvider(
         create: (_) => UploadFollowCubit(repository),
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme
-                .of(context)
-                .appBarTheme
-                .backgroundColor,
-            automaticallyImplyLeading: true,
-          ),
-          body: Center(
-              child: SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: size.height * 0.25,
-                    ),
-                    child: IntrinsicHeight(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                      Expanded(
-                      child: Text(
-                      'Agregar Seguimiento',
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headlineSmall,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.040,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: CaseDataTextField(
-                        contextRow: "Titulo del Seguimiento",
-                        controllerData: _controllerFollowTitle,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.040,
-                        vertical: size.height * 0.010,
-                      ),
-                      child: CaseDataTextArea(
-                        contextRow: "Informacion del Seguimiento",
-                        controllerData: _controllerFollowInfo,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.080,
-                          vertical: size.height * 0.010,
-                        ),
-                        child: Text(
-                          'Utilice este espacio para agregar un reporte de observaciones de como a visto la evolucion sintomatologica del paciente.',
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyMedium,
-                          textAlign: TextAlign.justify,
-                        )),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: size.height * 0.010),
-                              child: UploadButton(
-                                data: {
-                                  'title': _controllerFollowTitle.text,
-                                  'info': _controllerFollowInfo.text,
-                                  'casId': casId,
-                                  'docId': docId,
-                                },
-                                accessToken: authUser.accessToken,
+        child: BlocConsumer<UploadFollowCubit, UploadFollowState>(
+          listener: (context, state) {
+
+            if (state is UploadFollowLoading) {
+              LoadingShowDialog.show(context, 'Subiendo Informacion');
+            } else if (state is UploadFollowLoaded) {
+              Navigator.pop(context);
+              Future.delayed(const Duration(milliseconds: 100), () {
+                FloatingSnackBar.show(
+                    context,
+                    'Informe guardado con exito.',
+                    Icons.check,
+                    Colors.green); // TODO Safe color in styles folder
+                Navigator.pop(context);
+              });
+            } else if (state is UploadFollowError) {
+              Navigator.pop(context);
+              Future.delayed(const Duration(milliseconds: 100), () {
+                FloatingWarningSnackBar.show(
+                    context, state.errorSMS);
+              });
+            } else if (state is UploadWithoutChanges) {
+              Navigator.pop(context);
+              Future.delayed(const Duration(milliseconds: 100), () {
+                FloatingWarningSnackBar.show(
+                    context, state.errorSMS);
+              });
+            }
+          }, builder: (context, state) {
+            return Scaffold(
+                appBar: AppBar(
+                  backgroundColor:
+                      Theme.of(context).appBarTheme.backgroundColor,
+                  automaticallyImplyLeading: true,
+                  title: Text(patName),
+                  actions: [
+                    IconButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text("Evolucion Clinica"),
+                              backgroundColor:
+                              Theme.of(context).scaffoldBackgroundColor,
+                              content: const Text(
+                                "La evolucion clinica son reportes en donde usted describe el como a visto los avances sintomatologicos del paciente, explicando puntualmente el su progresion en el caso.",
+                                textAlign: TextAlign.justify,
                               ),
-                            )
-                          ],
-                        )),
-                    Expanded(
-                      child: BlocBuilder<UploadFollowCubit, UploadFollowState>(
-                          builder: (context, state) {
-                            if (state is UploadFollowInitial) {
-                              return Center(
-                                  child: Text('Ingrese datos del paciente'));
-                            } else if (state is UploadFollowLoading) {
-                              return Center(child: CircularProgressIndicator());
-                            } else if (state is UploadFollowLoaded) {
-                              Navigator.pop(context); // TODO CHECK
-                              return Center(child: Text(
-                                  'Datos subidos exitosamente')
-                              );
-                            } else if (state is UploadFollowError) {
-                              return Center(child: Text(state.errorSMS));
-                            }
-                            return Container();
-                          }
-                      )),
-                      ],
-                    ),
-                  ))),
-        )),);
+                              actions: [
+                                TextButton(
+                                    onPressed: () {Navigator.pop(context);},
+                                    child: const Text('Entendido'))
+                              ],
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.question_mark))
+                  ],
+                ),
+                body: Center(
+                  child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: size.height * 0.25,
+                          ),
+                          child: IntrinsicHeight(
+                              child: Container(
+                            margin: const EdgeInsets.all(24),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.all(24),
+                                  child: Text(
+                                    'Nueva Evolucion del caso',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: size.height * 0.015,
+                                  ),
+                                  child: CaseDataTextField(
+                                    contextRow: "Titulo de la Nota",
+                                    controllerData: _controllerFollowTitle,
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: size.height * 0.015,
+                                  ),
+                                  child: CaseDataTextArea(
+                                    contextRow: "Descripcion de la Evolucion",
+                                    controllerData: _controllerFollowInfo,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.020,
+                                    vertical: size.height * 0.010,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const BulletDecorator(
+                                          sizeBullet: 5,
+                                          marginHorizontal: 5,
+                                          marginVertical: 7.5),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          'Utilice este espacio para agregar sus observaciones de la evolucion sintomatologica del paciente.',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
+                                          textAlign: TextAlign.justify,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 120,
+                                ),
+                              ],
+                            ),
+                          )))),
+                ),
+                bottomSheet: Visibility(
+                    visible: keyboardEnabled == 0,
+                    child: UploadButton(
+                        selected: 1,
+                        size: size,
+                        endEdit: () {
+                          context
+                              .read<UploadFollowCubit>()
+                              .postUploadFollowData({
+                            'title': _controllerFollowTitle.text,
+                            'info': _controllerFollowInfo.text,
+                            'casId': casId,
+                            'docId': docId,
+                          }, authUser.accessToken);
+                        })
+                    ));
+          },
+        ));
   }
 }
