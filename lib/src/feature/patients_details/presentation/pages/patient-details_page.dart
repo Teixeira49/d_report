@@ -560,7 +560,11 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
     return Container(
         margin: const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 12),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          HeaderDetails(context, state.caseReport.casEndReason),
+          HeaderDetails(context, state.caseReport.casEndReason, arguments: {
+            'casKey': caseId,
+            'userData': user,
+            'AuthCredentials': authUser
+          },),
           BlocConsumer<AssignUtilsCubit, AssignUtilsState>(
               listener: (miniContext, miniState) {
                 if (miniState is AssignUtilsLoaded) {

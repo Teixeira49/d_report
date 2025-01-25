@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 class HeaderDetails extends StatelessWidget {
   final context;
   final String? status;
+  final dynamic arguments;
 
-  const HeaderDetails(this.context, this.status, {super.key});
+  const HeaderDetails(this.context, this.status, {super.key, this.arguments});
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +55,15 @@ class HeaderDetails extends StatelessWidget {
                       marginVertical: 0,
                       gradientSystem: caseStatus == "Activo"
                           ? [
-                        Colors.green,
-                        Colors.lightGreen,
-                        Colors.lightGreenAccent,
-                        Colors.limeAccent,
+                              Colors.green,
+                              Colors.lightGreen,
+                              Colors.lightGreenAccent,
+                              Colors.limeAccent,
                             ]
                           : [
-                        Colors.pink,
-                        Colors.red,
-                        Colors.amber,
+                              Colors.pink,
+                              Colors.red,
+                              Colors.amber,
                             ],
                       shadowSystem: [
                         BoxShadow(
@@ -102,13 +103,18 @@ class HeaderDetails extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(22.0)),
                       elevation: 10,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(
+                            '/main/patients/details/doctors',
+                            arguments: arguments);
+                      },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            '6', // poner condicion de que si son mas de 99 salga M+
+                            '6',
+                            // poner condicion de que si son mas de 99 salga M+
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.onPrimary),

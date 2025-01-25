@@ -9,6 +9,7 @@ import 'package:d_report/src/feature/new_case/presentation/pages/new_case_page.d
 import 'package:d_report/src/feature/new_follow/presentation/pages/new_follow_case_page.dart';
 import 'package:d_report/src/feature/new_patient/presentation/pages/new_patient_page.dart';
 import 'package:d_report/src/feature/not_found/presentation/pages/not-found_page.dart';
+import 'package:d_report/src/feature/patient_case_doctors/presentation/pages/patient_case_doctors_page.dart';
 import 'package:d_report/src/feature/patient_case_edit_case/presentation/pages/patient_case_edit_case_page.dart';
 import 'package:d_report/src/feature/patient_case_edit_patient/presentation/pages/patient_case_edit_patient_page.dart';
 import 'package:d_report/src/feature/patient_case_edit_patient_guardian/presentation/pages/patient_case_edit_guardian_page.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
               '/main/patients/': (context) => const MainPage(),
               '/main/patients/find/': (context) => const MainPageFind(),
               '/main/patients/details/': (context) => const PatientDetailsPage(),
+              '/main/patients/details/doctors': (context) => const PatientCaseDoctorsPage(),
               '/main/patients/details/follow-case': (context) =>
               const PatientFollowCaseDetailsPage(),
               '/main/patients/details/create-follow-case': (context) =>
