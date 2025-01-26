@@ -32,6 +32,7 @@ class CaseTile extends StatelessWidget {
           height: double.maxFinite,
           width: 5,
         ),
+        trailing: const Icon(Icons.navigate_next),
         onTap: () async {
           final result = await Navigator.of(context).pushNamed('/main/patients/details/',
               arguments: {
