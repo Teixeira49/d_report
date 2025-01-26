@@ -124,64 +124,6 @@ class PatientCaseDoctorsPage extends StatelessWidget {
           ),
         ],
       );
-      /*      return CustomScrollView(
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-              child: Column(
-            children: [
-              ListTile(
-                  title: const Text("N° Doctores:"),
-                  tileColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                  leading: Icon(
-                    Icons.numbers,
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                  ),
-                  trailing: Container(
-                    width: 30,
-                    height: 30,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.transparent,
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.primaryContainer,
-                          width: 2),
-                    ),
-                    child: Text(
-                      state.countTotalAssignedDoctors < 100
-                          ? Helper.addZero(state.countTotalAssignedDoctors)
-                          : 'M+',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                          fontSize: 14),
-                    ),
-                  )),
-              const SizedBox(
-                height: 4,
-              ),
-              Divider(
-                color: Theme.of(context).colorScheme.outline,
-              ),
-            ],
-          )),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return ListTile(
-                      title: Text('Item $index'),
-                    );
-              },
-              childCount: 20,
-            ),
-          ),
-          //ListView.builder(
-          //padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
-          //itemCount: filteredCases.length,
-          //itemBuilder: (context, index) =>
-          //    DoctorCaseTile(filteredCases[index], authUser, user)),
-        ],
-      );*/
     } else if (state is ViewDoctorsWithoutUpdate) {
       return Center(
           child: SingleChildScrollView(

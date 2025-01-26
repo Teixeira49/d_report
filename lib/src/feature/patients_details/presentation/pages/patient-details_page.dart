@@ -349,12 +349,16 @@ class FollowInfo extends StatelessWidget {
           ],
         );
       } else if (state is FollowCaseLoaded) {
-        return ListView.builder(
+        return Card(
+            color: Colors.transparent,
+            shadowColor: Colors.transparent,
+            surfaceTintColor: Colors.transparent,
+            child: ListView.builder(
           itemCount: state.followCase.length,
           shrinkWrap: true,
           itemBuilder: ((context, index) => FollowTile(context,
               state.followCase[index], patName, patientDetails, authUser)),
-        );
+        ));
       } else if (state is FollowCaseLoadedButEmpty) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,

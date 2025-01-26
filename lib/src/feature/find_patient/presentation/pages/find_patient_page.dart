@@ -117,27 +117,25 @@ class MyFindPatientPageState extends State<FindPatientPage> {
     void finisherSearch() {
       Map<String, dynamic> x = {
         'patName': filteredCases[_tempIndexSelectedPatient].patName,
-        'patLastName':
-        filteredCases[_tempIndexSelectedPatient].patLastName,
+        'patLastName': filteredCases[_tempIndexSelectedPatient].patLastName,
         'patDni': filteredCases[_tempIndexSelectedPatient].patDni,
         'patGender': filteredCases[_tempIndexSelectedPatient].patGender,
         'patBirthdayDate':
-        filteredCases[_tempIndexSelectedPatient].patBirthdayDate,
+            filteredCases[_tempIndexSelectedPatient].patBirthdayDate,
         'patBirthdayPlace':
-        filteredCases[_tempIndexSelectedPatient].patBirthdayPlace,
+            filteredCases[_tempIndexSelectedPatient].patBirthdayPlace,
         'patGuardianDni':
-        filteredCases[_tempIndexSelectedPatient].patGuardianDni,
-        'patBloodType':
-        filteredCases[_tempIndexSelectedPatient].patBloodType,
+            filteredCases[_tempIndexSelectedPatient].patGuardianDni,
+        'patBloodType': filteredCases[_tempIndexSelectedPatient].patBloodType,
       };
 
-      Navigator.of(context)
-          .pushNamed('/main/new-case/add-case', arguments: {
+      Navigator.of(context).pushNamed('/main/new-case/add-case', arguments: {
         "userData": user,
         "AuthCredentials": authUser,
         "patient": x,
       });
     }
+
     return BlocProvider(
         create: (_) => FindPatientCubit(repository),
         child: BlocConsumer<FindPatientCubit, FindPatientState>(
@@ -159,7 +157,10 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(context).colorScheme.shadow.withOpacity(0.55),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .shadow
+                                  .withOpacity(0.55),
                               spreadRadius: 2,
                               blurRadius: 5,
                               offset: const Offset(0, 3),
@@ -184,7 +185,8 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                             hintText: 'Buscar Paciente',
                             //prefixIcon: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
                             suffixIcon: Visibility(
-                              visible: _searchController.text.isNotEmpty, // TODO MAKE GLOBAL
+                              visible: _searchController.text.isNotEmpty,
+                              // TODO MAKE GLOBAL
                               child: IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -229,28 +231,30 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                                     "AuthCredentials": authUser,
                                   });
                             },
-                            icon: const Icon(MyFlutterApp.user_plus, size: 18,)),
+                            icon: const Icon(
+                              MyFlutterApp.user_plus,
+                              size: 18,
+                            )),
                       ]
                     : [],
               ),
               body: Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.only(
-                      top: size.height * 0.044,
-                      bottom: size.height * 0.024,
-                    ),
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Buscar paciente ya registrado",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ],
-                    )
-                  ),
+                      padding: EdgeInsets.only(
+                        top: size.height * 0.044,
+                        bottom: size.height * 0.024,
+                      ),
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Buscar paciente ya registrado",
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      )),
                   Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: size.width * 0.075,
@@ -304,9 +308,10 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: NextStateButton(
-                                size: size,
-                                selected: _tempIndexSelectedPatient,
-                                endFindPatient: finisherSearch,),
+                              size: size,
+                              selected: _tempIndexSelectedPatient,
+                              endFindPatient: finisherSearch,
+                            ),
                           )))
                 ],
               ));
@@ -345,30 +350,36 @@ class MyFindPatientPageState extends State<FindPatientPage> {
           }
         },
         child: SafeArea(
-          bottom: false,
-          minimum: const EdgeInsets.symmetric(horizontal: 24,vertical: 4),
-            child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: filteredCases.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  if (_tempIndexSelectedPatient == index) {
-                    setState(() {
-                      filteredCases[index].patIsSelected = false;
-                      _tempIndexSelectedPatient = -1;
-                    });
-                  } else {
-                    setState(() {
-                      filteredCases.forEach((pat) => pat.patIsSelected = false);
-                      filteredCases[index].patIsSelected = true;
-                      _tempIndexSelectedPatient = index;
-                    });
-                  }
-                },
-                child: CaseTile(context, filteredCases[index], authUser, user),
-              );
-            })),
+            bottom: false,
+            minimum: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+            child: Card(
+                color: Colors.transparent,
+                shadowColor: Colors.transparent,
+                surfaceTintColor: Colors.transparent,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: filteredCases.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          if (_tempIndexSelectedPatient == index) {
+                            setState(() {
+                              filteredCases[index].patIsSelected = false;
+                              _tempIndexSelectedPatient = -1;
+                            });
+                          } else {
+                            setState(() {
+                              filteredCases
+                                  .forEach((pat) => pat.patIsSelected = false);
+                              filteredCases[index].patIsSelected = true;
+                              _tempIndexSelectedPatient = index;
+                            });
+                          }
+                        },
+                        child: CaseTile(
+                            context, filteredCases[index], authUser, user),
+                      );
+                    }))),
       );
     } else if (state is FindPatientLoadedButEmpty) {
       return Center(

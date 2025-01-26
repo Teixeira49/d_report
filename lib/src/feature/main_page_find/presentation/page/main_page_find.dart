@@ -310,11 +310,15 @@ class MyMainPageFindState extends State<MainPageFind> {
                 _searchController.text, _selectedIndex, authUser.accessToken);
           }
         },
-        child: ListView.builder(
+        child: Card(
+          color: Colors.transparent,
+          shadowColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          child: ListView.builder(
             itemCount: filteredCases.length,
             itemBuilder: (context, index) =>
                 CaseTile(context, filteredCases[index], authUser, user)),
-      );
+      ));
     } else if (state is FindCasesLoadedButEmpty) {
       return Center(
           child: SingleChildScrollView(
