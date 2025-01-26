@@ -17,9 +17,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
   });
 
   @override
-  Future<Either<Failure, Doctor>> getDoctorProfileById(int docId, String accessToken) async {
+  Future<Either<Failure, DoctorProfile>> getDoctorProfileById(int docId, String accessToken) async {
     try {
-      final Doctor resp = await profileRemoteDataSource.getDoctorById(docId, accessToken);
+      final DoctorProfile resp = await profileRemoteDataSource.getDoctorById(docId, accessToken);
       return Right(resp);
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));

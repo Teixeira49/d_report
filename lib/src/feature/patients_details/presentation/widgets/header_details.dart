@@ -5,11 +5,11 @@ import 'package:d_report/src/shared/presentation/widget/bullet.dart';
 import 'package:flutter/material.dart';
 
 class HeaderDetails extends StatelessWidget {
-  final context;
+  final BuildContext fatherContext;
   final String? status;
   final dynamic arguments;
 
-  const HeaderDetails(this.context, this.status, {super.key, this.arguments});
+  const HeaderDetails(this.fatherContext, this.status, {super.key, this.arguments});
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +104,7 @@ class HeaderDetails extends StatelessWidget {
                           borderRadius: BorderRadius.circular(22.0)),
                       elevation: 10,
                       onPressed: () {
-                        Navigator.of(context).pushNamed(
+                        Navigator.of(fatherContext).pushNamed(
                             '/main/patients/details/doctors',
                             arguments: arguments);
                       },

@@ -61,7 +61,7 @@ class MyEditProfilePageState extends State<EditProfilePage> {
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
 
     User user = argument["userData"];
-    Doctor doctor = argument["doctorData"];
+    DoctorProfile doctor = argument["doctorData"];
 
     final size = MediaQuery.of(context).size;
 

@@ -8,13 +8,19 @@ class ViewDoctorsLoading extends ViewDoctorsState {}
 
 class ViewDoctorsLoaded extends ViewDoctorsState {
   List<AssignedDoctor> listAssignedDoctors;
+  int countTotalAssignedDoctors;
   final String filter;
 
-  ViewDoctorsLoaded({required this.listAssignedDoctors, this.filter = ''});
+  ViewDoctorsLoaded(
+      {required this.listAssignedDoctors,
+      required this.countTotalAssignedDoctors,
+      this.filter = ''});
 
-  ViewDoctorsLoaded copyWith({List<AssignedDoctor>? doctors, String? filter}) {
+  ViewDoctorsLoaded copyWith(
+      {List<AssignedDoctor>? doctors, int? count, String? filter}) {
     return ViewDoctorsLoaded(
       listAssignedDoctors: doctors ?? listAssignedDoctors,
+      countTotalAssignedDoctors: count ?? countTotalAssignedDoctors,
       filter: filter ?? this.filter,
     );
   }

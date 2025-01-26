@@ -5,7 +5,7 @@ import '../entities/doctor.dart';
 
 abstract class ProfileRepository {
 
-  Future<Either<Failure, Doctor>> getDoctorProfileById(int docId, String accessToken);
+  Future<Either<Failure, DoctorProfile>> getDoctorProfileById(int docId, String accessToken);
 
 }
 

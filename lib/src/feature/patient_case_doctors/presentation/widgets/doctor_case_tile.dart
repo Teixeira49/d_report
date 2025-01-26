@@ -1,3 +1,4 @@
+import 'package:d_report/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../shared/domain/entities/auth_user.dart';
@@ -22,22 +23,46 @@ class DoctorCaseTile extends StatelessWidget {
           '${assignedDoctor.docName} ${assignedDoctor.docLastName}${assignedDoctor.docId == user.userProfileId ? ' (Yo)' : ''}',
           style: Theme.of(context).listTileTheme.titleTextStyle,
         ),
-        subtitle: Text(
-          assignedDoctor.docSpeciality,
-          style: Theme.of(context).listTileTheme.subtitleTextStyle,
-        ),
+        subtitle:
+            Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            margin: const EdgeInsets.only(top: 6, right: 4),
+            decoration: BoxDecoration(
+                color: Theme.of(context)
+                    .colorScheme
+                    .secondaryContainer
+                    .withOpacity(0.2),
+                border: Border.all(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondaryContainer
+                        .withOpacity(0.3),
+                    width: 1),
+                borderRadius: const BorderRadius.all(Radius.circular(22))),
+            child: Text(
+              assignedDoctor.docSpeciality,
+              style: Theme.of(context).listTileTheme.subtitleTextStyle,
+            ),
+          )
+        ]),
         tileColor: assignedDoctor.docId == user.userProfileId
             ? Theme.of(context).listTileTheme.tileColor
-            : Theme.of(context).colorScheme.onPrimaryContainer,
-        leading: const Icon(Icons.local_hospital),
+            : Theme.of(context).colorScheme.onTertiaryContainer,
+        leading: Icon(
+          MyFlutterApp.user_md,
+          size: 22,
+          color:
+              Theme.of(context).colorScheme.primaryContainer.withOpacity(0.825),
+        ),
+        trailing: const Icon(Icons.navigate_next),
         onTap: () {
-          /*Navigator.of(context)
-              .pushNamed('/main/patients/details/', arguments: {
-            "casKey": int.parse(dataPatientRow.casId),
-            'patFullName': dataPatientRow.patName,
-            'AuthCredentials': authUser,
-            'userData': user
-          });*/
+          Navigator.of(context).pushReplacementNamed('/main/profile/',
+              arguments: {
+                "userData": user,
+                "AuthCredentials": authUser,
+                'docId': assignedDoctor.docId
+              });
         },
       ),
     );

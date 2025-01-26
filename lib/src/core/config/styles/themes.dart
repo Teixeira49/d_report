@@ -73,7 +73,7 @@ abstract class AppTheme {
           onPrimaryContainer: const Color.fromRGBO(172, 221, 255, 1.0),
           secondary: Colors.deepOrange,
           onSecondary: Colors.white,
-          secondaryContainer: Colors.red,
+          secondaryContainer: Colors.greenAccent,
           tertiary: Colors.red,
           onTertiary: const Color.fromRGBO(255, 84, 84, 1.0),
           tertiaryContainer: Colors.white,

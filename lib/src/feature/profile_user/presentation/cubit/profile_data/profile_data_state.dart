@@ -7,7 +7,7 @@ class ProfileDataInitial extends ProfileDataState {}
 class ProfileDataLoading extends ProfileDataState {}
 
 class ProfileDataLoaded extends ProfileDataState {
-  final Doctor doctor;
+  final DoctorProfile doctor;
   ProfileDataLoaded({required this.doctor});
 }
 

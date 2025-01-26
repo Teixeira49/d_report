@@ -7,7 +7,7 @@ import '../../../../../core/utils/constants/network_constants.dart';
 import '../../../domain/entities/doctor.dart';
 
 abstract class ProfileRemoteDataSource {
-  Future<Doctor> getDoctorById(int docId, String accessToken);
+  Future<DoctorProfile> getDoctorById(int docId, String accessToken);
 }
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
@@ -21,7 +21,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   bool get isFetching => _isFetching;
 
   @override
-  Future<Doctor> getDoctorById(int docId, String accessToken) async {
+  Future<DoctorProfile> getDoctorById(int docId, String accessToken) async {
 
     if(!_isFetching) {
       _isFetching = true;
@@ -31,7 +31,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
     final resp = await r.retry(
             () => dio.get(
-          '$apiUrl/doctors/doctor/find-by/doc-id/$docId/',
+          '$apiUrl/doctors/doctor/profile/$docId/',
           options: Options(
             sendTimeout: const Duration(seconds: 2),
             receiveTimeout: const Duration(seconds: 2),
@@ -44,7 +44,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
     print(resp.data);
 
-    return DoctorModel.fromJson(resp.data);
+    return DoctorProfileModel.fromJson(resp.data);
   }
 
   Future<void> refreshDoctor(docId, accessToken) async {

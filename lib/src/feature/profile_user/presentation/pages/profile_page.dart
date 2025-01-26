@@ -39,7 +39,12 @@ class MyProfilePageState extends State<ProfilePage> {
     User user = argument["userData"];
     AuthUser authUser = argument["AuthCredentials"];
 
-    Doctor doctor = Doctor(
+    final int profileId =
+        (argument['docId'] != null) ? argument['docId'] : user.userProfileId;
+
+    final bool isMyProfile = (argument['docId'] != null);
+
+    DoctorProfile doctor = DoctorProfile(
         id: 1,
         firstName: "pepe",
         lastName: "Gonzales",
@@ -47,37 +52,50 @@ class MyProfilePageState extends State<ProfilePage> {
         birthday: "25-10-1980",
         genre: "Male",
         range: "Doctor",
-        speciality: "Bacteriologo");
+        speciality: "Bacteriologo",
+        photoUrl: '',
+        email: '',
+        phone: '');
 
     return BlocProvider(
       create: (_) => ProfileDataCubit(profileRepositoryImpl: repository)
-        ..getDoctorProfile(user.userProfileId, authUser.accessToken),
+        ..getDoctorProfile(profileId, authUser.accessToken),
       child: Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
           title: const Text("Perfil"),
           shadowColor: Colors.transparent,
           actions: [
-            BlocBuilder<ProfileDataCubit, ProfileDataState>(
-                builder: (context, state) {
-              if (state is ProfileDataLoaded) {
-                return IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed('/main/profile/edit-row', arguments: {
-                      'userData': argument["userData"],
-                      'doctorData': doctor,
-                    });
-                  },
-                );
-              } else {
-                return Container();
-              }
-            }),
+            Visibility(
+              visible: profileId == user.userProfileId,
+              child: BlocBuilder<ProfileDataCubit, ProfileDataState>(
+                  builder: (context, state) {
+                if (state is ProfileDataLoaded) {
+                  return IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed('/main/profile/edit-row', arguments: {
+                        'userData': argument["userData"],
+                        'doctorData': doctor,
+                      });
+                    },
+                  );
+                } else {
+                  return Container();
+                }
+              }),
+            ),
           ],
+          leading: isMyProfile
+              ? IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(Icons.arrow_back))
+              : null,
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          automaticallyImplyLeading: true,
+          automaticallyImplyLeading: !isMyProfile,
         ),
         drawer: NavigatorDrawer(
           user: user,
@@ -99,7 +117,10 @@ class MyProfilePageState extends State<ProfilePage> {
                         color: Theme.of(context).appBarTheme.backgroundColor,
                         boxShadow: [
                           BoxShadow(
-                            color: Theme.of(context).colorScheme.shadow.withOpacity(0.55),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .shadow
+                                .withOpacity(0.55),
                             spreadRadius: 5,
                             blurRadius: 11,
                             offset: const Offset(0, 3),
@@ -121,27 +142,27 @@ class MyProfilePageState extends State<ProfilePage> {
                           height: 15,
                         ),
                         Text(
-                          '${Helper.capitalize(UserRole.values[authUser.roleId].name)}. ${user.userName}',
+                          'Buscando Usuario',
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         Text(
-                          user.userEmail,
+                          'Correo del Usuario',
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ],
                     ),
                   ),
-                   Column(
-                       mainAxisAlignment: MainAxisAlignment.center,
-                       crossAxisAlignment: CrossAxisAlignment.center,
-                       mainAxisSize: MainAxisSize.max,
-                       children: [
-                         SizedBox(height: size.height / 4,),
-                         const CustomCircularProgressBar(),
-                       ],
-                     ),
-
-
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      SizedBox(
+                        height: size.height / 4,
+                      ),
+                      const CustomCircularProgressBar(),
+                    ],
+                  ),
                 ]));
           } else if (state is ProfileDataLoaded) {
             String genreTranslated =
@@ -173,7 +194,10 @@ class MyProfilePageState extends State<ProfilePage> {
                           color: Theme.of(context).appBarTheme.backgroundColor,
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(context).colorScheme.shadow.withOpacity(0.55),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .shadow
+                                  .withOpacity(0.55),
                               spreadRadius: 5,
                               blurRadius: 11,
                               offset: const Offset(0, 3),
@@ -197,7 +221,7 @@ class MyProfilePageState extends State<ProfilePage> {
                             height: 15,
                           ),
                           Text(
-                            '${Helper.capitalize(UserRole.values[authUser.roleId].name)}. ${user.userName}',
+                            '${Helper.capitalize(UserRole.values[authUser.roleId].name)}. ${Helper.capitalize(state.doctor.firstName)} ${Helper.capitalize(state.doctor.lastName)}',
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           Text(
@@ -270,9 +294,27 @@ class MyProfilePageState extends State<ProfilePage> {
                           .withOpacity(0.35),
                       height: 14,
                     ),
+                    Visibility(
+                      visible: state.doctor.phone.isNotEmpty && state.doctor.phone != '',
+                        child: CustomCardProfileRow(
+                            defaultKey: "Telefono",
+                            defaultValue: state.doctor.phone,
+                            trailingIcon: Icons.phone_android),
+                    ),
+                    Visibility(
+                        visible: state.doctor.phone.isNotEmpty && state.doctor.phone != '',
+                        child: Divider(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primaryContainer
+                              .withOpacity(0.35),
+                          height: 14,
+                        ),
+                    ),
                     CustomCardProfileRow(
                       defaultKey: "ID Usuario",
-                      defaultValue: state.doctor.id.toString(),
+                      defaultValue:
+                          '${((UserRole.values.firstWhere((element) => element.name == state.doctor.range)).name)[0]} - ${state.doctor.id.toString()}',
                       trailingIcon: Icons.verified_user,
                     ),
                   ],
@@ -292,7 +334,10 @@ class MyProfilePageState extends State<ProfilePage> {
                         color: Theme.of(context).appBarTheme.backgroundColor,
                         boxShadow: [
                           BoxShadow(
-                            color: Theme.of(context).colorScheme.shadow.withOpacity(0.55),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .shadow
+                                .withOpacity(0.55),
                             spreadRadius: 5,
                             blurRadius: 11,
                             offset: const Offset(0, 3),
@@ -314,11 +359,11 @@ class MyProfilePageState extends State<ProfilePage> {
                           height: 15,
                         ),
                         Text(
-                          '${Helper.capitalize(UserRole.values[authUser.roleId].name)}. ${user.userName}',
+                          '¡Usuario no Encontrado!',
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         Text(
-                          user.userEmail,
+                          'Recargue la aplicacion',
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ],
@@ -329,8 +374,13 @@ class MyProfilePageState extends State<ProfilePage> {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 24,),
-                          Text('Ha ocurrido un problema', style: Theme.of(context).textTheme.headlineSmall,), // TODO MAKE CONSTANT
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          Text(
+                            'Ha ocurrido un problema',
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ), // TODO MAKE CONSTANT
                           SizedBox(
                             height: 320,
                             child: Image.asset(
@@ -347,7 +397,9 @@ class MyProfilePageState extends State<ProfilePage> {
                             width: size.width * 0.40,
                             height: size.height * 0.105,
                             child: MaterialButton(
-                              color: Theme.of(context).colorScheme.onTertiaryContainer,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onTertiaryContainer,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(22.0)),
                               elevation: 10,
@@ -362,8 +414,8 @@ class MyProfilePageState extends State<ProfilePage> {
                               child: Text('Reintentar',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme.primary,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontFamily: Theme.of(context)
                                           .textTheme
                                           .titleLarge
@@ -371,7 +423,9 @@ class MyProfilePageState extends State<ProfilePage> {
                                       fontSize: 20)),
                             ),
                           ),
-                          const SizedBox(height: 24,)
+                          const SizedBox(
+                            height: 24,
+                          )
                         ]),
                   ),
                 ]),

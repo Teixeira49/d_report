@@ -1,12 +1,14 @@
+import 'package:d_report/src/feature/patient_case_doctors/data/model/view_doctors.dart';
 import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
 
 import '../../../../../core/utils/constants/network_constants.dart';
 import '../../../domain/entities/assigned_doctor.dart';
+import '../../../domain/entities/view_doctors.dart';
 import '../../model/assigned_doctor_model.dart';
 
 abstract class CaseDoctorRemoteDataSource {
-  Future<List<AssignedDoctor>> getDoctorsInCase(int casId, String accessToken);
+  Future<ViewDoctors> getDoctorsInCase(int casId, String accessToken);
 }
 
 class CaseDoctorRemoteDataSourceImpl implements CaseDoctorRemoteDataSource {
@@ -17,7 +19,7 @@ class CaseDoctorRemoteDataSourceImpl implements CaseDoctorRemoteDataSource {
   final Dio dio = Dio();
 
   @override
-  Future<List<AssignedDoctor>> getDoctorsInCase(
+  Future<ViewDoctors> getDoctorsInCase(
       int casId, String accessToken) async {
     if (!_isFetching) {
       _isFetching = true;
@@ -43,6 +45,7 @@ class CaseDoctorRemoteDataSourceImpl implements CaseDoctorRemoteDataSource {
     final dataF = resp.data as Map<String, dynamic>;
 
     print(dataF);
+    final count = dataF['totalElements'];
 
     final items = (dataF["content"] as List)
         .map((item) => AssignedDoctorModel.fromJson(item))
@@ -50,6 +53,6 @@ class CaseDoctorRemoteDataSourceImpl implements CaseDoctorRemoteDataSource {
 
     print(items);
 
-    return items;
+    return ViewDoctorsModel.fromMixed(items, count);
   }
 }
