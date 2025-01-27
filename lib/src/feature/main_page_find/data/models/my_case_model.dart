@@ -7,20 +7,24 @@ class MyCasesModel extends CaseSimple {
     required  super .patName,
     required  super .casId,
     required  super .casActualRoom,
+    required  super .casEndFlag,
   });
 
   factory MyCasesModel.fromJson(json) {
     return MyCasesModel(
         patName: json['patId']['patName'] + space + json['patId']['patLastName'],
         casActualRoom: json['casActualRoom'],
-        casId: json['casId'].toString());
+        casId: json['casId'].toString(),
+        casEndFlag:  json['casEndFlag']
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'casId': casId,
       'casActualRoom': casActualRoom,
-      'patName': patName
+      'patName': patName,
+      'casEndFlag': casEndFlag,
     };
   }
 
@@ -28,7 +32,8 @@ class MyCasesModel extends CaseSimple {
     return MyCasesModel(
         patName: caseSimple.patName,
         casId: caseSimple.casId,
-        casActualRoom: caseSimple.casActualRoom
+        casActualRoom: caseSimple.casActualRoom,
+        casEndFlag: caseSimple.casEndFlag,
     );
   }
 }

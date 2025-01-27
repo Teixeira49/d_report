@@ -303,7 +303,9 @@ class MyMainPageFindState extends State<MainPageFind> {
               .toLowerCase()
               .contains(state.filter.toLowerCase()))
           .toList();
-      return GestureDetector(
+      return SafeArea(
+        minimum: const EdgeInsets.only(top: 12, left: 12, right: 12),
+          child: GestureDetector(
         onVerticalDragDown: (DragDownDetails details) {
           if (details.globalPosition.dy < 50) {
             context.read<FindCasesCubit>().fetchSearchCases(
@@ -315,10 +317,11 @@ class MyMainPageFindState extends State<MainPageFind> {
           shadowColor: Colors.transparent,
           surfaceTintColor: Colors.transparent,
           child: ListView.builder(
-            itemCount: filteredCases.length,
+              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+              itemCount: filteredCases.length,
             itemBuilder: (context, index) =>
                 CaseTile(context, filteredCases[index], authUser, user)),
-      ));
+      )));
     } else if (state is FindCasesLoadedButEmpty) {
       return Center(
           child: SingleChildScrollView(
