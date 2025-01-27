@@ -171,10 +171,10 @@ class MyLoginPageState extends State<LoginPage> {
             ));
           },
         ),
-        bottomSheet: Visibility(
-            visible: keyboardEnabled == 0,
-            child: Container(
+
+        bottomNavigationBar: Container(
               margin: const EdgeInsets.only(bottom: 12),
+              color: Theme.of(context).scaffoldBackgroundColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -190,7 +190,6 @@ class MyLoginPageState extends State<LoginPage> {
                 ],
               ),
             )),
-      ),
     );
   }
 }

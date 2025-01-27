@@ -27,6 +27,10 @@ abstract class AppTheme {
           shadowColor: Colors.black,
         ),
 
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Color.fromRGBO(255, 255, 255, 1.0),
+        ),
+
         scaffoldBackgroundColor: const Color.fromRGBO(255, 255, 255, 1.0),
 
         splashColor: const Color.fromRGBO(87, 183, 255, 1.0),
