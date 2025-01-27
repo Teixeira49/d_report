@@ -53,6 +53,7 @@ class AllCaseRemoteDataSourceImpl implements AllCaseRemoteDataSource{
       "pat": PatientModel.fromJson(resp.data as Map<String, dynamic>),
       "cas": CaseReportModel.fromJson(resp.data as Map<String, dynamic>),
       "permissionStatus": resp.data['viewDetailsStatus'],
+      'doctorsInCase': resp.data['doctorsInCase'],
     };
   }
 

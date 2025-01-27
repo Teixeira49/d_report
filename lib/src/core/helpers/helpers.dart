@@ -55,6 +55,12 @@ class Helper {
     return age;
   }
 
+  static int countCaseDaysByString(String dateTarget, [String? endTarget]) {
+    DateTime iTarget = DateTime.parse(dateTarget);
+    DateTime fTarget = endTarget == null ? DateTime.now() : DateTime.parse(endTarget);
+    return fTarget.difference(iTarget).inDays;
+  }
+
   static String writeHeightByInt(int originHeight, [bool reverse = false]) {
     final fixedHeight = reverse ? (originHeight * 100) : (originHeight / 100);
     return fixedHeight.toStringAsFixed(2);

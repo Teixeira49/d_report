@@ -8,8 +8,10 @@ class HeaderDetails extends StatelessWidget {
   final BuildContext fatherContext;
   final String? status;
   final dynamic arguments;
+  final int countDoctors;
 
-  const HeaderDetails(this.fatherContext, this.status, {super.key, this.arguments});
+  const HeaderDetails(this.fatherContext, this.status,
+      {super.key, this.arguments, required this.countDoctors});
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +115,11 @@ class HeaderDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            '6',
-                            // poner condicion de que si son mas de 99 salga M+
+                            countDoctors > 99
+                                ? '+99'
+                                : countDoctors < 0
+                                ? '??'
+                                : '$countDoctors',
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.onPrimary),

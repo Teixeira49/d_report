@@ -1,6 +1,8 @@
 import 'package:d_report/my_flutter_app_icons.dart';
+import 'package:d_report/src/shared/presentation/widget/floating_snack_bars.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../shared/data/model/view_details_status.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../domain/entities/assigned_doctor.dart';
@@ -9,9 +11,10 @@ class DoctorCaseTile extends StatelessWidget {
   final AssignedDoctor assignedDoctor;
   final AuthUser authUser;
   final User user;
+  final ViewDetailsStatus permissionStatus;
 
   const DoctorCaseTile(this.assignedDoctor, this.authUser, this.user,
-      {super.key});
+      {super.key, required this.permissionStatus});
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +60,16 @@ class DoctorCaseTile extends StatelessWidget {
         ),
         trailing: const Icon(Icons.navigate_next),
         onTap: () {
-          Navigator.of(context).pushReplacementNamed('/main/profile/',
-              arguments: {
-                "userData": user,
-                "AuthCredentials": authUser,
-                'docId': assignedDoctor.docId
-              });
+          if (permissionStatus.name == ViewDetailsStatus.GUEST.name) {
+            FloatingSnackBar.show(context, 'Debe estar vinculado al caso para ver');
+          } else {
+            Navigator.of(context).pushReplacementNamed('/main/profile/',
+                arguments: {
+                  "userData": user,
+                  "AuthCredentials": authUser,
+                  'docId': assignedDoctor.docId
+                });
+          }
         },
       ),
     );

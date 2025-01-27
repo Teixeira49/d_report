@@ -23,7 +23,9 @@ class PatientRepositoryImpl implements PatientRepository { //implements Reposito
       return Right(CompleteCaseDTO(
           comPatient: PatientModel.fromEntity(patientCaseData["pat"]),
           comCaseReport: CaseReportModel.fromEntity(patientCaseData["cas"]),
-          viewDetailsStatus: ViewDetailsStatus.values[patientCaseData["permissionStatus"]]));
+          viewDetailsStatus: ViewDetailsStatus.values[patientCaseData["permissionStatus"]],
+          countDoctors: patientCaseData["doctorsInCase"]
+      ));
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));
     }

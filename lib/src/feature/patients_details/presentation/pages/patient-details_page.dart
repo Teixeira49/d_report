@@ -243,11 +243,12 @@ class PatientDetailsPage extends StatelessWidget {
                                 patFullName,
                                 (state is PatientDataLoaded)
                                     ? {
-                                  'birthday': state.patient.patBirthdayDate,
-                                  'bloodType': state.patient.patBloodType,
-                                  'patHeight': state.caseReport.patHeight,
-                                  'patWeight': state.caseReport.patWeight,
-                                }
+                                        'birthday':
+                                            state.patient.patBirthdayDate,
+                                        'bloodType': state.patient.patBloodType,
+                                        'patHeight': state.caseReport.patHeight,
+                                        'patWeight': state.caseReport.patWeight,
+                                      }
                                     : null,
                                 size),
                           ),
@@ -354,11 +355,11 @@ class FollowInfo extends StatelessWidget {
             shadowColor: Colors.transparent,
             surfaceTintColor: Colors.transparent,
             child: ListView.builder(
-          itemCount: state.followCase.length,
-          shrinkWrap: true,
-          itemBuilder: ((context, index) => FollowTile(context,
-              state.followCase[index], patName, patientDetails, authUser)),
-        ));
+              itemCount: state.followCase.length,
+              shrinkWrap: true,
+              itemBuilder: ((context, index) => FollowTile(context,
+                  state.followCase[index], patName, patientDetails, authUser)),
+            ));
       } else if (state is FollowCaseLoadedButEmpty) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -400,7 +401,9 @@ class FollowInfo extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 60,),
+                      const SizedBox(
+                        height: 60,
+                      ),
                       Text(
                         '¡Algo ha salido Mal!',
                         style: Theme.of(context).textTheme.titleMedium,
@@ -564,21 +567,27 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
     return Container(
         margin: const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 12),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          HeaderDetails(context, state.caseReport.casEndReason, arguments: {
-            'casKey': caseId,
-            'userData': user,
-            'AuthCredentials': authUser
-          },),
+          HeaderDetails(
+            context,
+            state.caseReport.casEndReason,
+            countDoctors: state.countDoctors,
+            arguments: {
+              'casKey': caseId,
+              'userData': user,
+              'AuthCredentials': authUser,
+              'casPermission': state.permissionStatus,
+            },
+          ),
           BlocConsumer<AssignUtilsCubit, AssignUtilsState>(
               listener: (miniContext, miniState) {
-                if (miniState is AssignUtilsLoaded) {
-                  Navigator.pop(miniContext);
-                  FloatingSnackBar.show(
-                      miniContext, 'Se ha retirado del caso correctamente');
-                } else if (miniState is AssignUtilsFail) {
-                  FloatingWarningSnackBar.show(miniContext, miniState.errorSMS);
-                }
-              }, builder: (miniContext, miniState) {
+            if (miniState is AssignUtilsLoaded) {
+              Navigator.pop(miniContext);
+              FloatingSnackBar.show(
+                  miniContext, 'Se ha retirado del caso correctamente');
+            } else if (miniState is AssignUtilsFail) {
+              FloatingWarningSnackBar.show(miniContext, miniState.errorSMS);
+            }
+          }, builder: (miniContext, miniState) {
             return Container(
               margin: const EdgeInsets.only(top: 2),
               child: Row(
@@ -589,31 +598,24 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
                     visible: state.permissionStatus != ViewDetailsStatus.GUEST,
                     child: Expanded(
                       child: MaterialButton(
-                        color: Theme
-                            .of(context)
-                            .colorScheme
-                            .onPrimary,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(22.0)),
                         elevation: 10,
                         onPressed: () {
                           customWindowDialog(
                             context,
-                                () =>
-                            (miniContext
+                            () => (miniContext
                                 .read<AssignUtilsCubit>()
                                 .fetchEndAssignDetails(caseId,
-                                user.userProfileId, authUser.accessToken)),
+                                    user.userProfileId, authUser.accessToken)),
                           );
                         },
                         child: Text(
                           'Desvincular',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .primary,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                       ),
@@ -621,75 +623,65 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
                   ),
                   Visibility(
                       visible:
-                      state.permissionStatus == ViewDetailsStatus.GUEST,
+                          state.permissionStatus == ViewDetailsStatus.GUEST,
                       child: Expanded(
                           child: MaterialButton(
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .primary,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(22.0)),
-                            elevation: 10,
-                            onPressed: () {
-                              // TODO MAKE A INDIVIDUAL WIDGET
-                              showDialog(
-                                context: miniContext,
-                                builder: (BuildContext subContext) =>
-                                    AlertDialog(
-                                      title: const Text("Agregar caso"),
-                                      backgroundColor:
-                                      Theme
-                                          .of(subContext)
-                                          .scaffoldBackgroundColor,
-                                      content: const Text(
-                                        "Pulsar esta opcion agregara a tu ventana principal el monitoreo de este caso, ¿Seguro que desea continuar?",
-                                        textAlign: TextAlign.justify,
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(subContext);
-                                            },
-                                            child: Text(
-                                              'Cancelar',
-                                              style: TextStyle(
-                                                  color: Theme
-                                                      .of(subContext)
-                                                      .colorScheme
-                                                      .secondary),
-                                            )),
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(subContext);
-                                              miniContext
-                                                  .read<AssignUtilsCubit>()
-                                                  .createNewAssign(
-                                                  caseId,
-                                                  user.userProfileId,
-                                                  authUser.accessToken);
-                                            },
-                                            child: const Text('Confirmar'))
-                                      ],
-                                    ),
-                              );
-                            },
-                            child: Text(
-                              'Vincular',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Theme
-                                    .of(context)
-                                    .colorScheme
-                                    .onPrimary,
+                        color: Theme.of(context).colorScheme.primary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22.0)),
+                        elevation: 10,
+                        onPressed: () {
+                          // TODO MAKE A INDIVIDUAL WIDGET
+                          showDialog(
+                            context: miniContext,
+                            builder: (BuildContext subContext) => AlertDialog(
+                              title: const Text("Agregar caso"),
+                              backgroundColor:
+                                  Theme.of(subContext).scaffoldBackgroundColor,
+                              content: const Text(
+                                "Pulsar esta opcion agregara a tu ventana principal el monitoreo de este caso, ¿Seguro que desea continuar?",
+                                textAlign: TextAlign.justify,
                               ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(subContext);
+                                    },
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Theme.of(subContext)
+                                              .colorScheme
+                                              .secondary),
+                                    )),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(subContext);
+                                      miniContext
+                                          .read<AssignUtilsCubit>()
+                                          .createNewAssign(
+                                              caseId,
+                                              user.userProfileId,
+                                              authUser.accessToken);
+                                    },
+                                    child: const Text('Confirmar'))
+                              ],
                             ),
-                          ))),
+                          );
+                        },
+                        child: Text(
+                          'Vincular',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                      ))),
                   SizedBox(
                     width: (((state.caseReport.casEndFlag != true) ||
-                        (state.caseReport.casEndFlag == true &&
-                            authUser.roleId == 3)) &&
-                        state.permissionStatus != ViewDetailsStatus.GUEST)
+                                (state.caseReport.casEndFlag == true &&
+                                    authUser.roleId == 3)) &&
+                            state.permissionStatus != ViewDetailsStatus.GUEST)
                         ? 12
                         : 0,
                   ),
@@ -698,134 +690,112 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
                           state.permissionStatus != ViewDetailsStatus.GUEST,
                       child: Expanded(
                           child: MaterialButton(
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .onPrimary,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(22.0)),
-                            elevation: 10,
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    AlertDialog(
-                                      title: const Text("Advertencia"),
-                                      backgroundColor:
-                                      Theme
-                                          .of(context)
-                                          .scaffoldBackgroundColor,
-                                      content: const Text(
-                                        "Finalizar el caso evitara que se puedan seguir haciendo operaciones, ¿Seguro que desea continuar?",
-                                        textAlign: TextAlign.justify,
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text(
-                                              'Cancelar',
-                                              style: TextStyle(
-                                                  color: Theme
-                                                      .of(context)
-                                                      .colorScheme
-                                                      .secondary),
-                                            )),
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              Navigator.of(context).pushNamed(
-                                                  '/main/patients/details/end-case',
-                                                  arguments: {
-                                                    'authCredentials': authUser,
-                                                    'patName':
-                                                    '${state.patient
-                                                        .patName} ${state
-                                                        .patient.patLastname}',
-                                                    'patId': state.patient
-                                                        .patId,
-                                                    'casKey': caseId,
-                                                  });
-                                            },
-                                            child: const Text('Confirmar'))
-                                      ],
-                                    ),
-                              );
-                            },
-                            child: Text('Finalizar',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme
-                                      .of(context)
-                                      .colorScheme
-                                      .primary,
-                                )),
-                          ))),
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22.0)),
+                        elevation: 10,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text("Advertencia"),
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              content: const Text(
+                                "Finalizar el caso evitara que se puedan seguir haciendo operaciones, ¿Seguro que desea continuar?",
+                                textAlign: TextAlign.justify,
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary),
+                                    )),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.of(context).pushNamed(
+                                          '/main/patients/details/end-case',
+                                          arguments: {
+                                            'authCredentials': authUser,
+                                            'patName':
+                                                '${state.patient.patName} ${state.patient.patLastname}',
+                                            'patId': state.patient.patId,
+                                            'casKey': caseId,
+                                          });
+                                    },
+                                    child: const Text('Confirmar'))
+                              ],
+                            ),
+                          );
+                        },
+                        child: Text('Finalizar',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            )),
+                      ))),
                   Visibility(
                       visible: state.caseReport.casEndFlag == true &&
                           authUser.roleId == 3 &&
                           state.permissionStatus != ViewDetailsStatus.GUEST,
                       child: Expanded(
                           child: MaterialButton(
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .primary,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(22.0)),
-                            elevation: 10,
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    AlertDialog(
-                                      title: const Text("Aviso"),
-                                      backgroundColor:
-                                      Theme
-                                          .of(context)
-                                          .scaffoldBackgroundColor,
-                                      content: const Text(
-                                        "Al ejecutar esta accion, se reabrira el caso, y todos los ultimos asignados volveran a verlo en sus cuentas",
-                                        textAlign: TextAlign.justify,
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text(
-                                              'Cancelar',
-                                              style: TextStyle(
-                                                  color: Theme
-                                                      .of(context)
-                                                      .colorScheme
-                                                      .secondary),
-                                            )),
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('Confirmar'))
-                                      ],
-                                    ),
-                              );
-                            },
-                            child: Text('Reabrir Caso',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                    Theme
-                                        .of(context)
-                                        .colorScheme
-                                        .onPrimary)),
-                          ))),
+                        color: Theme.of(context).colorScheme.primary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22.0)),
+                        elevation: 10,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text("Aviso"),
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              content: const Text(
+                                "Al ejecutar esta accion, se reabrira el caso, y todos los ultimos asignados volveran a verlo en sus cuentas",
+                                textAlign: TextAlign.justify,
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary),
+                                    )),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Confirmar'))
+                              ],
+                            ),
+                          );
+                        },
+                        child: Text('Reabrir Caso',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    Theme.of(context).colorScheme.onPrimary)),
+                      ))),
                 ],
               ),
             );
           }),
         ]));
-  } else if ((state is PatientDataTimeout || state is PatientDataFail) && indexTab != 3) {
+  } else if ((state is PatientDataTimeout || state is PatientDataFail) &&
+      indexTab != 3) {
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -835,7 +805,9 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 60,),
+                  const SizedBox(
+                    height: 60,
+                  ),
                   Text(
                     '¡Algo ha salido Mal!',
                     style: Theme.of(context).textTheme.titleMedium,

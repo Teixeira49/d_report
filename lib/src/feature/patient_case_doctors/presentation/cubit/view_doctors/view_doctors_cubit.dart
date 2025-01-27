@@ -17,9 +17,12 @@ class ViewDoctorsCubit extends Cubit<ViewDoctorsState> {
 
       data.fold(
           (l) => emit(ViewDoctorsFail(errorSMS: l.message)),
-          (r) => emit(ViewDoctorsLoaded(
-              listAssignedDoctors: r.assignedDoctors,
-              countTotalAssignedDoctors: r.countAssignedDoctors)));
+          (r) => r.countAssignedDoctors > 0
+              ? emit(ViewDoctorsLoaded(
+                  listAssignedDoctors: r.assignedDoctors,
+                  countTotalAssignedDoctors: r.countAssignedDoctors))
+              : emit(ViewDoctorsWithoutUpdate(
+                  errorSMS: 'Este paciente no posee casos')));
     } catch (e) {
       emit(ViewDoctorsFail(errorSMS: e.toString()));
     }
