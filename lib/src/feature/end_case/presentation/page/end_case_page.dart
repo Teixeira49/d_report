@@ -6,6 +6,7 @@ import 'package:d_report/src/shared/presentation/widget/loading_show_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/helpers/helpers.dart';
 import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
@@ -47,6 +48,7 @@ class MyEndCasePage extends State<EndCasePage> {
     String patName = arguments["patName"];
     int patId = arguments["patId"];
     int casId = arguments["casKey"];
+    String casStartDate = arguments['casStartDate'];
 
     return BlocProvider(
         create: (_) => SendEndCaseCubit(endCaseRepositoryImpl: repository),
@@ -145,20 +147,20 @@ class MyEndCasePage extends State<EndCasePage> {
                             ],
                           ),
                           const Divider(),
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(Icons.access_time_filled),
-                              SizedBox(
+                              const Icon(Icons.access_time_filled),
+                              const SizedBox(
                                 width: 12,
                               ),
-                              Text(
+                              const Text(
                                 "Tiempo en Atencion",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              Spacer(),
-                              Text("4 Dias"),
-                              SizedBox(width: 22)
+                              const Spacer(),
+                              Text("${Helper.countCaseDaysByString(casStartDate)} Dias"),
+                              const SizedBox(width: 22)
                             ],
                           ),
                           const Divider(),

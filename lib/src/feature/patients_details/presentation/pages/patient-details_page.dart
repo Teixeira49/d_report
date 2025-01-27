@@ -728,6 +728,7 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
                                                 '${state.patient.patName} ${state.patient.patLastname}',
                                             'patId': state.patient.patId,
                                             'casKey': caseId,
+                                            'casStartDate': state.caseReport.casEnterDate,
                                           });
                                     },
                                     child: const Text('Confirmar'))
