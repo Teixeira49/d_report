@@ -105,7 +105,7 @@ class MyLoginPageState extends State<LoginPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 const SizedBox(
-                                  height: 24,
+                                  height: 56,
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
@@ -119,10 +119,13 @@ class MyLoginPageState extends State<LoginPage> {
                                   ),
                                   child: Image.asset("assets/images/logo.png",
                                       width: MediaQuery.of(context).size.width /
-                                          1.5,
+                                          1.55,
                                       height:
                                           MediaQuery.of(context).size.width /
-                                              1.5),
+                                              1.55),
+                                ),
+                                const SizedBox(
+                                  height: 24,
                                 ),
                                 Container(
                                     padding: EdgeInsets.symmetric(
@@ -132,9 +135,11 @@ class MyLoginPageState extends State<LoginPage> {
                                     child: UserAccountTextField(
                                         controllerData: _emailController)),
                                 Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.075,
-                                      vertical: size.height * 0.025,
+                                    padding: EdgeInsets.only(
+                                      left: size.width * 0.075,
+                                      right: size.width * 0.075,
+                                      top: size.height * 0.025,
+                                      bottom: size.height * 0.0125,
                                     ),
                                     child: PasswordTextField(
                                         password: password,
@@ -145,7 +150,7 @@ class MyLoginPageState extends State<LoginPage> {
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
                                                 SizedBox(
-                                                  height: 60,
+                                                  height: 48.5,
                                                 ),
                                                 CustomCircularProgressBar(),
                                                 SizedBox(
