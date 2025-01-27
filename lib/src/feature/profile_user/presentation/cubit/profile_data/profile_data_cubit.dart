@@ -23,10 +23,10 @@ class ProfileDataCubit extends Cubit<ProfileDataState> {
           await _profileRepositoryImpl.getDoctorProfileById(docId, accessToken);
 
       data.fold(
-          (l) => emit(ProfileDataFail(errorSMS: "Error cargando los datos")),
+          (l) => emit(ProfileDataFail(errorSMS: "Falla conectando con el servidor")),
           (r) => emit(ProfileDataLoaded(doctor: r)));
     } catch (e) {
-      emit(ProfileDataFail(errorSMS: "Error cargando los datos"));
+      emit(ProfileDataFail(errorSMS: "No se pudieron cargar los datos"));
     } finally {
       _isFetching = false;
     }

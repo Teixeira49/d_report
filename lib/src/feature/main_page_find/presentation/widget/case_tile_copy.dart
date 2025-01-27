@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
+import '../../../../shared/presentation/widget/bullet.dart';
 import '../../domain/entities/case_simple.dart';
 
 class CaseTile extends StatelessWidget {
@@ -18,7 +19,8 @@ class CaseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 1.5, horizontal: 3),
+      margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 1),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
       child: ListTile(
         title: Text(
           dataPatientRow.patName,
@@ -28,10 +30,20 @@ class CaseTile extends StatelessWidget {
           dataPatientRow.casActualRoom,
           style: Theme.of(context).listTileTheme.subtitleTextStyle,
         ),
-        leading: const SizedBox(
-          height: double.maxFinite,
-          width: 5,
-        ),
+        leading: BulletDecorator(sizeBullet: 9, marginHorizontal: 5,
+            marginVertical: 5, gradientSystem: !dataPatientRow.casEndFlag
+                ? [
+              Colors.green,
+              Colors.lightGreen,
+              Colors.lightGreenAccent,
+              Colors.limeAccent,
+            ]
+                : [
+              Colors.pink,
+              Colors.red,
+              Colors.amber,
+            ],),
+        trailing: const Icon(Icons.navigate_next),
         onTap: () async {
           final result = await Navigator.of(context).pushNamed('/main/patients/details/',
               arguments: {

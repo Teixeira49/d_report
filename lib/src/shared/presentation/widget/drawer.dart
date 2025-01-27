@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/entities/user.dart';
 
-class NavigatorDrawer extends StatefulWidget { // TODO este puede ser stateless
+class NavigatorDrawer extends StatefulWidget {
   const NavigatorDrawer(
       {super.key, required this.user, required this.authUser});
 
@@ -24,6 +24,14 @@ class MyNavigatorDrawerState extends State<NavigatorDrawer> {
         DrawerHeader(
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.55),
+                  spreadRadius: 3,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ],
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +64,6 @@ class MyNavigatorDrawerState extends State<NavigatorDrawer> {
               ],
             )),
         ListTile(
-          // TODO Change ModalRoute for Navigator, and replace string route for a more than serius code
           leading: ModalRoute.of(context)?.settings.name == '/main/patients/'
               ? Icon(Icons.home, color: Theme.of(context).colorScheme.primary)
               : Icon(
@@ -86,7 +93,6 @@ class MyNavigatorDrawerState extends State<NavigatorDrawer> {
                     });
               }
             });
-            print("pepe");
           },
         ),
         ListTile(
@@ -118,7 +124,6 @@ class MyNavigatorDrawerState extends State<NavigatorDrawer> {
                     });
               }
             });
-            print("pepe");
           },
         ),
         ListTile(
@@ -144,17 +149,12 @@ class MyNavigatorDrawerState extends State<NavigatorDrawer> {
           onTap: () {
             setState(() {
               if (ModalRoute.of(context)?.settings.name != '/main/config/') {
-                Navigator.of(context).pushNamed('/main/config/', arguments: {
-                  "userData": User(
-                      userName: "Pepe Loco",
-                      userEmail: "Pepeloco@gmail.com",
-                      userRoleUid: 16,
-                      userImgUrl: "",
-                      userProfileId: 23)
+                Navigator.of(context).pushReplacementNamed('/main/config/', arguments: {
+                  "userData": widget.user,
+                  "AuthCredentials": widget.authUser
                 });
               }
             });
-            print("pepe");
           },
         ),
         ListTile(
@@ -174,7 +174,6 @@ class MyNavigatorDrawerState extends State<NavigatorDrawer> {
           shape: Theme.of(context).listTileTheme.shape,
           onTap: () {
             Navigator.popUntil(context, (route) => route.isFirst);
-            print("Se presiono cerrar sesion");
           },
         ),
         Divider(

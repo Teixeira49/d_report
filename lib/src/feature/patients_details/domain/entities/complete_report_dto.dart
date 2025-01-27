@@ -11,10 +11,12 @@ class CompleteCaseDTO{
       required this.comPatient,
       required this.comCaseReport,
       required this.viewDetailsStatus,
+      required this.countDoctors,
     }
   );
 
   Patient comPatient;
   CaseReport comCaseReport;
   ViewDetailsStatus viewDetailsStatus;
+  int countDoctors;
 }

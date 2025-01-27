@@ -1,6 +1,3 @@
-
-import 'package:d_report/src/feature/patients_details/domain/entities/follows_in_case.dart';
-
 import '../../../domain/entities/doctor.dart';
 
 abstract class ProfileDataState {}
@@ -10,7 +7,7 @@ class ProfileDataInitial extends ProfileDataState {}
 class ProfileDataLoading extends ProfileDataState {}
 
 class ProfileDataLoaded extends ProfileDataState {
-  final Doctor doctor;
+  final DoctorProfile doctor;
   ProfileDataLoaded({required this.doctor});
 }
 

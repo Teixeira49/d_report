@@ -26,7 +26,9 @@ class MyCasesRepositoryImpl implements MyCasesRepository {
       final List<CaseSimple> resp = await myCasesRemoteDataSource.getMyCases(docId, accessToken);
       return Right(resp);
     } on DioException {
-      return Left(ServerFailure("Fallo en conexion al servidor"));
+      return Left(ServerFailure("Fallo en conexion al servidor")); //No se pudieron cargar los datos
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
     }
   }
 
@@ -40,6 +42,11 @@ class MyCasesRepositoryImpl implements MyCasesRepository {
   Future<Either<Failure, bool>> saveLocalMyCase(Page<CaseSimple> caseSimple) {
     // TODO: implement saveLocalMyCase
     throw UnimplementedError();
+  }
+
+  @override
+  Future<void> getRefreshMyCasesById() async {
+    await myCasesRemoteDataSource.getRefreshMyCases();
   }
   
 }

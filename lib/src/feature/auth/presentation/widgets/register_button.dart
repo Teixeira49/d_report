@@ -21,7 +21,7 @@ class RegisterButton extends StatelessWidget {
           overlayColor: MaterialStateProperty.resolveWith<Color?>(
                 (Set<MaterialState> states) {
               if (states.contains(MaterialState.pressed)) {
-                return Colors.red.withOpacity(0.5); // Color de la sombra cuando se presiona
+                return Theme.of(context).colorScheme.tertiary.withOpacity(0.5); // Color de la sombra cuando se presiona
               }
               return null; // Dejar el color por defecto en otros estados
             },
@@ -29,7 +29,7 @@ class RegisterButton extends StatelessWidget {
           shadowColor: MaterialStateProperty.resolveWith<Color?>(
                 (Set<MaterialState> states) {
               if (states.contains(MaterialState.pressed)) {
-                return Colors.red; // Color de la sombra cuando se presiona
+                return Theme.of(context).colorScheme.tertiary; // Color de la sombra cuando se presiona
               }
               return null; // Dejar el color por defecto en otros estados
             },

@@ -13,31 +13,44 @@ class FloatingWarningSnackBar {
         ),
         const Spacer(),
         Text(
-              message,
-              textAlign: TextAlign.center,
-
+          message,
+          textAlign: TextAlign.center,
         ),
         const Spacer(),
-        const SizedBox(width: 8,)
+        const SizedBox(
+          width: 8,
+        )
       ],
     )));
   }
 }
 
 class FloatingSnackBar {
-  static void show(BuildContext context, String message, [IconData? iconData, Color? color]) {
+  static void show(BuildContext context, String message,
+      [IconData? iconData, Color? color]) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            if(iconData != null) Flexible(child: Icon(iconData, color: color,)),
-            Text(
-                  message,
-                  textAlign: TextAlign.center,
-                ),
-            if(iconData != null) const Flexible(child: SizedBox(width: 8,))
-          ],
-        )));
+      mainAxisAlignment: iconData != null
+          ? MainAxisAlignment.spaceBetween
+          : MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        if (iconData != null)
+          Flexible(
+              child: Icon(
+            iconData,
+            color: color,
+          )),
+        Text(
+          message,
+          textAlign: TextAlign.center,
+        ),
+        if (iconData != null)
+          const Flexible(
+              child: SizedBox(
+            width: 8,
+          ))
+      ],
+    )));
   }
 }

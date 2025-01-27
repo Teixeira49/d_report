@@ -30,7 +30,7 @@ class FollowReportCubit extends Cubit<FollowReportState>{
               (l) => emit(FollowCaseFail(errorSMS: l.message)),
               (r) {
               if (r.isEmpty) {
-                emit(FollowCaseLoadedButEmpty(sms: "Este paciente no posee Seguimiento, porfavor, cree uno"));
+                emit(FollowCaseLoadedButEmpty(sms: "Este paciente no posee Seguimiento, porfavor, cree uno para empezar."));
               } else {
                 emit(FollowCaseLoaded(followCase: r));
               }}
@@ -38,7 +38,7 @@ class FollowReportCubit extends Cubit<FollowReportState>{
 
     }catch(e){
       print('Error: $e');
-      emit(FollowCaseFail(errorSMS: "Error cargando los datos"));
+      emit(FollowCaseFail(errorSMS: "Error cargando los datos."));
     }finally{
       _isFetching = false;
     }

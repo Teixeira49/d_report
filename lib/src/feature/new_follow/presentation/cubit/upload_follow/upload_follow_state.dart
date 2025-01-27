@@ -18,3 +18,7 @@ class UploadFollowError extends UploadFollowState {
   final String errorSMS;
   UploadFollowError(this.errorSMS);
 }
+
+class UploadWithoutChanges extends UploadFollowError {
+  UploadWithoutChanges(super.errorSMS);
+}

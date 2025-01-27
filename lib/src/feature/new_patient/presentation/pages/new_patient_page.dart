@@ -1,5 +1,7 @@
+import 'package:d_report/my_flutter_app_icons.dart';
 import 'package:d_report/src/feature/new_patient/presentation/cubit/new_patient/new_patient_case_state.dart';
 import 'package:d_report/src/shared/presentation/widget/floating_snack_bars.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
@@ -83,14 +85,19 @@ class MyNewPatientPageState extends State<NewPatientPage> {
             },
           ),
           actions: [
-            IconButton(onPressed: () {
-              Navigator.of(context).pushReplacementNamed(
-                  '/main/new-case/find-patient',
-                  arguments: {
-                    "userData": user,
-                    "AuthCredentials": authUser,
-                  });
-            }, icon: const Icon(Icons.cached))
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed(
+                      '/main/new-case/find-patient',
+                      arguments: {
+                        "userData": user,
+                        "AuthCredentials": authUser,
+                      });
+                },
+                icon: const Icon(
+                  MyFlutterApp.user_check,
+                  size: 18,
+                ))
           ],
         ),
         body: BlocConsumer<CheckPatientCubit, CheckPatientState>(
@@ -131,8 +138,8 @@ class MyNewPatientPageState extends State<NewPatientPage> {
             return Stack(
               alignment: Alignment.topCenter,
               children: [
-            Center(
-                child: SingleChildScrollView(
+                Center(
+                    child: SingleChildScrollView(
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                       minHeight: size.height * 0.25,
@@ -156,54 +163,58 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                             ),
                           ),
                           Column(
-                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.075,
-                                  vertical: size.height * 0.010,
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 9,
                                 ),
-                                child: PatientDataTextField(
-                                  contextRow: 'Nombre',
-                                  controllerData: _patNameController,
-                                  iconData: Icons.person,
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                      child: PatientDataTextField(
+                                        contextRow: 'Nombre',
+                                        controllerData: _patNameController,
+                                        iconData: Icons.person,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 12,
+                                    ),
+                                    Flexible(
+                                      child: PatientDataTextField(
+                                        contextRow: 'Apelllido',
+                                        controllerData: _patLastNameController,
+                                        iconData: Icons.person,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.075,
-                                  vertical: size.height * 0.010,
-                                ),
-                                child: PatientDataTextField(
-                                  contextRow: 'Apelllido',
-                                  controllerData: _patLastNameController,
-                                  iconData: Icons.person,
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.075,
-                                  vertical: size.height * 0.010,
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 9,
                                 ),
                                 child: PatientDataTextFieldNumeric(
-                                  contextRow: 'CI Paciente',
+                                  contextRow: 'CI Paciente (Opcional)',
                                   controllerData: _patDniController,
                                   iconData: Icons.perm_contact_cal,
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.075,
-                                  vertical: size.height * 0.010,
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 9,
                                 ),
                                 child: DateTextField(
                                   controllerData: _patBirthDateController,
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.075,
-                                  vertical: size.height * 0.010,
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 9,
                                 ),
                                 child: Row(
                                   children: [
@@ -212,7 +223,7 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                                       controllerData: _patGenderController,
                                     )),
                                     const SizedBox(
-                                      width: 10,
+                                      width: 12,
                                     ),
                                     Expanded(
                                         child: TypeBloodDropdownField(
@@ -223,13 +234,47 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                               ),
                               Container(
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.075,
-                                  vertical: size.height * 0.010,
+                                  horizontal: size.width * 0.010,
+                                  vertical: size.width * 0.020,
+                                ),
+                                child: Text(
+                                  "Datos del Representante",
+                                  style: Theme.of(context).textTheme.titleMedium,
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 9,
                                 ),
                                 child: PatientDataTextFieldNumeric(
                                   contextRow: 'CI Representante',
                                   controllerData: _patGuDniController,
                                   iconData: Icons.contact_emergency,
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 9,
+                                ),
+                                child: PatientDataTextFieldNumeric(
+                                  contextRow: 'Telefono representante',
+                                  controllerData: _patGuDniController,
+                                  iconData: Icons.phone,
+                                  typeNumber: TextInputType.phone,
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 9,
+                                ),
+                                child: PatientDataTextFieldNumeric(
+                                  contextRow: 'Correo representante (Opcional)',
+                                  controllerData: _patGuDniController,
+                                  iconData: Icons.phone,
+                                  typeNumber: TextInputType.phone,
                                 ),
                               ),
                               const SizedBox(
@@ -245,20 +290,20 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                 Visibility(
                     visible: keyboardEnabled == 0,
                     child: Positioned(
-                        bottom: 30,
-                        child: (state is CheckPatientLoading)
-                              ? const  CustomCircularProgressBar()
-                              : NextStateButton(
-                                  patName: _patNameController.text,
-                                  patLastName: _patLastNameController.text,
-                                  patGuDni: _patGuDniController.text,
-                                  patBirthDate: _patBirthDateController.text,
-                                  patGender: _patGenderController.value,
-                                  patBloodType: _patBloodTypeController.value,
-                                  accessToken: authUser.accessToken,
-                                  size: size,
-                                ),
-                        )),
+                      bottom: 30,
+                      child: (state is CheckPatientLoading)
+                          ? const CustomCircularProgressBar()
+                          : NextStateButton(
+                              patName: _patNameController.text,
+                              patLastName: _patLastNameController.text,
+                              patGuDni: _patGuDniController.text,
+                              patBirthDate: _patBirthDateController.text,
+                              patGender: _patGenderController.value,
+                              patBloodType: _patBloodTypeController.value,
+                              accessToken: authUser.accessToken,
+                              size: size,
+                            ),
+                    )),
               ],
             );
           },

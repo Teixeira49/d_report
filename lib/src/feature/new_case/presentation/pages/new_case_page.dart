@@ -2,11 +2,9 @@ import 'package:d_report/src/feature/new_case/data/datasource/remote/new_case_re
 import 'package:d_report/src/feature/new_case/data/repository/new_case_repository_impl.dart';
 import 'package:d_report/src/feature/new_case/presentation/cubit/new_patient/new_patient_case_cubit.dart';
 import 'package:d_report/src/feature/new_case/presentation/cubit/new_patient/new_patient_case_state.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared/domain/entities/auth_user.dart';
@@ -120,14 +118,20 @@ class MyNewCasePageState extends State<NewCasePage> {
                               vertical: size.width * 0.020,
                             ),
                             child: Text(
-                              "Porfavor complete la información del paciente",
+                              "Información sobre el caso del paciente",
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           )),
-                          Flexible(child: Text(
-                            "Informacion del caso",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.075,
+                              vertical: size.height * 0.010,
+                            ),
+                            child: CaseDataTextField(
+                              contextRow: 'Motivo de Consulta',
+                              controllerData: _casSymptomatologyController,
+                            ),
+                          ),
                           Container(
                             padding: EdgeInsets.symmetric(
                               horizontal: size.width * 0.075,
@@ -187,7 +191,7 @@ class MyNewCasePageState extends State<NewCasePage> {
                             child: EntryAreaDropdownField(
                                 controllerData: _casEntryAreaController),
                           ),
-                          const SizedBox(height: 50,)
+                          const SizedBox(height: 70,)
                         ],
                       ),
 

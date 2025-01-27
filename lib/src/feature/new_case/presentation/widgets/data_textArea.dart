@@ -20,7 +20,7 @@ class MyCaseDataTextAreaWidget extends State<CaseDataTextArea> {
       controller: widget.controllerData,
       style: Theme.of(context).textTheme.labelLarge,
       obscureText: obscureTextDefault,
-      maxLines: 4,
+      maxLines: 3,
       keyboardType: TextInputType.multiline,
       decoration: InputDecoration(
         fillColor: Theme.of(context).inputDecorationTheme.fillColor,

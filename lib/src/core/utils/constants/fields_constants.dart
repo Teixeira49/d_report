@@ -46,6 +46,10 @@ const String hintArea = "Porfavor diga en que area fue internado";
 
 const String floor = "Piso";
 
+const String birthday = 'Cumpleaños';
+
+const String hintBirthday = "Cuando cumples";
+
 final List<String> genreType = <String>["Male","Female","Other"];
 
 final List<String> genreTypeFull = <String>["Hombre","Mujer","Otros", 'Todos'];
@@ -54,11 +58,11 @@ final List<String> bloodType = <String>["Rh Nulo","A+","A-","B+","B-","AB+","AB-
 
 final List<String> entryAreaType = <String>["Emergency", "Hospitalization", "Surgery"];
 
-final List<String> endCaseType = ['Sobrevivio', 'Murio', 'Referido'];
+final List<String> endCaseType = ['Recuperado', 'Murio', 'Referido'];
 
-final Map<String, String> endCaseTypeMeta = {'SURVIVE': 'Sobrevivio', 'DEAD': 'Murio', 'REFERRAL':'Referido'};
+final Map<String, String> endCaseTypeMeta = {'SURVIVE': 'Recuperado', 'DEAD': 'Murio', 'REFERRAL':'Referido'};
 
-final List<String> endCaseTypeFull = ['Sobrevivio', 'Murio', 'Referido', 'Activo', 'Todos']; // TODO Sobrevivio?  JAJAJJAJA
+final List<String> endCaseTypeFull = ['Recuperado', 'Murio', 'Referido', 'Activo', 'Todos']; // TODO Sobrevivio?  JAJAJJAJA
 
 final List<String> caseStatusType = ['Activo', 'Finalizado', 'Todos'];
 
@@ -77,6 +81,12 @@ const String space = " ";
 const String edit = "Editar Perfil";
 
 final List<String> userType = <String>["Doctor","Resident","Administrator"]; // TODO Crear su propio archivo de constantes
+
+final Map<String, String> translateGenreType = {
+  'Male': 'Hombre',
+  'Female': 'Mujer',
+  'Other': 'Otro'
+};
 
 final Map<int, List<String>> checkEqualityUpdateCase = {
   0: ['casSymptomatology', 'casPhysicalState', 'casDiagnosis'],

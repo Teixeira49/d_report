@@ -8,11 +8,12 @@ class PatientDataTextFieldNumeric extends StatefulWidget {
       {super.key,
       required this.contextRow,
       required this.controllerData,
-      required this.iconData,});
+      required this.iconData, this.typeNumber,});
 
   final String contextRow;
   final TextEditingController controllerData;
   final IconData iconData;
+  final TextInputType? typeNumber;
 
   @override
   MyPatientDataTextFieldWidget createState() => MyPatientDataTextFieldWidget();
@@ -27,7 +28,7 @@ class MyPatientDataTextFieldWidget extends State<PatientDataTextFieldNumeric> {
         controller: widget.controllerData,
         style: Theme.of(context).textTheme.labelLarge,
         obscureText: obscureTextDefault,
-        keyboardType: TextInputType.number,
+        keyboardType: widget.typeNumber ?? TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
         ],

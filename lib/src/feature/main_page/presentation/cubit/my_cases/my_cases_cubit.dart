@@ -11,16 +11,16 @@ import 'my_cases_state.dart';
 
 class MyCasesCubit extends Cubit<MyCasesState>{
 
-  MyCasesCubit(this._myCasesRepository) : super(MyCasesInitial());
+  int _page = 0;
 /*
   final String accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYXZpZXJ0eHJAZ21haWwuY29tIiwicm9sZXMiOiJET0NUT1IiLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4zMC4xOTY6OTAwMS9hcGkvYXV0aC9sb2dpbi9zaWduaW4iLCJleHAiOjE3MzM2MTQzOTZ9.81MvIEuf4JyqBUWBxtba0eOPEboKguA8X18FzlrYUMY";
-  int _page = 1;
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
 
   final Dio dio = Dio();
 */
+  MyCasesCubit(this._myCasesRepository) : super(MyCasesInitial());
 
   final MyCasesRepository _myCasesRepository;
 
@@ -35,16 +35,16 @@ class MyCasesCubit extends Cubit<MyCasesState>{
       emit(MyCasesLoading());
 
       final cases = await _myCasesRepository.getMyCasesById(docId, accessToken);
-      print("Pinocho");
 
       List<CaseSimple> finalList = cases.getOrElse(() => []);
 
-      if (finalList.isNotEmpty) {
-        emit(MyCasesLoaded(cases: finalList));
-      } else {
-        emit(MyCasesLoadedButEmpty(
-            sms: "Parece que no tienes casos pendientes"));
-      }
+      cases.fold(
+              (l) => emit(MyCasesFail(errorSMS: l.message)),
+              (r) => r.isNotEmpty
+          ? emit(MyCasesLoaded(cases: finalList))
+          : emit(MyCasesLoadedButEmpty(
+                  sms: "Parece que no tienes casos pendientes"))
+      );
 
       /*final resp = await r.retry(
         () => dio.get(
@@ -86,17 +86,16 @@ class MyCasesCubit extends Cubit<MyCasesState>{
 */
     }catch(e){
       print('Error: $e');
-      emit(MyCasesFail(errorSMS: "Error cargando los datos"));
+      emit(MyCasesFail(errorSMS: "Fallo conexion con el Servidor"));
     }//finally{
      // _isFetching = false;
     //}
-
-
   }
+
   Future<void> refreshCases(int docId, String accessToken) async {
-  //  _page = 1;
-    //emit(MyCasesInitial());
-    await fetchCases(docId, accessToken);
+    await _myCasesRepository.getRefreshMyCasesById();
+    emit(MyCasesInitial());
+    fetchCases(docId, accessToken);
   }
 
   void updateFilter(String filter) {

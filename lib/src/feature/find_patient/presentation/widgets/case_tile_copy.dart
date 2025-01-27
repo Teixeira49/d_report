@@ -32,7 +32,7 @@ class CaseTile extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 1.5, horizontal: 3),
+      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 3),
       child: ListTile(
         title: Text(
           '${dataPatientRow.patName} ${dataPatientRow.patLastName}',

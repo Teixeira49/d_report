@@ -13,20 +13,23 @@ class PatientDataCubit extends Cubit<PatientDataState> {
 
   final PatientRepositoryImpl _patientRepositoryImpl;
 
-
-  Future<void> fetchCaseDetails(int casId, int docId, String accessToken) async {
+  Future<void> fetchCaseDetails(
+      int casId, int docId, String accessToken) async {
     try {
       //final data = await useCase.call(casId);
 
       emit(PatientDataLoading());
 
-      final data =
-          await _patientRepositoryImpl.getPatientCaseData(casId, docId, accessToken);
+      final data = await _patientRepositoryImpl.getPatientCaseData(
+          casId, docId, accessToken);
 
       data.fold(
           (l) => emit(PatientDataFail(errorSMS: l.message)),
           (r) => emit(PatientDataLoaded(
-              patient: r.comPatient, caseReport: r.comCaseReport, permissionStatus: r.viewDetailsStatus)));
+              patient: r.comPatient,
+              caseReport: r.comCaseReport,
+              permissionStatus: r.viewDetailsStatus,
+              countDoctors: r.countDoctors)));
     } catch (e) {
       print('Error: $e');
       emit(PatientDataFail(errorSMS: "Error cargando los datos"));

@@ -2,8 +2,6 @@ import 'package:d_report/src/shared/domain/entities/auth_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
-
-import '../../../../../my_flutter_app_icons.dart';
 import '../../../../shared/data/model/roles.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
@@ -13,7 +11,10 @@ import '../../data/datasources/remote/my_cases_remote_data_sources.dart';
 import '../../data/repositories/my_cases_repository_impl.dart';
 import '../cubit/my_cases/my_cases_cubit.dart';
 import '../cubit/my_cases/my_cases_state.dart';
-import '../widgets/case_tile_copy.dart';
+import '../widgets/bottom_bar_panel.dart';
+import '../widgets/case_tile.dart';
+import '../widgets/error_button.dart';
+import '../widgets/floating_button_add_patient.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -23,7 +24,7 @@ class MainPage extends StatefulWidget {
 }
 
 class MyMainPageState extends State<MainPage> {
-  int _currentPage = 0;
+  final int _currentPage = 0;
   bool _isSearching = false;
 
   final ScrollController _scrollController = ScrollController();
@@ -46,12 +47,10 @@ class MyMainPageState extends State<MainPage> {
   }
 
   void _onScroll() {
-    print('pepe');
     if (_scrollController.position.pixels >=
         _scrollController
             .position.maxScrollExtent /*!context.read<MyCasesCubit>().si*/) {
       //context.read<MyCasesCubit>().fetchCases();
-      print("Scroll");
     }
   }
 
@@ -70,8 +69,6 @@ class MyMainPageState extends State<MainPage> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final remoteDataSource = MyCasesRemoteDataSourceImpl();
@@ -84,13 +81,6 @@ class MyMainPageState extends State<MainPage> {
     AuthUser authUser = argument["AuthCredentials"];
 
     final size = MediaQuery.of(context).size;
-
-    /*.then((result) {
-    if (result != null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text('Resultado: $result')),
-    );
-    }});*/
 
     return BlocProvider(
         create: (_) => MyCasesCubit(repository)
@@ -110,7 +100,10 @@ class MyMainPageState extends State<MainPage> {
                         borderRadius: BorderRadius.circular(30),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .shadow
+                                .withOpacity(0.55),
                             spreadRadius: 2,
                             blurRadius: 5,
                             offset: const Offset(0, 3),
@@ -138,7 +131,7 @@ class MyMainPageState extends State<MainPage> {
                             },
                           ),
                           suffixIcon: Visibility(
-                            visible: _searchController.text.isNotEmpty, // TODO MAKE GLOBAL
+                            visible: _searchController.text.isNotEmpty,
                             child: IconButton(
                               onPressed: () {
                                 setState(() {
@@ -154,7 +147,7 @@ class MyMainPageState extends State<MainPage> {
                           ),
                         ),
                       ),
-                    ) // TODO MAKE WIDGET IN SHARE
+                    )
                   : Row(
                       children: [
                         GestureDetector(
@@ -192,16 +185,13 @@ class MyMainPageState extends State<MainPage> {
                     vertical: size.height * 0.005,
                     horizontal: size.width * 0.005),
                 child: RefreshIndicator(
-                  onRefresh: () async {
-                    context
-                        .read<MyCasesCubit>()
-                        .refreshCases(user.userProfileId, authUser.accessToken);
-                  },
-                  child: Center(
-                    child: _buildCasesList(state, context),
-                  )
-
-                ) //;
+                    onRefresh: () async {
+                      context.read<MyCasesCubit>().refreshCases(
+                          user.userProfileId, authUser.accessToken);
+                    },
+                    child: Center(
+                      child: _buildCasesList(state, context, size),
+                    )) //;
                 //},
                 //),
                 ),
@@ -214,122 +204,20 @@ class MyMainPageState extends State<MainPage> {
             //   },
             // ),
 
-            floatingActionButton: Visibility(
-              visible: ((_currentPage == 0) &&
-                  (authUser.roleId == UserRole.DOCTOR.index) &&
-                  !_isSearching),
-              child: FloatingActionButton(
-                backgroundColor:
-                    ThemeData().floatingActionButtonTheme.backgroundColor,
-                child: const Icon(Icons.add),
-                onPressed: () {
-                  showModalBottomSheet<void>(
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return SizedBox(
-                          height: 110,
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.010,
-                                  ),
-                                  child: ListTile(
-                                    title: const Text(
-                                        'Crear Caso - Nuevo Paciente'),
-                                    dense: true,
-                                    tileColor: Colors.transparent,
-                                    trailing: const Icon(MyFlutterApp.user_plus),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      Navigator.of(context).pushNamed(
-                                          '/main/new-case/new-patient',
-                                          arguments: {
-                                            "userData": user,
-                                            "AuthCredentials": authUser,
-                                          });
-                                    },
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.010,
-                                  ),
-                                  child: ListTile(
-                                    title: const Text(
-                                        'Crear Caso - Paciente Existente'),
-                                    dense: true,
-                                    tileColor: Colors.transparent,
-                                    trailing: const Icon(MyFlutterApp.user_check),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      Navigator.of(context).pushNamed(
-                                          '/main/new-case/find-patient',
-                                          arguments: {
-                                            "userData": user,
-                                            "AuthCredentials": authUser,
-                                          });
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      });
-                },
-              ),
+            floatingActionButton: FloatingActionButtonAddPatient(
+              roleId: authUser.roleId,
+              currentPage: _currentPage,
+              isSearching: _isSearching,
+              size: size,
+              parseArguments: {
+                "userData": user,
+                "AuthCredentials": authUser,
+              },
             ),
 
-            // Change a widget in other file
-            bottomNavigationBar: BottomNavigationBar(
-              onTap: (index) {
-                if (index != _currentPage) {
-                  switch (index) {
-                    case 1:
-                      Navigator.of(context).pushReplacementNamed(
-                          '/main/patients/find/',
-                          arguments: {
-                            "userData": user,
-                            "AuthCredentials": authUser
-                          });
-                      break;
-                    case 0:
-                      Navigator.of(context)
-                          .pushReplacementNamed('/main/patients/', arguments: {
-                        "userData": user,
-                        "AuthCredentials": authUser
-                      });
-                      break;
-                  }
-                }
-              },
-              backgroundColor:
-                  ThemeData().bottomNavigationBarTheme.backgroundColor,
-              selectedItemColor:
-                  ThemeData().bottomNavigationBarTheme.selectedItemColor,
-              selectedLabelStyle:
-                  ThemeData().bottomNavigationBarTheme.selectedLabelStyle,
-              currentIndex: _currentPage,
-              items: [
-                BottomNavigationBarItem(
-                  icon: _currentPage == 1
-                      ? const Icon(Icons.other_houses_outlined)
-                      : const Icon(Icons.other_houses),
-                  label: 'Mis Casos',
-                ),
-                BottomNavigationBarItem(
-                  icon: _currentPage == 1
-                      ? const Icon(Icons.folder_copy)
-                      : const Icon(Icons.folder_copy_outlined),
-                  label: 'Buscar Expediente',
-                ),
-              ],
+            bottomNavigationBar: BottomBarMainPanel(
+              currentPage: _currentPage,
+              parseArguments: {"userData": user, "AuthCredentials": authUser},
             ),
 
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -337,14 +225,17 @@ class MyMainPageState extends State<MainPage> {
         }));
   }
 
-  Widget _buildCasesList(MyCasesState state, BuildContext context) {
+  Widget _buildCasesList(MyCasesState state, BuildContext context, Size size) {
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
 
     User user = argument["userData"];
     AuthUser authUser = argument["AuthCredentials"];
 
     if (state is MyCasesInitial || state is MyCasesLoading) {
-      return const Center(child: CustomCircularProgressBar());
+      return const Center(
+          child: CustomCircularProgressBar(
+        labelText: 'Buscando Casos',
+      ));
     } else if (state is MyCasesLoaded) {
       final filteredCases = state.cases
           .where((caseItem) => caseItem.patName
@@ -360,74 +251,141 @@ class MyMainPageState extends State<MainPage> {
           }
         },
         child: ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
             itemCount: filteredCases.length,
             itemBuilder: (context, index) =>
                 CaseTile(context, filteredCases[index], authUser, user)),
       );
     } else if (state is MyCasesLoadedButEmpty) {
       return SingleChildScrollView(
+          child: Container(
+        margin: const EdgeInsets.all(24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               "assets/images/not_found_logo.png",
             ),
-            Text(state.sms),
+            Text(
+              state.sms,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
+            ErrorElevatedButton(
+              size: size,
+              function: () async {
                 await context
                     .read<MyCasesCubit>()
                     .refreshCases(user.userProfileId, authUser.accessToken);
               },
-              child: const Text('Reintentar'),
             ),
+            /*Container(
+              // TODO MAKE A WIDGET
+              padding: EdgeInsets.only(top: size.height / 20),
+              width: size.width * 0.40,
+              height: size.height * 0.105,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  elevation: const MaterialStatePropertyAll<double>(7.5),
+                  shadowColor: MaterialStatePropertyAll<Color>(
+                      Theme.of(context).colorScheme.shadow),
+                ),
+                onPressed: () async {
+                  await context
+                      .read<MyCasesCubit>()
+                      .refreshCases(user.userProfileId, authUser.accessToken);
+                },
+                child: Text('Reintentar',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Theme.of(context)
+                            .colorScheme.primary,
+                        fontFamily: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.fontFamily,
+                        fontSize: 20)),
+              ),
+            ),*/
           ],
         ),
-      );
+      ));
     } else if (state is MyCasesTimeout) {
       return SingleChildScrollView(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/images/not_found_logo.png",
-          ),
-          Text(state.sms),
-          const SizedBox(height: 20),
-          ElevatedButton(
+          child: Container(
+              margin: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '¡Algo ha salido Mal!',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(
+                    height: 360,
+                    child: Image.asset(
+                      "assets/images/not_found_logo.png",
+                    ),
+                  ),
+                  Text(
+                    state.sms,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  /*ElevatedButton(
             onPressed: () async {
               await context
                   .read<MyCasesCubit>()
                   .refreshCases(user.userProfileId, authUser.accessToken);
             },
             child: const Text('Reintentar'),
-          ),
-        ],
-      ));
+          ),*/
+                  ErrorElevatedButton(
+                    size: size,
+                    function: () async {
+                      await context.read<MyCasesCubit>().refreshCases(
+                          user.userProfileId, authUser.accessToken);
+                    },
+                  ),
+                ],
+              )));
     } else if (state is MyCasesFail) {
       return SingleChildScrollView(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/images/not_found_logo.png",
-          ),
-          Text(
-            state.errorSMS,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
+          child: Container(
+              margin: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '¡Algo ha salido Mal!',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(
+                    height: 360,
+                    child: Image.asset(
+                      "assets/images/not_found_logo.png",
+                    ),
+                  ),
+                  Text(
+                    state.errorSMS,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  /*ElevatedButton(
             onPressed: () async {
               await context
                   .read<MyCasesCubit>()
                   .fetchCases(user.userProfileId, authUser.accessToken);
             },
             child: const Text('Reintentar'),
-          ),
-        ],
-      ));
+          ),*/
+                  ErrorElevatedButton(
+                    size: size,
+                    function: () async {
+                      await context.read<MyCasesCubit>().refreshCases(
+                          user.userProfileId, authUser.accessToken);
+                    },
+                  ),
+                ],
+              )));
     } else {
       return Container();
     }

@@ -28,7 +28,8 @@ class LoginButton extends StatelessWidget {
           color: Theme.of(context).colorScheme.primary,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
-          //focusColor: Theme.of(context).colorScheme.inversePrimary,
+          elevation: 10,
+          focusColor: Theme.of(context).colorScheme.inversePrimary,
           child: Text(loadData,
               textAlign: TextAlign.center,
               style: TextStyle(

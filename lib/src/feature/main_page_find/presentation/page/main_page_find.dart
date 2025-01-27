@@ -2,7 +2,6 @@ import 'package:d_report/src/feature/main_page_find/domain/entities/search_filte
 import 'package:d_report/src/feature/main_page_find/presentation/widget/select_filter_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared/data/model/search_key.dart';
@@ -14,7 +13,9 @@ import '../../data/datasources/my_cases_remote_data_sources.dart';
 import '../../data/repositories/my_cases_repository_impl.dart';
 import '../cubit/find_case/find_cases_cubit.dart';
 import '../cubit/find_case/find_cases_state.dart';
+import '../widget/bottom_bar_panel.dart';
 import '../widget/case_tile_copy.dart';
+import '../widget/error_button.dart';
 import '../widget/filter_search_window.dart';
 
 class MainPageFind extends StatefulWidget {
@@ -28,7 +29,7 @@ class MyMainPageFindState extends State<MainPageFind> {
   final int _currentPage = 1;
   bool _isSearching = false;
   int _selectedIndex = SearchKeys.DEFAULT.index;
-  SearchFilter _searchFilter = SearchFilter();
+  final SearchFilter _searchFilter = SearchFilter();
 
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
@@ -50,12 +51,10 @@ class MyMainPageFindState extends State<MainPageFind> {
   }
 
   void _onScroll() {
-    print('pepe');
     if (_scrollController.position.pixels >=
         _scrollController
             .position.maxScrollExtent /*!context.read<MyCasesCubit>().si*/) {
       //context.read<MyCasesCubit>().fetchCases();
-      print("Scroll");
     }
   }
 
@@ -108,7 +107,7 @@ class MyMainPageFindState extends State<MainPageFind> {
     }
   }
 
-  void _isMoreParameters(int index){
+  void _isMoreParameters(int index) {
     _selectedIndex = SearchKeys.DEFAULT.index;
     searchFilterWindow(context, _searchFilter);
   }
@@ -123,7 +122,6 @@ class MyMainPageFindState extends State<MainPageFind> {
 
     User user = argument["userData"];
     AuthUser authUser = argument["AuthCredentials"];
-
 
     final size = MediaQuery.of(context).size;
 
@@ -144,7 +142,10 @@ class MyMainPageFindState extends State<MainPageFind> {
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .shadow
+                          .withOpacity(0.55),
                       spreadRadius: 2,
                       blurRadius: 5,
                       offset: const Offset(0, 3),
@@ -167,7 +168,8 @@ class MyMainPageFindState extends State<MainPageFind> {
                         vertical: 10, horizontal: 20),
                     hintText: 'Buscar Paciente',
                     prefixIcon: Visibility(
-                      visible: _searchController.text.isNotEmpty, // TODO MAKE GLOBAL
+                      visible: _searchController.text.isNotEmpty,
+                      // TODO MAKE GLOBAL
                       child: IconButton(
                         onPressed: () {
                           setState(() {
@@ -193,8 +195,7 @@ class MyMainPageFindState extends State<MainPageFind> {
             body: Center(
               child: Container(
                   padding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.005,
-                      horizontal: size.width * 0.005),
+                      vertical: 14, horizontal: size.width * 0.005),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -260,55 +261,9 @@ class MyMainPageFindState extends State<MainPageFind> {
                   //return
                   ),
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              onTap: (index) {
-                if (index != _currentPage) {
-                  switch (index) {
-                    case 1:
-                      Navigator.of(context).pushReplacementNamed(
-                          '/main/patients/find/',
-                          arguments: {
-                            "userData": user,
-                            "AuthCredentials": authUser
-                          });
-                      break;
-                    case 0:
-                      Navigator.of(context)
-                          .pushReplacementNamed('/main/patients/', arguments: {
-                        "userData": user,
-                        "AuthCredentials": authUser
-                      });
-                      break;
-                  }
-                }
-              },
-              backgroundColor:
-                  ThemeData().bottomNavigationBarTheme.backgroundColor,
-              selectedItemColor:
-                  ThemeData().bottomNavigationBarTheme.selectedItemColor,
-              selectedLabelStyle:
-                  ThemeData().bottomNavigationBarTheme.selectedLabelStyle,
-              currentIndex: _currentPage,
-              items: [
-                /*BottomNavigationBarItem(
-              icon: Icon(
-                  Icons.stacked_bar_chart_rounded
-              ),
-              label: 'Statistics',
-            ),*/
-                BottomNavigationBarItem(
-                  icon: _currentPage == 1
-                      ? const Icon(Icons.other_houses_outlined)
-                      : const Icon(Icons.other_houses),
-                  label: 'Mis Casos',
-                ),
-                BottomNavigationBarItem(
-                  icon: _currentPage == 1
-                      ? const Icon(Icons.folder_copy)
-                      : const Icon(Icons.folder_copy_outlined),
-                  label: 'Buscar Expediente',
-                ),
-              ],
+            bottomNavigationBar: BottomBarMainPanel(
+              currentPage: _currentPage,
+              parseArguments: {"userData": user, "AuthCredentials": authUser},
             ),
           );
         }));
@@ -317,6 +272,8 @@ class MyMainPageFindState extends State<MainPageFind> {
   Widget _buildCasesList(FindCasesState state, BuildContext context) {
     // TODO RENAME
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
+    final themeColor = MediaQuery.of(context).platformBrightness.index;
+    final size = MediaQuery.of(context).size;
 
     User user = argument["userData"];
     AuthUser authUser = argument["AuthCredentials"];
@@ -325,8 +282,19 @@ class MyMainPageFindState extends State<MainPageFind> {
       return Center(
           child: SingleChildScrollView(
               child: Container(
-        child: Text("Ingrese una opcion para buscar"),
-      )));
+                  margin: const EdgeInsets.all(24),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(themeColor == 0
+                            ? 'assets/images/folder_search/folder_dark.png'
+                            : 'assets/images/folder_search/folder_light.png'),
+                        Text(
+                          "Elija un filtro o escriba para empezar a buscar",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ]))));
     } else if (state is FindCasesLoading) {
       return const Center(child: CustomCircularProgressBar());
     } else if (state is FindCasesLoaded) {
@@ -335,80 +303,146 @@ class MyMainPageFindState extends State<MainPageFind> {
               .toLowerCase()
               .contains(state.filter.toLowerCase()))
           .toList();
-      return GestureDetector(
+      return SafeArea(
+        minimum: const EdgeInsets.only(top: 12, left: 12, right: 12),
+          child: GestureDetector(
         onVerticalDragDown: (DragDownDetails details) {
           if (details.globalPosition.dy < 50) {
             context.read<FindCasesCubit>().fetchSearchCases(
                 _searchController.text, _selectedIndex, authUser.accessToken);
           }
         },
-        child: ListView.builder(
-            itemCount: filteredCases.length,
+        child: Card(
+          color: Colors.transparent,
+          shadowColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          child: ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+              itemCount: filteredCases.length,
             itemBuilder: (context, index) =>
                 CaseTile(context, filteredCases[index], authUser, user)),
-      );
+      )));
     } else if (state is FindCasesLoadedButEmpty) {
       return Center(
           child: SingleChildScrollView(
-              child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/images/not_found_logo.png",
-          ),
-          Text(state.sms),
-          const SizedBox(height: 20),
+              child: Container(
+                  margin: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '¡Algo ha salido Mal!',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      SizedBox(
+                        height: 360,
+                        child: Image.asset(
+                          "assets/images/not_found_logo.png",
+                        ),
+                      ),
+                      Text(
+                        state.sms,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      /*
           ElevatedButton(
             onPressed: () async {
               await context.read<FindCasesCubit>().refreshCases(
                   _searchController.text, _selectedIndex, authUser.accessToken);
             },
             child: const Text('Reintentar'),
-          ),
-        ],
-      )));
+          ),*/
+                      ErrorElevatedButton(
+                        size: size,
+                        function: () async {
+                          await context.read<FindCasesCubit>().refreshCases(
+                              _searchController.text,
+                              _selectedIndex,
+                              authUser.accessToken);
+                        },
+                      ),
+                    ],
+                  ))));
     } else if (state is FindCasesTimeout) {
       return Center(
           child: SingleChildScrollView(
-              child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/images/not_found_logo.png",
-          ),
-          //Text(state.sms),
-          const SizedBox(height: 20),
-          ElevatedButton(
+              child: Container(
+                  margin: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '¡Algo ha salido Mal!',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      SizedBox(
+                        height: 360,
+                        child: Image.asset(
+                          "assets/images/not_found_logo.png",
+                        ),
+                      ),
+                      Text(
+                        'El servidor ha tardado mucho en responder',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      ErrorElevatedButton(
+                        size: size,
+                        function: () async {
+                          await context.read<FindCasesCubit>().refreshCases(
+                              _searchController.text,
+                              _selectedIndex,
+                              authUser.accessToken);
+                        },
+                      ),
+                      /*ElevatedButton(
             onPressed: () async {
               await context.read<FindCasesCubit>().refreshCases(
                   _searchController.text, _selectedIndex, authUser.accessToken);
             },
             child: const Text('Reintentar'),
-          ),
-        ],
-      )));
+          ),*/
+                    ],
+                  ))));
     } else if (state is FindCasesFail) {
       return Center(
           child: SingleChildScrollView(
-              child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/images/not_found_logo.png",
-          ),
-          Text(
-            state.errorSMS,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
+              child: Container(
+        margin: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '¡Algo ha salido Mal!',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            SizedBox(
+              height: 360,
+              child: Image.asset(
+                "assets/images/not_found_logo.png",
+              ),
+            ),
+            Text(
+              state.errorSMS,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            ErrorElevatedButton(
+              size: size,
+              function: () async {
+                await context.read<FindCasesCubit>().refreshCases(
+                    _searchController.text,
+                    _selectedIndex,
+                    authUser.accessToken);
+              },
+            ),
+            /*ElevatedButton(
             onPressed: () async {
               await context.read<FindCasesCubit>().fetchSearchCases(
                   _searchController.text, _selectedIndex, authUser.accessToken);
             },
             child: const Text('Reintentar'),
-          ),
-        ],
+          ),*/
+          ],
+        ),
       )));
     } else {
       return Container();

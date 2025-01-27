@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:d_report/my_flutter_app_icons.dart';
 import 'package:d_report/src/feature/patient_case_follow_details/data/datasource/remote/follow_case_remote_data_source.dart';
 import 'package:d_report/src/feature/patient_case_follow_details/domain/repository/follow_detailed_case_repository.dart';
 import 'package:d_report/src/feature/patient_case_follow_details/domain/use_cases/download_record.dart';
@@ -27,7 +28,6 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     DownloaderConfig downloaderConfig = DownloaderConfig(false, false);
 
-    final size = MediaQuery.of(context).size;
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
 
     final cafId = argument['cafId'];
@@ -56,7 +56,7 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
           builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
-              title: Text('Seguimiento'),
+              title: const Text('Detalles de Evolucion'),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.edit),
@@ -100,17 +100,20 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
                         }
                         await file.writeAsBytes(bytes);
                         Navigator.of(context, rootNavigator: true).pop();
-                        FloatingSnackBar.show(subContext, 'Informe guardado con exito.', Icons.check, Colors.green); // TODO Safe color in styes folder
+                        FloatingSnackBar.show(
+                            subContext,
+                            'Informe guardado con exito.',
+                            Icons.check,
+                            Colors.green); // TODO Safe color in styes folder
                       } else if (subState is FileGeneratorFail) {
-                        FloatingWarningSnackBar.show(subContext, subState.errorSMS);
+                        FloatingWarningSnackBar.show(
+                            subContext, subState.errorSMS);
                       }
                     }, builder: (subContext, subState) {
                       return IconButton(
                           icon: const Icon(Icons.download),
                           onPressed: () async {
-                            print('editar');
                             if (state is FollowDetailedCaseLoaded) {
-                              print('a');
                               configDownloaderPanel(
                                   subContext,
                                   downloaderConfig,
@@ -128,7 +131,8 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
               backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
               automaticallyImplyLeading: true,
             ),
-            body: SingleChildScrollView(
+            body: Container(
+                margin: const EdgeInsets.all(24),
                 child: _buildDetailRows(context, cafId, patFullName, state)));
       }),
     );
@@ -143,61 +147,115 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
     if (state is FollowDetailedCaseInitial) {
       return const Center(child: CustomCircularProgressBar());
     } else if (state is FollowDetailedCaseLoaded) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Text(
-            state.followDetailedCase.cafReportTitle,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          ListView(
-            shrinkWrap: true,
+      return RefreshIndicator(
+          onRefresh: () async {
+            print('Recargar');
+          },
+          child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Divider(
-                indent: 20.4,
-                endIndent: 20.4,
-                color: Colors.black,
+              Text(
+                state.followDetailedCase.cafReportTitle,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
-              CustomCardResumeRow(
-                widgetKey: "Paciente",
-                widgetValue:
-                    '$patFullName ${(patDetails != null) ? '(Edad: ${Helper.getAgeByDateInString(patDetails['birthday'])} Años)' : ''}',
-              ),
-              CustomCardResumeRow(
-                widgetKey: "Reporte Emitido",
-                widgetValue: state.followDetailedCase.cafReportDate ==
-                        state.followDetailedCase.cafReportUpdateTime
-                    ? state.followDetailedCase.cafReportDate
-                    : '${state.followDetailedCase.cafReportDate} (Actualizado: ${state.followDetailedCase.cafReportUpdateTime})',
-              ),
-              CustomCardResumeRow(
-                widgetKey: "Autor del Reporte",
-                widgetValue:
-                    '${state.followDetailedCase.docFullName} (${state.followDetailedCase.docSpecialty})',
-              ),
-              const Divider(
-                indent: 20.4,
-                endIndent: 20.4,
-                color: Colors.black,
-              ),
-              (patDetails != null)
-                  ? CustomCardResumeRow(
-                      widgetKey: "Caracteristicas del paciente",
-                      widgetValue:
-                          'Peso: ${Helper.writeWeightByInt(patDetails['patWeight'])} kg  -  Estatura: ${Helper.writeHeightByInt(patDetails['patHeight'])} m\nGrupo Sanguineo: ${patDetails['bloodType']}',
-                    )
-                  : Container(),
-              CustomCardResumeRow(
-                widgetKey: "Informacion del Seguimiento",
-                widgetValue: state.followDetailedCase.cafReportInfo,
-              ),
+              ListView(
+                shrinkWrap: true,
+                children: [
+                  Divider(
+                    indent: 0.4,
+                    endIndent: 0.4,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withOpacity(0.5),
+                  ),
+                  CustomCardResumeRow(
+                    widgetKey: "Paciente",
+                    widgetValue:
+                        '$patFullName ${(patDetails != null) ? '(Edad: ${Helper.getAgeByDateInString(patDetails['birthday'])} Años)' : ''}',
+                    iconData: Icons.person,
+                  ),
+                  CustomCardResumeRow(
+                      widgetKey: "Reporte Emitido",
+                      widgetValue: state.followDetailedCase.cafReportDate ==
+                              state.followDetailedCase.cafReportUpdateTime
+                          ? state.followDetailedCase.cafReportDate
+                          : '${state.followDetailedCase.cafReportDate} (Actualizado: ${state.followDetailedCase.cafReportUpdateTime})',
+                      iconData: state.followDetailedCase.cafReportDate ==
+                              state.followDetailedCase.cafReportUpdateTime
+                          ? Icons.calendar_today
+                          : Icons.edit_calendar),
+                  CustomCardResumeRow(
+                    widgetKey: "Autor del Reporte",
+                    widgetValue:
+                        '${state.followDetailedCase.docFullName} (${state.followDetailedCase.docSpecialty})',
+                    iconData: MyFlutterApp.user_md,
+                  ),
+                  Divider(
+                    indent: 0.4,
+                    endIndent: 0.4,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withOpacity(0.5),
+                  ),
+                  (patDetails != null)
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                              const CustomCardResumeRow(
+                                widgetKey: "Caracteristicas del paciente",
+                                iconData: Icons.medical_information,
+                              ),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Expanded(
+                                      child: ListTile(
+                                        title: const Text('Peso'),
+                                        subtitle: Text(
+                                            '${Helper.writeWeightByInt(patDetails['patWeight'])} kg '),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12,),
+                                    Expanded(
+                                      child: ListTile(
+                                        title: const Text('Estatura'),
+                                        subtitle: Text(
+                                            '${Helper.writeHeightByInt(patDetails['patHeight'])} m'),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12,),
+                                    Expanded(
+                                      child: ListTile(
+                                        title: const Text('Sangre'),
+                                        subtitle: Text(
+                                            'Tipo ${patDetails['bloodType']}'),
+                                      ),
+                                    )
+                                  ]),
+                                ],
+                              )
+                      : Container(),
+                  const CustomCardResumeRow(
+                    widgetKey: "Informacion del Seguimiento",
+                    iconData: Icons.assignment,
+                  ),
+                  Container(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    child: Text(
+                      state.followDetailedCase.cafReportInfo,
+                      textAlign: TextAlign.justify,
+                    ),
+                  )
+                ],
+              )
             ],
-          )
-        ],
-      );
+          )));
     } else if (state is FollowDetailedCaseFail) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,

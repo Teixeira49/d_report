@@ -5,37 +5,47 @@ import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UploadButton extends StatelessWidget {
-  const UploadButton({super.key, required this.data, required this.accessToken});
+  const UploadButton(
+      {super.key,
+        required this.selected,
+        required this.size,
+        required this.endEdit});
 
-  final Map<String, dynamic> data;
-  final String accessToken;
+  final int selected;
+  final Size size;
+  final VoidCallback endEdit;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        borderRadius: BorderRadius.circular(20.0),
-        clipBehavior: Clip.antiAlias,
-        color: Colors.transparent,
-
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.tertiary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(22.0)
-            ),
-          ),
+    return Container(
+        margin: const EdgeInsets.only(bottom: 50,), // TODO CREATE A CONSTANT
+        width: size.width * 0.50,
+        height: size.height / 18,
+        child: MaterialButton(
+          color: selected != -1
+              ? Theme.of(context).colorScheme.primary
+              : Colors.blueGrey,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
+          elevation: 10,
+          focusColor: Theme.of(context).colorScheme.inversePrimary,
           child: Text(
-              continueRegister,
-              style: Theme.of(context).textTheme.titleSmall
+            continueRegister,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Theme.of(context).textTheme.titleLarge?.color,
+                fontFamily: Theme.of(context).textTheme.titleLarge?.fontFamily,
+                fontSize: 20),
           ),
           onPressed: () {
-            context.read<UploadFollowCubit>().postUploadFollowData(data, accessToken);
+            endEdit();
+            //context
+            //    .read<UploadFollowCubit>()
+            //    .postUploadFollowData(data, accessToken);
             //Navigator.of(context).pushNamed(
             //  '/main/new-case/add-case',
             //);
-
           },
-        )
-    );
+        ));
   }
 }
