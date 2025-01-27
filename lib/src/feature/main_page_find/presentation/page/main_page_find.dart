@@ -200,7 +200,9 @@ class MyMainPageFindState extends State<MainPageFind> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Wrap(
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 6),
+                        child: Wrap(
                         children: [
                           CustomSelectButton(
                             index: SearchKeys.FULL_NAME.index,
@@ -245,7 +247,7 @@ class MyMainPageFindState extends State<MainPageFind> {
                             onPressed: _isMoreParameters,
                           ),
                         ],
-                      ),
+                      ),),
                       Flexible(
                           child: RefreshIndicator(
                         onRefresh: () async {
@@ -293,6 +295,7 @@ class MyMainPageFindState extends State<MainPageFind> {
                         Text(
                           "Elija un filtro o escriba para empezar a buscar",
                           style: Theme.of(context).textTheme.titleMedium,
+                          textAlign: TextAlign.center,
                         ),
                       ]))));
     } else if (state is FindCasesLoading) {
@@ -304,7 +307,7 @@ class MyMainPageFindState extends State<MainPageFind> {
               .contains(state.filter.toLowerCase()))
           .toList();
       return SafeArea(
-        minimum: const EdgeInsets.only(top: 12, left: 12, right: 12),
+        minimum: const EdgeInsets.only(top: 6, left: 12, right: 12),
           child: GestureDetector(
         onVerticalDragDown: (DragDownDetails details) {
           if (details.globalPosition.dy < 50) {
@@ -317,7 +320,7 @@ class MyMainPageFindState extends State<MainPageFind> {
           shadowColor: Colors.transparent,
           surfaceTintColor: Colors.transparent,
           child: ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
               itemCount: filteredCases.length,
             itemBuilder: (context, index) =>
                 CaseTile(context, filteredCases[index], authUser, user)),

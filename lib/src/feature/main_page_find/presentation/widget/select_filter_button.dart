@@ -24,7 +24,7 @@ class CustomSelectButton extends StatelessWidget {
           child:Container(
             height: 20,
             alignment: Alignment.center,
-            margin: const EdgeInsets.all(5.0),
+            margin: const EdgeInsets.symmetric(vertical: 5.0),
             child: MaterialButton(
               onPressed: () {
                 onPressed(index);
