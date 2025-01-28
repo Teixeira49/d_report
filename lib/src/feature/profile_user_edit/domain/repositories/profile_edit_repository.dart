@@ -6,6 +6,6 @@ import '../../../../shared/domain/entities/doctor.dart';
 
 abstract class ProfileEditRepository {
 
-  Future<Either<Failure, DoctorProfile>> putDoctorProfile(DoctorProfileRequest profileRequest, String accessToken);
+  Future<Either<Failure, DoctorProfile>> putDoctorProfile(DoctorProfileRequest profileRequest, String email, String accessToken);
 
 }

@@ -12,9 +12,9 @@ class PostProfileDataUseCase {
 
   final ProfileEditRepositoryImpl _profileEditRepositoryImpl;
 
-  Future<Either<Failure, DoctorProfile>> call(DoctorProfileRequest doctorEditRequest, String accessToken) async {
+  Future<Either<Failure, DoctorProfile>> call(DoctorProfileRequest doctorEditRequest, String email, String accessToken) async {
     try {
-      var data = await _profileEditRepositoryImpl.putDoctorProfile(doctorEditRequest, accessToken);
+      var data = await _profileEditRepositoryImpl.putDoctorProfile(doctorEditRequest, email, accessToken);
       return data.fold(
               (l) => Left(ServerFailure(l.message)),
               (r) => Right(r)

@@ -43,14 +43,14 @@ class DoctorProfileRequestModel extends DoctorProfileRequest {
 
   Map<String, dynamic> toRequestBody() {
     return {
-      'uid': id,
+      'docId': id,
       'docFirstName': firstName,
       'docLastName': lastName,
       'docDni': dni,
       'docGender': genre,
       'docBirthday': birthday,
       'docSpecialty': speciality,
-      //'userPhone': phone,
+      'userPhone': phone,
     };
   }
 

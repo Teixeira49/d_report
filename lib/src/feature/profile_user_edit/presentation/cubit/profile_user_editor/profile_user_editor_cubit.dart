@@ -7,8 +7,11 @@ import '../../../domain/use_cases/post_profile_data.dart';
 import 'profile_user_editor_state.dart';
 
 class ProfileDataCubit extends Cubit<ProfileUserEditState> {
-  ProfileDataCubit(this._compareProfilesUseCase, this._postProfileDataUseCase, this._createInstanceProfileUserRequestUseCase,)
-      : super(ProfileUserEditInitial());
+  ProfileDataCubit(
+    this._compareProfilesUseCase,
+    this._postProfileDataUseCase,
+    this._createInstanceProfileUserRequestUseCase,
+  ) : super(ProfileUserEditInitial());
 
   bool _isFetching = false;
 
@@ -30,7 +33,8 @@ class ProfileDataCubit extends Cubit<ProfileUserEditState> {
       } else {
         final profile =
             _createInstanceProfileUserRequestUseCase.call(profileRequest);
-        final data = await _postProfileDataUseCase.call(profile, accessToken);
+        final data = await _postProfileDataUseCase.call(
+            profile, originDoctor.email, accessToken);
         data.fold(
             (l) =>
                 emit(ProfileUserEditFail(errorSMS: "Error cargando los datos")),
@@ -46,7 +50,6 @@ class ProfileDataCubit extends Cubit<ProfileUserEditState> {
   Future<void> refreshProfile(DoctorProfile originDoctor,
       DoctorProfile profileRequest, String accessToken) async {
     emit(ProfileUserEditInitial());
-    await putDoctorProfile(originDoctor,
-        profileRequest, accessToken);
+    await putDoctorProfile(originDoctor, profileRequest, accessToken);
   }
 }

@@ -31,6 +31,22 @@ class DoctorProfileModel extends DoctorProfile {
     );
   }
 
+  factory DoctorProfileModel.fromJsonWithEmail(json, email, userRole) {
+    return DoctorProfileModel(
+      id: json['docId'],
+      firstName: json['docFirstName'],
+      lastName: json['docLastName'],
+      dni: json['docDni'],
+      genre: json['docGender'],
+      birthday: json['docBirthday'],
+      range: userRole,
+      speciality: json['docSpecialty'],
+      photoUrl: json['docPhotoUrl'] ?? '',
+      email: email,
+      phone: json['userPhone'],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'docId': id,

@@ -16,9 +16,9 @@ class ProfileEditRepositoryImpl implements ProfileEditRepository {
   });
 
   @override
-  Future<Either<Failure, DoctorProfile>> putDoctorProfile(DoctorProfileRequest profileRequest, String accessToken) async {
+  Future<Either<Failure, DoctorProfile>> putDoctorProfile(DoctorProfileRequest profileRequest, String email, String accessToken) async {
     try {
-      final DoctorProfile resp = await profileEditRemoteDataSource.putDoctorProfile(profileRequest, accessToken);
+      final DoctorProfile resp = await profileEditRemoteDataSource.putDoctorProfile(profileRequest, email, accessToken);
       return Right(resp);
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));

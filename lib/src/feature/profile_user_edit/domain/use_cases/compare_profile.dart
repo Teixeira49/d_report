@@ -13,6 +13,9 @@ class CompareProfilesUseCase {
 
     List<String> profileRows = originalDocJson.keys.toList();
 
+    print(originalDocJson);
+    print(updateDocJson);
+
     for (var i in profileRows) {
       if (originalDocJson[i].toString().toLowerCase() !=
           updateDocJson[i].toString().toLowerCase()) {

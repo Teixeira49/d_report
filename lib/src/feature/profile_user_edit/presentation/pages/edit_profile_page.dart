@@ -6,7 +6,6 @@ import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/data/model/profile_model.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/doctor.dart';
-import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../../../../shared/presentation/widget/loading_show_dialog.dart';
 import '../../data/datasource/remote/profile_edit_remote_data_source.dart';
@@ -96,7 +95,6 @@ class MyEditProfilePageState extends State<EditProfilePage> {
   }
 
   DoctorProfile _updateData(int docId, String role, String email) {
-    print(_dniController.text);
     return DoctorProfileModel.fromEntity(DoctorProfile(
         id: docId,
         firstName: _nameController.text,
@@ -113,18 +111,14 @@ class MyEditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    //final size = MediaQuery.of(context).size;
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
 
-    User user = argument["userData"];
     AuthUser authUser = argument["AuthCredentials"];
     DoctorProfile doctor = argument["doctorData"];
 
     final size = MediaQuery.of(context).size;
 
-    final formatKey = GlobalKey<FormState>();
-
-    Future<void> selectDate(
+    /*Future<void> selectDate(
       BuildContext context,
     ) async {
       DateTime? picked = await showDatePicker(
@@ -139,7 +133,7 @@ class MyEditProfilePageState extends State<EditProfilePage> {
           _dateController.text = selectedDate.toString().split(" ")[0];
         });
       }
-    }
+    }*/
 
     final profileEditSource = ProfileEditRemoteDataSourceImpl();
     final repository = ProfileEditRepositoryImpl(
@@ -327,7 +321,6 @@ class MyEditProfilePageState extends State<EditProfilePage> {
                                       children: [
                                         Flexible(
                                             child: DataTextField(
-                                          defaultName: doctor.firstName,
                                           typeData: TextInputType.name,
                                           contextRow: "Nombre",
                                           iconData: Icons.person,
@@ -338,7 +331,6 @@ class MyEditProfilePageState extends State<EditProfilePage> {
                                         ),
                                         Flexible(
                                             child: DataTextField(
-                                          defaultName: doctor.lastName,
                                           typeData: TextInputType.name,
                                           contextRow: "Apellido",
                                           iconData: Icons.person,
@@ -350,7 +342,6 @@ class MyEditProfilePageState extends State<EditProfilePage> {
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 24, vertical: 12),
                                     child: DataTextField(
-                                      defaultName: doctor.dni.toString(),
                                       typeData: TextInputType.number,
                                       contextRow: "Cedula",
                                       iconData: Icons.contact_emergency,
@@ -385,7 +376,7 @@ class MyEditProfilePageState extends State<EditProfilePage> {
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 24, vertical: 12),
                                     child: DataTextField(
-                                      defaultName: doctor.speciality,
+                                      //defaultName: doctor.speciality,
                                       typeData: TextInputType.text,
                                       contextRow: 'Especialidad',
                                       iconData: MyFlutterApp.user_md,
@@ -395,7 +386,6 @@ class MyEditProfilePageState extends State<EditProfilePage> {
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 24, vertical: 12),
                                     child: DataTextField(
-                                      defaultName: doctor.phone,
                                       typeData: TextInputType.phone,
                                       contextRow: "Telefono",
                                       iconData: Icons.phone_android,

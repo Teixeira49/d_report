@@ -10,29 +10,26 @@ import '../../models/profile_doctor_request_model.dart';
 
 abstract class ProfileEditRemoteDataSource {
   Future<DoctorProfile> putDoctorProfile(
-      DoctorProfileRequest profileRequest, String accessToken);
+      DoctorProfileRequest profileRequest, String email, String accessToken);
 }
 
 class ProfileEditRemoteDataSourceImpl implements ProfileEditRemoteDataSource {
   final Dio dio = Dio();
-
-  int _page = 0;
 
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
 
   @override
-  Future<DoctorProfile> putDoctorProfile(
-      DoctorProfileRequest profileRequest, String accessToken) async {
+  Future<DoctorProfile> putDoctorProfile(DoctorProfileRequest profileRequest,
+      String email, String accessToken) async {
     if (!_isFetching) {
       _isFetching = true;
     }
 
     const r = RetryOptions(maxAttempts: 3);
 
-    print(DoctorProfileRequestModel.fromEntity(profileRequest)
-        .toRequestBody());
+    print(DoctorProfileRequestModel.fromEntity(profileRequest).toRequestBody());
 
     final resp = await r.retry(() => dio.put('$apiUrl/doctors/edit',
         options: Options(
@@ -47,10 +44,11 @@ class ProfileEditRemoteDataSourceImpl implements ProfileEditRemoteDataSource {
 
     print(resp.data);
 
-    return DoctorProfileModel.fromJson(resp.data);
+    return DoctorProfileModel.fromJsonWithEmail(
+        resp.data, email, profileRequest.range);
   }
 
-  Future<void> refreshDoctor(docId, accessToken) async {
-    await putDoctorProfile(docId, accessToken);
+  Future<void> refreshDoctor(docId, email, accessToken) async {
+    await putDoctorProfile(docId, email, accessToken);
   }
 }
