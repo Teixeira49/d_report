@@ -340,15 +340,16 @@ class FollowInfo extends StatelessWidget {
     return BlocBuilder<FollowReportCubit, FollowReportState>(
         builder: (context, state) {
       if (state is FollowCaseInitial || state is FollowCaseLoading) {
-        return Column(
+        return Center(child:Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
               height: size.height / 6,
             ),
             const CustomCircularProgressBar()
           ],
-        );
+        ));
       } else if (state is FollowCaseLoaded) {
         return Card(
             color: Colors.transparent,
