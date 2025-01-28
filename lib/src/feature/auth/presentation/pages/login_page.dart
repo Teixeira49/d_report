@@ -152,7 +152,7 @@ class MyLoginPageState extends State<LoginPage> {
                                                 SizedBox(
                                                   height: 48.5,
                                                 ),
-                                                CustomCircularProgressBar(),
+                                              CustomCircularProgressBar(),
                                                 SizedBox(
                                                   height: 45.5,
                                                 )
