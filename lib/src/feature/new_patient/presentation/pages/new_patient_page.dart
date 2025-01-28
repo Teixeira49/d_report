@@ -158,7 +158,7 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                               vertical: size.width * 0.020,
                             ),
                             child: Text(
-                              "Porfavor complete la información del paciente",
+                              "Informacion del paciente",
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
@@ -278,7 +278,7 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                                 ),
                               ),
                               const SizedBox(
-                                height: 100,
+                                height: 120,
                               )
                             ],
                           ),
