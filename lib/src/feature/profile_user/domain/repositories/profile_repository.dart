@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/network/error/failures.dart';
-import '../entities/doctor.dart';
+import '../../../../shared/domain/entities/doctor.dart';
 
 abstract class ProfileRepository {
 

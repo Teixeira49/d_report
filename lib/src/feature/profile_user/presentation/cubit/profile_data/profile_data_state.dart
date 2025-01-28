@@ -1,4 +1,4 @@
-import '../../../domain/entities/doctor.dart';
+import '../../../../../shared/domain/entities/doctor.dart';
 
 abstract class ProfileDataState {}
 

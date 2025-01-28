@@ -4,9 +4,10 @@ import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class TypeGenreDropdownField extends StatefulWidget {
 
-  const TypeGenreDropdownField({super.key, required this.controllerData});
+  const TypeGenreDropdownField({super.key, required this.controllerData, this.defaultValue});
 
   final ValueNotifier<String?> controllerData;
+  final String? defaultValue;
 
   @override
   MyTypeGenreDropdownField createState() => MyTypeGenreDropdownField();
@@ -26,6 +27,12 @@ class TypeGenreDropdownField extends StatefulWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    if (widget.defaultValue != null) {
+      widget.controllerData.value = widget.defaultValue;
+      defaultIcon = iconSelector(widget.defaultValue);
+    }
+
     return SizedBox(
         width: double.infinity,
         child: DropdownButtonFormField(

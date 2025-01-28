@@ -1,6 +1,6 @@
-class Doctor{
+class DoctorProfile{
 
-  Doctor(
+  DoctorProfile(
       {
         required this.id,
         required this.firstName,
@@ -10,7 +10,9 @@ class Doctor{
         required this.birthday,
         required this.range,
         required this.speciality,
-        required this.phone,
+        required this.photoUrl,
+        required this.email,
+        required this.phone
       }
       );
 
@@ -22,6 +24,8 @@ class Doctor{
   String birthday;
   String range;
   String speciality;
+  String photoUrl;
+  String email;
   String phone;
 
   String getAllName(){

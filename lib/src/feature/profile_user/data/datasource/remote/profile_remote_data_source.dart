@@ -1,10 +1,10 @@
-import 'package:d_report/src/feature/profile_user/data/models/profile_model.dart';
 import 'package:retry/retry.dart';
 
 import 'package:dio/dio.dart';
 
 import '../../../../../core/utils/constants/network_constants.dart';
-import '../../../domain/entities/doctor.dart';
+import '../../../../../shared/data/model/profile_model.dart';
+import '../../../../../shared/domain/entities/doctor.dart';
 
 abstract class ProfileRemoteDataSource {
   Future<DoctorProfile> getDoctorById(int docId, String accessToken);

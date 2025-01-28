@@ -1,4 +1,4 @@
-import '../../../domain/entities/doctor.dart';
+import '../../../../../shared/domain/entities/doctor.dart';
 
 abstract class ProfileUserEditState {}
 
@@ -6,14 +6,14 @@ class ProfileUserEditInitial extends ProfileUserEditState {}
 
 class ProfileUserEditLoading extends ProfileUserEditState {}
 
-class ProfileUserEditLoaded extends ProfileUserEditState {
-  final Doctor doctor;
-  ProfileUserEditLoaded({required this.doctor});
+class ProfileUserEditPosted extends ProfileUserEditState {
+  final DoctorProfile doctor;
+  ProfileUserEditPosted({required this.doctor});
 }
 
-class ProfileUserEditLoadedButEmpty extends ProfileUserEditState {
+class ProfileUserEditWithoutUpdate extends ProfileUserEditState {
   final String sms;
-  ProfileUserEditLoadedButEmpty({required this.sms});
+  ProfileUserEditWithoutUpdate({required this.sms});
 }
 
 class ProfileUserEditTimeout extends ProfileUserEditState {

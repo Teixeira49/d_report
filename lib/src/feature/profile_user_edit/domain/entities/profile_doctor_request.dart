@@ -1,6 +1,6 @@
-class Doctor{
+class DoctorProfileRequest{
 
-  Doctor(
+  DoctorProfileRequest(
       {
         required this.id,
         required this.firstName,

@@ -1,8 +1,7 @@
-import '../../../../core/utils/constants/fields_constants.dart';
 import '../../domain/entities/doctor.dart';
 
-class DoctorModel extends Doctor {
-  DoctorModel({
+class DoctorProfileModel extends DoctorProfile {
+  DoctorProfileModel({
     required super.id,
     required super.firstName,
     required super.lastName,
@@ -11,20 +10,24 @@ class DoctorModel extends Doctor {
     required super.birthday,
     required super.range,
     required super.speciality,
-    required super.phone
+    required super.photoUrl,
+    required super.email,
+    required super.phone,
   });
 
-  factory DoctorModel.fromJson(json) {
-    return DoctorModel(
+  factory DoctorProfileModel.fromJson(json) {
+    return DoctorProfileModel(
       id: json['docId'],
       firstName: json['docFirstName'],
       lastName: json['docLastName'],
       dni: json['docDni'],
       genre: json['docGender'],
       birthday: json['docBirthday'],
-      range: "DOCTOR", //json['docIsAdmin'],
+      range: json['rolId'],
       speciality: json['docSpecialty'],
-      phone: json['userPhone']
+      photoUrl: json['docPhotoUrl'] ?? '',
+      email: json['userEmail'],
+      phone: json['userPhone'],
     );
   }
 
@@ -36,23 +39,27 @@ class DoctorModel extends Doctor {
       'docDni': dni,
       'docGender': genre,
       'docBirthday': birthday,
-      'docIsAdmin': range,
+      'rolId': range,
       'docSpecialty': speciality,
+      'photoUrl': photoUrl,
+      'userEmail': email,
       'userPhone': phone,
     };
   }
 
-  factory DoctorModel.fromEntity(Doctor doctor) {
-    return DoctorModel(
+  factory DoctorProfileModel.fromEntity(DoctorProfile doctor) {
+    return DoctorProfileModel(
       id: doctor.id,
       firstName: doctor.firstName,
       lastName: doctor.lastName,
       dni: doctor.dni,
       genre: doctor.genre,
       birthday: doctor.birthday,
-      range: "DOCTOR", //doctor.range
+      range: doctor.range,
       speciality: doctor.speciality,
-      phone: doctor.phone
+      photoUrl: doctor.photoUrl,
+      email: doctor.email,
+      phone: doctor.phone,
     );
   }
 }

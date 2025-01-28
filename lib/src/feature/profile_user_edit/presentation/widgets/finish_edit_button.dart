@@ -16,8 +16,7 @@ class FetchUpdateButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(top: size.height / 20),
-        width: size.width * 0.50, height: size.height * 0.105,
+        width: size.width * 0.50, height: size.height * 0.055,
         margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         child: MaterialButton(
           color: selected != -1

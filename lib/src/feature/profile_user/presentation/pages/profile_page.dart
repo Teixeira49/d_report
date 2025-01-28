@@ -13,7 +13,6 @@ import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/drawer.dart';
-import '../../domain/entities/doctor.dart';
 import '../cubit/profile_data/profile_data_cubit.dart';
 import '../cubit/profile_data/profile_data_state.dart';
 import '../widgets/custom_card_profile.dart';
@@ -44,19 +43,6 @@ class MyProfilePageState extends State<ProfilePage> {
 
     final bool isMyProfile = (argument['docId'] != null);
 
-    DoctorProfile doctor = DoctorProfile(
-        id: 1,
-        firstName: "pepe",
-        lastName: "Gonzales",
-        dni: 123124,
-        birthday: "25-10-1980",
-        genre: "Male",
-        range: "Doctor",
-        speciality: "Bacteriologo",
-        photoUrl: '',
-        email: '',
-        phone: '');
-
     return BlocProvider(
       create: (_) => ProfileDataCubit(profileRepositoryImpl: repository)
         ..getDoctorProfile(profileId, authUser.accessToken),
@@ -76,8 +62,9 @@ class MyProfilePageState extends State<ProfilePage> {
                     onPressed: () {
                       Navigator.of(context)
                           .pushNamed('/main/profile/edit-row', arguments: {
-                        'userData': argument["userData"],
-                        'doctorData': doctor,
+                        'userData': user,
+                        'AuthCredentials': authUser,
+                        'doctorData': state.doctor,
                       });
                     },
                   );

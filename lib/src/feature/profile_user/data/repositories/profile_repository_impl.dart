@@ -3,7 +3,7 @@ import 'package:d_report/src/core/network/error/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-import '../../domain/entities/doctor.dart';
+import '../../../../shared/domain/entities/doctor.dart';
 import '../../domain/repositories/profile_repository.dart';
 import '../datasource/remote/profile_remote_data_source.dart';
 
