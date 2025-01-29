@@ -511,7 +511,6 @@ class MyRegisterPageState extends State<RegisterPage> {
                                           child: PasswordTextField(
                                             password: password,
                                             controllerData: _passwordController,
-                                            focusNode: _focusNode,
                                           )),
                                       Container(
                                           padding: EdgeInsets.symmetric(
@@ -522,7 +521,6 @@ class MyRegisterPageState extends State<RegisterPage> {
                                             password: password,
                                             controllerData:
                                             _passwordValController,
-                                            focusNode: _focusNode,
                                           )),
                                       const SizedBox(
                                         height: 15,

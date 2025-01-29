@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 
 class PasswordTextField extends StatefulWidget {
 
-  const PasswordTextField({super.key, required this.password, required this.controllerData, required this.focusNode});
+  const PasswordTextField({super.key, required this.password, required this.controllerData,});
 
   final String password;
   final TextEditingController controllerData;
-  final FocusNode focusNode;
-
 
   @override
   MyPasswordTextFieldWidget createState() => MyPasswordTextFieldWidget();
@@ -23,7 +21,6 @@ class MyPasswordTextFieldWidget extends State<PasswordTextField> {
       width: double.infinity,
       child: TextFormField(
         controller: widget.controllerData,
-        focusNode: widget.focusNode,
         style: Theme.of(context).textTheme.labelLarge,
         obscureText: isObscured,
         keyboardType: TextInputType.visiblePassword,
