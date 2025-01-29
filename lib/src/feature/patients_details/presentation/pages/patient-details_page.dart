@@ -460,6 +460,13 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
   } else if (state is PatientDataLoaded && indexTab == 1) {
     var age =
         Helper.getAgeByDateInString(state.patient.patBirthdayDate.toString());
+    var patHeight = state.caseReport.patHeight != null
+        ? '${Helper.writeHeightByInt(state.caseReport.patHeight!)} mts'
+        : "Altura Desconocida";
+    var patWeight = state.caseReport.patWeight != null
+        ? '${Helper.writeWeightByInt(state.caseReport.patWeight!)} kgs'
+        : 'Peso Desconocido';
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -495,7 +502,7 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
         CustomCardPatientRow(
           widgetKey: 'Altura y Peso',
           widgetValue:
-              '${Helper.writeHeightByInt(state.caseReport.patHeight)} mts y ${Helper.writeWeightByInt(state.caseReport.patWeight)} kgs',
+              '$patHeight y $patWeight',
           tileIcon: MyFlutterApp.ruler,
           sizeIcon: 22,
           redirectIcon: 4,

@@ -34,6 +34,6 @@ class CaseReport{
   String? casEndDate;
   String? casEndReason;
   String? casEndDiagnosis;
-  int patHeight;
-  int patWeight;
+  int? patHeight;
+  int? patWeight;
 }

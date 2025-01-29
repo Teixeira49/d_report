@@ -99,8 +99,13 @@ class DownloadPatientRecordUseCase {
       );
 
   static String customTextIdentifier(Patient patient, CaseReport caseReport) {
+    var patWeight = caseReport.patWeight != null
+        ? '${Helper.writeWeightByInt(caseReport.patWeight!)} Kg'
+        : '???';
+
+
     return '''${patient.getFullName()}
-    Edad: ${Helper.getAgeByDateInString(patient.patBirthdayDate)} - Peso: ${Helper.writeWeightByInt(caseReport.patWeight)} Kg
+    Edad: ${Helper.getAgeByDateInString(patient.patBirthdayDate)} - Peso: $patWeight
     Historia: ${caseReport.casId}
     F.I: ${Helper.getDateWithoutHour(DateTime.parse(caseReport.casEnterDate))}''';
   }
@@ -182,7 +187,9 @@ class DownloadPatientRecordUseCase {
                         style: AppTextStyle.smallTitleBlack,
                         children: [
                           TextSpan(
-                            text: ' ${Helper.writeWeightByInt(caseReport.patWeight)} kgs.',
+                            text: caseReport.patWeight != null
+                                ? ' ${Helper.writeWeightByInt(caseReport.patWeight!)} kgs.'
+                                : ' Desconocido.',
                             style: AppTextStyle.smallTableBlack,
                           )
                         ])),
@@ -193,7 +200,9 @@ class DownloadPatientRecordUseCase {
                         style: AppTextStyle.smallTitleBlack,
                         children: [
                           TextSpan(
-                            text: '${Helper.writeHeightByInt(caseReport.patHeight)} mts.',
+                            text: caseReport.patHeight != null
+                                ? ' ${Helper.writeHeightByInt(caseReport.patHeight!)} mts.'
+                                : ' Desconocido.',
                             style: AppTextStyle.smallTableBlack,
                           )
                         ])),
