@@ -21,6 +21,7 @@ import 'package:d_report/src/feature/profile_user/presentation/pages/profile_pag
 import 'package:d_report/src/feature/settings/presentation/pages/settings_page.dart';
 import 'package:d_report/src/feature/settings_operations/presentation/pages/settings_operations_page.dart';
 import 'package:d_report/src/shared/presentation/cubit/theme_cubit.dart';
+import 'package:d_report/src/shared/presentation/pages/information_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
               '/main/new-case/new-patient': (context) => const NewPatientPage(),
               '/main/new-case/find-patient': (context) => const FindPatientPage(),
               '/main/new-case/add-case': (context) => const NewCasePage(),
+              '/main/information/': (context) => const InformationPage(),
             },
             initialRoute: '/auth/login/',
             onUnknownRoute: (RouteSettings setting) {

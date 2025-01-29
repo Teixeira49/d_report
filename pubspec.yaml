@@ -107,6 +107,7 @@ flutter:
     - assets/images/register/gender.png
     - assets/images/register/security.png
     - assets/images/register/user.png
+    - assets/images/register/finish.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

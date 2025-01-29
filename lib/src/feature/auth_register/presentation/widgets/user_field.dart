@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class UserAccountTextField extends StatelessWidget {
-  const UserAccountTextField({super.key, required this.controllerData, required this.focusNode});
+  const UserAccountTextField({super.key, required this.controllerData,});
 
   final TextEditingController controllerData;
-  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +13,6 @@ class UserAccountTextField extends StatelessWidget {
       width: double.infinity,
       child: TextFormField (
         controller: controllerData,
-        focusNode: focusNode,
         style: Theme.of(context).textTheme.labelLarge,
         obscureText: obscureTextDefault,
         keyboardType: TextInputType.emailAddress,

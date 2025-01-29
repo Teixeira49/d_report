@@ -14,8 +14,6 @@ class FollowReportCubit extends Cubit<FollowReportState>{
 
   bool get isFetching => _isFetching;
 
-  //final GetPatientDataUseCase useCase;
-
   final FollowRepositoryImpl _followRepositoryImpl;
 
   Future<void> fetchFollowCaseDetails(int casId, String accessToken) async {

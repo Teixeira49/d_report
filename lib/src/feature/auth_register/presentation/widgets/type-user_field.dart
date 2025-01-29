@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class TypeUserDropdownField extends StatelessWidget {
-  const TypeUserDropdownField({super.key});
+  const TypeUserDropdownField({super.key, required this.valueNotifier});
+
+  final ValueNotifier<String?> valueNotifier;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         width: double.infinity,
         child: DropdownButtonFormField(
+          value: valueNotifier.value,
           style: Theme.of(context).textTheme.labelLarge,
           dropdownColor: Theme.of(context).inputDecorationTheme.fillColor,
           borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -36,7 +40,7 @@ class TypeUserDropdownField extends StatelessWidget {
             );
           }).toList(),
           onChanged: (newValue) {
-
+            valueNotifier.value = newValue;
           },
           onSaved: (String? value) {},
           isDense: true,

@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class LastNameTextField extends StatelessWidget {
-  const LastNameTextField({super.key});
+  const LastNameTextField({super.key, required this.controller});
+
+  final TextEditingController controller;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         width: double.infinity,
         child: TextFormField(
+          controller: controller,
           style: Theme.of(context).textTheme.labelLarge,
           obscureText: obscureTextDefault,
           keyboardType: TextInputType.name,
