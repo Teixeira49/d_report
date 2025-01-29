@@ -42,7 +42,7 @@ void configDownloaderPanel(BuildContext context,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Agregar Seguimiento:'),
+              const Text('Agregar Evolución:'),
               const SizedBox(
                 width: 16,
               ),

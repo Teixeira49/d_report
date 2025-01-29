@@ -122,7 +122,7 @@ class DownloadCaseFollowRecordUseCase {
   static Widget titleDoc() => Center(
         child: Column(children: [
           Container(
-              child: Text('Informe de Seguimiento:',
+              child: Text('Informe Evolutivo:',
                   style: AppTextStyle.mediumTitleBlack)),
           SizedBox(height: spaceHeightTitle)
         ]),
@@ -250,7 +250,7 @@ class DownloadCaseFollowRecordUseCase {
           mainAxisSize: MainAxisSize.min,
           children: [
             Bullet(
-              text: "Informacion del Seguimiento:",
+              text: "Informacion sobre Evolucion del Caso:",
               textAlign: TextAlign.justify,
               style: AppTextStyle.smallTitleBlack,
             ),

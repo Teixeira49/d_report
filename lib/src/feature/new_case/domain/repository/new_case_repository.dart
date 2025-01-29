@@ -9,5 +9,7 @@ abstract class NewCaseRepository {
 
   Future<Either<Failure, CaseReport>> createCaseByNewPatient(Patient patData, NewCaseReport casData, String accessToken);
 
+  Future<Either<Failure, CaseReport>> createCaseByOldPatient(int patData, NewCaseReport casData, String accessToken);
+
 }
 

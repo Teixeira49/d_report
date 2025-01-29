@@ -58,7 +58,7 @@ class PatientEditPageSelector extends StatelessWidget {
             ButtonTile(
               titleOptionText: 'Informacion del Caso',
               descOptionText:
-                  'Motivo de Consulta, Sintomatologia, Estado Fisico, Diagnostico Inicial.',
+                  'Motivo de Consulta, Sintomatologia, Examen Fisico, Diagnostico Inicial.',
               iconData: Icons.assignment,
               route: 'case',
               arguments: arguments,

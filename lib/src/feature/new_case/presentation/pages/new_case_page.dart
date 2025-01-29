@@ -29,6 +29,8 @@ class MyNewCasePageState extends State<NewCasePage> {
     super.initState();
   }
 
+  final TextEditingController _casAdmissionReasonController =
+      TextEditingController();
   final TextEditingController _casSymptomatologyController =
       TextEditingController();
   final TextEditingController _casPhysicalStateController =
@@ -66,7 +68,8 @@ class MyNewCasePageState extends State<NewCasePage> {
 
     User user = argument["userData"];
     AuthUser authUser = argument["AuthCredentials"];
-    Map<String, dynamic> patData = argument['patient'];
+    String createStatus = argument['createStatus'];
+    dynamic patData = argument['patient'];
 
     return BlocProvider(
       create: (_) => NewCasePatientCubit(repository),
@@ -89,7 +92,11 @@ class MyNewCasePageState extends State<NewCasePage> {
                 //  "AuthCredentials": authUser,
                 //  "patient": '',
                 //});
-                FloatingWarningSnackBar.show(context, 'Paciente Registrado exitosamente en ${state.caseReport.casEntryArea}');
+                FloatingSnackBar.show(
+                    context,
+                    'Paciente Registrado exitosamente en ${state.caseReport.casEntryArea}',
+                    Icons.check,
+                    Colors.green);
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               });
@@ -98,21 +105,19 @@ class MyNewCasePageState extends State<NewCasePage> {
             }
           },
           builder: (context, state) {
-            return Stack(
-              alignment: Alignment.topCenter,
-              children: [
+            return Stack(alignment: Alignment.topCenter, children: [
               Center(
                 child: SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: size.height * 0.25,
-                ),
-                child: IntrinsicHeight(
-                  child:
-                      Column(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: size.height * 0.25,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Flexible(child: Container(
+                          Flexible(
+                              child: Container(
                             padding: EdgeInsets.symmetric(
                               horizontal: size.width * 0.010,
                               vertical: size.width * 0.020,
@@ -129,7 +134,7 @@ class MyNewCasePageState extends State<NewCasePage> {
                             ),
                             child: CaseDataTextField(
                               contextRow: 'Motivo de Consulta',
-                              controllerData: _casSymptomatologyController,
+                              controllerData: _casAdmissionReasonController,
                             ),
                           ),
                           Container(
@@ -148,7 +153,7 @@ class MyNewCasePageState extends State<NewCasePage> {
                               vertical: size.height * 0.010,
                             ),
                             child: CaseDataTextArea(
-                              contextRow: 'Estado Fisico',
+                              contextRow: 'Examen Fisico',
                               controllerData: _casPhysicalStateController,
                             ),
                           ),
@@ -191,43 +196,41 @@ class MyNewCasePageState extends State<NewCasePage> {
                             child: EntryAreaDropdownField(
                                 controllerData: _casEntryAreaController),
                           ),
-                          const SizedBox(height: 70,)
+                          const SizedBox(
+                            height: 70,
+                          )
                         ],
                       ),
-
+                    ),
                   ),
                 ),
               ),
-            ),
-            Visibility(
-            visible: keyboardEnabled == 0,
-            child:
-                Positioned(
+              Visibility(
+                  visible: keyboardEnabled == 0,
+                  child: Positioned(
                     bottom: 30,
                     child: (state is NewCasePatientLoading)
-                          ? const CircularProgressIndicator()
-                          : FinishRegisterCaseButton(
-                        patData: patData,
-                        casSymptomatology:
-                        _casSymptomatologyController.text,
-                        casPhysicalState:
-                        _casPhysicalStateController.text,
-                        casDiagnosis:
-                        _casDiagnosisController.text,
-                        casActualRoom:
-                        _casActualRoomController.text,
-                        casFloorLevel: _casFloorLevelController
-                            .value
-                            .toString(),
-                        casEntryArea: _casEntryAreaController
-                            .value
-                            .toString(),
-                        docId: user.userProfileId,
-                        accessToken: authUser.accessToken,
-                        size: size,
-                      ),
-                    )
-                ),]);
+                        ? const CircularProgressIndicator()
+                        : FinishRegisterCaseButton(
+                            caseStatus: createStatus,
+                            patData: patData,
+                            casAdmissionReason:
+                                _casAdmissionReasonController.text,
+                            casSymptomatology:
+                                _casSymptomatologyController.text,
+                            casPhysicalState: _casPhysicalStateController.text,
+                            casDiagnosis: _casDiagnosisController.text,
+                            casActualRoom: _casActualRoomController.text,
+                            casFloorLevel:
+                                _casFloorLevelController.value.toString(),
+                            casEntryArea:
+                                _casEntryAreaController.value.toString(),
+                            docId: user.userProfileId,
+                            accessToken: authUser.accessToken,
+                            size: size,
+                          ),
+                  )),
+            ]);
           },
         ),
       ),

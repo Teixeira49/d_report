@@ -6,6 +6,8 @@ import '../cubit/new_patient/new_patient_case_cubit.dart';
 class FinishRegisterCaseButton extends StatelessWidget {
   const FinishRegisterCaseButton(
       {super.key,
+        required this.caseStatus,
+      required this.casAdmissionReason,
       required this.casSymptomatology,
       required this.casPhysicalState,
       required this.casDiagnosis,
@@ -18,13 +20,15 @@ class FinishRegisterCaseButton extends StatelessWidget {
       required this.size,});
 
   final int docId;
+  final String caseStatus;
+  final String casAdmissionReason;
   final String casSymptomatology;
   final String casPhysicalState;
   final String casDiagnosis;
   final String casActualRoom;
   final String casFloorLevel;
   final String casEntryArea;
-  final Map<String, dynamic> patData;
+  final dynamic patData;
   final String accessToken;
   final Size size;
 
@@ -48,22 +52,28 @@ class FinishRegisterCaseButton extends StatelessWidget {
                   fontSize: 20
               )),
           onPressed: () {
-            print(docId.runtimeType);
+
             Map<String, dynamic> casData = {
+              'casAdmissionReason': casAdmissionReason,
               'casSymptomatology': casSymptomatology,
               'casPhysicalState': casPhysicalState,
               'casDiagnosis': casDiagnosis,
               'casActualRoom': 'A$casFloorLevel - 0$casActualRoom',
               'casEntryArea': casEntryArea,
               'docId': docId,
-              'casStudyImg': '',
-              'casMethodOfEntry': 'New'
+              'casMethodOfEntry': caseStatus,
             };
 
-            print(casData);
-            context
-                .read<NewCasePatientCubit>()
-                .createNewCaseByNewPatient(patData, casData, accessToken);
+            if (caseStatus == "New") {
+              context
+                  .read<NewCasePatientCubit>()
+                  .createNewCaseByNewPatient(patData, casData, accessToken);
+            } else {
+              context
+                  .read<NewCasePatientCubit>()
+                  .createNewCaseByOldPatient(patData, casData, accessToken);
+            }
+
             //Navigator.of(context).pushNamed(
             //    '/main/patients/',
             //    arguments: { "userData" : User(userName: "Pepe Loco", userEmail: "Pepeloco@gmail.com", userRoleUid: 16, userImgUrl: "", userProfileId: 23)}

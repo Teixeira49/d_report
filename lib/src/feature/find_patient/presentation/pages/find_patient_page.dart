@@ -115,24 +115,31 @@ class MyFindPatientPageState extends State<FindPatientPage> {
         findPatientRemoteDataSource: findPatientCaseDataSource);
 
     void finisherSearch() {
-      Map<String, dynamic> x = {
-        'patName': filteredCases[_tempIndexSelectedPatient].patName,
-        'patLastName': filteredCases[_tempIndexSelectedPatient].patLastName,
-        'patDni': filteredCases[_tempIndexSelectedPatient].patDni,
-        'patGender': filteredCases[_tempIndexSelectedPatient].patGender,
-        'patBirthdayDate':
-            filteredCases[_tempIndexSelectedPatient].patBirthdayDate,
-        'patBirthdayPlace':
-            filteredCases[_tempIndexSelectedPatient].patBirthdayPlace,
-        'patGuardianDni':
-            filteredCases[_tempIndexSelectedPatient].patGuardianDni,
-        'patBloodType': filteredCases[_tempIndexSelectedPatient].patBloodType,
-      };
+      /*var x;
+      if (casCreateStatus == 'New') {
+        x = {
+          'patName': filteredCases[_tempIndexSelectedPatient].patName,
+          'patLastName': filteredCases[_tempIndexSelectedPatient].patLastName,
+          'patDni': filteredCases[_tempIndexSelectedPatient].patDni,
+          'patGender': filteredCases[_tempIndexSelectedPatient].patGender,
+          'patBirthdayDate':
+          filteredCases[_tempIndexSelectedPatient].patBirthdayDate,
+          'patBirthdayPlace':
+          filteredCases[_tempIndexSelectedPatient].patBirthdayPlace,
+          'patGuardianDni':
+          filteredCases[_tempIndexSelectedPatient].patGuardianDni,
+          'patBloodType': filteredCases[_tempIndexSelectedPatient].patBloodType,
+        };
+      } else {
+        x = 1;
+      }*/
+
 
       Navigator.of(context).pushNamed('/main/new-case/add-case', arguments: {
         "userData": user,
         "AuthCredentials": authUser,
-        "patient": x,
+        "patient": filteredCases[_tempIndexSelectedPatient].patId,
+        "createStatus": 'Referral',
       });
     }
 
@@ -320,7 +327,6 @@ class MyFindPatientPageState extends State<FindPatientPage> {
 
   Widget _buildSearchedPatients(FindPatientState state) {
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
-    final size = MediaQuery.of(context).size;
 
     User user = argument["userData"];
     AuthUser authUser = argument["AuthCredentials"];

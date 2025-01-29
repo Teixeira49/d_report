@@ -285,7 +285,7 @@ class DownloadPatientRecordUseCase {
             ),
             SizedBox(height: spaceHeight / 3),
             Text(
-              'Seguimiento del Caso:\n\n',
+              'Evolución del Caso:\n\n',
               style: AppTextStyle.smallTitleBlack,
             )
           ]);

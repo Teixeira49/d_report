@@ -4,10 +4,10 @@ import '../../domain/entities/add_case.dart';
 class NewCaseReportModel extends NewCaseReport {
   NewCaseReportModel({
     required super.docId,
+    required super.casAdmissionReason,
     required super.casSymptomatology,
     required super.casPhysicalState,
     required super.casDiagnosis,
-    required super.casStudyImg,
     required super.casMethodOfEntry,
     required super.casActualRoom,
     required super.casEntryArea,
@@ -16,10 +16,10 @@ class NewCaseReportModel extends NewCaseReport {
   factory NewCaseReportModel.fromJson(json) {
     return NewCaseReportModel(
       docId: json['docId'],
+      casAdmissionReason: json['casAdmissionReason'],
       casSymptomatology: json['casSymptomatology'],
       casPhysicalState: json['casPhysicalState'],
       casDiagnosis: json['casDiagnosis'],
-      casStudyImg: json['casStudyImg'],
       casMethodOfEntry: json['casMethodOfEntry'],
       casActualRoom: json['casActualRoom'],
       casEntryArea: json['casEntryArea'],
@@ -29,10 +29,10 @@ class NewCaseReportModel extends NewCaseReport {
   Map<String, dynamic> toJson() {
     return {
       'docId': docId,
+      'casAdmissionReason': casAdmissionReason,
       'casSymptomatology': casSymptomatology,
       'casPhysicalState': casPhysicalState,
       'casDiagnosis': casDiagnosis,
-      'casStudyImg': casStudyImg,
       'casMethodOfEntry': casMethodOfEntry,
       'casActualRoom': casActualRoom,
       'casEntryArea': casEntryArea,
@@ -42,10 +42,10 @@ class NewCaseReportModel extends NewCaseReport {
   factory NewCaseReportModel.fromEntity(NewCaseReport caseReport) {
     return NewCaseReportModel(
       docId: caseReport.docId,
+      casAdmissionReason: caseReport.casAdmissionReason,
       casSymptomatology: caseReport.casSymptomatology,
       casPhysicalState: caseReport.casPhysicalState,
       casDiagnosis: caseReport.casDiagnosis,
-      casStudyImg: caseReport.casStudyImg,
       casMethodOfEntry: caseReport.casMethodOfEntry,
       casActualRoom: caseReport.casActualRoom,
       casEntryArea: caseReport.casEntryArea,

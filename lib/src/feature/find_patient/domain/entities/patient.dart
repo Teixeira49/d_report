@@ -1,5 +1,6 @@
 class SearchPatient {
 
+  final int patId;
   final String patName;
   final String patLastName;
   final int? patDni;
@@ -12,6 +13,7 @@ class SearchPatient {
 
   SearchPatient(
       {
+        required  this .patId,
         required  this .patName,
         required  this .patLastName,
         required  this .patDni,

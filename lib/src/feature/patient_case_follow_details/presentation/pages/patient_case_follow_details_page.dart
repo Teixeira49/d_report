@@ -241,7 +241,7 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
                               )
                       : Container(),
                   const CustomCardResumeRow(
-                    widgetKey: "Informacion del Seguimiento",
+                    widgetKey: "Informacion sobre la Evolución",
                     iconData: Icons.assignment,
                   ),
                   Container(

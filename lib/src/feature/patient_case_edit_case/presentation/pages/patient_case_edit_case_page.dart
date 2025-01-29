@@ -274,7 +274,7 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
                                     vertical: size.height * 0.010,
                                   ),
                                   child: CaseDataTextArea(
-                                    contextRow: 'Estado Fisico',
+                                    contextRow: 'Examen Fisico',
                                     controllerData: _physicalStateController,
                                   ),
                                 ),

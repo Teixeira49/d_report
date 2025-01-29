@@ -2,6 +2,7 @@ import '../../domain/entities/patient.dart';
 
 class PatientModel extends Patient {
   PatientModel({
+    required super.patId,
     required super.patName,
     required super.patLastName,
     required super.patDni,
@@ -14,6 +15,7 @@ class PatientModel extends Patient {
 
   factory PatientModel.fromJson(json) {
     return PatientModel(
+      patId: json['patId'],
       patName: json['patName'],
       patLastName: json['patLastName'],
       patDni: json['patDni'],
@@ -27,6 +29,7 @@ class PatientModel extends Patient {
 
   Map<String, dynamic> toJson() {
     return {
+      'patId': patId,
       'patName': patName,
       'patLastName': patLastName,
       'patDni': patDni,
@@ -40,6 +43,7 @@ class PatientModel extends Patient {
 
   factory PatientModel.fromEntity(Patient patient) {
     return PatientModel(
+      patId: patient.patId,
       patName: patient.patName,
       patLastName: patient.patLastName,
       patDni: patient.patDni,

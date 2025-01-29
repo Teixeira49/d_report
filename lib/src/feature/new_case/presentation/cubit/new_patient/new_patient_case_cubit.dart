@@ -18,7 +18,6 @@ class NewCasePatientCubit extends Cubit<NewCasePatientState> {
 
       emit(NewCasePatientLoading());
 
-
       final newReport = await _newPatientCaseRepository.createCaseByNewPatient(
           PatientModel.fromJson(patData), NewCaseReportModel.fromJson(casData), accessToken);
 
@@ -31,8 +30,21 @@ class NewCasePatientCubit extends Cubit<NewCasePatientState> {
     }
   }
 
-  Future<void> createPatient(docId, accessToken) async {
-    // TODO: implement checkIfPatientExist
-    throw UnimplementedError();
+  Future<void> createNewCaseByOldPatient(int patData,
+      Map<String, dynamic> casData, String accessToken) async {
+    try {
+
+      emit(NewCasePatientLoading());
+
+      final newReport = await _newPatientCaseRepository.createCaseByOldPatient(
+          patData, NewCaseReportModel.fromJson(casData), accessToken);
+
+      newReport.fold((l) => emit(NewCasePatientFail(errorSMS: l.message)),
+              (r) => emit(NewCasePatientLoaded(caseReport: r)));
+
+    } catch (e) {
+      print('Error: $e');
+      emit(NewCasePatientFail(errorSMS: "Error cargando los datos"));
+    }
   }
 }

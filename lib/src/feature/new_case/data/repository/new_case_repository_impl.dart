@@ -19,7 +19,21 @@ class NewPatientCaseRepositoryImpl implements NewCaseRepository {
   @override
   Future<Either<Failure, CaseReport>> createCaseByNewPatient(Patient patData, NewCaseReport casData, String accessToken) async {
     try {
+      print('paciente $patData');
+      print('caso $casData');
       final CaseReport resp = await newPatientCaseRemoteDataSource.createCaseByNewPatient(patData, casData, accessToken);
+      return Right(resp);
+    } on DioException {
+      return Left(ServerFailure("Fallo en conexion al servidor"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CaseReport>> createCaseByOldPatient(int patData, NewCaseReport casData, String accessToken) async {
+    try {
+      print('paciente $patData');
+      print('caso $casData');
+      final CaseReport resp = await newPatientCaseRemoteDataSource.createCaseByOldPatient(patData, casData, accessToken);
       return Right(resp);
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));

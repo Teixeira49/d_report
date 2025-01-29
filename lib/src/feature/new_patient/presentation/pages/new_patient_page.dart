@@ -41,6 +41,8 @@ class MyNewPatientPageState extends State<NewPatientPage> {
   final ValueNotifier<String?> _patGenderController =
       ValueNotifier<String?>(null);
   final TextEditingController _patGuDniController = TextEditingController();
+  final TextEditingController _patGuPhoneController = TextEditingController();
+  final TextEditingController _patGuEmailController = TextEditingController();
   final ValueNotifier<String?> _patBloodTypeController =
       ValueNotifier<String?>(null);
 
@@ -51,6 +53,8 @@ class MyNewPatientPageState extends State<NewPatientPage> {
     _patBirthDateController.dispose();
     _patGenderController.dispose();
     _patGuDniController.dispose();
+    _patGuPhoneController.dispose();
+    _patGuEmailController.dispose();
     _patBloodTypeController.dispose();
     super.dispose();
   }
@@ -125,6 +129,7 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                     "userData": user,
                     "AuthCredentials": authUser,
                     "patient": x,
+                    "createStatus": 'New',
                   });
                 } else {
                   FloatingWarningSnackBar.show(context, state.sms);
@@ -260,7 +265,7 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                                 ),
                                 child: PatientDataTextFieldNumeric(
                                   contextRow: 'Telefono representante',
-                                  controllerData: _patGuDniController,
+                                  controllerData: _patGuPhoneController,
                                   iconData: Icons.phone,
                                   typeNumber: TextInputType.phone,
                                 ),
@@ -272,8 +277,8 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                                 ),
                                 child: PatientDataTextFieldNumeric(
                                   contextRow: 'Correo representante (Opcional)',
-                                  controllerData: _patGuDniController,
-                                  iconData: Icons.phone,
+                                  controllerData: _patGuEmailController,
+                                  iconData: Icons.email,
                                   typeNumber: TextInputType.phone,
                                 ),
                               ),
