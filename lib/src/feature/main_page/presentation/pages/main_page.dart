@@ -1,4 +1,5 @@
 import 'package:d_report/src/shared/domain/entities/auth_user.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
@@ -26,6 +27,10 @@ class MainPage extends StatefulWidget {
 class MyMainPageState extends State<MainPage> {
   final int _currentPage = 0;
   bool _isSearching = false;
+  bool _isLoading = false;
+  late String _token;
+  late int _docId;
+  late Function _fetchMyCasesCubit;
 
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
@@ -47,11 +52,26 @@ class MyMainPageState extends State<MainPage> {
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController
-            .position.maxScrollExtent /*!context.read<MyCasesCubit>().si*/) {
+    if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent &&
+        !_isLoading) {
+      /*!context.read<MyCasesCubit>().si*/
       //context.read<MyCasesCubit>().fetchCases();
+      //_loadMoreItems();
     }
+  }
+
+  Future<void> _loadMoreItems() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    setState(() {
+      _fetchMyCasesCubit;
+      _isLoading = false;
+    });
   }
 
   void switchSearchState() {
@@ -82,12 +102,21 @@ class MyMainPageState extends State<MainPage> {
 
     final size = MediaQuery.of(context).size;
 
+    _docId = user.userProfileId;
+    _token = authUser.accessToken; // TODO Delete Hardcode solution when the global token will implemented
+
     return BlocProvider(
         create: (_) => MyCasesCubit(repository)
           ..fetchCases(user.userProfileId, authUser.accessToken),
         child:
-            BlocBuilder<MyCasesCubit, MyCasesState>(builder: (context, state) {
-          return Scaffold(
+            BlocBuilder<MyCasesCubit, MyCasesState>(
+                //buildWhen: (previous, current) {
+                //  return current is MyCasesLoading;
+                //},
+                builder: (context, state) {
+              //_fetchMyCasesCubit = context.read<MyCasesCubit>().fetchCases(_docId, _token);
+
+              return Scaffold(
             key: scaffoldKey,
             appBar: AppBar(
               automaticallyImplyLeading: false,
@@ -252,9 +281,14 @@ class MyMainPageState extends State<MainPage> {
         },
         child: ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
+            controller: _scrollController,
             itemCount: filteredCases.length,
-            itemBuilder: (context, index) =>
-                CaseTile(context, filteredCases[index], authUser, user)),
+            itemBuilder: (context, index) {
+                if (index >= state.cases.length) {
+                  return const Center(child: CustomCircularProgressBar());
+                }
+                return CaseTile(context, filteredCases[index], authUser, user);
+            })
       );
     } else if (state is MyCasesLoadedButEmpty) {
       return SingleChildScrollView(

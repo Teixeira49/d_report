@@ -27,42 +27,56 @@ class MyCasesRemoteDataSourceImpl implements MyCasesRemoteDataSource {
       _isFetching = true;
     }
 
-    const r = RetryOptions(maxAttempts: 3);
+    List<MyCasesModel> totalList = [];
 
-    final resp = await r.retry(
-            () => dio.get(
-          '$apiUrl/cases/my-cases/$docId/',
-          options: Options(
-            sendTimeout: const Duration(seconds: 2),
-            receiveTimeout: const Duration(seconds: 2),
-            headers: {
-              'Authorization': 'Bearer $accessToken',
+    while(true) {
+      const r = RetryOptions(maxAttempts: 3);
+
+      final resp = await r.retry(
+              () => dio.get(
+            '$apiUrl/cases/my-cases/$docId/',
+            options: Options(
+              sendTimeout: const Duration(seconds: 2),
+              receiveTimeout: const Duration(seconds: 2),
+              headers: {
+                'Authorization': 'Bearer $accessToken',
+              },
+            ),
+            queryParameters: {
+              "pag": _page,
+              "limit": 10
             },
-          ),
-          queryParameters: {
-            "pag": _page,
-            "limit": 10
-          },
-        )
-    );
-    //if (resp.statusCode == 200) {
-    print(resp.data);
-    final dataF = resp.data as Map<String, dynamic>;
-    //print(jsonDecode(resp.data));
+          )
+      );
+      //if (resp.statusCode == 200) {
+      //print(resp.data);
+      final dataF = resp.data as Map<String, dynamic>;
+      //print(jsonDecode(resp.data));
 
-    final items = (dataF["content"] as List)
-        .map((item) => MyCasesModel.fromJson(item))
-        .toList();
+      final items = (dataF["content"] as List)
+          .map((item) => MyCasesModel.fromJson(item))
+          .toList();
 
-    _page++;
+      totalList.addAll(items);
 
-    print('Mis items $items');
-    //}
-    return items;
+      _page++;
+
+      print('Mis items $items');
+      //}
+      print(_page);
+      if (dataF['last'] == true) {
+        break;
+      }
+    }
+
+    print(totalList);
+
+    return totalList;
   }
 
   @override
   Future<void> getRefreshMyCases() async {
+    print('object');
     _page = 0;
   }
 }
