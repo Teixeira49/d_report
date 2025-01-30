@@ -22,10 +22,10 @@ class FindCasesRepositoryImpl implements FindCasesRepository {
   });
 
   @override
-  Future<Either<Failure, List<CaseSimple>>> searchCasesByKey(String query, int searchKey, String accessToken) async {
+  Future<Either<Failure, List<CaseSimple>>> searchCasesByKey(String query, int searchKey, bool resetPage, String accessToken) async {
     try {
       print('papaya');
-      final List<CaseSimple> resp = await myCasesRemoteDataSource.searchCases(query, searchKey, accessToken);
+      final List<CaseSimple> resp = await myCasesRemoteDataSource.searchCases(query, searchKey, resetPage, accessToken);
       return Right(resp);
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));

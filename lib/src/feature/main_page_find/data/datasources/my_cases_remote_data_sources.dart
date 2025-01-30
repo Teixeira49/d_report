@@ -6,11 +6,11 @@ import 'package:dio/dio.dart';
 import '../models/my_case_model.dart';
 
 abstract class FindCasesRemoteDataSource {
-  Future<List<MyCasesModel>> searchCases(String query, int searchKey, String accessToken);
+  Future<List<MyCasesModel>> searchCases(
+      String query, int searchKey, bool resetPage, String accessToken);
 }
 
 class FindCasesRemoteDataSourceImpl implements FindCasesRemoteDataSource {
-
   final Dio dio = Dio();
 
   int _page = 0;
@@ -20,18 +20,21 @@ class FindCasesRemoteDataSourceImpl implements FindCasesRemoteDataSource {
   bool get isFetching => _isFetching;
 
   @override
-  Future<List<MyCasesModel>> searchCases(String query, int searchKey, String accessToken) async {
-
-    if(!_isFetching) {
+  Future<List<MyCasesModel>> searchCases(
+      String query, int searchKey, bool resetPage, String accessToken) async {
+    if (!_isFetching) {
       _isFetching = true;
+    }
+
+    if (resetPage) {
+      _page = 0;
     }
 
     const r = RetryOptions(maxAttempts: 3);
 
     print('a');
 
-    final resp = await r.retry(
-            () => dio.get(
+    final resp = await r.retry(() => dio.get(
           '$apiUrl/cases/search',
           options: Options(
             sendTimeout: const Duration(seconds: 2),
@@ -45,8 +48,7 @@ class FindCasesRemoteDataSourceImpl implements FindCasesRemoteDataSource {
             'findBy': searchKey,
             'pag': _page,
           },
-        )
-    );
+        ));
     //if (resp.statusCode == 200) {
     print(resp.data);
     final dataF = resp.data as Map<String, dynamic>;
@@ -66,7 +68,6 @@ class FindCasesRemoteDataSourceImpl implements FindCasesRemoteDataSource {
 
   Future<void> refreshCases(String query, int searchKey, accessToken) async {
     _page = 0;
-    await searchCases(query, searchKey, accessToken);
+    await searchCases(query, searchKey, true, accessToken);
   }
 }
-

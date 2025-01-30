@@ -6,7 +6,7 @@ import '../entities/case_simple.dart';
 
 abstract class FindCasesRepository {
 
-  Future<Either<Failure, List<CaseSimple>>> searchCasesByKey(String query, int searchKey, String accessToken);
+  Future<Either<Failure, List<CaseSimple>>> searchCasesByKey(String query, int searchKey, bool resetPage, String accessToken);
 
   Future<Either<Failure, bool>> saveLocalMyCase(Page<CaseSimple> caseSimple);
 
