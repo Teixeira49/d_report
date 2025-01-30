@@ -9,12 +9,12 @@ class FindPatientCubit extends Cubit<FindPatientState> {
   final FindPatientRepository _findPatientRepository;
 
   Future<void> findPatients(
-      String query, int searchKey, String accessToken) async {
+      String query, int searchKey, String accessToken, [bool resetPage = true]) async {
     try {
       emit(FindPatientLoading());
 
       final patients = await _findPatientRepository.searchPatients(
-          query, searchKey, accessToken);
+          query, searchKey, resetPage, accessToken);
 
       patients.fold(
           (l) => emit(FindPatientFail(errorSMS: "Error del servidor")),

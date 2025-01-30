@@ -393,9 +393,7 @@ class MyFindPatientPageState extends State<FindPatientPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              child: Image.asset('assets/images/not_found_logo.png'),
-            ),
+            Image.asset('assets/images/not_found_logo.png'),
             const Text('Paciente no encontrado'),
           ],
         ),
@@ -406,9 +404,7 @@ class MyFindPatientPageState extends State<FindPatientPage> {
               child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            child: Image.asset('assets/images/not_found_logo.png'),
-          ),
+          Image.asset('assets/images/not_found_logo.png'),
           Text(state.errorSMS),
         ],
       )));
@@ -418,9 +414,7 @@ class MyFindPatientPageState extends State<FindPatientPage> {
               child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            child: Image.asset('assets/images/not_found_logo.png'),
-          ),
+          Image.asset('assets/images/not_found_logo.png'),
           Text(state.errorSMS),
         ],
       )));

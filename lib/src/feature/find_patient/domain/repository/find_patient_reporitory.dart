@@ -5,6 +5,6 @@ import '../entities/patient.dart';
 
 abstract class FindPatientRepository {
 
-  Future<Either<Failure, List<SearchPatient>>> searchPatients(String query, int searchKey, String accessToken) ;
+  Future<Either<Failure, List<SearchPatient>>> searchPatients(String query, int searchKey, bool resetPage, String accessToken) ;
 
 }

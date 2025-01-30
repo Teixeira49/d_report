@@ -9,7 +9,7 @@ import '../../model/patient_model.dart';
 
 abstract class FindPatientRemoteDataSource {
   Future<List<SearchPatient>> searchPatients(
-      String query, int searchKey, String accessToken);
+      String query, int searchKey, bool resetPage, String accessToken);
 }
 
 class FindPatientRemoteDataSourceImpl implements FindPatientRemoteDataSource {
@@ -23,9 +23,13 @@ class FindPatientRemoteDataSourceImpl implements FindPatientRemoteDataSource {
 
   @override
   Future<List<SearchPatient>> searchPatients(
-      String query, int searchKey, String accessToken) async {
+      String query, int searchKey, bool resetPage, String accessToken) async {
     if (!_isFetching) {
       _isFetching = true;
+    }
+
+    if (resetPage) {
+      _page = 0;
     }
 
     const r = RetryOptions(maxAttempts: 3);
@@ -63,6 +67,6 @@ class FindPatientRemoteDataSourceImpl implements FindPatientRemoteDataSource {
 
   Future<void> refreshPatients(query, searchKey, accessToken) async {
     _page = 0;
-    await searchPatients(query, searchKey, accessToken);
+    await searchPatients(query, searchKey, true, accessToken);
   }
 }
