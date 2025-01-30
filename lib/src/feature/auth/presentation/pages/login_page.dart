@@ -91,7 +91,6 @@ class MyLoginPageState extends State<LoginPage> {
           builder: (context, state) {
             return Center(
                 child: SingleChildScrollView(
-                  physics: const NeverScrollableScrollPhysics(),
               child: ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: size.height * 0.25,
