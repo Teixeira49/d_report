@@ -47,8 +47,8 @@ class PatientEditRequestModel extends PatientEditRequest {
       'patDni': patDni,
       'patGender': patGender,
       'patGuardianDni': patGuardianDni,
-      //'patWeight': patWeight,
-      //'patHeight': patHeight,
+      'patWeight': patWeight,
+      'patHeight': patHeight,
     };
   }
 
@@ -70,8 +70,8 @@ class PatientEditRequestModel extends PatientEditRequest {
           'patDni': patDni,
           'patGender': patGender,
           'patBloodType': patBloodType,
-          //'patWeight': patWeight,
-          //'patHeight': patHeight,
+          'patWeight': patWeight,
+          'patHeight': patHeight,
         };
       default:
         return toJson();

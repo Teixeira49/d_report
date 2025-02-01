@@ -14,6 +14,7 @@ class CaseEditorCubit extends Cubit<CaseEditorState> {
 
   Future<void> postChanges(CaseReportEditRequest caseReportEditRequest, CaseReport caseReport, int part, String accessToken) async {
     try {
+      print(caseReportEditRequest);
       emit(CaseEditorLoading());
       final check = _compareCasesUseCase.call(caseReport, caseReportEditRequest, part);
       if (check != null) {

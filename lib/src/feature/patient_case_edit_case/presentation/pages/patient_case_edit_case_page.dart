@@ -126,8 +126,6 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
         casSymptomatology: _symptomatologyController.text,
         casPhysicalState: _physicalStateController.text,
         casDiagnosis: _diagnosisController.text,
-        casStudyImg: '',
-        // TODO DELETE
         casMethodOfEntry: _referralController.value ?? '',
         casActualRoom:
             'A${_roomValueController.value ?? ''} - ${_roomValueController.value ?? ''}${_roomNumberController.text}',

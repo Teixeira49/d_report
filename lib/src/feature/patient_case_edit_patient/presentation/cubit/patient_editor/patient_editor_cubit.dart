@@ -14,6 +14,8 @@ class PatientEditorCubit extends Cubit<PatientEditorState> {
       : super(PatientEditorInitial());
 
   Future<void> postChanges(PatientEditRequest patientEditRequest, Patient patient, int part, String accessToken) async {
+    print(patientEditRequest.patHeight);
+    print(patient.patHeight);
     try {
       emit(PatientEditorLoading());
       final check = _comparePatientsUseCase.call(patient, patientEditRequest, part);

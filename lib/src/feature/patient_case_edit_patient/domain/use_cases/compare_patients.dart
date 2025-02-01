@@ -17,6 +17,7 @@ class ComparePatientsUseCase {
     List<String> patRows = checkEqualityUpdatePatient[part]!;
 
     for (var i in patRows) {
+      print('$i ${originalPatJson[i]} ${updatePatJson[i]}');
       if (originalPatJson[i].toString().toLowerCase() !=
           updatePatJson[i].toString().toLowerCase()) {
         if (updatePatJson[i] == '') {

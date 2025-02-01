@@ -133,16 +133,16 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
         patSecondName: _secondNameController.text,
         patLastname: _lastNameController.text,
         patSecondSurname: _lastSurnameNameController.text,
-        patDni: int.parse(_dniController.text),
+        patDni: _dniController.text != '' ? int.parse(_dniController.text) : null,
         patBirthdayDate: _birthdayDateController.text,
         patGender: _genderTypeController.value ?? '',
         patBirthdayPlace: _birthdayPlaceController.text,
         patBloodType: _bloodTypeController.value ?? '',
         patGuardianDni: int.parse(_guardianDniController.text),
-        patWeight: int.parse(
-            Helper.writeWeightByDouble(double.parse(_weightDateController.text), true)),
-        patHeight: int.parse(
-            Helper.writeHeightByDouble(double.parse(_heightController.text), true)),);
+        patWeight: _weightDateController.text != '' ? int.parse(
+            Helper.writeWeightByDouble(double.parse(_weightDateController.text), true)) : null,
+        patHeight: _heightController.text != '' ? int.parse(
+            Helper.writeHeightByDouble(double.parse(_heightController.text), true)) : null,);
   }
 
   @override

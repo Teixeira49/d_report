@@ -41,6 +41,8 @@ class PatientModel extends Patient {
       'patDni': patDni,
       'patGender': patGender,
       'patGuardianDni': patGuardianDni,
+      'patWeight': patWeight,
+      'patHeight': patHeight,
     };
   }
 

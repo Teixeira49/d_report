@@ -19,6 +19,7 @@ class CompareCasesUseCase {
     List<String> caseRows = checkEqualityUpdateCase[part]!;
 
     for (var i in caseRows) {
+      print('$i ${originalCaseJson[i]} ${updateCaseJson[i]}');
       if (originalCaseJson[i].toLowerCase() !=
           updateCaseJson[i].toLowerCase()) {
         if (updateCaseJson[i] == '') {
