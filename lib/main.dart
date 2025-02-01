@@ -1,5 +1,7 @@
 import 'package:d_report/src/core/config/styles/themes.dart';
-import 'package:d_report/src/feature/not_found/presentation/pages/not-found_page.dart';
+import 'package:d_report/src/feature/main_page_find/data/datasources/my_cases_remote_data_sources.dart';
+import 'package:d_report/src/feature/main_page_find/data/repositories/my_cases_repository_impl.dart';
+import 'package:d_report/src/feature/main_page_find/presentation/cubit/find_case/find_cases_cubit.dart';
 import 'package:d_report/src/shared/presentation/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -17,8 +19,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (_) => ThemeCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => ThemeCubit(),
+        ),
+        BlocProvider(
+            create: (_) => FindCasesCubit(FindCasesRepositoryImpl(
+                myCasesRemoteDataSource: FindCasesRemoteDataSourceImpl()))),
+      ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
           return MaterialApp(
@@ -37,6 +46,7 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate
             ],
             supportedLocales: const [
               Locale('es', 'ES'),

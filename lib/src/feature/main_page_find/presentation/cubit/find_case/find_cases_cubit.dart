@@ -1,50 +1,68 @@
 import 'package:bloc/bloc.dart';
 import 'package:d_report/src/feature/main_page_find/domain/repositories/find_cases_repository.dart';
 
+import '../../../domain/entities/case_simple.dart';
 import 'find_cases_state.dart';
 
-class FindCasesCubit extends Cubit<FindCasesState>{
-
+class FindCasesCubit extends Cubit<FindCasesState> {
   FindCasesCubit(this._findCasesRepository) : super(FindCasesInitial());
 
-  int _page = 0;
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
 
   final FindCasesRepository _findCasesRepository;
 
+  Future<void> fetchSearchCases(String query, int searchKey, String accessToken,
+      [bool resetPage = true, List<CaseSimple>? elementsLoaded]) async {
+    final List<CaseSimple> x = [];
+    bool isComplete = false;
 
-  Future<void> fetchSearchCases(String query, int searchKey, String accessToken, [bool resetPage = true]) async {
-
-    if(_isFetching) return;
-    _isFetching = true;
-
-    try {
-
+    if (state is FindCasesLoading) return;
+    if (state is FindCasesLoaded) {
+      if ((state as FindCasesLoaded).cases.isNotEmpty) {
+        x.addAll((state as FindCasesLoaded).cases);
+      }
+      if ((state as FindCasesLoaded).isComplete) {
+        isComplete = (state as FindCasesLoaded).isComplete;
+      }
+    }
+    if (state is FindCasesInitial) {
       emit(FindCasesLoading());
+    }
 
-      print('are[a $query');
-      final patients = await _findCasesRepository.searchCasesByKey(query, searchKey, resetPage, accessToken);
-      print('casos $patients');
+    if (!isComplete) {
+      if (_isFetching) return;
+      _isFetching = true;
 
-      patients.fold(
-              (l) => emit(FindCasesFail(errorSMS: l.message)),
-              (r) => r.isNotEmpty
-              ? emit(FindCasesLoaded(cases: r))
-              : emit(FindCasesLoadedButEmpty(
-              sms: "No se ha podido encontrar el caso")));
+      try {
+        final patients = await _findCasesRepository.searchCasesByKey(
+            query, searchKey, resetPage, accessToken);
 
-    }catch(e){
-      print('Error: $e');
-      emit(FindCasesFail(errorSMS: "Error cargando los datos"));
-    }finally{
-      _isFetching = false;
+        patients.fold(
+            (l) => emit(FindCasesFail(errorSMS: l.message)),
+            (r) => r.listCasesSimple.isNotEmpty
+                ? emit(resetPage
+                    ? FindCasesLoaded(cases: r.listCasesSimple)
+                    : FindCasesLoaded(cases: x).copyWith(
+                        newCases: r.listCasesSimple, isComplete: r.isComplete))
+                : emit(FindCasesLoadedButEmpty(
+                    sms: "No se ha podido encontrar el caso")));
+      } catch (e) {
+        print('Error: $e');
+        if ((state is FindCasesLoaded)) {
+          emit(FindCasesLoaded(cases: (state as FindCasesLoaded).cases));
+        } else {
+          emit(FindCasesFail(errorSMS: "Error cargando los datos"));
+        }
+      } finally {
+        _isFetching = false;
+      }
     }
   }
 
-  Future<void> refreshCases(String query, int searchKey, String accessToken) async {
-    _page = 0;
+  Future<void> refreshCases(
+      String query, int searchKey, String accessToken) async {
     emit(FindCasesInitial());
     await fetchSearchCases(query, searchKey, accessToken);
   }

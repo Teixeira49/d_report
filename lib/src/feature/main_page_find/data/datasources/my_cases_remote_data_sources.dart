@@ -3,10 +3,12 @@ import 'package:retry/retry.dart';
 
 import 'package:dio/dio.dart';
 
+import '../../domain/entities/case_results_dto.dart';
+import '../models/case_results_dto.dart';
 import '../models/my_case_model.dart';
 
 abstract class FindCasesRemoteDataSource {
-  Future<List<MyCasesModel>> searchCases(
+  Future<CaseResultsDTO> searchCases(
       String query, int searchKey, bool resetPage, String accessToken);
 }
 
@@ -20,7 +22,7 @@ class FindCasesRemoteDataSourceImpl implements FindCasesRemoteDataSource {
   bool get isFetching => _isFetching;
 
   @override
-  Future<List<MyCasesModel>> searchCases(
+  Future<CaseResultsDTO> searchCases(
       String query, int searchKey, bool resetPage, String accessToken) async {
     if (!_isFetching) {
       _isFetching = true;
@@ -31,8 +33,6 @@ class FindCasesRemoteDataSourceImpl implements FindCasesRemoteDataSource {
     }
 
     const r = RetryOptions(maxAttempts: 3);
-
-    print('a');
 
     final resp = await r.retry(() => dio.get(
           '$apiUrl/cases/search',
@@ -60,10 +60,7 @@ class FindCasesRemoteDataSourceImpl implements FindCasesRemoteDataSource {
 
     _page++;
 
-    print(resp.data);
-    print('Mis items $items');
-    //}
-    return items;
+    return CaseResultsDTOModel.fromMixedJsonAndList(resp.data, items);
   }
 
   Future<void> refreshCases(String query, int searchKey, accessToken) async {

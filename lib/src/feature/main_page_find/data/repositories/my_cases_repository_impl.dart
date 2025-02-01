@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 
 import 'package:flutter/src/widgets/navigator.dart';
 
+import '../../domain/entities/case_results_dto.dart';
 import '../../domain/entities/case_simple.dart';
 import '../../domain/repositories/find_cases_repository.dart';
 import '../datasources/my_cases_remote_data_sources.dart';
@@ -22,10 +23,9 @@ class FindCasesRepositoryImpl implements FindCasesRepository {
   });
 
   @override
-  Future<Either<Failure, List<CaseSimple>>> searchCasesByKey(String query, int searchKey, bool resetPage, String accessToken) async {
+  Future<Either<Failure, CaseResultsDTO>> searchCasesByKey(String query, int searchKey, bool resetPage, String accessToken) async {
     try {
-      print('papaya');
-      final List<CaseSimple> resp = await myCasesRemoteDataSource.searchCases(query, searchKey, resetPage, accessToken);
+      final CaseResultsDTO resp = await myCasesRemoteDataSource.searchCases(query, searchKey, resetPage, accessToken);
       return Right(resp);
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));

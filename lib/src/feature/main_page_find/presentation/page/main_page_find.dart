@@ -51,10 +51,27 @@ class MyMainPageFindState extends State<MainPageFind> {
   }
 
   void _onScroll() {
+    final argument = ModalRoute.of(context)!.settings.arguments as Map;
+    AuthUser authUser = argument["AuthCredentials"];
     if (_scrollController.position.pixels >=
         _scrollController
-            .position.maxScrollExtent /*!context.read<MyCasesCubit>().si*/) {
-      //context.read<MyCasesCubit>().fetchCases();
+            .position.maxScrollExtent) {
+      setState(() {
+        context.read<FindCasesCubit>().fetchSearchCases(
+            _searchController.text,
+            _selectedIndex,
+            authUser.accessToken, false);
+        /*
+        final remoteDataSource = FindCasesRemoteDataSourceImpl();
+        final repository =
+        FindCasesRepositoryImpl(myCasesRemoteDataSource: remoteDataSource);
+        FindCasesCubit(repository);
+
+        BlocProvider.of<FindCasesCubit>(context).fetchSearchCases(
+            _searchController.text,
+            _selectedIndex,
+            authUser.accessToken, false);*/
+      });
     }
   }
 
@@ -125,9 +142,10 @@ class MyMainPageFindState extends State<MainPageFind> {
 
     final size = MediaQuery.of(context).size;
 
-    return BlocProvider(
-        create: (_) => FindCasesCubit(repository),
-        child: BlocBuilder<FindCasesCubit, FindCasesState>(
+    return BlocBuilder<FindCasesCubit, FindCasesState>(
+            //buildWhen: (previous, current) {
+            //  return current is FindCasesLoading;
+            //},
             builder: (context, state) {
           return Scaffold(
             key: scaffoldKey,
@@ -268,7 +286,7 @@ class MyMainPageFindState extends State<MainPageFind> {
               parseArguments: {"userData": user, "AuthCredentials": authUser},
             ),
           );
-        }));
+        });
   }
 
   Widget _buildCasesList(FindCasesState state, BuildContext context) {
@@ -319,11 +337,12 @@ class MyMainPageFindState extends State<MainPageFind> {
           color: Colors.transparent,
           shadowColor: Colors.transparent,
           surfaceTintColor: Colors.transparent,
-          child: ListView.builder(
+          child: Scrollbar(child: ListView.builder(
+            controller: _scrollController,
               padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
               itemCount: filteredCases.length,
             itemBuilder: (context, index) =>
-                CaseTile(context, filteredCases[index], authUser, user)),
+                CaseTile(context, filteredCases[index], authUser, user))),
       )));
     } else if (state is FindCasesLoadedButEmpty) {
       return Center(
