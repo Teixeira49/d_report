@@ -94,14 +94,16 @@ class PatientCaseDoctorsPage extends StatelessWidget {
               color: Colors.transparent,
               shadowColor: Colors.transparent,
               surfaceTintColor: Colors.transparent,
-              child: ListView.builder(
+              child: Scrollbar(
+                radius: const Radius.circular(45),
+                child: ListView.builder(
                   padding:
                       const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
                   itemCount: filteredCases.length,
                   itemBuilder: (context, index) => DoctorCaseTile(
                       filteredCases[index], authUser, user,
                       permissionStatus: permissionStatus)),
-            ),
+            )),
           ),
         ],
       );

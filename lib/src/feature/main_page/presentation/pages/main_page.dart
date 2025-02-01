@@ -279,7 +279,10 @@ class MyMainPageState extends State<MainPage> {
                 .fetchCases(user.userProfileId, authUser.accessToken);
           }
         },
-        child: ListView.builder(
+        child: Scrollbar(
+          radius: const Radius.circular(45),
+            controller: _scrollController,
+            child: ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
             controller: _scrollController,
             itemCount: filteredCases.length,
@@ -288,7 +291,7 @@ class MyMainPageState extends State<MainPage> {
                   return const Center(child: CustomCircularProgressBar());
                 }
                 return CaseTile(context, filteredCases[index], authUser, user);
-            })
+            }))
       );
     } else if (state is MyCasesLoadedButEmpty) {
       return SingleChildScrollView(

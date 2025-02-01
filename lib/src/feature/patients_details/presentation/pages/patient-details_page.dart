@@ -358,12 +358,16 @@ class FollowInfo extends StatelessWidget {
             color: Colors.transparent,
             shadowColor: Colors.transparent,
             surfaceTintColor: Colors.transparent,
-            child: ListView.builder(
+            child: Scrollbar(
+              radius: const Radius.circular(45),
+                child: Padding(padding: const EdgeInsets.all(4),
+                  child: ListView.builder(
               itemCount: state.followCase.length,
               shrinkWrap: true,
               itemBuilder: ((context, index) => FollowTile(context,
                   state.followCase[index], patName, patientDetails, authUser)),
-            ));
+            )
+            )));
       } else if (state is FollowCaseLoadedButEmpty) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,

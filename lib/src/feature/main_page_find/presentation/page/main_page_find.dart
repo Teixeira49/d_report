@@ -337,7 +337,10 @@ class MyMainPageFindState extends State<MainPageFind> {
           color: Colors.transparent,
           shadowColor: Colors.transparent,
           surfaceTintColor: Colors.transparent,
-          child: Scrollbar(child: ListView.builder(
+          child: Scrollbar(
+            controller: _scrollController,
+              radius: const Radius.circular(45),
+              child: ListView.builder(
             controller: _scrollController,
               padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
               itemCount: filteredCases.length,

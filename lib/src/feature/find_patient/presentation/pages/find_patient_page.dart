@@ -362,7 +362,11 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                 color: Colors.transparent,
                 shadowColor: Colors.transparent,
                 surfaceTintColor: Colors.transparent,
-                child: ListView.builder(
+                child: Scrollbar(
+                  radius: const Radius.circular(45),
+                    child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 2.5),
+                    child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: filteredCases.length,
                     itemBuilder: (context, index) {
@@ -385,7 +389,7 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                         child: CaseTile(
                             context, filteredCases[index], authUser, user),
                       );
-                    }))),
+                    }))))),
       );
     } else if (state is FindPatientLoadedButEmpty) {
       return Center(
