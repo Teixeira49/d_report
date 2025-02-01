@@ -7,8 +7,9 @@ class AssignUtilsInitial extends AssignUtilsState {}
 class AssignUtilsLoading extends AssignUtilsState {}
 
 class AssignUtilsLoaded extends AssignUtilsState {
+  final String sms;
   final CareAssign endAssign;
-  AssignUtilsLoaded({required this.endAssign});
+  AssignUtilsLoaded({required this.sms, required this.endAssign});
 }
 
 class AssignUtilsTimeout extends AssignUtilsState {

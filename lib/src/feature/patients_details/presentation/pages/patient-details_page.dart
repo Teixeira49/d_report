@@ -351,6 +351,9 @@ class FollowInfo extends StatelessWidget {
           ],
         ));
       } else if (state is FollowCaseLoaded) {
+        for (var i in state.followCase) {
+          print('DocID ${i.docId} Date ${i.cafReportDate} CafId ${i.cafId} Titulo ${i.cafReportTitle} Tipo ${i.cafReportType} ');
+        }
         return Card(
             color: Colors.transparent,
             shadowColor: Colors.transparent,
@@ -531,9 +534,14 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
           tileIcon: Icons.date_range,
         ),
         CustomCardPatientRow(
-          widgetKey: "Sintomatologia",
+          widgetKey: "Enfermedad Actual",
           widgetValue: state.caseReport.casSymptomatology.toString(),
           tileIcon: Icons.local_hospital,
+        ),
+        CustomCardPatientRow(
+          widgetKey: "Examen Fisico",
+          widgetValue: state.caseReport.casPhysicalState.toString(),
+          tileIcon: Icons.biotech,
         ),
         CustomCardPatientRow(
           widgetKey: "Diagnostico Inicial",
@@ -589,9 +597,9 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
           BlocConsumer<AssignUtilsCubit, AssignUtilsState>(
               listener: (miniContext, miniState) {
             if (miniState is AssignUtilsLoaded) {
-              Navigator.pop(miniContext);
+              //Navigator.of(context).pop();
               FloatingSnackBar.show(
-                  miniContext, 'Se ha retirado del caso correctamente');
+                  miniContext, miniState.sms);
             } else if (miniState is AssignUtilsFail) {
               FloatingWarningSnackBar.show(miniContext, miniState.errorSMS);
             }

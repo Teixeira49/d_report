@@ -24,7 +24,7 @@ class AssignUtilsCubit extends Cubit<AssignUtilsState>{
 
       data.fold(
               (l) => emit(AssignUtilsFail(errorSMS: l.message)),
-              (r) => emit(AssignUtilsLoaded(endAssign: r))
+              (r) => emit(AssignUtilsLoaded(sms: 'Se ha retirado del caso correctamente', endAssign: r))
       );
 
     }catch(e){
@@ -45,7 +45,7 @@ class AssignUtilsCubit extends Cubit<AssignUtilsState>{
 
       data.fold(
               (l) => emit(AssignUtilsFail(errorSMS: l.message)),
-              (r) => emit(AssignUtilsLoaded(endAssign: r))
+              (r) => emit(AssignUtilsLoaded(sms: 'Se ha vinculado Correctamente', endAssign: r))
       );
 
     }catch(e){

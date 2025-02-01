@@ -34,7 +34,7 @@ class MyCustomCardPatientRowWidget extends State<CustomCardPatientRow> {
               width: 7,
             ),
             title: Text(widget.widgetKey),
-            subtitle: Text(widget.widgetValue),
+            subtitle: Text(widget.widgetValue, textAlign: TextAlign.justify,),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
                 children: [
