@@ -351,9 +351,6 @@ class FollowInfo extends StatelessWidget {
           ],
         ));
       } else if (state is FollowCaseLoaded) {
-        for (var i in state.followCase) {
-          print('DocID ${i.docId} Date ${i.cafReportDate} CafId ${i.cafId} Titulo ${i.cafReportTitle} Tipo ${i.cafReportType} ');
-        }
         return Card(
             color: Colors.transparent,
             shadowColor: Colors.transparent,

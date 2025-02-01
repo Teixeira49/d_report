@@ -131,9 +131,8 @@ class MyMainPageFindState extends State<MainPageFind> {
 
   @override
   Widget build(BuildContext context) {
-    final remoteDataSource = FindCasesRemoteDataSourceImpl();
-    final repository =
-        FindCasesRepositoryImpl(myCasesRemoteDataSource: remoteDataSource);
+    //final remoteDataSource = FindCasesRemoteDataSourceImpl();
+    //final repository = FindCasesRepositoryImpl(myCasesRemoteDataSource: remoteDataSource);
 
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
 

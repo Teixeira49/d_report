@@ -147,12 +147,19 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
     if (state is FollowDetailedCaseInitial) {
       return const Center(child: CustomCircularProgressBar());
     } else if (state is FollowDetailedCaseLoaded) {
+      var patHeight = patDetails['patHeight'] != null
+          ? '${Helper.writeHeightByInt(patDetails['patHeight']!)} mts'
+          : "Sin Datos";
+      var patWeight = patDetails['patWeight'] != null
+          ? '${Helper.writeWeightByInt(patDetails['patWeight']!)} kgs'
+          : "Sin Datos";
+
       return RefreshIndicator(
           onRefresh: () async {
             print('Recargar');
           },
           child: SingleChildScrollView(
-          child: Column(
+              child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
@@ -205,40 +212,51 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                              const CustomCardResumeRow(
-                                widgetKey: "Caracteristicas del paciente",
-                                iconData: Icons.medical_information,
-                              ),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Expanded(
-                                      child: ListTile(
-                                        title: const Text('Peso'),
-                                        subtitle: Text(
-                                            '${Helper.writeWeightByInt(patDetails['patWeight'])} kg '),
+                            const CustomCardResumeRow(
+                              widgetKey: "Caracteristicas del paciente",
+                              iconData: Icons.medical_information,
+                            ),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Expanded(
+                                    child: ListTile(
+                                      title: const Text('Peso'),
+                                      subtitle: Text(
+                                        patWeight,
+                                        maxLines: 1,
                                       ),
                                     ),
-                                    const SizedBox(width: 12,),
-                                    Expanded(
-                                      child: ListTile(
-                                        title: const Text('Estatura'),
-                                        subtitle: Text(
-                                            '${Helper.writeHeightByInt(patDetails['patHeight'])} m'),
+                                  ),
+                                  const SizedBox(
+                                    width: 12,
+                                  ),
+                                  Expanded(
+                                    child: ListTile(
+                                      title: const Text('Estatura'),
+                                      subtitle: Text(
+                                        patHeight,
+                                        maxLines: 1,
                                       ),
                                     ),
-                                    const SizedBox(width: 12,),
-                                    Expanded(
-                                      child: ListTile(
-                                        title: const Text('Sangre'),
-                                        subtitle: Text(
-                                            'Tipo ${patDetails['bloodType']}'),
+                                  ),
+                                  const SizedBox(
+                                    width: 12,
+                                  ),
+                                  Expanded(
+                                    child: ListTile(
+                                      title: const Text('Sangre'),
+                                      subtitle: Text(
+                                        'Tipo ${patDetails['bloodType']}',
+                                        maxLines: 1,
                                       ),
-                                    )
-                                  ]),
-                                ],
-                              )
+                                    ),
+                                  )
+                                ]),
+                          ],
+                        )
                       : Container(),
                   const CustomCardResumeRow(
                     widgetKey: "Informacion sobre la Evolución",
