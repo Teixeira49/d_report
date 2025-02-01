@@ -4,7 +4,7 @@ import 'package:retry/retry.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/entities/case_results_dto.dart';
-import '../models/case_results_dto.dart';
+import '../models/case_results_dto_model.dart';
 import '../models/my_case_model.dart';
 
 abstract class FindCasesRemoteDataSource {

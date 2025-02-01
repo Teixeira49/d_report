@@ -1,9 +1,8 @@
 import 'package:d_report/src/core/network/error/failures.dart';
-import 'package:d_report/src/shared/domain/entities/case_report.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-import '../../domain/entities/patient.dart';
+import '../../domain/entities/search_patients_dto.dart';
 import '../../domain/repository/find_patient_reporitory.dart';
 import '../datasource/remote/find_patient_remote_datasource.dart';
 
@@ -16,9 +15,9 @@ class FindPatientRepositoryImpl implements FindPatientRepository {
   });
 
   @override
-  Future<Either<Failure, List<SearchPatient>>> searchPatients(String query, int searchKey, bool resetPage, String accessToken) async {
+  Future<Either<Failure, PatientsResultsDTO>> searchPatients(String query, int searchKey, bool resetPage, String accessToken) async {
     try {
-      final List<SearchPatient> resp = await findPatientRemoteDataSource.searchPatients(query, searchKey, resetPage, accessToken);
+      final PatientsResultsDTO resp = await findPatientRemoteDataSource.searchPatients(query, searchKey, resetPage, accessToken);
       return Right(resp);
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));

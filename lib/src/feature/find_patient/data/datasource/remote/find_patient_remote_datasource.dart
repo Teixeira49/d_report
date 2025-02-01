@@ -1,14 +1,15 @@
+import 'package:d_report/src/feature/find_patient/data/model/search_patients_dto_model.dart';
 import 'package:retry/retry.dart';
 
 import 'package:dio/dio.dart';
 
-
 import '../../../../../core/utils/constants/network_constants.dart';
 import '../../../domain/entities/patient.dart';
+import '../../../domain/entities/search_patients_dto.dart';
 import '../../model/patient_model.dart';
 
 abstract class FindPatientRemoteDataSource {
-  Future<List<SearchPatient>> searchPatients(
+  Future<PatientsResultsDTO> searchPatients(
       String query, int searchKey, bool resetPage, String accessToken);
 }
 
@@ -22,7 +23,7 @@ class FindPatientRemoteDataSourceImpl implements FindPatientRemoteDataSource {
   bool get isFetching => _isFetching;
 
   @override
-  Future<List<SearchPatient>> searchPatients(
+  Future<PatientsResultsDTO> searchPatients(
       String query, int searchKey, bool resetPage, String accessToken) async {
     if (!_isFetching) {
       _isFetching = true;
@@ -61,7 +62,7 @@ class FindPatientRemoteDataSourceImpl implements FindPatientRemoteDataSource {
     print(resp.data);
     print('Mis items $items');
 
-    return items;
+    return PatientsResultsDTOModel.fromMixedJsonAndList(dataF, items);
 
   }
 

@@ -34,19 +34,43 @@ class MyFindPatientPageState extends State<FindPatientPage> {
 
   int _tempIndexSelectedPatient = -1;
 
+  final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
+  late FindPatientCubit _patientCubit;
+
   @override
   void initState() {
+    final findPatientCaseDataSource = FindPatientRemoteDataSourceImpl();
+    final repository = FindPatientRepositoryImpl(findPatientRemoteDataSource: findPatientCaseDataSource);
+    _patientCubit = FindPatientCubit(repository);
+    _scrollController.addListener(_onScroll);
     super.initState();
   }
 
   @override
   void dispose() {
+    _patientCubit.close();
+    _scrollController.dispose();
     _searchController.dispose();
     _focusNode.dispose();
     super.dispose();
+  }
+
+  void _onScroll() {
+    final argument = ModalRoute.of(context)!.settings.arguments as Map;
+    AuthUser authUser = argument["AuthCredentials"];
+    if (_scrollController.position.pixels >=
+        _scrollController
+            .position.maxScrollExtent) {
+      setState(() {
+        _patientCubit.findPatients(
+            _searchController.text,
+            _selectedIndex,
+            authUser.accessToken, false);
+      });
+    }
   }
 
   void _switchSearchState() {
@@ -110,9 +134,8 @@ class MyFindPatientPageState extends State<FindPatientPage> {
     User user = argument["userData"];
     AuthUser authUser = argument["AuthCredentials"];
 
-    final findPatientCaseDataSource = FindPatientRemoteDataSourceImpl();
-    final repository = FindPatientRepositoryImpl(
-        findPatientRemoteDataSource: findPatientCaseDataSource);
+    //final findPatientCaseDataSource = FindPatientRemoteDataSourceImpl();
+    //final repository = FindPatientRepositoryImpl(findPatientRemoteDataSource: findPatientCaseDataSource);
 
     void finisherSearch() {
       /*var x;
@@ -144,8 +167,8 @@ class MyFindPatientPageState extends State<FindPatientPage> {
     }
 
     return BlocProvider(
-        create: (_) => FindPatientCubit(repository),
-        child: BlocConsumer<FindPatientCubit, FindPatientState>(
+      create: (context) => _patientCubit,
+      child: BlocConsumer<FindPatientCubit, FindPatientState>(
             listener: (context, state) {
           if (state is FindPatientFail) {
             FloatingWarningSnackBar.show(context, state.errorSMS);
@@ -363,10 +386,12 @@ class MyFindPatientPageState extends State<FindPatientPage> {
                 shadowColor: Colors.transparent,
                 surfaceTintColor: Colors.transparent,
                 child: Scrollbar(
-                  radius: const Radius.circular(45),
+                    //controller: _scrollController,
+                    radius: const Radius.circular(45),
                     child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 2.5),
                     child: ListView.builder(
+                      controller: _scrollController,
                     shrinkWrap: true,
                     itemCount: filteredCases.length,
                     itemBuilder: (context, index) {

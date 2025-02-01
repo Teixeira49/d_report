@@ -93,6 +93,7 @@ class FloatingActionButtonAddPatient extends StatelessWidget {
                             ),
                             minLeadingWidth: 2,
                             onTap: () {
+
                               Navigator.pop(context);
                               Navigator.of(context).pushNamed(
                                   '/main/new-case/find-patient',

@@ -8,6 +8,9 @@ import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/drawer.dart';
 
+import '../../../find_patient/data/datasource/remote/find_patient_remote_datasource.dart';
+import '../../../find_patient/data/repository/find_patient_repository_impl.dart';
+import '../../../find_patient/presentation/cubit/search_patient/search_patient_cubit.dart';
 import '../../data/datasources/remote/my_cases_remote_data_sources.dart';
 import '../../data/repositories/my_cases_repository_impl.dart';
 import '../cubit/my_cases/my_cases_cubit.dart';
@@ -95,6 +98,10 @@ class MyMainPageState extends State<MainPage> {
     final repository =
         MyCasesRepositoryImpl(myCasesRemoteDataSource: remoteDataSource);
 
+    final findPatientCaseDataSource = FindPatientRemoteDataSourceImpl();
+    final findRepository = FindPatientRepositoryImpl(
+        findPatientRemoteDataSource: findPatientCaseDataSource);
+
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
 
     User user = argument["userData"];
@@ -105,9 +112,14 @@ class MyMainPageState extends State<MainPage> {
     _docId = user.userProfileId;
     _token = authUser.accessToken; // TODO Delete Hardcode solution when the global token will implemented
 
-    return BlocProvider(
-        create: (_) => MyCasesCubit(repository)
-          ..fetchCases(user.userProfileId, authUser.accessToken),
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => MyCasesCubit(repository)
+              ..fetchCases(user.userProfileId, authUser.accessToken),),
+          BlocProvider(
+              create: (_) => FindPatientCubit(findRepository)) // Esto me daña la cohecion de ventanas, pero es una medida desesperada
+        ],
         child:
             BlocBuilder<MyCasesCubit, MyCasesState>(
                 //buildWhen: (previous, current) {

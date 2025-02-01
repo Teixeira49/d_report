@@ -1,4 +1,3 @@
-
 import '../../domain/entities/case_results_dto.dart';
 
 class CaseResultsDTOModel extends CaseResultsDTO {
@@ -10,7 +9,6 @@ class CaseResultsDTOModel extends CaseResultsDTO {
   });
 
   factory CaseResultsDTOModel.fromMixedJsonAndList(json, cases) {
-    print(json['last']);
     return CaseResultsDTOModel(
         listCasesSimple: cases,
         isComplete: json['last'],

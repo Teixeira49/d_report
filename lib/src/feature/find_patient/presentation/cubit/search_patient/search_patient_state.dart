@@ -1,8 +1,6 @@
 import '../../../domain/entities/patient.dart';
 
-abstract class FindPatientState {
-
-}
+abstract class FindPatientState {}
 
 class FindPatientInitial extends FindPatientState {}
 
@@ -12,12 +10,15 @@ class FindPatientLoading extends FindPatientState {
 class FindPatientLoaded extends FindPatientState {
   final List<SearchPatient> patients;
   final String filter;
-  FindPatientLoaded({required this.patients, this.filter = ''});
+  final bool isComplete;
 
-  FindPatientLoaded copyWith({List<SearchPatient>? patients, String? filter}) {
+  FindPatientLoaded({required this.patients, this.filter = '', this.isComplete = false});
+
+  FindPatientLoaded copyWith({List<SearchPatient>? patients, String? filter, bool? isComplete}) {
     return FindPatientLoaded(
-      patients: patients ?? this.patients,
+      patients: patients != null ? [...patients, ...this.patients] : this.patients,
       filter: filter ?? this.filter,
+      isComplete: isComplete ?? this.isComplete,
     );
   }
 }

@@ -14,14 +14,14 @@ class FindCasesCubit extends Cubit<FindCasesState> {
   final FindCasesRepository _findCasesRepository;
 
   Future<void> fetchSearchCases(String query, int searchKey, String accessToken,
-      [bool resetPage = true, List<CaseSimple>? elementsLoaded]) async {
-    final List<CaseSimple> x = [];
+      [bool resetPage = true]) async {
+    final List<CaseSimple> inList = [];
     bool isComplete = false;
 
     if (state is FindCasesLoading) return;
     if (state is FindCasesLoaded) {
       if ((state as FindCasesLoaded).cases.isNotEmpty) {
-        x.addAll((state as FindCasesLoaded).cases);
+        inList.addAll((state as FindCasesLoaded).cases);
       }
       if ((state as FindCasesLoaded).isComplete) {
         isComplete = (state as FindCasesLoaded).isComplete;
@@ -44,7 +44,7 @@ class FindCasesCubit extends Cubit<FindCasesState> {
             (r) => r.listCasesSimple.isNotEmpty
                 ? emit(resetPage
                     ? FindCasesLoaded(cases: r.listCasesSimple)
-                    : FindCasesLoaded(cases: x).copyWith(
+                    : FindCasesLoaded(cases: inList).copyWith(
                         newCases: r.listCasesSimple, isComplete: r.isComplete))
                 : emit(FindCasesLoadedButEmpty(
                     sms: "No se ha podido encontrar el caso")));

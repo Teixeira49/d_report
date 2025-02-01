@@ -1,9 +1,7 @@
 
 import '../../../domain/entities/case_simple.dart';
 
-abstract class FindCasesState {
-}
-
+abstract class FindCasesState {}
 
 class FindCasesInitial extends FindCasesState {}
 
