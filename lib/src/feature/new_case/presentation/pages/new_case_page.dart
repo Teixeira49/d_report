@@ -143,7 +143,7 @@ class MyNewCasePageState extends State<NewCasePage> {
                               vertical: size.height * 0.010,
                             ),
                             child: CaseDataTextArea(
-                              contextRow: 'Sintomatologia',
+                              contextRow: 'Enfermedad Actual',
                               controllerData: _casSymptomatologyController,
                             ),
                           ),
