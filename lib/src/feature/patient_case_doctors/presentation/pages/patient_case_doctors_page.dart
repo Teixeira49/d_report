@@ -61,7 +61,6 @@ class MyPatientCaseDoctorsState extends State<PatientCaseDoctorsPage> {
     }
   }
 
-  // ViewDoctorsCubit
   @override
   Widget build(BuildContext context) {
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
@@ -71,13 +70,6 @@ class MyPatientCaseDoctorsState extends State<PatientCaseDoctorsPage> {
     User user = argument["userData"];
     AuthUser authUser = argument["AuthCredentials"];
     ViewDetailsStatus permissionStatus = argument["casPermission"];
-
-    //final CaseDoctorRemoteDataSourceImpl caseDoctorRemoteDataSourceImpl =
-    //    CaseDoctorRemoteDataSourceImpl();
-    //final CaseDoctorRepositoryImpl caseDoctorRepositoryImpl =
-    //    CaseDoctorRepositoryImpl(caseDoctorRemoteDataSourceImpl);
-    //final FetchDoctorsUseCase fetchDoctorsUseCase =
-    //    FetchDoctorsUseCase(caseDoctorRepositoryImpl);
 
     return BlocProvider(
       create: (_) => _viewDoctorsCubit..getDoctors(caseId, authUser.accessToken),
