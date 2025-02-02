@@ -10,9 +10,9 @@ class FetchDoctorsUseCase {
 
   FetchDoctorsUseCase(this._caseDoctorRepository);
 
-  Future<Either<Failure, ViewDoctors>> call(int casId, String accessToken) async {
+  Future<Either<Failure, ViewDoctors>> call(int casId, bool resetPage, String accessToken) async {
     try {
-      var data = await _caseDoctorRepository.getDoctorsInCase(casId, accessToken);
+      var data = await _caseDoctorRepository.getDoctorsInCase(casId, resetPage, accessToken);
       return data.fold(
           (l) => Left(ServerFailure(l.message)),
           (r) => Right(r),

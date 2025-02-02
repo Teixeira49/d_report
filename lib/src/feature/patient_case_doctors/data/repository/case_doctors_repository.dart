@@ -14,10 +14,10 @@ class CaseDoctorRepositoryImpl implements CaseDoctorRepository {
 
   @override
   Future<Either<Failure, ViewDoctors>> getDoctorsInCase(
-      int casId, String accessToken) async {
+      int casId, bool resetPage, String accessToken) async {
     try {
       final doctorsInCaseData = await _caseDoctorRemoteDataSource
-          .getDoctorsInCase(casId, accessToken);
+          .getDoctorsInCase(casId, resetPage, accessToken);
       return Right(doctorsInCaseData);
     } on DioException {
       return Left(ServerFailure('Fallo en conexion con el servidor'));

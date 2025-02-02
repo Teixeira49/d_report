@@ -5,5 +5,5 @@ import '../entities/view_doctors.dart';
 
 abstract class CaseDoctorRepository {
 
-  Future<Either<Failure, ViewDoctors>> getDoctorsInCase(int casId, String accessToken);
+  Future<Either<Failure, ViewDoctors>> getDoctorsInCase(int casId, bool resetPage, String accessToken);
 }

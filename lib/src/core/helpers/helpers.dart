@@ -1,14 +1,19 @@
 import 'package:intl/intl.dart';
 
 class Helper {
-
   static String getCodeByDate() {
-    return '${DateTime.now()}'.replaceAll(':', '').replaceAll('.', '').replaceAll('-', '').replaceAll(' ', '-');
+    return '${DateTime.now()}'
+        .replaceAll(':', '')
+        .replaceAll('.', '')
+        .replaceAll('-', '')
+        .replaceAll(' ', '-');
   }
 
-  static String getDateSMSByString(String dateTargetString, [bool isRev = false]) {
+  static String getDateSMSByString(String dateTargetString,
+      [bool isRev = false]) {
     DateTime parsedDate = DateTime.parse(dateTargetString);
-    List<String> parsedDataList = parsedDate.toLocal().toIso8601String().split('T');
+    List<String> parsedDataList =
+        parsedDate.toLocal().toIso8601String().split('T');
     if (isRev) {
       DateFormat date = DateFormat("dd/MM/yyyy");
       parsedDataList[0] = date.format(DateTime.parse(parsedDataList[0]));
@@ -16,26 +21,31 @@ class Helper {
     return "El ${parsedDataList[0]} a las ${parsedDataList[1].split(".")[0]} horas";
   }
 
-  static String getDateWithoutHour(DateTime dateTime){
+  static String getDateWithoutHour(DateTime dateTime) {
     return '${addZero(dateTime.day)}/${addZero(dateTime.month)}/${dateTime.year}';
   }
 
   static String cutDateByString(String dateTarget) {
-    dateTarget = dateTarget.substring(3,13);
+    dateTarget = dateTarget.substring(3, 13);
     DateTime parsedDate = DateTime.parse(dateTarget);
     DateFormat date = DateFormat("dd/MM/yyyy");
     return date.format(parsedDate);
   }
 
-  static String addZero(int date) {
-    return date < 10 ? '0$date' : '$date';
+  static String addZero(int date, [bool isNegative = false, int margin = 10]) {
+    if (date < margin && date >= 0) {
+      return '0$date';
+    } else if (date < 0 && date > margin * -1) {
+      return '-${isNegative ? '0' : ''}${date.toString().substring(1)}';
+    }
+    return date.toString();
   }
 
   static String getFullNameInRow(String name, String lastName) {
     return '$name $lastName';
   }
 
-  static String capitalize(String text){
+  static String capitalize(String text) {
     if (text.isEmpty) return text;
     return text[0].toUpperCase() + text.substring(1).toLowerCase();
   }
@@ -57,7 +67,8 @@ class Helper {
 
   static int countCaseDaysByString(String dateTarget, [String? endTarget]) {
     DateTime iTarget = DateTime.parse(dateTarget);
-    DateTime fTarget = endTarget == null ? DateTime.now() : DateTime.parse(endTarget);
+    DateTime fTarget =
+        endTarget == null ? DateTime.now() : DateTime.parse(endTarget);
     return fTarget.difference(iTarget).inDays;
   }
 
@@ -71,12 +82,14 @@ class Helper {
     return fixedWeight.toStringAsFixed(2);
   }
 
-  static String writeHeightByDouble(double originHeight, [bool reverse = false]) {
+  static String writeHeightByDouble(double originHeight,
+      [bool reverse = false]) {
     final fixedHeight = reverse ? (originHeight * 100) : (originHeight / 100);
     return fixedHeight.round().toStringAsFixed(0);
   }
 
-  static String writeWeightByDouble(double originWeight, [bool reverse = false]) {
+  static String writeWeightByDouble(double originWeight,
+      [bool reverse = false]) {
     final fixedWeight = reverse ? (originWeight * 1000) : (originWeight / 1000);
     return fixedWeight.round().toStringAsFixed(0);
   }

@@ -8,7 +8,7 @@ import '../../../domain/entities/view_doctors.dart';
 import '../../model/assigned_doctor_model.dart';
 
 abstract class CaseDoctorRemoteDataSource {
-  Future<ViewDoctors> getDoctorsInCase(int casId, String accessToken);
+  Future<ViewDoctors> getDoctorsInCase(int casId, bool resetPage, String accessToken);
 }
 
 class CaseDoctorRemoteDataSourceImpl implements CaseDoctorRemoteDataSource {
@@ -16,13 +16,19 @@ class CaseDoctorRemoteDataSourceImpl implements CaseDoctorRemoteDataSource {
 
   bool get isFetching => _isFetching;
 
+  int _page = 0;
+
   final Dio dio = Dio();
 
   @override
   Future<ViewDoctors> getDoctorsInCase(
-      int casId, String accessToken) async {
+      int casId, bool resetPage, String accessToken) async {
     if (!_isFetching) {
       _isFetching = true;
+    }
+
+    if (resetPage) {
+      _page = 0;
     }
 
     const r = RetryOptions(maxAttempts: 3);
@@ -40,19 +46,15 @@ class CaseDoctorRemoteDataSourceImpl implements CaseDoctorRemoteDataSource {
             data: {
               'size': 10,
               'isRev': false,
+              'pag': _page,
             }));
 
     final dataF = resp.data as Map<String, dynamic>;
-
-    print(dataF);
-    final count = dataF['totalElements'];
 
     final items = (dataF["content"] as List)
         .map((item) => AssignedDoctorModel.fromJson(item))
         .toList();
 
-    print(items);
-
-    return ViewDoctorsModel.fromMixed(items, count);
+    return ViewDoctorsModel.fromMixed(items, dataF);
   }
 }

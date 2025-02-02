@@ -14,9 +14,54 @@ import '../widgets/doctor_case_tile.dart';
 import '../widgets/doctor_header_tile.dart';
 import '../widgets/refresh_button.dart';
 
-class PatientCaseDoctorsPage extends StatelessWidget {
+class PatientCaseDoctorsPage extends StatefulWidget {
+
   const PatientCaseDoctorsPage({super.key});
 
+  @override
+  MyPatientCaseDoctorsState createState() => MyPatientCaseDoctorsState();
+}
+
+class MyPatientCaseDoctorsState extends State<PatientCaseDoctorsPage> {
+
+  final ScrollController _scrollController = ScrollController();
+
+  late ViewDoctorsCubit _viewDoctorsCubit;
+
+  @override
+  void initState() {
+    _scrollController.addListener(_onScroll);
+    final CaseDoctorRemoteDataSourceImpl caseDoctorRemoteDataSourceImpl =
+    CaseDoctorRemoteDataSourceImpl();
+    final CaseDoctorRepositoryImpl caseDoctorRepositoryImpl =
+    CaseDoctorRepositoryImpl(caseDoctorRemoteDataSourceImpl);
+    final FetchDoctorsUseCase fetchDoctorsUseCase =
+    FetchDoctorsUseCase(caseDoctorRepositoryImpl);
+    _viewDoctorsCubit = ViewDoctorsCubit(fetchDoctorsUseCase);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final argument = ModalRoute.of(context)!.settings.arguments as Map;
+    AuthUser authUser = argument["AuthCredentials"];
+    int caseId = argument['casKey'];
+
+    if (_scrollController.position.pixels >=
+        _scrollController
+            .position.maxScrollExtent) {
+      setState(() {
+        context.read<ViewDoctorsCubit>().getDoctors(caseId, authUser.accessToken, false); // TODO impl resetPage
+      });
+    }
+  }
+
+  // ViewDoctorsCubit
   @override
   Widget build(BuildContext context) {
     final argument = ModalRoute.of(context)!.settings.arguments as Map;
@@ -27,16 +72,15 @@ class PatientCaseDoctorsPage extends StatelessWidget {
     AuthUser authUser = argument["AuthCredentials"];
     ViewDetailsStatus permissionStatus = argument["casPermission"];
 
-    final CaseDoctorRemoteDataSourceImpl caseDoctorRemoteDataSourceImpl =
-        CaseDoctorRemoteDataSourceImpl();
-    final CaseDoctorRepositoryImpl caseDoctorRepositoryImpl =
-        CaseDoctorRepositoryImpl(caseDoctorRemoteDataSourceImpl);
-    final FetchDoctorsUseCase fetchDoctorsUseCase =
-        FetchDoctorsUseCase(caseDoctorRepositoryImpl);
+    //final CaseDoctorRemoteDataSourceImpl caseDoctorRemoteDataSourceImpl =
+    //    CaseDoctorRemoteDataSourceImpl();
+    //final CaseDoctorRepositoryImpl caseDoctorRepositoryImpl =
+    //    CaseDoctorRepositoryImpl(caseDoctorRemoteDataSourceImpl);
+    //final FetchDoctorsUseCase fetchDoctorsUseCase =
+    //    FetchDoctorsUseCase(caseDoctorRepositoryImpl);
 
     return BlocProvider(
-      create: (_) => ViewDoctorsCubit(fetchDoctorsUseCase)
-        ..getDoctors(caseId, authUser.accessToken),
+      create: (_) => _viewDoctorsCubit..getDoctors(caseId, authUser.accessToken),
       child: BlocBuilder<ViewDoctorsCubit, ViewDoctorsState>(
         builder: (context, state) {
           return Scaffold(
@@ -95,8 +139,10 @@ class PatientCaseDoctorsPage extends StatelessWidget {
               shadowColor: Colors.transparent,
               surfaceTintColor: Colors.transparent,
               child: Scrollbar(
+                controller: _scrollController,
                 radius: const Radius.circular(45),
                 child: ListView.builder(
+                  controller: _scrollController,
                   padding:
                       const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
                   itemCount: filteredCases.length,
@@ -154,86 +200,82 @@ class PatientCaseDoctorsPage extends StatelessWidget {
               ));
     } else if (state is ViewDoctorsTimeout) {
       return SingleChildScrollView(
-              child: Container(
-                  margin: const EdgeInsets.all(24),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const DoctorHeaderTile(assignations: -1,),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Divider(
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        '¡Algo ha salido Mal!',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      SizedBox(
-                        height: 340,
-                        child: Image.asset(
-                          "assets/images/not_found_logo.png",
-                        ),
-                      ),
-                      Text(
-                        state.sms,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      RefreshElevatedButton(
-                        size: size,
-                        function: () async {
-                          await context
-                              .read<ViewDoctorsCubit>()
-                              .getDoctors(caseId, authUser.accessToken);
-                        },
-                      ),
-                    ],
-                  )));
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const DoctorHeaderTile(assignations: 0,),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Divider(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Text(
+                    '¡Algo ha salido Mal!',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(
+                    height: 340,
+                    child: Image.asset(
+                      "assets/images/not_found_logo.png",
+                    ),
+                  ),
+                  Text(
+                    state.sms,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  RefreshElevatedButton(
+                    size: size,
+                    function: () async {
+                      await context
+                          .read<ViewDoctorsCubit>()
+                          .getDoctors(caseId, authUser.accessToken);
+                    },
+                  ),
+                ],
+              ));
     } else if (state is ViewDoctorsFail) {
       return SingleChildScrollView(
-              child: Container(
-                  margin: const EdgeInsets.all(24),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const DoctorHeaderTile(assignations: -1,),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Divider(
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        '¡Algo ha salido Mal!',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      SizedBox(
-                        height: 340,
-                        child: Image.asset(
-                          "assets/images/not_found_logo.png",
-                        ),
-                      ),
-                      Text(
-                        state.errorSMS,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      RefreshElevatedButton(
-                        size: size,
-                        function: () async {
-                          await context
-                              .read<ViewDoctorsCubit>()
-                              .getDoctors(caseId, authUser.accessToken);
-                        },
-                      ),
-                    ],
-                  )));
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const DoctorHeaderTile(assignations: 0,),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Divider(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Text(
+                    '¡Algo ha salido Mal!',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(
+                    height: 340,
+                    child: Image.asset(
+                      "assets/images/not_found_logo.png",
+                    ),
+                  ),
+                  Text(
+                    state.errorSMS,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  RefreshElevatedButton(
+                    size: size,
+                    function: () async {
+                      await context
+                          .read<ViewDoctorsCubit>()
+                          .getDoctors(caseId, authUser.accessToken);
+                    },
+                  ),
+                ],
+              ));
     } else {
       return Container();
     }
