@@ -50,7 +50,6 @@ class PatientDetailsPage extends StatefulWidget {
 
   @override
   MyPatientDetailsState createState() => MyPatientDetailsState();
-
 }
 
 class MyPatientDetailsState extends State<PatientDetailsPage> {
@@ -61,15 +60,16 @@ class MyPatientDetailsState extends State<PatientDetailsPage> {
 
   @override
   void initState() {
+    super.initState();
     final cafRemoteDataSource = FollowCaseRemoteDataSourceImpl();
     final cafRepository = FollowRepositoryImpl(cafRemoteDataSource);
     _followReportCubit = FollowReportCubit(followRepositoryImpl: cafRepository);
     _scrollController.addListener(_onScroll);
-    super.initState();
   }
 
   @override
   void dispose() {
+    _followReportCubit.close();
     _scrollController.dispose();
     super.dispose();
   }
@@ -82,12 +82,10 @@ class MyPatientDetailsState extends State<PatientDetailsPage> {
     int caseId = argument['casKey'];
     AuthUser authUser = argument["AuthCredentials"];
     if (_scrollController.position.pixels >=
-        _scrollController
-            .position.maxScrollExtent) {
+        _scrollController.position.maxScrollExtent) {
       setState(() {
         _followReportCubit.fetchFollowCaseDetails(
-            caseId,
-            authUser.accessToken, false);
+            caseId, authUser.accessToken, false);
       });
     }
   }
@@ -131,7 +129,7 @@ class MyPatientDetailsState extends State<PatientDetailsPage> {
               ..fetchCaseDetails(
                   caseId, user.userProfileId, authUser.accessToken)),
         BlocProvider(
-            create: (_) =>
+            create: (context) =>
             _followReportCubit
               ..fetchFollowCaseDetails(caseId, authUser.accessToken)),
         BlocProvider(
@@ -257,89 +255,76 @@ class MyPatientDetailsState extends State<PatientDetailsPage> {
                         ))
                   ],
                 ),
-                body: NestedScrollView(
-                  //  physics: BouncingScrollPhysics(),
-                    headerSliverBuilder: (context, _) {
-                      return [
-                        SliverList(
-                            delegate: SliverChildListDelegate([
-                              patientInfo(
+                body: Column(
+                  children: [
+                    patientInfo(
+                        context,
+                        state,
+                        authUser,
+                        user,
+                        caseId,
+                        3,
+                        size),
+                    const TabBar(
+                      tabs: [
+                        Tab(text: "Paciente", icon: Icon(Icons.person)),
+                        Tab(
+                            text: "Resumen",
+                            icon: Icon(Icons.library_books) //auto_stories
+                        ),
+                        Tab(text: "Evolucion", icon: Icon(Icons.medication)),
+                        //Tab(
+                        //  text: "Seguimiento", Ordenes
+                        //  icon: Icon(Icons.biotech) biotech
+                        //),
+                      ],
+                    ),
+                    Expanded(
+                        child: TabBarView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          children: [
+                            SingleChildScrollView(
+                              child: patientInfo(
                                   context,
                                   state,
                                   authUser,
                                   user,
                                   caseId,
-                                  3,
+                                  1,
                                   size),
-                            ]))
-                      ];
-                    },
-                    body: Column(
-                      children: [
-                        const TabBar(
-                          tabs: [
-                            Tab(text: "Paciente", icon: Icon(Icons.person)),
-                            Tab(
-                                text: "Resumen",
-                                icon: Icon(Icons.library_books) //auto_stories
                             ),
-                            Tab(text: "Evolucion", icon: Icon(
-                                Icons.medication)),
-                            //Tab(
-                            //  text: "Seguimiento", Ordenes
-                            //  icon: Icon(Icons.biotech) biotech
-                            //),
+                            SingleChildScrollView(
+                              child: patientInfo(
+                                  context,
+                                  state,
+                                  authUser,
+                                  user,
+                                  caseId,
+                                  2,
+                                  size),
+                            ),
+                             RefreshIndicator(
+                                onRefresh: () async {
+                                  context.read<FollowReportCubit>()
+                                      .fetchFollowCaseDetails(
+                                      caseId, authUser.accessToken);
+                                },
+                                child: FollowInfo(
+                                    patFullName,
+                                    (state is PatientDataLoaded)
+                                        ? {
+                                      'birthday':
+                                      state.patient.patBirthdayDate,
+                                      'bloodType': state.patient.patBloodType,
+                                      'patHeight': state.caseReport.patHeight,
+                                      'patWeight': state.caseReport.patWeight,
+                                    }
+                                        : null,
+                                    size, _scrollController),),
                           ],
-                        ),
-                        Expanded(
-                            child: TabBarView(
-                              children: [
-                                SingleChildScrollView(
-                                  child: patientInfo(
-                                      context,
-                                      state,
-                                      authUser,
-                                      user,
-                                      caseId,
-                                      1,
-                                      size),
-                                ),
-                                SingleChildScrollView(
-                                  child: patientInfo(
-                                      context,
-                                      state,
-                                      authUser,
-                                      user,
-                                      caseId,
-                                      2,
-                                      size),
-                                ),
-                                SingleChildScrollView(
-                                  child: RefreshIndicator(
-                                    onRefresh: () async {
-                                      print('esto refrescara el caso');
-                                    },
-                                    child: FollowInfo(
-                                        patFullName,
-                                        (state is PatientDataLoaded)
-                                            ? {
-                                          'birthday':
-                                          state.patient.patBirthdayDate,
-                                          'bloodType': state.patient
-                                              .patBloodType,
-                                          'patHeight': state.caseReport
-                                              .patHeight,
-                                          'patWeight': state.caseReport
-                                              .patWeight,
-                                        }
-                                            : null,
-                                        size, _scrollController),
-                                  ),
-                                )
-                              ],
-                            ))
-                      ],
-                    )),
+                        ))
+                  ],
+                ),
                 floatingActionButton: _FloatingActionButtonForTab(
                     casId: caseId,
                     docId: 23,
@@ -410,7 +395,9 @@ String getTitleDocument(state) {
 }
 
 class FollowInfo extends StatelessWidget {
-  const FollowInfo(this.patName, this.patientDetails, this.size, this.scrollController, {super.key});
+  const FollowInfo(this.patName, this.patientDetails, this.size,
+      this.scrollController,
+      {super.key});
 
   final ScrollController scrollController;
   final String patName;
@@ -428,35 +415,39 @@ class FollowInfo extends StatelessWidget {
     return BlocBuilder<FollowReportCubit, FollowReportState>(
         builder: (context, state) {
           if (state is FollowCaseInitial || state is FollowCaseLoading) {
-            return Center(child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: size.height / 6,
-                ),
-                const CustomCircularProgressBar()
-              ],
-            ));
+            return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: size.height / 6,
+                    ),
+                    const CustomCircularProgressBar()
+                  ],
+                ));
           } else if (state is FollowCaseLoaded) {
             return Card(
                 color: Colors.transparent,
                 shadowColor: Colors.transparent,
                 surfaceTintColor: Colors.transparent,
                 child: Scrollbar(
-                  controller: scrollController,
+                    controller: scrollController,
                     radius: const Radius.circular(45),
-                    child: Padding(padding: const EdgeInsets.all(4),
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                         child: ListView.builder(
                           controller: scrollController,
                           itemCount: state.followCase.length,
                           shrinkWrap: true,
                           itemBuilder: ((context, index) =>
-                              FollowTile(context,
-                                  state.followCase[index], patName,
-                                  patientDetails, authUser)),
-                        )
-                    )));
+                              FollowTile(
+                                  context,
+                                  state.followCase[index],
+                                  patName,
+                                  patientDetails,
+                                  authUser)),
+                        ))));
           } else if (state is FollowCaseLoadedButEmpty) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -609,8 +600,7 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
         ),
         CustomCardPatientRow(
           widgetKey: 'Altura y Peso',
-          widgetValue:
-          '$patHeight y $patWeight',
+          widgetValue: '$patHeight y $patWeight',
           tileIcon: MyFlutterApp.ruler,
           sizeIcon: 22,
           redirectIcon: 4,
@@ -703,8 +693,7 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
               listener: (miniContext, miniState) {
                 if (miniState is AssignUtilsLoaded) {
                   //Navigator.of(context).pop();
-                  FloatingSnackBar.show(
-                      miniContext, miniState.sms);
+                  FloatingSnackBar.show(miniContext, miniState.sms);
                 } else if (miniState is AssignUtilsFail) {
                   FloatingWarningSnackBar.show(miniContext, miniState.errorSMS);
                 }
@@ -876,8 +865,8 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
                                                     'patId': state.patient
                                                         .patId,
                                                     'casKey': caseId,
-                                                    'casStartDate': state
-                                                        .caseReport
+                                                    'casStartDate':
+                                                    state.caseReport
                                                         .casEnterDate,
                                                   });
                                             },

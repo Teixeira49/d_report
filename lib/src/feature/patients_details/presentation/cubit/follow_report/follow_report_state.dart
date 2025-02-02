@@ -21,7 +21,7 @@ class FollowCaseLoaded extends FollowReportState {
   FollowCaseLoaded copyWith(
       {List<FollowCase>? follows, int? count, String? filter, bool? isComplete}) {
     return FollowCaseLoaded(
-      followCase: follows != null ? [...follows , ...followCase] : followCase,
+      followCase: follows != null ? [...followCase , ...follows] : followCase,
       filter: filter ?? this.filter,
       countTotal: count ?? countTotal,
       isComplete: isComplete ?? this.isComplete,

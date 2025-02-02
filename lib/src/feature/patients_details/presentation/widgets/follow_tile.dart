@@ -31,8 +31,8 @@ class FollowTile extends StatelessWidget {
         ),
         leading: const SizedBox(
           height: double.maxFinite,
-          width: 5,
         ),
+        trailing: const Icon(Icons.navigate_next),
         onTap: () {
           Navigator.of(context)
               .pushNamed('/main/patients/details/follow-case', arguments: {
