@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../core/network/error/failures.dart';
-import '../../domain/entities/follows_in_case.dart';
+import '../../domain/entities/follows_in_case_results_dto.dart';
 import '../../domain/repositories/follow_case_repository.dart';
 import '../datasource/remote/follow_case_remote_data_source.dart';
 
@@ -13,9 +13,9 @@ class FollowRepositoryImpl implements FollowRepository {
   final FollowCaseRemoteDataSource _followCaseRemoteDataSource;
 
   @override
-  Future<Either<Failure, List<FollowCase>>> getCaseFollowsByCase(casId, accessToken) async {
+  Future<Either<Failure, FollowCaseResultsDTO>> getCaseFollowsByCase(casId, resetPage, accessToken) async {
     try {
-      final resp = await _followCaseRemoteDataSource.getCaseFollowsByCase(casId, accessToken);
+      final resp = await _followCaseRemoteDataSource.getCaseFollowsByCase(casId, resetPage, accessToken);
       return Right(resp);
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));

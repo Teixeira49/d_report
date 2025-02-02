@@ -1,20 +1,25 @@
 import 'package:d_report/src/core/utils/constants/network_constants.dart';
 import 'package:d_report/src/feature/patients_details/data/models/follow_detailed_model.dart';
 import 'package:d_report/src/feature/patients_details/data/models/follow_model.dart';
+import 'package:d_report/src/feature/patients_details/data/models/follows_in_case_results_dto_model.dart';
 import 'package:d_report/src/feature/patients_details/domain/entities/follows_detailed_case.dart';
 import 'package:d_report/src/feature/patients_details/domain/entities/follows_in_case.dart';
 import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
 
+import '../../../domain/entities/follows_in_case_results_dto.dart';
+
 abstract class FollowCaseRemoteDataSource {
-  Future<List<FollowCase>> getCaseFollowsByCase(int casId, String accessToken);
+  Future<FollowCaseResultsDTO> getCaseFollowsByCase(int casId, bool resetPage, String accessToken);
 
   Future<List<FollowDetailedCase>> getAllCaseFollowsByCase(
       int casId, int? docId, String accessToken);
 }
 
 class FollowCaseRemoteDataSourceImpl implements FollowCaseRemoteDataSource {
+
   int _page = 0;
+
   bool _isFetching = false;
 
   bool get isFetching => _isFetching;
@@ -22,10 +27,15 @@ class FollowCaseRemoteDataSourceImpl implements FollowCaseRemoteDataSource {
   final Dio dio = Dio();
 
   @override
-  Future<List<FollowCase>> getCaseFollowsByCase(
-      int casId, String accessToken) async {
+  Future<FollowCaseResultsDTO> getCaseFollowsByCase(
+      int casId, bool resetPage, String accessToken) async {
+
     if (!_isFetching) {
       _isFetching = true;
+    }
+
+    if (resetPage) {
+      _page = 0;
     }
 
     const r = RetryOptions(maxAttempts: 3);
@@ -46,22 +56,18 @@ class FollowCaseRemoteDataSourceImpl implements FollowCaseRemoteDataSource {
                   //'isRev'
                 }));
 
-    print(casId);
-    print(resp.data["content"]);
-
     _page++;
 
     final List<FollowCase> items = (resp.data["content"] as List)
         .map((item) => FollowModel.fromJson(item))
         .toList();
 
-    print('Mis items $items');
-    return items;
+    return FollowCaseResultsDTOModel.fromMixedJsonAndList(resp.data, items);
   }
 
   Future<void> refreshFollowCases(casId, accessToken) async {
     _page = 0;
-    await getCaseFollowsByCase(casId, accessToken);
+    await getCaseFollowsByCase(casId, true, accessToken);
   }
 
   @override

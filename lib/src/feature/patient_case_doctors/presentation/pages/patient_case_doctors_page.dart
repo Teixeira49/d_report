@@ -43,6 +43,7 @@ class MyPatientCaseDoctorsState extends State<PatientCaseDoctorsPage> {
 
   @override
   void dispose() {
+    _viewDoctorsCubit.close();
     _scrollController.dispose();
     super.dispose();
   }

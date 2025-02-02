@@ -44,6 +44,7 @@ class MyMainPageFindState extends State<MainPageFind> {
 
   @override
   void dispose() {
+    // TODO REFACTOR USE OF GLOBAL STATE
     _scrollController.dispose();
     _searchController.dispose();
     _focusNode.dispose();
