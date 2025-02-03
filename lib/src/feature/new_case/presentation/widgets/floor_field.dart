@@ -53,10 +53,10 @@ class FloorMixedField extends StatelessWidget {
         keyboardType: TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
-          LengthLimitingTextInputFormatter(2),
+          LengthLimitingTextInputFormatter(3),
         ],
         decoration: const InputDecoration(
-          hintText: 'Max. 2 números',
+          hintText: 'Max. 3 números',
         ),
       ),
       ),

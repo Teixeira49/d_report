@@ -27,7 +27,7 @@ class EntryAreaDropdownField extends StatelessWidget {
             alignment: Alignment.centerLeft,
             value: ea,
             child: Text(
-              ea,
+              entryAreaTypeMeta[ea]!,
               style: Theme.of(context).inputDecorationTheme.labelStyle,
             ));
       }).toList(),

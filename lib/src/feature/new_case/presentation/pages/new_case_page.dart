@@ -2,6 +2,7 @@ import 'package:d_report/src/feature/new_case/data/datasource/remote/new_case_re
 import 'package:d_report/src/feature/new_case/data/repository/new_case_repository_impl.dart';
 import 'package:d_report/src/feature/new_case/presentation/cubit/new_patient/new_patient_case_cubit.dart';
 import 'package:d_report/src/feature/new_case/presentation/cubit/new_patient/new_patient_case_state.dart';
+import 'package:d_report/src/shared/presentation/widget/loading_show_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
@@ -15,6 +16,7 @@ import '../widgets/data_textField.dart';
 import '../widgets/entry_area_field.dart';
 import '../widgets/finish_button.dart';
 import '../widgets/floor_field.dart';
+import '../widgets/is_referral_field.dart';
 
 class NewCasePage extends StatefulWidget {
   const NewCasePage({super.key});
@@ -38,7 +40,7 @@ class MyNewCasePageState extends State<NewCasePage> {
   final TextEditingController _casDiagnosisController = TextEditingController();
 
   //final TextEditingController _casStudyImgDateController = TextEditingController();
-  //final TextEditingController _casMethodOfEntryController = TextEditingController();
+  final bool _casMethodOfEntryController = false;
   final TextEditingController _casActualRoomController =
       TextEditingController();
   final ValueNotifier<String?> _casFloorLevelController = ValueNotifier(null);
@@ -68,8 +70,8 @@ class MyNewCasePageState extends State<NewCasePage> {
 
     User user = argument["userData"];
     AuthUser authUser = argument["AuthCredentials"];
-    String createStatus = argument['createStatus'];
     dynamic patData = argument['patient'];
+    bool casStatus = argument['createStatus'];
 
     return BlocProvider(
       create: (_) => NewCasePatientCubit(repository),
@@ -84,7 +86,9 @@ class MyNewCasePageState extends State<NewCasePage> {
         ),
         body: BlocConsumer<NewCasePatientCubit, NewCasePatientState>(
           listener: (context, state) {
-            if (state is NewCasePatientLoaded) {
+            if (state is NewCasePatientLoading) {
+              LoadingShowDialog.show(context, 'Creando Caso');
+            } else if (state is NewCasePatientLoaded) {
               Future.delayed(const Duration(seconds: 1), () {
                 //Navigator.of(context) // TODO Ineficiente, acumula mas widgets en pantalla
                 //    .pushNamed('/main/patients/', arguments: {
@@ -97,10 +101,12 @@ class MyNewCasePageState extends State<NewCasePage> {
                     'Paciente Registrado exitosamente en ${state.caseReport.casEntryArea}',
                     Icons.check,
                     Colors.green);
+                Navigator.of(context).pop(); // TODO Change for PopUntil
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               });
             } else if (state is NewCasePatientFail) {
+              Navigator.of(context).pop();
               FloatingWarningSnackBar.show(context, state.errorSMS);
             }
           },
@@ -116,6 +122,9 @@ class MyNewCasePageState extends State<NewCasePage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          const SizedBox(
+                            height: 24,
+                          ),
                           Flexible(
                               child: Container(
                             padding: EdgeInsets.symmetric(
@@ -127,6 +136,28 @@ class MyNewCasePageState extends State<NewCasePage> {
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           )),
+                          const SizedBox(height: 4,),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.075,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const SizedBox(width: 10),
+                                Text('Paciente Referido:', style: Theme.of(context).inputDecorationTheme.labelStyle,),
+                                const Spacer(),
+                                ConfigSwitch(
+                                  configVar: _casMethodOfEntryController,
+                                  onChanged: (newValue) {
+                                    !_casMethodOfEntryController;
+                                  },
+                                ),
+                                const SizedBox(width: 10),
+                              ],
+                            ),
+                          ),
+                          Divider(indent: size.width * 0.075, endIndent: size.width * 0.075, color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5)),
                           Container(
                             padding: EdgeInsets.symmetric(
                               horizontal: size.width * 0.075,
@@ -197,7 +228,7 @@ class MyNewCasePageState extends State<NewCasePage> {
                                 controllerData: _casEntryAreaController),
                           ),
                           const SizedBox(
-                            height: 70,
+                            height: 94,
                           )
                         ],
                       ),
@@ -209,10 +240,8 @@ class MyNewCasePageState extends State<NewCasePage> {
                   visible: keyboardEnabled == 0,
                   child: Positioned(
                     bottom: 30,
-                    child: (state is NewCasePatientLoading)
-                        ? const CircularProgressIndicator()
-                        : FinishRegisterCaseButton(
-                            caseStatus: createStatus,
+                    child: FinishRegisterCaseButton(
+                            casMethodOfEntry: _casMethodOfEntryController,
                             patData: patData,
                             casAdmissionReason:
                                 _casAdmissionReasonController.text,
@@ -227,7 +256,7 @@ class MyNewCasePageState extends State<NewCasePage> {
                                 _casEntryAreaController.value.toString(),
                             docId: user.userProfileId,
                             accessToken: authUser.accessToken,
-                            size: size,
+                            size: size, casStatus: casStatus,
                           ),
                   )),
             ]);

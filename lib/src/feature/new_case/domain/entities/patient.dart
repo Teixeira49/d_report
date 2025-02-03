@@ -8,6 +8,8 @@ class Patient {
   final String? patBirthdayPlace;
   final int patGuardianDni;
   final String patBloodType;
+  final String patGuardianEmail;
+  final String patGuardianPhone;
 
   Patient(
       {
@@ -19,6 +21,8 @@ class Patient {
         required  this .patBirthdayPlace,
         required  this .patGuardianDni,
         required  this .patBloodType,
+        required  this .patGuardianEmail,
+        required  this .patGuardianPhone,
       }
       );
 }
