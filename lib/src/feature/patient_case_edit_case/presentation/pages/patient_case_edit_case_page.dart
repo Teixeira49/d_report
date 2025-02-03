@@ -144,8 +144,8 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
         CaseEditRequestRemoteDataSourceImpl();
     final CaseEditRepositoryImpl caseEditRepository =
         CaseEditRepositoryImpl(caseEditRequestRemoteDataSource);
-    final PostCaseDateUseCase postCaseDateUseCase =
-        PostCaseDateUseCase(caseEditRepository);
+    final PostCaseDataUseCase postCaseDataUseCase =
+        PostCaseDataUseCase(caseEditRepository);
     final CreateInstanceCaseReportUseCase createInstanceCaseReportUseCase =
         CreateInstanceCaseReportUseCase();
     final CompareCasesUseCase compareCasesUseCase = CompareCasesUseCase();
@@ -163,7 +163,7 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
         providers: [
           BlocProvider(
               create: (_) =>
-                  CaseEditorCubit(postCaseDateUseCase, compareCasesUseCase)),
+                  CaseEditorCubit(postCaseDataUseCase, compareCasesUseCase)),
           BlocProvider(
               create: (_) =>
                   CaseEditorSelectCubit(createInstanceCaseReportUseCase)

@@ -27,7 +27,7 @@ class CaseTile extends StatelessWidget {
           style: Theme.of(context).listTileTheme.titleTextStyle,
         ),
         subtitle: Text(
-          dataPatientRow.casActualRoom,
+          'Historia: ${dataPatientRow.casId}\nHabitacion: ${dataPatientRow.casActualRoom} ',
           style: Theme.of(context).listTileTheme.subtitleTextStyle,
         ),
         leading: BulletDecorator(sizeBullet: 9, marginHorizontal: 5,

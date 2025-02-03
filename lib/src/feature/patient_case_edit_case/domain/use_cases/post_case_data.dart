@@ -4,9 +4,9 @@ import '../../../../core/network/error/failures.dart';
 import '../entities/case_report_edit_request.dart';
 import '../repositories/case_edit_reporitory.dart';
 
-class PostCaseDateUseCase {
+class PostCaseDataUseCase {
 
-  PostCaseDateUseCase(this._caseEditRepository);
+  PostCaseDataUseCase(this._caseEditRepository);
 
   final CaseEditRepository _caseEditRepository;
 

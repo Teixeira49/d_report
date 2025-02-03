@@ -14,7 +14,7 @@ import '../../data/repositories/my_cases_repository_impl.dart';
 import '../cubit/find_case/find_cases_cubit.dart';
 import '../cubit/find_case/find_cases_state.dart';
 import '../widget/bottom_bar_panel.dart';
-import '../widget/case_tile_copy.dart';
+import '../widget/case_tile_find.dart';
 import '../widget/error_button.dart';
 import '../widget/filter_search_window.dart';
 

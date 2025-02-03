@@ -16,7 +16,7 @@ import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../../data/repository/find_patient_repository_impl.dart';
 import '../cubit/search_patient/search_patient_cubit.dart';
 import '../cubit/search_patient/search_patient_state.dart';
-import '../widgets/case_tile_copy.dart';
+import '../widgets/case_tile_find_patient.dart';
 import '../widgets/next_state_button.dart';
 import '../widgets/select_filter_button.dart';
 

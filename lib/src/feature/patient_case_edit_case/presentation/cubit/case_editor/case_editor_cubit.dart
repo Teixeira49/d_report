@@ -7,10 +7,10 @@ import '../../../domain/use_cases/post_case_data.dart';
 import 'case_editor_state.dart';
 
 class CaseEditorCubit extends Cubit<CaseEditorState> {
-  final PostCaseDateUseCase _postCaseDateUseCase;
+  final PostCaseDataUseCase _postCaseDataUseCase;
   final CompareCasesUseCase _compareCasesUseCase;
 
-  CaseEditorCubit(this._postCaseDateUseCase, this._compareCasesUseCase) : super(CaseEditorInitial());
+  CaseEditorCubit(this._postCaseDataUseCase, this._compareCasesUseCase) : super(CaseEditorInitial());
 
   Future<void> postChanges(CaseReportEditRequest caseReportEditRequest, CaseReport caseReport, int part, String accessToken) async {
     try {
@@ -20,7 +20,7 @@ class CaseEditorCubit extends Cubit<CaseEditorState> {
       if (check != null) {
         emit(CaseEditorWithoutUpdate(errorSMS: check));
       } else {
-        final data = await _postCaseDateUseCase.call(caseReportEditRequest, part, accessToken);
+        final data = await _postCaseDataUseCase.call(caseReportEditRequest, part, accessToken);
         data.fold((l) => emit(CaseEditorFail(errorSMS: l.message)),
                 (r) => emit(CaseEditorPosted(caseReportEditRequest: r)));
       }
