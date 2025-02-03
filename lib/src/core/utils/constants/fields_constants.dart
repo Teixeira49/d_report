@@ -72,6 +72,8 @@ final List<String> caseStatusType = ['Activo', 'Finalizado', 'Todos'];
 
 final List<String> addCaseFollowType = ['Ninguno', 'Solo Mios', 'Todos'];
 
+final Map<String, String> methodOfEntryTypeMeta = {'Referral': 'Referido', 'New': 'No Referido',};
+
 final List<String> floorType = <String>["1","2","3","4","5","6"]; // TODO Cambiar a que la lista se genere sola
 
 const String role = "Roles"; // TODO Crear su propio archivo de constantes

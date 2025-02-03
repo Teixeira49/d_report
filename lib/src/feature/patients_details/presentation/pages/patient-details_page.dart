@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/helpers/helpers.dart';
 
+import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/data/model/view_details_status.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
@@ -577,21 +578,24 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
           tileIcon: Icons.calendar_month,
         ),
         Visibility(
+          visible: state.patient.patBirthdayPlace != null && state.patient.patBirthdayPlace!.isNotEmpty,
+          child: CustomCardPatientRow(
+            widgetKey: "Lugar de Nacimiento",
+            widgetValue: state.patient.patBirthdayPlace.toString(),
+            tileIcon: Icons.location_on,
+          ),
+        ),
+        Visibility(
           visible: state.patient.patDni != null,
           child: CustomCardPatientRow(
-            widgetKey: "Doc Identidad",
+            widgetKey: "Doc. Identidad",
             widgetValue: state.patient.patDni.toString(),
             tileIcon: Icons.perm_identity,
           ),
         ),
         CustomCardPatientRow(
-          widgetKey: "Doc Identidad Representante",
-          widgetValue: state.patient.patGuardianDni.toString(),
-          tileIcon: Icons.family_restroom,
-        ),
-        CustomCardPatientRow(
           widgetKey: "Genero",
-          widgetValue: state.patient.patGender.toString(),
+          widgetValue: genreTypeFullMeta[state.patient.patGender.toString()]!,
           tileIcon: state.patient.patGender.toString() == "Male"
               ? Icons.male
               : (state.patient.patGender.toString() == "Female"
@@ -609,6 +613,28 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
           widgetKey: "Tipo de Sangre",
           widgetValue: 'Grupo ${state.patient.patBloodType}',
           tileIcon: Icons.water_drop,
+        ),
+        Divider(color: Theme.of(context).colorScheme.outline, indent: 28, endIndent: 18,),
+        CustomCardPatientRow(
+          widgetKey: "Doc. Identidad Representante",
+          widgetValue: state.patient.patGuardianDni.toString(),
+          tileIcon: Icons.family_restroom,
+        ),
+        Visibility(
+          visible: state.patient.patGuPhone != null,
+          child: CustomCardPatientRow(
+            widgetKey: "Telefono del Representante",
+            widgetValue: state.patient.patGuPhone.toString(),
+            tileIcon: Icons.phone,
+          ),
+        ),
+        Visibility(
+          visible: state.patient.patGuEmail != null,
+          child: CustomCardPatientRow(
+            widgetKey: "Correo del Representante",
+            widgetValue: state.patient.patGuEmail.toString(),
+            tileIcon: Icons.email,
+          ),
         ),
       ],
     );
@@ -645,13 +671,17 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
         ),
         CustomCardPatientRow(
           widgetKey: "Area de Ingreso del Caso",
-          widgetValue: 'Modulo de ${state.caseReport.casEntryArea}',
+          widgetValue: 'Modulo de ${entryAreaTypeMeta[state.caseReport.casEntryArea]!}',
           tileIcon: Icons.local_hospital,
         ),
         CustomCardPatientRow(
           widgetKey: "Origen de ingreso del paciente",
-          widgetValue: state.caseReport.casMethodOfEntry.toString(),
+          widgetValue: methodOfEntryTypeMeta[state.caseReport.casMethodOfEntry.toString()]!,
           tileIcon: Icons.people,
+        ),
+        Visibility(
+            visible: state.caseReport.casEndFlag == true,
+            child: Divider(color: Theme.of(context).colorScheme.outline, indent: 28, endIndent: 18,),
         ),
         Visibility(
           visible: state.caseReport.casEndFlag == true,
