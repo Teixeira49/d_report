@@ -8,6 +8,7 @@ import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/doctor.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../../../../shared/presentation/widget/loading_show_dialog.dart';
+import '../../../../shared/presentation/widget/phone_user_field.dart';
 import '../../data/datasource/remote/profile_edit_remote_data_source.dart';
 import '../../data/repositories/profile_edit_repository_impl.dart';
 import '../../domain/use_cases/compare_profile.dart';
@@ -385,11 +386,9 @@ class MyEditProfilePageState extends State<EditProfilePage> {
                                 Container(
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 24, vertical: 12),
-                                    child: DataTextField(
-                                      typeData: TextInputType.phone,
-                                      contextRow: "Telefono",
+                                    child: PhoneNumberField(
                                       iconData: Icons.phone_android,
-                                      controller: _phoneController,
+                                      controllerData: _phoneController,
                                     )),
                                 FetchUpdateButton(
                                     size: size,
