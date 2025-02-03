@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 
-import '../../../../core/utils/constants/fields_constants.dart';
+import '../../../core/utils/constants/fields_constants.dart';
 import '../formatter/phone_number_formatter.dart';
 
 class PhoneNumberField extends StatelessWidget {
-  const PhoneNumberField({super.key, required this.controllerData, required this.focusNode});
+  const PhoneNumberField({super.key, required this.controllerData, this.iconData, this.contextRow});
 
   final TextEditingController controllerData;
-  final FocusNode focusNode;
+  final IconData? iconData;
+  final String? contextRow;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,6 @@ class PhoneNumberField extends StatelessWidget {
       width: double.infinity,
       child: TextFormField(
         controller: controllerData,
-        focusNode: focusNode,
         keyboardType: TextInputType.phone,
         style: Theme.of(context).textTheme.labelLarge,
         obscureText: obscureTextDefault,
@@ -27,12 +27,12 @@ class PhoneNumberField extends StatelessWidget {
         ],
         decoration: InputDecoration(
           hintText: '+58 424 323-8366',
-          label: const Text('Telefono'),
+          label: Text(contextRow ?? 'Telefono'),
           fillColor: Theme.of(context).inputDecorationTheme.fillColor,
           filled: Theme.of(context).inputDecorationTheme.filled,
           border: Theme.of(context).inputDecorationTheme.border,
           suffixIcon: Icon(
-            Icons.phone,
+            iconData ?? Icons.phone,
             color: Theme.of(context).iconTheme.color,
           ),
           labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
