@@ -32,13 +32,17 @@ class Helper {
     return date.format(parsedDate);
   }
 
-  static String addZero(int date, [bool isNegative = false, int margin = 10]) {
+  static String addZero(int date, [bool isNegative = false, int margin = 10, int frequency = 1]) {
     if (date < margin && date >= 0) {
-      return '0$date';
+      return '${'0'*frequency}$date';
     } else if (date < 0 && date > margin * -1) {
-      return '-${isNegative ? '0' : ''}${date.toString().substring(1)}';
+      return '-${isNegative ? '0'*frequency : ''}${date.toString().substring(1)}';
     }
     return date.toString();
+  }
+
+  static String fillZero (String data, [int maxFill = 3]) {
+    return '${'0'*(3 - data.length)}$data';
   }
 
   static String getFullNameInRow(String name, String lastName) {

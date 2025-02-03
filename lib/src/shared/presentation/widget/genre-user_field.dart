@@ -64,7 +64,7 @@ class TypeGenreDropdownField extends StatefulWidget {
                 alignment: Alignment.centerLeft,
                 value: users,
                 child: Text(
-                  users,
+                  genreTypeFullMeta[users]!,
                   style: Theme.of(context).inputDecorationTheme.labelStyle,
                 )
             );

@@ -1,7 +1,7 @@
 import 'package:d_report/my_flutter_app_icons.dart';
 import 'package:d_report/src/feature/new_patient/presentation/cubit/new_patient/new_patient_case_state.dart';
 import 'package:d_report/src/shared/presentation/widget/floating_snack_bars.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:d_report/src/shared/presentation/widget/loading_show_dialog.dart';
 
 import 'package:flutter/material.dart';
 
@@ -12,6 +12,7 @@ import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/genre-user_field.dart';
+import '../../../../shared/presentation/widget/phone_user_field.dart';
 import '../../data/datasource/remote/new_patient_case_remote_datasource.dart';
 import '../../data/repository/new_patient_case_repository_impl.dart';
 import '../cubit/new_patient/new_patient_case_cubit.dart';
@@ -106,12 +107,14 @@ class MyNewPatientPageState extends State<NewPatientPage> {
         ),
         body: BlocConsumer<CheckPatientCubit, CheckPatientState>(
           listener: (context, state) {
-            if (state is CheckPatientLoaded) {
+            if (state is CheckPatientLoading) {
+              LoadingShowDialog.show(context, 'Comprobando Informacion');
+            } else if (state is CheckPatientLoaded) {
               Future.delayed(const Duration(seconds: 1), () {
                 if (state.sms == '') {
-                  // TODO research how change this
+                  Navigator.of(context).pop();
 
-                  Map<String, dynamic> x = {
+                  Map<String, dynamic> patientData = {
                     'patName': _patNameController.text,
                     'patLastName': _patLastNameController.text,
                     'patDni': _patDniController.text != ""
@@ -119,23 +122,27 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                         : null,
                     'patGender': _patGenderController.value,
                     'patBirthdayDate': _patBirthDateController.text,
-                    'patBirthdayPlace': '',
+                    'patBirthdayPlace': null,
                     'patGuardianDni': int.parse(_patGuDniController.text),
                     'patBloodType': _patBloodTypeController.value,
+                    'patGuEmail': _patGuEmailController.text,
+                    'patGuPhone': _patGuPhoneController.text,
                   };
 
                   Navigator.of(context)
                       .pushNamed('/main/new-case/add-case', arguments: {
                     "userData": user,
                     "AuthCredentials": authUser,
-                    "patient": x,
-                    "createStatus": 'New',
+                    "patient": patientData,
+                    "createStatus": true,
                   });
                 } else {
+                  Navigator.of(context).pop();
                   FloatingWarningSnackBar.show(context, state.sms);
                 }
               });
             } else if (state is CheckPatientFail) {
+              Navigator.of(context).pop();
               FloatingWarningSnackBar.show(context, state.errorSMS);
             }
           },
@@ -263,11 +270,9 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                                   horizontal: 24,
                                   vertical: 9,
                                 ),
-                                child: PatientDataTextFieldNumeric(
+                                child: PhoneNumberField(
                                   contextRow: 'Telefono representante',
                                   controllerData: _patGuPhoneController,
-                                  iconData: Icons.phone,
-                                  typeNumber: TextInputType.phone,
                                 ),
                               ),
                               Container(
@@ -275,11 +280,11 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                                   horizontal: 24,
                                   vertical: 9,
                                 ),
-                                child: PatientDataTextFieldNumeric(
+                                child: PatientDataTextField(
                                   contextRow: 'Correo representante (Opcional)',
                                   controllerData: _patGuEmailController,
                                   iconData: Icons.email,
-                                  typeNumber: TextInputType.phone,
+                                  textInputType: TextInputType.emailAddress,
                                 ),
                               ),
                               const SizedBox(
@@ -296,15 +301,15 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                     visible: keyboardEnabled == 0,
                     child: Positioned(
                       bottom: 30,
-                      child: (state is CheckPatientLoading)
-                          ? const CustomCircularProgressBar()
-                          : NextStateButton(
+                      child: NextStateButton(
                               patName: _patNameController.text,
-                              patLastName: _patLastNameController.text,
+                              patLastName: _patLastNameController.text, // TODO NOOOOOOOOOO
                               patGuDni: _patGuDniController.text,
+                              patDni: _patDniController.text,
                               patBirthDate: _patBirthDateController.text,
                               patGender: _patGenderController.value,
                               patBloodType: _patBloodTypeController.value,
+                              patGuPhone: _patGuPhoneController.text,
                               accessToken: authUser.accessToken,
                               size: size,
                             ),

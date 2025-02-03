@@ -6,6 +6,7 @@ class LoadingShowDialog {
   static void show(BuildContext context, String message) {
     showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext dialogContext) =>
             AlertDialog(
               backgroundColor: Theme

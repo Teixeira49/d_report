@@ -25,9 +25,9 @@ class NewPatientCaseRepositoryImpl implements NewPatientCaseRepository {
   }
 
   @override
-  Future<Either<Failure, String>> checkIfPatientExist(String patName, String patLastName, int patGuardianDni, String accessToken) async {
+  Future<Either<Failure, String>> checkIfPatientExist(String patName, String patLastName, int patGuardianDni, String accessToken, [int? patDni]) async {
     try {
-      final String resp = await newPatientCaseRemoteDataSource.checkIfPatientExist(patName, patLastName, patGuardianDni, accessToken);
+      final String resp = await newPatientCaseRemoteDataSource.checkIfPatientExist(patName, patLastName, patGuardianDni, accessToken, patDni);
       return Right(resp);
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));

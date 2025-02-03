@@ -4,11 +4,12 @@ import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class PatientDataTextField extends StatefulWidget {
 
-  const PatientDataTextField({super.key, required this.contextRow, required this.controllerData, required this.iconData});
+  const PatientDataTextField({super.key, required this.contextRow, required this.controllerData, required this.iconData, this.textInputType});
 
   final String contextRow;
   final TextEditingController controllerData;
   final IconData iconData;
+  final TextInputType? textInputType;
 
   @override
   MyPatientDataTextFieldWidget createState() => MyPatientDataTextFieldWidget();
@@ -24,7 +25,7 @@ class PatientDataTextField extends StatefulWidget {
           controller: widget.controllerData,
           style: Theme.of(context).textTheme.labelLarge,
           obscureText: obscureTextDefault,
-          keyboardType: TextInputType.name,
+          keyboardType: widget.textInputType ?? TextInputType.name ,
           decoration: InputDecoration(
             fillColor: Theme.of(context).inputDecorationTheme.fillColor,
             filled: Theme.of(context).inputDecorationTheme.filled,

@@ -10,6 +10,8 @@ class PatientModel extends Patient {
     required super.patBirthdayPlace,
     required super.patGuardianDni,
     required super.patBloodType,
+    required super.patGuardianEmail,
+    required super.patGuardianPhone,
   });
 
   factory PatientModel.fromJson(json) {
@@ -22,6 +24,8 @@ class PatientModel extends Patient {
       patBirthdayPlace: json['patBirthdayPlace'],
       patGuardianDni: json['patGuardianDni'],
       patBloodType: json['patBloodType'],
+      patGuardianEmail: json['patGuEmail'] != "" ? json['patGuEmail'] : null,
+      patGuardianPhone: json['patGuPhone'] != "" ? json['patGuPhone'] : null,
     );
   }
 
@@ -35,6 +39,8 @@ class PatientModel extends Patient {
       'patBirthdayPlace': patBirthdayPlace,
       'patGuardianDni': patGuardianDni,
       'patBloodType': patBloodType,
+      'patGuardianEmail': patGuardianEmail,
+      'patGuardianPhone': patGuardianPhone
     };
   }
 
@@ -48,6 +54,8 @@ class PatientModel extends Patient {
       patBirthdayPlace: patient.patBirthdayPlace,
       patGuardianDni: patient.patGuardianDni,
       patBloodType: patient.patBloodType,
+      patGuardianEmail: patient.patGuardianEmail,
+      patGuardianPhone: patient.patGuardianPhone,
     );
   }
 }

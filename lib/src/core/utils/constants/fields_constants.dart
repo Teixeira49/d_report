@@ -54,21 +54,25 @@ final List<String> genreType = <String>["Male","Female","Other"];
 
 final List<String> genreTypeFull = <String>["Hombre","Mujer","Otros", 'Todos'];
 
-final List<String> bloodType = <String>["Rh Nulo","A+","A-","B+","B-","AB+","AB-","O+","O-","Other"];
+final Map<String, String> genreTypeFullMeta = {'Male':"Hombre", 'Female':"Mujer", 'Other':"Otros", '':'Todos'};
+
+final List<String> bloodType = <String>["Rh Nulo","A+","A-","B+","B-","AB+","AB-","O+","O-",'Desconocido',"Otro"];
 
 final List<String> entryAreaType = <String>["Emergency", "Hospitalization", "Surgery"];
 
-final List<String> endCaseType = ['Recuperado', 'Murio', 'Referido'];
+final Map<String, String> entryAreaTypeMeta = {"Emergency": 'Emergencia', "Hospitalization": 'Hospitalizacion', "Surgery": 'Cirugia'};
 
-final Map<String, String> endCaseTypeMeta = {'SURVIVE': 'Recuperado', 'DEAD': 'Murio', 'REFERRAL':'Referido'};
+final List<String> endCaseType = ['Recuperado', 'Murio', 'Referido', 'Retirado'];
 
-final List<String> endCaseTypeFull = ['Recuperado', 'Murio', 'Referido', 'Activo', 'Todos']; // TODO Sobrevivio?  JAJAJJAJA
+final Map<String, String> endCaseTypeMeta = {'SURVIVE': 'Recuperado', 'DEAD': 'Murio', 'REFERRAL':'Referido', 'ESCAPED': 'Retirado'};
+
+final List<String> endCaseTypeFull = ['Recuperado', 'Murio', 'Referido', 'Retirado', 'Activo', 'Todos']; // TODO Sobrevivio?  JAJAJJAJA
 
 final List<String> caseStatusType = ['Activo', 'Finalizado', 'Todos'];
 
 final List<String> addCaseFollowType = ['Ninguno', 'Solo Mios', 'Todos'];
 
-final List<String> floorType = <String>["3","4","5","6"]; // TODO Cambiar a que la lista se genere sola
+final List<String> floorType = <String>["1","2","3","4","5","6"]; // TODO Cambiar a que la lista se genere sola
 
 const String role = "Roles"; // TODO Crear su propio archivo de constantes
 

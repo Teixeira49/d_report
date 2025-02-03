@@ -9,12 +9,12 @@ class CheckPatientCubit extends Cubit<CheckPatientState>{
 
   final NewPatientCaseRepository _newPatientCaseRepository;
 
-  Future<void> checkIfPatientExist(String patName, String patLastName, int patGuardianDni, String accessToken) async {
+  Future<void> checkIfPatientExist(String patName, String patLastName, int patGuardianDni, String accessToken, [int? patDni]) async {
 
     try {
       emit(CheckPatientLoading());
 
-      final sms = await _newPatientCaseRepository.checkIfPatientExist(patName, patLastName, patGuardianDni, accessToken);
+      final sms = await _newPatientCaseRepository.checkIfPatientExist(patName, patLastName, patGuardianDni, accessToken, patDni);
 
       sms.fold(
               (l) => emit(CheckPatientFail(errorSMS: "Error de conexion subiendo los datos")),

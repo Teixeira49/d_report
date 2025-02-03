@@ -7,7 +7,7 @@ import '../../../domain/entities/patient.dart';
 
 abstract class NewPatientCaseRemoteDataSource {
 
-  Future<String> checkIfPatientExist(String patName, String patLastName, int patGuardianDni, String accessToken);
+  Future<String> checkIfPatientExist(String patName, String patLastName, int patGuardianDni, String accessToken, [int? patDni]);
 
   Future<Patient> createPatient(Map<String, dynamic> patientData, String accessToken);
 
@@ -22,7 +22,7 @@ class NewPatientCaseRemoteDataSourceImpl implements NewPatientCaseRemoteDataSour
   bool get isFetching => _isFetching;
 
   @override
-  Future<String> checkIfPatientExist(String patName, String patLastName, int patGuardianDni, String accessToken) async {
+  Future<String> checkIfPatientExist(String patName, String patLastName, int patGuardianDni, String accessToken, [int? patDni]) async {
 
     if(!_isFetching) {
       _isFetching = true;
@@ -40,6 +40,9 @@ class NewPatientCaseRemoteDataSourceImpl implements NewPatientCaseRemoteDataSour
               'Authorization': 'Bearer $accessToken',
             },
           ),
+          queryParameters: patDni != null ? {
+            'patDni': patDni
+          } : null
         )
     );
 
