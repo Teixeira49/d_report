@@ -19,7 +19,7 @@ class FindPatientCubit extends Cubit<FindPatientState> {
     bool isComplete = false;
 
     if (state is FindPatientLoading) return;
-    if (state is FindPatientLoaded) {
+    if (state is FindPatientLoaded && !resetPage) {
       if ((state as FindPatientLoaded).patients.isNotEmpty) {
         inList.addAll((state as FindPatientLoaded).patients);
       }

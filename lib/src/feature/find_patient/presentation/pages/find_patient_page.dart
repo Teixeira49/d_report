@@ -157,12 +157,11 @@ class MyFindPatientPageState extends State<FindPatientPage> {
         x = 1;
       }*/
 
-
       Navigator.of(context).pushNamed('/main/new-case/add-case', arguments: {
         "userData": user,
         "AuthCredentials": authUser,
         "patient": filteredCases[_tempIndexSelectedPatient].patId,
-        "createStatus": 'Referral',
+        "createStatus": false,
       });
     }
 
