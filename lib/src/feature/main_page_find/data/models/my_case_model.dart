@@ -8,6 +8,7 @@ class MyCasesModel extends CaseSimple {
     required  super .casId,
     required  super .casActualRoom,
     required  super .casEndFlag,
+    required  super .casEndReason,
   });
 
   factory MyCasesModel.fromJson(json) {
@@ -15,7 +16,8 @@ class MyCasesModel extends CaseSimple {
         patName: json['patId']['patName'] + space + json['patId']['patLastName'],
         casActualRoom: json['casActualRoom'],
         casId: json['casId'].toString(),
-        casEndFlag:  json['casEndFlag']
+        casEndFlag:  json['casEndFlag'],
+        casEndReason: json['casEndReason'],
     );
   }
 
@@ -25,6 +27,7 @@ class MyCasesModel extends CaseSimple {
       'casActualRoom': casActualRoom,
       'patName': patName,
       'casEndFlag': casEndFlag,
+      'casEndReason': casEndReason
     };
   }
 
@@ -34,6 +37,7 @@ class MyCasesModel extends CaseSimple {
         casId: caseSimple.casId,
         casActualRoom: caseSimple.casActualRoom,
         casEndFlag: caseSimple.casEndFlag,
+        casEndReason: caseSimple.casEndReason,
     );
   }
 }

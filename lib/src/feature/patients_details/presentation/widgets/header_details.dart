@@ -4,6 +4,8 @@ import 'package:d_report/my_flutter_app_icons.dart';
 import 'package:d_report/src/shared/presentation/widget/bullet.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/config/styles/static_colors.dart';
+
 class HeaderDetails extends StatelessWidget {
   final BuildContext fatherContext;
   final String? status;
@@ -56,17 +58,8 @@ class HeaderDetails extends StatelessWidget {
                       marginHorizontal: 0,
                       marginVertical: 0,
                       gradientSystem: caseStatus == "Activo"
-                          ? [
-                              Colors.green,
-                              Colors.lightGreen,
-                              Colors.lightGreenAccent,
-                              Colors.limeAccent,
-                            ]
-                          : [
-                              Colors.pink,
-                              Colors.red,
-                              Colors.amber,
-                            ],
+                          ? ColorPalette.activeCase
+                          : ColorPalette.disabledCase,
                       shadowSystem: [
                         BoxShadow(
                           color: Colors.black87.withOpacity(0.2),

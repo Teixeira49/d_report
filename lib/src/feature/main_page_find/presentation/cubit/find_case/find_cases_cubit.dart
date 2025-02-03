@@ -20,7 +20,7 @@ class FindCasesCubit extends Cubit<FindCasesState> {
 
     if (state is FindCasesLoading) return;
     if (state is FindCasesLoaded) {
-      if ((state as FindCasesLoaded).cases.isNotEmpty) {
+      if ((state as FindCasesLoaded).cases.isNotEmpty && !resetPage) {
         inList.addAll((state as FindCasesLoaded).cases);
       }
       if ((state as FindCasesLoaded).isComplete) {

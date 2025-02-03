@@ -2,7 +2,9 @@ import 'package:d_report/src/feature/main_page/domain/entities/case_simple.dart'
 import 'package:d_report/src/shared/presentation/widget/bullet.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/config/styles/static_colors.dart';
 import '../../../../core/helpers/helpers.dart';
+import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
 
@@ -46,21 +48,12 @@ class CaseTile extends StatelessWidget {
 
               Text(!dataPatientRow.casEndFlag
                   ? textFormatterTrailingDays(Helper.countCaseDaysByString(dataPatientRow.casEnterDate))
-                  : dataPatientRow.casEndReason!),
+                  : textFormatterTrailingLabel(dataPatientRow.casEndReason)),
               const SizedBox(width: 4,),
             BulletDecorator(sizeBullet: 9, marginHorizontal: 5,
             marginVertical: 5, gradientSystem: !dataPatientRow.casEndFlag
-              ? [
-            Colors.green,
-            Colors.lightGreen,
-            Colors.lightGreenAccent,
-            Colors.limeAccent,
-          ]
-              : [
-            Colors.pink,
-            Colors.red,
-            Colors.amber,
-          ], // TODO CREATE CONSTANT
+              ? ColorPalette.activeCase
+              : ColorPalette.disabledCase,
           ),
       ],),
     onTap: () {
@@ -86,6 +79,14 @@ class CaseTile extends StatelessWidget {
       return '+999 Dias';
     } else {
       return '$days Dias';
+    }
+  }
+
+  static String textFormatterTrailingLabel(String? endReason) {
+    if (endReason == null) {
+      return 'Error';
+    } else {
+      return endCaseTypeMeta[endReason]!;
     }
   }
 }

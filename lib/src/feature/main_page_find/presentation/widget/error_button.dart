@@ -6,7 +6,7 @@ class ErrorElevatedButton extends StatelessWidget {
       {super.key, required this.size, required this.function});
 
   final Size size;
-  final AsyncCallback function;
+  final VoidCallback function;
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,8 @@ class ErrorElevatedButton extends StatelessWidget {
           shadowColor: MaterialStatePropertyAll<Color>(
               Theme.of(context).colorScheme.shadow),
         ),
-        onPressed: () async {
-          await function();
+        onPressed: ()  {
+           function();
           //await context
           //    .read<MyCasesCubit>()
           //    .refreshCases(user.userProfileId, authUser.accessToken);

@@ -1,6 +1,5 @@
 import 'package:d_report/src/feature/main_page_find/domain/entities/search_filter.dart';
 import 'package:d_report/src/feature/main_page_find/presentation/widget/select_filter_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -80,7 +79,7 @@ class MyMainPageFindState extends State<MainPageFind> {
     setState(() {
       _isSearching = !_isSearching;
       if (_isSearching) {
-        Future.delayed(Duration(milliseconds: 100), () {
+        Future.delayed(const Duration(milliseconds: 100), () {
           // TODO MAKE CONSTANT
           _focusNode.requestFocus();
         });
@@ -174,7 +173,7 @@ class MyMainPageFindState extends State<MainPageFind> {
                     TextFormField(
                   controller: _searchController,
                   focusNode: _focusNode,
-                  onChanged: (value) {
+                  onChanged: (value) async {
                     context.read<FindCasesCubit>().fetchSearchCases(
                         _searchController.text,
                         _selectedIndex,
@@ -380,7 +379,7 @@ class MyMainPageFindState extends State<MainPageFind> {
                       ErrorElevatedButton(
                         size: size,
                         function: () async {
-                          await context.read<FindCasesCubit>().refreshCases(
+                          context.read<FindCasesCubit>().refreshCases(
                               _searchController.text,
                               _selectedIndex,
                               authUser.accessToken);
@@ -413,7 +412,7 @@ class MyMainPageFindState extends State<MainPageFind> {
                       ErrorElevatedButton(
                         size: size,
                         function: () async {
-                          await context.read<FindCasesCubit>().refreshCases(
+                          context.read<FindCasesCubit>().refreshCases(
                               _searchController.text,
                               _selectedIndex,
                               authUser.accessToken);
@@ -453,10 +452,10 @@ class MyMainPageFindState extends State<MainPageFind> {
             ErrorElevatedButton(
               size: size,
               function: () async {
-                await context.read<FindCasesCubit>().refreshCases(
+                 context.read<FindCasesCubit>().refreshCases(
                     _searchController.text,
                     _selectedIndex,
-                    authUser.accessToken);
+                    authUser.accessToken); // TODO FIX
               },
             ),
             /*ElevatedButton(
