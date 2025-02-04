@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 //import 'package:permission_handler/permission_handler.dart';
 //import 'package:open_file/open_file.dart';
 
+import '../../../../core/config/styles/static_colors.dart';
 import '../../../../core/helpers/helpers.dart';
 
 import '../../../../core/utils/constants/fields_constants.dart';
@@ -221,8 +222,7 @@ class MyPatientDetailsState extends State<PatientDetailsPage> {
                                   subContext,
                                   'Informe guardado con exito.',
                                   Icons.check,
-                                  Colors
-                                      .green); // TODO Safe color in styes folder
+                                  ColorPalette.checkColor);
                             } else if (stateDownload is FileGeneratorFail) {
                               Navigator.of(context, rootNavigator: true).pop();
                               FloatingWarningSnackBar.show(
@@ -416,15 +416,12 @@ class FollowInfo extends StatelessWidget {
     return BlocBuilder<FollowReportCubit, FollowReportState>(
         builder: (context, state) {
           if (state is FollowCaseInitial || state is FollowCaseLoading) {
-            return Center(
+            return const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: size.height / 6,
-                    ),
-                    const CustomCircularProgressBar()
+                    CustomCircularProgressBar()
                   ],
                 ));
           } else if (state is FollowCaseLoaded) {
@@ -551,10 +548,8 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              height: size.height / 4,
-            ),
-            const CustomCircularProgressBar()
+            SizedBox(height: size.height / 3,),
+            const CustomCircularProgressBar(),
           ],
         ));
   } else if (state is PatientDataLoaded && indexTab == 1) {
@@ -639,6 +634,7 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
       ],
     );
   } else if (state is PatientDataLoaded && indexTab == 2) {
+    print(state.caseReport.casAdmissionReason);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -653,6 +649,14 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
           widgetValue: Helper.getDateSMSByString(
               state.caseReport.casEnterDate.toString()),
           tileIcon: Icons.date_range,
+        ),
+        Visibility(
+          visible: state.caseReport.casAdmissionReason != null && state.caseReport.casAdmissionReason != '',
+            child: CustomCardPatientRow(
+              widgetKey: "Motivo de Consulta",
+              widgetValue: state.caseReport.casAdmissionReason.toString(),
+              tileIcon: Icons.medical_services,
+            ),
         ),
         CustomCardPatientRow(
           widgetKey: "Enfermedad Actual",

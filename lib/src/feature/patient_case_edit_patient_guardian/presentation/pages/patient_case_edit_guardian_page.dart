@@ -2,12 +2,16 @@ import 'package:d_report/src/feature/patient_case_edit_patient_guardian/domain/e
 import 'package:d_report/src/feature/patient_case_edit_patient_guardian/domain/use_cases/compare_patient_guardians.dart';
 import 'package:d_report/src/feature/patient_case_edit_patient_guardian/domain/use_cases/create_instance_patient_guardian.dart';
 import 'package:d_report/src/feature/patient_case_edit_patient_guardian/presentation/cubit/select_editor/patient_guardian_editor_select_cubit.dart';
+import 'package:d_report/src/shared/presentation/formatter/text_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/config/styles/static_colors.dart';
+import '../../../../core/helpers/helpers.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../../../../shared/presentation/widget/loading_show_dialog.dart';
+import '../../../../shared/presentation/widget/phone_user_field.dart';
 import '../../data/datasource/remote/patient_guardian_edit_request_remote_data_source.dart';
 import '../../data/models/patient_guardian_edit_request_model.dart';
 import '../../data/repositories/patient_guardian_edit_repository.dart';
@@ -77,9 +81,9 @@ class MyEditCasePatientState extends State<EditCasePatientGuardianPage> {
     return PatientGuardianEditRequest(
       patGuId: patGuId,
       patGuDni: int.parse(_guardianDniController.text),
-      patGuAddress: _addressController.text,
+      patGuAddress: Helper.capitalize(_addressController.text, false),
       patGuTlf: _tlfController.text,
-      patGuEmail: _emailController.text,
+      patGuEmail: _emailController.text.toLowerCase(),
     );
   }
 
@@ -155,7 +159,7 @@ class MyEditCasePatientState extends State<EditCasePatientGuardianPage> {
                         contextGuardianEditor,
                         'Informe guardado con exito.',
                         Icons.check,
-                        Colors.green); // TODO Safe color in styes folder
+                        ColorPalette.checkColor); // TODO Safe color in styes folder
                   });
                   dynamic patientGuardianEditRequest =
                       PatientGuardianEditRequestModel.fromEntity(
@@ -213,6 +217,7 @@ class MyEditCasePatientState extends State<EditCasePatientGuardianPage> {
                                         contextRow: 'Cedula de Identidad',
                                         controllerData: _guardianDniController,
                                         textInputType: TextInputType.number,
+                                        inputFormatters: TextFormatters.dniFormatter,
                                       ),
                                     ),
                                     Container(
@@ -231,10 +236,10 @@ class MyEditCasePatientState extends State<EditCasePatientGuardianPage> {
                                         horizontal: 24,
                                         vertical: size.height * 0.010,
                                       ),
-                                      child: CaseDataTextField(
+                                      child: PhoneNumberField(
                                         contextRow: 'Telefono',
                                         controllerData: _tlfController,
-                                        textInputType: TextInputType.phone,
+                                        iconData: Icons.phone_android,
                                       ),
                                     ),
                                     Container(

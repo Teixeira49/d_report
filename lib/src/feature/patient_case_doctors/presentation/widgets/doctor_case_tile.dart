@@ -1,7 +1,9 @@
 import 'package:d_report/my_flutter_app_icons.dart';
+import 'package:d_report/src/shared/presentation/widget/case_tile_badge.dart';
 import 'package:d_report/src/shared/presentation/widget/floating_snack_bars.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/config/styles/static_colors.dart';
 import '../../../../shared/data/model/view_details_status.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
@@ -28,30 +30,11 @@ class DoctorCaseTile extends StatelessWidget {
         ),
         subtitle:
             Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            margin: const EdgeInsets.only(top: 6, right: 4),
-            decoration: BoxDecoration(
-                color: Theme.of(context)
-                    .colorScheme
-                    .secondaryContainer
-                    .withOpacity(0.2),
-                border: Border.all(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .secondaryContainer
-                        .withOpacity(0.3),
-                    width: 1),
-                borderRadius: const BorderRadius.all(Radius.circular(22))),
-            child: Text(
-              assignedDoctor.docSpeciality,
-              style: Theme.of(context).listTileTheme.subtitleTextStyle,
-            ),
-          )
+              BadgeTile(color: ColorPalette.badgeDoctorSpeciality, title: assignedDoctor.docSpeciality)
         ]),
-        tileColor: assignedDoctor.docId == user.userProfileId
-            ? Theme.of(context).listTileTheme.tileColor
-            : Theme.of(context).colorScheme.onTertiaryContainer,
+        tileColor: (assignedDoctor.docId == user.userProfileId
+            ? Theme.of(context).colorScheme.onTertiaryContainer
+            : Theme.of(context).listTileTheme.tileColor),
         leading: Icon(
           MyFlutterApp.user_md,
           size: 22,

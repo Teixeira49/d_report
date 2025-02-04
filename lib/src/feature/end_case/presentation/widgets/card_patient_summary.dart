@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:d_report/src/core/config/styles/profile_theme.dart';
-
 class CustomCardResumeRow extends StatefulWidget {
 
   const CustomCardResumeRow({

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
+import '../../../../shared/presentation/formatter/text_formatters.dart';
+
 class LastNameTextField extends StatelessWidget {
   const LastNameTextField({super.key, required this.controller});
 
@@ -16,6 +18,7 @@ class LastNameTextField extends StatelessWidget {
           style: Theme.of(context).textTheme.labelLarge,
           obscureText: obscureTextDefault,
           keyboardType: TextInputType.name,
+          inputFormatters: TextFormatters.onlyLettersAndNumbers,
           decoration: InputDecoration(
             fillColor: Theme.of(context).inputDecorationTheme.fillColor,
             filled: Theme.of(context).inputDecorationTheme.filled,

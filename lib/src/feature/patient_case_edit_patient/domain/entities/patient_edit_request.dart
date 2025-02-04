@@ -1,5 +1,6 @@
 class PatientEditRequest {
   PatientEditRequest({
+    required this.casId,
     required this.patId,
     required this.patFirstName,
     required this.patSecondName,
@@ -15,6 +16,7 @@ class PatientEditRequest {
     required this.patHeight,
   });
 
+  int casId;
   int patId;
   String patFirstName;
   String? patSecondName;

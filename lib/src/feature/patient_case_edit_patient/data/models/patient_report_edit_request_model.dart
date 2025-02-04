@@ -2,6 +2,7 @@ import '../../domain/entities/patient_edit_request.dart';
 
 class PatientEditRequestModel extends PatientEditRequest {
   PatientEditRequestModel({
+    required super.casId,
     required super.patId,
     required super.patFirstName,
     required super.patSecondName,
@@ -19,19 +20,20 @@ class PatientEditRequestModel extends PatientEditRequest {
 
   factory PatientEditRequestModel.fromJson(json) {
     return PatientEditRequestModel(
+      casId: json['casId'],
         patId: json['patId'],
-        patFirstName: json['patName'],
-        patSecondName: json['patSecName'],
-        patLastname: json['patLastName'],
-        patSecondSurname: json['patSecSurName'],
+        patFirstName: json['patFirstName'],
+        patSecondName: json['patSecondName'],
+        patLastname: json['patLastname'],
+        patSecondSurname: json['patSecondSurname'],
         patBirthdayDate: json['patBirthdayDate'],
         patBirthdayPlace: json['patBirthdayPlace'],
         patBloodType: json['patBloodType'],
         patDni: json['patDni'],
         patGender: json['patGender'],
         patGuardianDni: json['patGuardianDni'],
-        patWeight: 4500,// json['patWeight'],
-        patHeight: 15//json['patHeight']
+        patWeight: json['patWeight'],
+        patHeight: json['patHeight']
     );}
 
   Map<String, dynamic> toJson() {
@@ -65,6 +67,7 @@ class PatientEditRequestModel extends PatientEditRequest {
       case 1:
         return {
           "patId": patId,
+          'casId': casId,
           'patBirthdayDate': patBirthdayDate,
           'patBirthdayPlace': patBirthdayPlace,
           'patDni': patDni,
@@ -81,6 +84,7 @@ class PatientEditRequestModel extends PatientEditRequest {
   factory PatientEditRequestModel.fromEntity(
       PatientEditRequest patientEditRequest) {
     return PatientEditRequestModel(
+        casId: patientEditRequest.casId,
         patId: patientEditRequest.patId,
         patFirstName: patientEditRequest.patFirstName,
         patSecondName: patientEditRequest.patSecondName,

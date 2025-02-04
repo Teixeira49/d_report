@@ -5,6 +5,7 @@ class CaseReportModel extends CaseReport {
   CaseReportModel({
     required super .casId,
     required super .casEnterDate,
+    required super .casAdmissionReason,
     required super .casSymptomatology,
     required super .casPhysicalState,
     required super .casDiagnosis,
@@ -25,6 +26,7 @@ class CaseReportModel extends CaseReport {
     return CaseReportModel(
         casId: json['caseReport']['casId'],
         casEnterDate: json['caseReport']['casEnterDate'],
+        casAdmissionReason: json['caseReport']['casAdmissionReason'],
         casSymptomatology: json['caseReport']['casSymptomatology'],
         casPhysicalState: json['caseReport']['casPhysicalState'],
         casDiagnosis: json['caseReport']['casDiagnosis'],
@@ -45,6 +47,7 @@ class CaseReportModel extends CaseReport {
     return {
       'casId': casId,
       'casEnterDate': casEnterDate,
+      'casAdmissionReason': casAdmissionReason,
       'casSymptomatology': casSymptomatology,
       'casPhysicalState': casPhysicalState,
       'casDiagnosis': casDiagnosis,
@@ -65,6 +68,7 @@ class CaseReportModel extends CaseReport {
     return CaseReportModel(
       casId: caseReport.casId,
       casEnterDate: caseReport.casEnterDate,
+      casAdmissionReason: caseReport.casAdmissionReason,
       casSymptomatology: caseReport.casSymptomatology,
       casPhysicalState: caseReport.casPhysicalState,
       casDiagnosis: caseReport.casDiagnosis,

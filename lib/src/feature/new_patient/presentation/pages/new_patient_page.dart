@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/helpers/helpers.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
+import '../../../../shared/presentation/formatter/text_formatters.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/genre-user_field.dart';
 import '../../../../shared/presentation/widget/phone_user_field.dart';
@@ -115,8 +117,8 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                   Navigator.of(context).pop();
 
                   Map<String, dynamic> patientData = {
-                    'patName': _patNameController.text,
-                    'patLastName': _patLastNameController.text,
+                    'patName': Helper.capitalize(_patNameController.text),
+                    'patLastName': Helper.capitalize(_patLastNameController.text),
                     'patDni': _patDniController.text != ""
                         ? int.parse(_patDniController.text)
                         : null,
@@ -125,7 +127,7 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                     'patBirthdayPlace': null,
                     'patGuardianDni': int.parse(_patGuDniController.text),
                     'patBloodType': _patBloodTypeController.value,
-                    'patGuEmail': _patGuEmailController.text,
+                    'patGuEmail': _patGuEmailController.text.toLowerCase(),
                     'patGuPhone': _patGuPhoneController.text,
                   };
 
@@ -188,6 +190,7 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                                         contextRow: 'Nombre',
                                         controllerData: _patNameController,
                                         iconData: Icons.person,
+                                        inputFormatters: TextFormatters.onlyLettersAndNumbers,
                                       ),
                                     ),
                                     const SizedBox(
@@ -198,6 +201,7 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                                         contextRow: 'Apelllido',
                                         controllerData: _patLastNameController,
                                         iconData: Icons.person,
+                                        inputFormatters: TextFormatters.onlyLettersAndNumbers,
                                       ),
                                     ),
                                   ],
@@ -303,7 +307,7 @@ class MyNewPatientPageState extends State<NewPatientPage> {
                       bottom: 30,
                       child: NextStateButton(
                               patName: _patNameController.text,
-                              patLastName: _patLastNameController.text, // TODO NOOOOOOOOOO
+                              patLastName: _patLastNameController.text,
                               patGuDni: _patGuDniController.text,
                               patDni: _patDniController.text,
                               patBirthDate: _patBirthDateController.text,

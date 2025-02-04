@@ -6,6 +6,7 @@ import 'package:d_report/src/shared/presentation/widget/loading_show_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/config/styles/static_colors.dart';
 import '../../../../core/helpers/helpers.dart';
 import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
@@ -58,12 +59,12 @@ class MyEndCasePage extends State<EndCasePage> {
             LoadingShowDialog.show(context, 'Descargando Archivo');
           } else if (state is SendEndCaseLoaded) {
             Navigator.of(context, rootNavigator: true).pop();
-            Future.delayed(const Duration(milliseconds: 100), () {
+            Future.delayed(const Duration(milliseconds: 100), () { // TODO Make Constant
               FloatingSnackBar.show(
                   context,
                   'Caso Finalizado con Exito.',
                   Icons.check,
-                  Colors.green); // TODO Safe color in styles folder
+                  ColorPalette.checkColor);
               Navigator.pop(context);
             });
           } else if (state is SendEndCaseTimeout) {
@@ -234,7 +235,7 @@ class MyEndCasePage extends State<EndCasePage> {
                       casId,
                       patId,
                       x,
-                      _endDiagnosisData.text,
+                      Helper.capitalize(_endDiagnosisData.text, false),
                       authUser.accessToken);
                 } else {
                   _formKey.currentState?.validate();

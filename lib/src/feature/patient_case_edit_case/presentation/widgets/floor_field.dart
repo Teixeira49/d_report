@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
+import '../../../../shared/presentation/formatter/text_formatters.dart';
+
 class FloorMixedField extends StatelessWidget {
 
   const FloorMixedField({super.key, required this.controllerDataDropDown, required this.controllerDataTextField});
@@ -51,12 +53,9 @@ class FloorMixedField extends StatelessWidget {
        child: TextFormField(
          controller: controllerDataTextField,
         keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-          LengthLimitingTextInputFormatter(2),
-        ],
+        inputFormatters: TextFormatters.floorFormatter,
         decoration: const InputDecoration(
-          hintText: 'Max. 2 números',
+          hintText: 'Max. 3 números',
         ),
       ),
       ),

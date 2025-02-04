@@ -1,3 +1,4 @@
+import 'package:d_report/src/shared/presentation/formatter/text_formatters.dart';
 import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
@@ -16,6 +17,7 @@ class FirstNameTextField extends StatelessWidget {
           style: Theme.of(context).textTheme.labelLarge,
           obscureText: obscureTextDefault,
           keyboardType: TextInputType.name,
+          inputFormatters: TextFormatters.onlyLettersAndNumbers,
           decoration: InputDecoration(
             fillColor: Theme.of(context).inputDecorationTheme.fillColor,
             filled: Theme.of(context).inputDecorationTheme.filled,

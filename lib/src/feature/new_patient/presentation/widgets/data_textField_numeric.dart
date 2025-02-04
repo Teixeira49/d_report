@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../shared/presentation/formatter/text_formatters.dart';
+
 class PatientDataTextFieldNumeric extends StatefulWidget {
   const PatientDataTextFieldNumeric(
       {super.key,
@@ -29,9 +31,7 @@ class MyPatientDataTextFieldWidget extends State<PatientDataTextFieldNumeric> {
         style: Theme.of(context).textTheme.labelLarge,
         obscureText: obscureTextDefault,
         keyboardType: widget.typeNumber ?? TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-        ],
+        inputFormatters: TextFormatters.dniFormatter,
         decoration: InputDecoration(
           fillColor: Theme.of(context).inputDecorationTheme.fillColor,
           filled: Theme.of(context).inputDecorationTheme.filled,

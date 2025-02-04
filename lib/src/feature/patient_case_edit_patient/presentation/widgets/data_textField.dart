@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 
 class CaseDataTextField extends StatefulWidget {
 
-  const CaseDataTextField({super.key, required this.contextRow, required this.controllerData, required this.textInputType,});
+  const CaseDataTextField({super.key, required this.contextRow, required this.controllerData, required this.textInputType, this.inputFormatters,});
 
   final String contextRow;
   final TextEditingController controllerData;
   final TextInputType textInputType;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   MyCaseDataTextFieldWidget createState() => MyCaseDataTextFieldWidget();
@@ -25,6 +27,7 @@ class CaseDataTextField extends StatefulWidget {
           style: Theme.of(context).textTheme.labelLarge,
           obscureText: obscureTextDefault,
           keyboardType: widget.textInputType,
+          inputFormatters: widget.inputFormatters,
           decoration: InputDecoration(
             fillColor: Theme.of(context).inputDecorationTheme.fillColor,
             filled: Theme.of(context).inputDecorationTheme.filled,

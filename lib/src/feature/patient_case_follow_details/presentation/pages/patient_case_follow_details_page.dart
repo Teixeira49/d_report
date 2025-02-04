@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../../core/config/styles/static_colors.dart';
 import '../../../../core/helpers/helpers.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
@@ -104,7 +105,7 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
                             subContext,
                             'Informe guardado con exito.',
                             Icons.check,
-                            Colors.green); // TODO Safe color in styes folder
+                            ColorPalette.checkColor);
                       } else if (subState is FileGeneratorFail) {
                         FloatingWarningSnackBar.show(
                             subContext, subState.errorSMS);

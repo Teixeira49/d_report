@@ -2,8 +2,9 @@ import 'package:d_report/src/shared/presentation/widget/bullet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/config/styles/static_colors.dart';
+import '../../../../core/helpers/helpers.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
-import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../../../../shared/presentation/widget/loading_show_dialog.dart';
 import '../../data/datasource/remote/new_follow_remote_datasource.dart';
@@ -60,7 +61,7 @@ class MyNewFollowCasePage extends State<NewFollowCasePage> {
                     context,
                     'Informe guardado con exito.',
                     Icons.check,
-                    Colors.green); // TODO Safe color in styles folder
+                    ColorPalette.checkColor);
                 Navigator.pop(context);
               });
             } else if (state is UploadFollowError) {
@@ -197,14 +198,18 @@ class MyNewFollowCasePage extends State<NewFollowCasePage> {
                         selected: 1,
                         size: size,
                         endEdit: () {
+                          if (_controllerFollowTitle.text.isNotEmpty && _controllerFollowInfo.text.isNotEmpty) {
                           context
                               .read<UploadFollowCubit>()
                               .postUploadFollowData({
-                            'title': _controllerFollowTitle.text,
-                            'info': _controllerFollowInfo.text,
+                            'title': Helper.capitalize(_controllerFollowTitle.text, false),
+                            'info': Helper.capitalize(_controllerFollowInfo.text, false),
                             'casId': casId,
                             'docId': docId,
                           }, authUser.accessToken);
+                        } else {
+                            FloatingWarningSnackBar.show(context, 'Faltan Campos por rellenar');
+                          }
                         })
                     ));
           },

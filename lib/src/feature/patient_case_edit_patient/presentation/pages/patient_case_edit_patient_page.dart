@@ -2,8 +2,10 @@ import 'package:d_report/src/feature/patient_case_edit_patient/domain/use_cases/
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/config/styles/static_colors.dart';
 import '../../../../core/helpers/helpers.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
+import '../../../../shared/presentation/formatter/text_formatters.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../../../../shared/presentation/widget/genre-user_field.dart';
 import '../../../../shared/presentation/widget/loading_show_dialog.dart';
@@ -126,17 +128,18 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
     super.dispose();
   }
 
-  PatientEditRequest _submitForm(int patKey) {
+  PatientEditRequest _submitForm(int patKey, int casKey) {
     return PatientEditRequest(
+        casId: casKey,
         patId: patKey,
-        patFirstName: _firstNameController.text,
-        patSecondName: _secondNameController.text,
-        patLastname: _lastNameController.text,
-        patSecondSurname: _lastSurnameNameController.text,
+        patFirstName: Helper.capitalize(_firstNameController.text),
+        patSecondName: Helper.capitalize(_secondNameController.text),
+        patLastname: Helper.capitalize(_lastNameController.text),
+        patSecondSurname: Helper.capitalize(_lastSurnameNameController.text),
         patDni: _dniController.text != '' ? int.parse(_dniController.text) : null,
         patBirthdayDate: _birthdayDateController.text,
         patGender: _genderTypeController.value ?? '',
-        patBirthdayPlace: _birthdayPlaceController.text,
+        patBirthdayPlace:Helper.capitalize(_birthdayPlaceController.text, false),
         patBloodType: _bloodTypeController.value ?? '',
         patGuardianDni: int.parse(_guardianDniController.text),
         patWeight: _weightDateController.text != '' ? int.parse(
@@ -168,6 +171,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
     Map<String, dynamic> patient = arguments['patKey'];
     patient['patWeight'] = arguments['casKey']['patWeight'];
     patient['patHeight'] = arguments['casKey']['patHeight'];
+    patient['casId'] = arguments['casKey']['casId'];
     int part = arguments['id'];
 
     return MultiBlocProvider(
@@ -209,7 +213,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                     contextPatientEditor,
                     'Informe guardado con exito.',
                     Icons.check,
-                    Colors.green); // TODO Safe color in styles folder
+                    ColorPalette.checkColor);
               });
               dynamic patientEditRequest = PatientEditRequestModel.fromEntity(
                       statePatientEditor.patientEditRequest)
@@ -265,6 +269,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                     contextRow: 'Primer Nombre',
                                     controllerData: _firstNameController,
                                     textInputType: TextInputType.name,
+                                    inputFormatters: TextFormatters.onlyLettersAndNumbers,
                                   ),
                                 ),
                                 Container(
@@ -276,6 +281,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                     contextRow: 'Segundo Nombre',
                                     controllerData: _secondNameController,
                                     textInputType: TextInputType.name,
+                                    inputFormatters: TextFormatters.onlyLettersAndNumbers,
                                   ),
                                 ),
                                 Container(
@@ -287,6 +293,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                     contextRow: 'Primer Apellido',
                                     controllerData: _lastNameController,
                                     textInputType: TextInputType.name,
+                                    inputFormatters: TextFormatters.onlyLettersAndNumbers,
                                   ),
                                 ),
                                 Container(
@@ -298,6 +305,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                     contextRow: 'Segundo Apellido',
                                     controllerData: _lastSurnameNameController,
                                     textInputType: TextInputType.name,
+                                    inputFormatters: TextFormatters.onlyLettersAndNumbers,
                                   ),
                                 ),
                               ],
@@ -379,6 +387,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                       contextRow: 'Cedula del Paciente',
                                       controllerData: _dniController,
                                       textInputType: TextInputType.number,
+                                      inputFormatters: TextFormatters.dniFormatter,
                                     )),
                                 Container(
                                     padding: EdgeInsets.symmetric(
@@ -394,7 +403,8 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                             contextRow: 'Peso (kilogramos)',
                                             controllerData:
                                                 _weightDateController,
-                                            textInputType: TextInputType.number,
+                                            textInputType: const TextInputType.numberWithOptions(decimal: true),
+                                            inputFormatters: TextFormatters.onlyNumbersForMetrics,
                                           ),
                                         ),
                                         const SizedBox(
@@ -404,7 +414,8 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                           child: CaseDataTextField(
                                             contextRow: 'Altura (metros)',
                                             controllerData: _heightController,
-                                            textInputType: TextInputType.number,
+                                            textInputType: const TextInputType.numberWithOptions(decimal: true),
+                                            inputFormatters: TextFormatters.onlyNumbersForMetrics,
                                           ),
                                         )
                                       ],
@@ -428,6 +439,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                               .postChanges(
                                   _submitForm(
                                     stateSelector.getSelectionPat()!.patId,
+                                    patient['casId']
                                   ),
                                   stateSelector.getSelectionPat()!,
                                   part,

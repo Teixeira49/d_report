@@ -58,10 +58,10 @@ class FinishRegisterCaseButton extends StatelessWidget {
                   fontSize: 20)),
           onPressed: () {
             Map<String, dynamic> casData = {
-              'casAdmissionReason': casAdmissionReason,
-              'casSymptomatology': casSymptomatology,
-              'casPhysicalState': casPhysicalState,
-              'casDiagnosis': casDiagnosis,
+              'casAdmissionReason': Helper.capitalize(casAdmissionReason, false),
+              'casSymptomatology': Helper.capitalize(casSymptomatology, false),
+              'casPhysicalState': Helper.capitalize(casPhysicalState, false),
+              'casDiagnosis': Helper.capitalize(casDiagnosis, false),
               'casActualRoom':
                   'A$casFloorLevel - ${Helper.fillZero(casActualRoom)}',
               'casEntryArea': casEntryArea,

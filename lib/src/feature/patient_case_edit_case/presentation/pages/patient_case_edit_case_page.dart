@@ -2,6 +2,8 @@ import 'package:d_report/src/feature/patient_case_edit_case/presentation/cubit/s
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/config/styles/static_colors.dart';
+import '../../../../core/helpers/helpers.dart';
 import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 
@@ -121,18 +123,17 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
 
   CaseReportEditRequest _submitForm(int casKey, int patKey) {
     return CaseReportEditRequest(
-        casId: casKey,
-        patId: patKey,
-        casSymptomatology: _symptomatologyController.text,
-        casPhysicalState: _physicalStateController.text,
-        casDiagnosis: _diagnosisController.text,
-        casMethodOfEntry: _referralController.value ?? '',
-        casActualRoom:
-            'A${_roomValueController.value ?? ''} - ${_roomValueController.value ?? ''}${_roomNumberController.text}',
-        // TODO Change
-        casEntryArea: _entryAreaController.value ?? '',
-        casEndReason: _endStatusController.value ?? '',
-        casEndDiagnosis: _endDiagnosisController.text);
+      casId: casKey,
+      patId: patKey,
+      casSymptomatology: Helper.capitalize(_symptomatologyController.text, false),
+      casPhysicalState: Helper.capitalize(_physicalStateController.text, false),
+      casDiagnosis: Helper.capitalize(_diagnosisController.text, false),
+      casMethodOfEntry: _referralController.value ?? 'New',
+      casActualRoom:
+          'A${_roomValueController.value ?? '3'} - ${_roomNumberController.text}',
+      casEntryArea: _entryAreaController.value ?? 'Emergency',
+      casEndReason: _endStatusController.value ?? 'ESCAPED',
+      casEndDiagnosis: Helper.capitalize(_endDiagnosisController.text, false));
   }
 
   @override
@@ -199,7 +200,7 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
                     contextCaseEditor,
                     'Informe guardado con exito.',
                     Icons.check,
-                    Colors.green); // TODO Safe color in styes folder
+                    ColorPalette.checkColor);
               });
               dynamic caseReportEditRequest =
                   CaseReportEditRequestModel.fromEntity(

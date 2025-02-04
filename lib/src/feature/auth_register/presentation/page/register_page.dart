@@ -1,4 +1,5 @@
 import 'package:d_report/my_flutter_app_icons.dart';
+import 'package:d_report/src/core/config/styles/static_colors.dart';
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
 import 'package:d_report/src/feature/auth_register/data/datasource/remote/account_remote_data_source.dart';
 import 'package:d_report/src/feature/auth_register/domain/entities/create_account_request.dart';
@@ -142,13 +143,13 @@ class MyRegisterPageState extends State<RegisterPage> {
                   LoadingShowDialog.show(context, 'Creando Usuario');
                 }
               } else if (stateFather is RegisterAuthLoaded) {
-                accountProfileRequest.email = _emailController.text;
+                accountProfileRequest.email = _emailController.text.toLowerCase();
                 accountProfileRequest.phone = _phoneController.text;
                 accountProfileRequest.range = _roleController.value!;
                 _changePage();
               } else if (stateFather is RegisterAuthPosted) {
                 FloatingSnackBar.show(context, 'Usuario Creado', Icons.check,
-                    Colors.green);
+                    ColorPalette.checkColor);
                 Navigator.of(context).pushNamed('/main/information/', arguments: {'id':0});
               } else if (stateFather is RegisterAuthError) {
                 _showFailsMessage(stateFather.errorSMS);
@@ -632,14 +633,14 @@ class MyRegisterPageState extends State<RegisterPage> {
                                                 .read<RegisterButtonCubit>()
                                                 .checkData([
                                               _phoneController.text,
-                                              _emailController.text,
+                                              _emailController.text.toLowerCase(),
                                               _roleController.value
                                             ], false);
                                             if (check) {
                                               contextFather.read<
                                                   RegisterAuthCubit>()
                                                   .validateEmail(
-                                                  _emailController.text);
+                                                  _emailController.text.toLowerCase());
                                             } else {
                                               _showFailsMessage('Faltan campos por rellenar');
                                             }

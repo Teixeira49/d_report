@@ -32,26 +32,28 @@ class Helper {
     return date.format(parsedDate);
   }
 
-  static String addZero(int date, [bool isNegative = false, int margin = 10, int frequency = 1]) {
+  static String addZero(int date,
+      [bool isNegative = false, int margin = 10, int frequency = 1]) {
     if (date < margin && date >= 0) {
-      return '${'0'*frequency}$date';
+      return '${'0' * frequency}$date';
     } else if (date < 0 && date > margin * -1) {
-      return '-${isNegative ? '0'*frequency : ''}${date.toString().substring(1)}';
+      return '-${isNegative ? '0' * frequency : ''}${date.toString().substring(1)}';
     }
     return date.toString();
   }
 
-  static String fillZero (String data, [int maxFill = 3]) {
-    return '${'0'*(3 - data.length)}$data';
+  static String fillZero(String data, [int maxFill = 3]) {
+    return '${'0' * (3 - data.length)}$data';
   }
 
   static String getFullNameInRow(String name, String lastName) {
     return '$name $lastName';
   }
 
-  static String capitalize(String text) {
+  static String capitalize(String text, [bool lower = true]) {
     if (text.isEmpty) return text;
-    return text[0].toUpperCase() + text.substring(1).toLowerCase();
+    return text[0].toUpperCase() +
+        (lower ? text.substring(1).toLowerCase() : text.substring(1));
   }
 
   static int getAgeByDateInString(String dateTargetString) {

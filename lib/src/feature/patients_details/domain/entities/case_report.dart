@@ -5,6 +5,7 @@ class CaseReport{
       {
         required this.casId,
         required this.casEnterDate,
+        required this.casAdmissionReason,
         required this.casSymptomatology,
         required this.casPhysicalState,
         required this.casDiagnosis,
@@ -22,6 +23,7 @@ class CaseReport{
     );
 
   int casId;
+  String? casAdmissionReason;
   String casEnterDate;
   String casSymptomatology;
   String casPhysicalState;

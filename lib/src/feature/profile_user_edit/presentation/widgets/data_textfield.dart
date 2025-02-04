@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:d_report/src/core/utils/constants/fields_constants.dart';
+import 'package:flutter/services.dart';
 
 class DataTextField extends StatefulWidget {
   const DataTextField(
@@ -8,12 +9,14 @@ class DataTextField extends StatefulWidget {
       required this.contextRow,
       required this.typeData,
       required this.iconData,
-      required this.controller});
+      required this.controller,
+      this.inputFormatters});
 
   final TextInputType typeData;
   final String contextRow;
   final IconData iconData;
   final TextEditingController controller;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   MyDataTextFieldWidget createState() => MyDataTextFieldWidget();
@@ -29,6 +32,7 @@ class MyDataTextFieldWidget extends State<DataTextField> {
         style: Theme.of(context).textTheme.labelLarge,
         obscureText: obscureTextDefault,
         keyboardType: widget.typeData,
+        inputFormatters: widget.inputFormatters,
         decoration: InputDecoration(
           fillColor: Theme.of(context).inputDecorationTheme.fillColor,
           filled: Theme.of(context).inputDecorationTheme.filled,

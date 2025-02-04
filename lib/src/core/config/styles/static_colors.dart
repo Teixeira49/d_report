@@ -9,7 +9,9 @@ class ColorPalette {
   static const Color badgeFinishCaseSurvive = Color(0xFE18FA35);
   static const Color badgeFinishCaseEscaped = Color(0xFFFDC642);
   static const Color badgeFinishCaseReferral = Color(0xFFDDEC26);
-  static const Color badgeDoctorSpeciality = Color(0xEF8DFF96);
+  static const Color badgeDoctorSpeciality = Colors.greenAccent;
+
+  static const Color checkColor = Colors.green;
 
   static const List<Color> activeCase = [
     Colors.green,

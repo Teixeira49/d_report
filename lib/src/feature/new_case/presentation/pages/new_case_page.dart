@@ -40,7 +40,7 @@ class MyNewCasePageState extends State<NewCasePage> {
   final TextEditingController _casDiagnosisController = TextEditingController();
 
   //final TextEditingController _casStudyImgDateController = TextEditingController();
-  final bool _casMethodOfEntryController = false;
+  bool _casMethodOfEntryController = false;
   final TextEditingController _casActualRoomController =
       TextEditingController();
   final ValueNotifier<String?> _casFloorLevelController = ValueNotifier(null);
@@ -150,7 +150,7 @@ class MyNewCasePageState extends State<NewCasePage> {
                                 ConfigSwitch(
                                   configVar: _casMethodOfEntryController,
                                   onChanged: (newValue) {
-                                    !_casMethodOfEntryController;
+                                    _casMethodOfEntryController = !_casMethodOfEntryController;
                                   },
                                 ),
                                 const SizedBox(width: 10),

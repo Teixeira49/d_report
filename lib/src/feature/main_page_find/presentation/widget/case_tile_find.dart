@@ -8,7 +8,7 @@ import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/bullet.dart';
 import '../../domain/entities/case_simple.dart';
-import 'case_tile_badge.dart';
+import '../../../../shared/presentation/widget/case_tile_badge.dart';
 
 class CaseTile extends StatelessWidget {
 

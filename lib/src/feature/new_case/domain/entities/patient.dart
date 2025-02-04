@@ -8,7 +8,7 @@ class Patient {
   final String? patBirthdayPlace;
   final int patGuardianDni;
   final String patBloodType;
-  final String patGuardianEmail;
+  final String? patGuardianEmail;
   final String patGuardianPhone;
 
   Patient(

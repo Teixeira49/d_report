@@ -1,7 +1,10 @@
 import 'package:d_report/my_flutter_app_icons.dart';
+import 'package:d_report/src/shared/presentation/formatter/text_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/config/styles/static_colors.dart';
+import '../../../../core/helpers/helpers.dart';
 import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/data/model/profile_model.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
@@ -98,15 +101,15 @@ class MyEditProfilePageState extends State<EditProfilePage> {
   DoctorProfile _updateData(int docId, String role, String email) {
     return DoctorProfileModel.fromEntity(DoctorProfile(
         id: docId,
-        firstName: _nameController.text,
-        lastName: _lastNameController.text,
+        firstName: Helper.capitalize(_nameController.text),
+        lastName: Helper.capitalize(_lastNameController.text),
         dni: int.parse(_dniController.text),
         genre: _genreController.value ?? '',
         birthday: _dateController.text,
         range: role,
-        speciality: _specialityController.text,
+        speciality: Helper.capitalize(_specialityController.text, false),
         photoUrl: '',
-        email: email,
+        email: email.toLowerCase(),
         phone: _phoneController.text));
   }
 
@@ -197,7 +200,7 @@ class MyEditProfilePageState extends State<EditProfilePage> {
                       context,
                       'Informe guardado con exito.',
                       Icons.check,
-                      Colors.green); // TODO Safe color in styles folder
+                      ColorPalette.checkColor);
                 });
                 dynamic doctorEditRequest =
                     DoctorProfileModel.fromEntity(state.doctor).toJson();
@@ -326,6 +329,7 @@ class MyEditProfilePageState extends State<EditProfilePage> {
                                           contextRow: "Nombre",
                                           iconData: Icons.person,
                                           controller: _nameController,
+                                          inputFormatters: TextFormatters.onlyLettersAndNumbers
                                         )),
                                         const SizedBox(
                                           width: 12,
@@ -336,6 +340,7 @@ class MyEditProfilePageState extends State<EditProfilePage> {
                                           contextRow: "Apellido",
                                           iconData: Icons.person,
                                           controller: _lastNameController,
+                                          inputFormatters: TextFormatters.onlyLettersAndNumbers
                                         )),
                                       ],
                                     )),
@@ -347,6 +352,7 @@ class MyEditProfilePageState extends State<EditProfilePage> {
                                       contextRow: "Cedula",
                                       iconData: Icons.contact_emergency,
                                       controller: _dniController,
+                                      inputFormatters: TextFormatters.dniFormatter
                                     )),
                                 Container(
                                   margin: const EdgeInsets.symmetric(
@@ -382,6 +388,7 @@ class MyEditProfilePageState extends State<EditProfilePage> {
                                       contextRow: 'Especialidad',
                                       iconData: MyFlutterApp.user_md,
                                       controller: _specialityController,
+                                      inputFormatters: TextFormatters.onlyLettersAndNumbers
                                     )),
                                 Container(
                                     margin: const EdgeInsets.symmetric(

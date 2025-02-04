@@ -23,7 +23,7 @@ class PatientEditRepositoryImpl implements PatientEditRepository {
     } on DioException {
       return Left(ServerFailure("Fallo en conexion al servidor"));
     } catch (e) {
-      return Left(OtherFailure("Fallo en conexion al servidor"));
+      return Left(OtherFailure(e.toString()));
     }
   }
 }
