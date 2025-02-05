@@ -2,40 +2,40 @@ import '../../domain/entities/patient_guardian.dart';
 
 class PatientGuardianModel extends PatientGuardian {
   PatientGuardianModel({
-    required super.patGuId,
-    required super.patGuDni,
-    required super.patGuAddress,
-    required super.patGuTlf,
-    required super.patGuEmail,
+    required super.patId,
+    required super.patGuardianDni,
+    required super.patGuardianAddress,
+    required super.patGuardianPhone,
+    required super.patGuardianEmail,
   });
 
   factory PatientGuardianModel.fromJson(json) {
     return PatientGuardianModel(
-      patGuId: json['patGuId'],
-      patGuDni: json['patGuDni'],
-      patGuAddress: json['patGuAddress'],
-      patGuTlf: json['patGuTlf'],
-      patGuEmail: json['patGuEmail'],
+      patId: json['patId'],
+      patGuardianDni: json['patGuardianDni'],
+      patGuardianAddress: json['patGuardianAddress'],
+      patGuardianPhone: json['patGuardianPhone'],
+      patGuardianEmail: json['patGuardianEmail'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'patGuId': patGuId,
-      'patGuDni': patGuDni,
-      'patGuAddress': patGuAddress,
-      'patGuTlf': patGuTlf,
-      'patGuEmail': patGuEmail,
+      'patGuardianId': patId,
+      'patGuardianDni': patGuardianDni,
+      'patGuardianAddress': patGuardianAddress,
+      'patGuardianPhone': patGuardianPhone,
+      'patGuardianEmail': patGuardianEmail,
     };
   }
 
   factory PatientGuardianModel.fromEntity(PatientGuardian patientGuardian) {
     return PatientGuardianModel(
-      patGuId: patientGuardian.patGuId,
-      patGuDni: patientGuardian.patGuDni,
-      patGuAddress: patientGuardian.patGuAddress,
-      patGuTlf: patientGuardian.patGuTlf,
-      patGuEmail: patientGuardian.patGuEmail,
+      patId: patientGuardian.patId,
+      patGuardianDni: patientGuardian.patGuardianDni,
+      patGuardianAddress: patientGuardian.patGuardianAddress,
+      patGuardianPhone: patientGuardian.patGuardianPhone,
+      patGuardianEmail: patientGuardian.patGuardianEmail,
     );
   }
 }

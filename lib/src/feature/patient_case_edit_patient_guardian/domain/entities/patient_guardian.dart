@@ -2,17 +2,17 @@ class PatientGuardian{
 
   PatientGuardian(
       {
-        required this.patGuId,
-        required this.patGuDni,
-        required this.patGuAddress,
-        required this.patGuTlf,
-        required this.patGuEmail,
+        required this.patId,
+        required this.patGuardianDni,
+        required this.patGuardianAddress,
+        required this.patGuardianPhone,
+        required this.patGuardianEmail,
       }
       );
 
-  int patGuId;
-  int patGuDni;
-  String? patGuAddress;
-  String patGuTlf;
-  String? patGuEmail;
+  int patId;
+  int patGuardianDni;
+  String? patGuardianAddress;
+  String? patGuardianPhone;
+  String? patGuardianEmail;
 }

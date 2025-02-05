@@ -2,41 +2,41 @@ import '../../domain/entities/patient_guardian_edit_request.dart';
 
 class PatientGuardianEditRequestModel extends PatientGuardianEditRequest {
   PatientGuardianEditRequestModel({
-    required super.patGuId,
-    required super.patGuDni,
-    required super.patGuAddress,
-    required super.patGuTlf,
-    required super.patGuEmail,
+    required super.patId,
+    required super.patGuardianDni,
+    required super.patGuardianAddress,
+    required super.patGuardianPhone,
+    required super.patGuardianEmail,
   });
 
   factory PatientGuardianEditRequestModel.fromJson(json) {
     return PatientGuardianEditRequestModel(
-      patGuId: json['patGuId'],
-      patGuDni: json['patGuDni'],
-      patGuAddress: json['patGuAddress'],
-      patGuTlf: json['patGuTlf'],
-      patGuEmail: json['patGuEmail'],
+      patId: json['patId'],
+      patGuardianDni: json['patGuardianDni'],
+      patGuardianAddress: json['patGuardianAddress'],
+      patGuardianPhone: json['patGuardianPhone'],
+      patGuardianEmail: json['patGuardianEmail'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'patGuId': patGuId,
-      'patGuDni': patGuDni,
-      'patGuAddress': patGuAddress,
-      'patGuTlf': patGuTlf,
-      'patGuEmail': patGuEmail,
+      'patId': patId,
+      'patGuardianDni': patGuardianDni,
+      'patGuardianAddress': patGuardianAddress,
+      'patGuardianPhone': patGuardianPhone,
+      'patGuardianEmail': patGuardianEmail,
     };
   }
 
   factory PatientGuardianEditRequestModel.fromEntity(
       PatientGuardianEditRequest patientGuardianEditRequest) {
     return PatientGuardianEditRequestModel(
-      patGuId: patientGuardianEditRequest.patGuId,
-      patGuDni: patientGuardianEditRequest.patGuDni,
-      patGuAddress: patientGuardianEditRequest.patGuAddress,
-      patGuTlf: patientGuardianEditRequest.patGuTlf,
-      patGuEmail: patientGuardianEditRequest.patGuEmail,
+      patId: patientGuardianEditRequest.patId,
+      patGuardianDni: patientGuardianEditRequest.patGuardianDni,
+      patGuardianAddress: patientGuardianEditRequest.patGuardianAddress,
+      patGuardianPhone: patientGuardianEditRequest.patGuardianPhone,
+      patGuardianEmail: patientGuardianEditRequest.patGuardianEmail,
     );
   }
 }

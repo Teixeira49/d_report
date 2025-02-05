@@ -26,7 +26,7 @@ class PatientGuardianEditRequestRemoteDataSourceImpl implements PatientGuardianE
 
     const r = RetryOptions(maxAttempts: 3);
 
-    final resp = await r.retry(() => dio.post(
+    final resp = await r.retry(() => dio.put(
         '$apiUrl/patients/guardians/edit',
         options: Options(
           sendTimeout: const Duration(seconds: 3),
@@ -38,6 +38,7 @@ class PatientGuardianEditRequestRemoteDataSourceImpl implements PatientGuardianE
         data: PatientGuardianEditRequestModel.fromEntity(patientGuardianEditRequest)
             .toJson()));
 
+    print('RETORNO ${resp.data}');
     return PatientGuardianEditRequestModel.fromJson(resp.data);
   }
 

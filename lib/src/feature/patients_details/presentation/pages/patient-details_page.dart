@@ -616,18 +616,18 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
           tileIcon: Icons.family_restroom,
         ),
         Visibility(
-          visible: state.patient.patGuPhone != null,
+          visible: state.patient.patGuardianPhone != null,
           child: CustomCardPatientRow(
             widgetKey: "Telefono del Representante",
-            widgetValue: state.patient.patGuPhone.toString(),
+            widgetValue: state.patient.patGuardianPhone.toString(),
             tileIcon: Icons.phone,
           ),
         ),
         Visibility(
-          visible: state.patient.patGuEmail != null,
+          visible: state.patient.patGuardianEmail != null,
           child: CustomCardPatientRow(
             widgetKey: "Correo del Representante",
-            widgetValue: state.patient.patGuEmail.toString(),
+            widgetValue: state.patient.patGuardianEmail.toString(),
             tileIcon: Icons.email,
           ),
         ),

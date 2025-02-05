@@ -6,6 +6,6 @@ class CreateInstancePatientGuardianUseCase {
   CreateInstancePatientGuardianUseCase();
 
   PatientGuardian call(dynamic patientJson) {
-    return patientJson;//TODO HARDCODE PatientGuardianModel.fromJson(patientJson); // TODO HARDCODE
+    return PatientGuardianModel.fromJson(patientJson);
   }
 }

@@ -13,8 +13,9 @@ class PatientModel extends Patient {
     required  super .patBirthdayPlace,
     required  super .patGuardianDni,
     required  super .patBloodType,
-    required  super.patGuEmail,
-    required  super.patGuPhone,
+    required  super .patGuardianEmail,
+    required  super .patGuardianPhone,
+    required  super .patGuardianAddress,
   });
 
   factory PatientModel.fromJson(json) {
@@ -28,8 +29,9 @@ class PatientModel extends Patient {
       patDni: json['caseReport']['patId']['patDni'],
       patGender: json['caseReport']['patId']['patGender'],
       patGuardianDni: json['caseReport']['patId']['patGuardianDni'],
-      patGuEmail: json['caseReport']['patId']['patGuardianEmail'],
-      patGuPhone: json['caseReport']['patId']['patGuardianPhone']
+      patGuardianEmail: json['caseReport']['patId']['patGuardianEmail'],
+      patGuardianPhone: json['caseReport']['patId']['patGuardianPhone'],
+      patGuardianAddress: json['caseReport']['patId']['patGuardianAddress'],
     );
   }
 
@@ -44,8 +46,9 @@ class PatientModel extends Patient {
       'patDni': patDni,
       'patGender': patGender,
       'patGuardianDni': patGuardianDni,
-      'patGuEmail': patGuEmail,
-      'patGuPhone': patGuPhone,
+      'patGuardianEmail': patGuardianEmail,
+      'patGuardianPhone': patGuardianPhone,
+      'patGuardianAddress': patGuardianAddress
     };
   }
 
@@ -60,8 +63,9 @@ class PatientModel extends Patient {
       patBloodType: patient.patBloodType,
       patBirthdayPlace: patient.patBirthdayPlace,
       patBirthdayDate: patient.patBirthdayDate,
-      patGuEmail: patient.patGuEmail,
-      patGuPhone: patient.patGuPhone,
+      patGuardianEmail: patient.patGuardianEmail,
+      patGuardianPhone: patient.patGuardianPhone,
+      patGuardianAddress: patient.patGuardianAddress,
     );
   }
 }

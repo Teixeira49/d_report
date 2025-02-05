@@ -16,15 +16,18 @@ class ComparePatientGuardiansUseCase {
     String? error = 'Porfavor, realice modificaciones a los datos.';
 
     List<String> patGuRows = [
-      'patGuDni',
-      'patGuAddress',
-      'patGuTlf',
-      'patGuEmail'
+      'patGuardianDni',
+      'patGuardianAddress',
+      'patGuardianPhone',
+      'patGuardianEmail'
     ];
 
     for (var i in patGuRows) {
-      if (originalPatGuJson[i].toString().toLowerCase() !=
-          updatePatGuJson[i].toString().toLowerCase()) {
+      print('$i ${originalPatGuJson[i]} ${updatePatGuJson[i]}');
+      if (originalPatGuJson[i] == null) {
+        originalPatGuJson[i] = '';
+      }
+      if (originalPatGuJson[i].toString().toLowerCase() != updatePatGuJson[i].toString().toLowerCase()) {
         if (updatePatGuJson[i] == '') {
           error = 'Porfavor, no deje campos por rellenar.';
         } else {

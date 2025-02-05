@@ -1,12 +1,15 @@
 import 'package:flutter/services.dart';
 
+import 'decimal_formatters.dart';
+
 class TextFormatters {
   static final List<TextInputFormatter> onlyLettersAndNumbers = [
     FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]'))
   ];
 
   static final List<TextInputFormatter> onlyNumbersForMetrics = [
-    FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+    FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+    DecimalTextInputFormatter(),
   ];
 
   static final TextInputFormatter onlyNumbers =

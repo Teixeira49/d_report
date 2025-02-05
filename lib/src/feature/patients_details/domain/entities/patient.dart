@@ -12,8 +12,9 @@ class Patient{
       required this.patBirthdayPlace,
       required this.patGuardianDni,
       required this.patBloodType,
-      required this.patGuEmail,
-      required this.patGuPhone,
+      required this.patGuardianEmail,
+      required this.patGuardianPhone,
+      required this.patGuardianAddress,
     }
   );
 
@@ -26,8 +27,9 @@ class Patient{
   String? patBirthdayPlace;
   int patGuardianDni;
   String patBloodType;
-  String? patGuEmail;
-  String? patGuPhone;
+  String? patGuardianEmail;
+  String? patGuardianPhone;
+  String? patGuardianAddress;
 
   String getFullName() {
     return '$patName $patLastname';

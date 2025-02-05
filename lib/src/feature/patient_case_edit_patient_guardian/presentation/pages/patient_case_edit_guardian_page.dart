@@ -15,7 +15,6 @@ import '../../../../shared/presentation/widget/phone_user_field.dart';
 import '../../data/datasource/remote/patient_guardian_edit_request_remote_data_source.dart';
 import '../../data/models/patient_guardian_edit_request_model.dart';
 import '../../data/repositories/patient_guardian_edit_repository.dart';
-import '../../domain/entities/patient_guardian.dart';
 import '../../domain/use_cases/post_patient_guardian_data.dart';
 import '../cubit/patient_guardian_editor/patient_guardian_editor_cubit.dart';
 import '../cubit/patient_guardian_editor/patient_guardian_editor_state.dart';
@@ -45,28 +44,26 @@ class MyEditCasePatientState extends State<EditCasePatientGuardianPage> {
     super.initState();
   }
 
-  /*@override
+  @override
   void didChangeDependencies() {
     if (_isInit) {
       dynamic args = ModalRoute.of(context)!.settings.arguments;
-      if (args['patKey']['patGuardianDni']['patGuardianDni'] != null) {
-        _guardianDniDateController.text =
-            args['patKey']['patGuardianDni']['patGuardianDni'];
+      if (args['patKey']['patGuardianDni'] != null) { // TODO When Use a new table -> args['patKey']['patGuardianDni']['patGuardianDni']
+        _guardianDniController.text = args['patKey']['patGuardianDni'].toString();
       }
-      if (args['patKey']['patGuardianDni']['patGuEmail'] != null) {
-        _emailController.text = args['patKey']['patGuardianDni']['patGuEmail'];
+      if (args['patKey']['patGuardianEmail'] != null) { // TODO When Use a new table -> args['patKey']['patGuardianDni']['patGuEmail']
+        _emailController.text = args['patKey']['patGuardianEmail'];
       }
-      if (args['patKey']['patGuardianDni']['patGeTlf'] != null) {
-        _tlfController.text = args['patKey']['patGuardianDni']['patGeTlf'];
+      if (args['patKey']['patGuardianPhone'] != null) { // TODO When Use a new table -> args['patKey']['patGuardianDni']['patGeTlf']
+        _tlfController.text = args['patKey']['patGuardianPhone'];
       }
-      if (args['patKey']['patGuardianDni']['patGuAddress'] != null) {
-        _addressController.text =
-            args['patKey']['patGuardianDni']['patGuAddress'];
+      if (args['patKey']['patGuardianAddress'] != null) { // TODO When Use a new table -> args['patKey']['patGuardianDni']['patGuAddress']
+        _addressController.text = args['patKey']['patGuardianAddress'];
       }
     }
     super.didChangeDependencies();
     _isInit = false;
-  }*/
+  }
 
   @override
   void dispose() {
@@ -79,11 +76,11 @@ class MyEditCasePatientState extends State<EditCasePatientGuardianPage> {
 
   PatientGuardianEditRequest _submitForm(int patGuId) {
     return PatientGuardianEditRequest(
-      patGuId: patGuId,
-      patGuDni: int.parse(_guardianDniController.text),
-      patGuAddress: Helper.capitalize(_addressController.text, false),
-      patGuTlf: _tlfController.text,
-      patGuEmail: _emailController.text.toLowerCase(),
+      patId: patGuId,
+      patGuardianDni: int.parse(_guardianDniController.text),
+      patGuardianAddress: _addressController.text.isNotEmpty ? Helper.capitalize(_addressController.text, false) : null,
+      patGuardianPhone: _tlfController.text,
+      patGuardianEmail: _emailController.text.isNotEmpty ? _emailController.text.toLowerCase() : null,
     );
   }
 
@@ -109,7 +106,9 @@ class MyEditCasePatientState extends State<EditCasePatientGuardianPage> {
     dynamic arguments = ModalRoute.of(context)!.settings.arguments;
 
     AuthUser authUser = arguments['AuthCredentials'];
-    //Map<String, dynamic> patient = arguments['patKey'];
+    Map<String, dynamic> patient = arguments['patKey'];
+
+    print(patient);
 
     return MultiBlocProvider(
         providers: [
@@ -121,14 +120,8 @@ class MyEditCasePatientState extends State<EditCasePatientGuardianPage> {
               create: (_) => PatientGuardianEditorSelectCubit(
                   createInstancePatientGuardianUseCase)
                 ..onModifySelection(
-                    arguments['title'].toString().toLowerCase(),
-                    PatientGuardian(
-                        patGuId: 1,
-                        patGuDni: 12345,
-                        patGuAddress: 'Sabana Grande',
-                        patGuTlf: '+58 424 323-8366',
-                        patGuEmail: 'ja.teix@gmail.com'))),
-        ], // TODO HARDCODE
+                    arguments['title'].toString().toLowerCase(), patient)),
+        ],
         child: BlocBuilder<PatientGuardianEditorSelectCubit,
             PatientGuardianEditorSelectState>(
           builder: (contextSelector, stateSelector) {
@@ -159,7 +152,7 @@ class MyEditCasePatientState extends State<EditCasePatientGuardianPage> {
                         contextGuardianEditor,
                         'Informe guardado con exito.',
                         Icons.check,
-                        ColorPalette.checkColor); // TODO Safe color in styes folder
+                        ColorPalette.checkColor);
                   });
                   dynamic patientGuardianEditRequest =
                       PatientGuardianEditRequestModel.fromEntity(
@@ -276,7 +269,7 @@ class MyEditCasePatientState extends State<EditCasePatientGuardianPage> {
                                       _submitForm(
                                         stateSelector
                                             .getSelectionGuPat()!
-                                            .patGuId,
+                                            .patId,
                                       ),
                                       stateSelector.getSelectionGuPat()!,
                                       authUser.accessToken),
