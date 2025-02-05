@@ -81,10 +81,8 @@ class FollowCaseRemoteDataSourceImpl implements FollowCaseRemoteDataSource {
 
     const r = RetryOptions(maxAttempts: 3);
 
-    var temp = 0;
-
     final queryParams = {
-      "pag": temp,
+      "pag": 0,
       //"size"
       //'isRev'
     };
@@ -114,7 +112,7 @@ class FollowCaseRemoteDataSourceImpl implements FollowCaseRemoteDataSource {
       if (resp.data['last'] == isLast) {
         break;
       }
-      temp++;
+      queryParams['pag'] = queryParams['pag']! + 1;
     }
     return totalCase;
   }

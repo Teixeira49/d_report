@@ -1,11 +1,13 @@
 import 'package:intl/intl.dart';
 
+import '../utils/constants/fields_constants.dart';
+
 class Helper {
   static String getCodeByDate() {
     return '${DateTime.now()}'
-        .replaceAll(':', '')
-        .replaceAll('.', '')
-        .replaceAll('-', '')
+        .replaceAll(':', emptyString)
+        .replaceAll('.', emptyString)
+        .replaceAll('-', emptyString)
         .replaceAll(' ', '-');
   }
 
@@ -37,7 +39,7 @@ class Helper {
     if (date < margin && date >= 0) {
       return '${'0' * frequency}$date';
     } else if (date < 0 && date > margin * -1) {
-      return '-${isNegative ? '0' * frequency : ''}${date.toString().substring(1)}';
+      return '-${isNegative ? '0' * frequency : emptyString}${date.toString().substring(1)}';
     }
     return date.toString();
   }

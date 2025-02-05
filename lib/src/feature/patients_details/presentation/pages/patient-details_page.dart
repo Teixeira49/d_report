@@ -406,7 +406,7 @@ class FollowInfo extends StatelessWidget {
                         )))));
       } else if (state is FollowCaseLoadedButEmpty) {
         return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(

@@ -4,6 +4,8 @@ const int totalRegisterPages = 4;
 
 const bool obscureTextDefault = false;
 
+const String emptyString = '';
+
 const String caseDetails = "Detalles del Caso";
 
 const String patient = "Paciente";

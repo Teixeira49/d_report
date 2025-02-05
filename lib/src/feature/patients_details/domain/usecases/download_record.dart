@@ -103,7 +103,6 @@ class DownloadPatientRecordUseCase {
         ? '${Helper.writeWeightByInt(caseReport.patWeight!)} Kg'
         : '???';
 
-
     return '''${patient.getFullName()}
     Edad: ${Helper.getAgeByDateInString(patient.patBirthdayDate)} - Peso: $patWeight
     Historia: ${caseReport.casId}
@@ -127,11 +126,12 @@ class DownloadPatientRecordUseCase {
         ),
       ]));
 
-  static Widget titleDoc(bool endCase) =>  Center(
-      child: Column(children: [
+  static Widget titleDoc(bool endCase) => Center(
+          child: Column(children: [
         Container(
-            child: Text(!endCase ? 'Informe de Avance:' : 'Informe de Egreso:',
-                style: AppTextStyle.mediumTitleBlack),),
+          child: Text(!endCase ? 'Informe de Avance:' : 'Informe de Egreso:',
+              style: AppTextStyle.mediumTitleBlack),
+        ),
         SizedBox(height: spaceHeightTitle),
       ]));
 
@@ -233,12 +233,14 @@ class DownloadPatientRecordUseCase {
                     text: 'Motivo de Consulta: ',
                     style: AppTextStyle.smallTitleBlack),
                 TextSpan(
-                    text:
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
-                    style: AppTextStyle.smallBlack), // TODO CHANGE
+                    text: (caseReport.casAdmissionReason != null &&
+                            caseReport.casAdmissionReason != emptyString
+                        ? caseReport.casAdmissionReason
+                        : 'No especifcado'),
+                    style: AppTextStyle.smallBlack),
                 TextSpan(
                     text:
-                        ' (${caseReport.casMethodOfEntry == 'New' ? 'Ingresado' : 'Referido'} ${Helper.getDateSMSByString(caseReport.casEnterDate, true)}).',
+                        ' (${caseReport.casMethodOfEntry == 'New' ? 'No Referido' : 'Referido'} ${Helper.getDateSMSByString(caseReport.casEnterDate, true)}).',
                     style: AppTextStyle.smallBlack),
               ]),
             ),
@@ -251,8 +253,7 @@ class DownloadPatientRecordUseCase {
                     style: AppTextStyle.smallTitleBlack,
                   ),
                   TextSpan(
-                    text:
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                    text: caseReport.casPhysicalState,
                     style: AppTextStyle.smallBlack,
                   ),
                 ])),
@@ -261,7 +262,7 @@ class DownloadPatientRecordUseCase {
                 textAlign: TextAlign.justify,
                 text: TextSpan(children: [
                   TextSpan(
-                    text: 'Sintomatologia Inicial: ',
+                    text: 'Enfermedad Actual: ',
                     style: AppTextStyle.smallTitleBlack,
                   ),
                   TextSpan(
@@ -305,7 +306,7 @@ class DownloadPatientRecordUseCase {
           itemCount: followCases.length,
           itemBuilder: (context, index) {
             return Container(
-              alignment: Alignment.topLeft,
+                alignment: Alignment.topLeft,
                 child: RichText(
                     textAlign: TextAlign.justify,
                     //textDirection: TextDirection.ltr,
@@ -335,7 +336,7 @@ class DownloadPatientRecordUseCase {
                             style: AppTextStyle.smallSubTitleBlack),
                       TextSpan(
                           text:
-                              ' (${followCases[index].cafReportDate}${followCases[index].cafReportUpdateTime != followCases[index].cafReportDate ? ' - Actualizado el ${followCases[index].cafReportDate}' : null}).\n\n',
+                              ' (${followCases[index].cafReportDate}${followCases[index].cafReportUpdateTime != followCases[index].cafReportDate ? ' - Actualizado el ${followCases[index].cafReportDate}' : emptyString}).\n\n',
                           style: AppTextStyle.smallSubTitleBlack),
                     ])));
           });
