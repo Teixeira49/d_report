@@ -5,12 +5,13 @@ import 'package:flutter/services.dart';
 
 class CaseDataTextField extends StatefulWidget {
 
-  const CaseDataTextField({super.key, required this.contextRow, required this.controllerData, required this.textInputType, this.inputFormatters,});
+  const CaseDataTextField({super.key, required this.contextRow, required this.controllerData, required this.textInputType, this.inputFormatters, this.iconData,});
 
   final String contextRow;
   final TextEditingController controllerData;
   final TextInputType textInputType;
   final List<TextInputFormatter>? inputFormatters;
+  final IconData? iconData;
 
   @override
   MyCaseDataTextFieldWidget createState() => MyCaseDataTextFieldWidget();
@@ -29,6 +30,7 @@ class CaseDataTextField extends StatefulWidget {
           keyboardType: widget.textInputType,
           inputFormatters: widget.inputFormatters,
           decoration: InputDecoration(
+            suffixIcon: Icon(widget.iconData),
             fillColor: Theme.of(context).inputDecorationTheme.fillColor,
             filled: Theme.of(context).inputDecorationTheme.filled,
             border: Theme.of(context).inputDecorationTheme.border,

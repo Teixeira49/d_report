@@ -27,9 +27,10 @@ class PatientEditPageSelector extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Visibility(
-              visible: authUser.roleId == 3,
-                child: ButtonTile(
+            //Visibility(
+              //visible: authUser.roleId == 3,
+                //child:
+                ButtonTile(
                   titleOptionText: 'Nombre del Paciente',
                   descOptionText:
                   'Nombre, Apellido.',
@@ -38,7 +39,7 @@ class PatientEditPageSelector extends StatelessWidget {
                   arguments: arguments,
                   getIndex: 0,
                 ),
-            ),
+            //),
             ButtonTile(
               titleOptionText: 'Paciente',
               descOptionText:

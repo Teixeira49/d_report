@@ -218,6 +218,7 @@ class MyEditCasePatientState extends State<EditCasePatientGuardianPage> {
                                         controllerData: _guardianDniController,
                                         textInputType: TextInputType.number,
                                         inputFormatters: TextFormatters.dniFormatter,
+                                        iconData: Icons.person,
                                       ),
                                     ),
                                     Container(
@@ -252,6 +253,7 @@ class MyEditCasePatientState extends State<EditCasePatientGuardianPage> {
                                         controllerData: _emailController,
                                         textInputType:
                                             TextInputType.emailAddress,
+                                        iconData: Icons.email,
                                       ),
                                     ),
                                   ],

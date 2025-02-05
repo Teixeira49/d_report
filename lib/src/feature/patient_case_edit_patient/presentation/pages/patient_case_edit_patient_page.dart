@@ -1,3 +1,4 @@
+import 'package:d_report/my_flutter_app_icons.dart';
 import 'package:d_report/src/feature/patient_case_edit_patient/domain/use_cases/post_patient_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,8 +68,10 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
       dynamic args = ModalRoute.of(context)!.settings.arguments;
       initialPage = (args['id'] != null) ? args['id'] : 1;
       _pageController = PageController(initialPage: initialPage);
-      if (args['patKey']['patFirstName'] != null) {
-        _firstNameController.text = args['patKey']['patFirstName'];
+      print(args['patKey']);
+      if (args['patKey']['patName'] != null) {
+        // patFirstName
+        _firstNameController.text = args['patKey']['patName'];
       }
       if (args['patKey']['patSecondName'] != null) {
         _secondNameController.text = args['patKey']['patSecondName'];
@@ -130,22 +133,27 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
 
   PatientEditRequest _submitForm(int patKey, int casKey) {
     return PatientEditRequest(
-        casId: casKey,
-        patId: patKey,
-        patFirstName: Helper.capitalize(_firstNameController.text),
-        patSecondName: Helper.capitalize(_secondNameController.text),
-        patLastname: Helper.capitalize(_lastNameController.text),
-        patSecondSurname: Helper.capitalize(_lastSurnameNameController.text),
-        patDni: _dniController.text != '' ? int.parse(_dniController.text) : null,
-        patBirthdayDate: _birthdayDateController.text,
-        patGender: _genderTypeController.value ?? '',
-        patBirthdayPlace:Helper.capitalize(_birthdayPlaceController.text, false),
-        patBloodType: _bloodTypeController.value ?? '',
-        patGuardianDni: int.parse(_guardianDniController.text),
-        patWeight: _weightDateController.text != '' ? int.parse(
-            Helper.writeWeightByDouble(double.parse(_weightDateController.text), true)) : null,
-        patHeight: _heightController.text != '' ? int.parse(
-            Helper.writeHeightByDouble(double.parse(_heightController.text), true)) : null,);
+      casId: casKey,
+      patId: patKey,
+      patFirstName: Helper.capitalize(_firstNameController.text),
+      patSecondName: Helper.capitalize(_secondNameController.text),
+      patLastname: Helper.capitalize(_lastNameController.text),
+      patSecondSurname: Helper.capitalize(_lastSurnameNameController.text),
+      patDni: _dniController.text != '' ? int.parse(_dniController.text) : null,
+      patBirthdayDate: _birthdayDateController.text,
+      patGender: _genderTypeController.value ?? '',
+      patBirthdayPlace: Helper.capitalize(_birthdayPlaceController.text, false),
+      patBloodType: _bloodTypeController.value ?? '',
+      patGuardianDni: int.parse(_guardianDniController.text),
+      patWeight: _weightDateController.text != ''
+          ? int.parse(Helper.writeWeightByDouble(
+              double.parse(_weightDateController.text), true))
+          : null,
+      patHeight: _heightController.text != ''
+          ? int.parse(Helper.writeHeightByDouble(
+              double.parse(_heightController.text), true))
+          : null,
+    );
   }
 
   @override
@@ -217,7 +225,7 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
               });
               dynamic patientEditRequest = PatientEditRequestModel.fromEntity(
                       statePatientEditor.patientEditRequest)
-                 .toJson();
+                  .toJson();
               contextSelector
                   .read<PatientEditorSelectCubit>()
                   .setOriginalPatient(patientEditRequest);
@@ -240,7 +248,6 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                           constraints: BoxConstraints(
                             minHeight: size.height * 0.25,
                           ),
-                          child: IntrinsicHeight(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
@@ -269,7 +276,9 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                     contextRow: 'Primer Nombre',
                                     controllerData: _firstNameController,
                                     textInputType: TextInputType.name,
-                                    inputFormatters: TextFormatters.onlyLettersAndNumbers,
+                                    inputFormatters:
+                                        TextFormatters.onlyLettersAndNumbers,
+                                    iconData: Icons.person,
                                   ),
                                 ),
                                 Container(
@@ -281,7 +290,9 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                     contextRow: 'Segundo Nombre',
                                     controllerData: _secondNameController,
                                     textInputType: TextInputType.name,
-                                    inputFormatters: TextFormatters.onlyLettersAndNumbers,
+                                    inputFormatters:
+                                        TextFormatters.onlyLettersAndNumbers,
+                                    iconData: Icons.person,
                                   ),
                                 ),
                                 Container(
@@ -293,7 +304,9 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                     contextRow: 'Primer Apellido',
                                     controllerData: _lastNameController,
                                     textInputType: TextInputType.name,
-                                    inputFormatters: TextFormatters.onlyLettersAndNumbers,
+                                    inputFormatters:
+                                        TextFormatters.onlyLettersAndNumbers,
+                                    iconData: Icons.person,
                                   ),
                                 ),
                                 Container(
@@ -305,12 +318,13 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                                     contextRow: 'Segundo Apellido',
                                     controllerData: _lastSurnameNameController,
                                     textInputType: TextInputType.name,
-                                    inputFormatters: TextFormatters.onlyLettersAndNumbers,
+                                    inputFormatters:
+                                        TextFormatters.onlyLettersAndNumbers,
+                                    iconData: Icons.person,
                                   ),
                                 ),
                               ],
                             ),
-                          ),
                         ),
                       ),
                       SingleChildScrollView(
@@ -318,110 +332,117 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                           constraints: BoxConstraints(
                             minHeight: size.height * 0.25,
                           ),
-                          child: IntrinsicHeight(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(
-                                  height: 24,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const SizedBox(
+                                height: 24,
+                              ),
+                              // TODO Make a global Widget
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: size.height * 0.010,
                                 ),
-                                // TODO Make a global Widget
-                                Container(
+                                child: Text(
+                                  "Datos Caracteristicos del Paciente",
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                              ),
+                              Container(
                                   padding: EdgeInsets.symmetric(
-                                    horizontal: 24,
+                                    horizontal: size.width * 0.075,
                                     vertical: size.height * 0.010,
                                   ),
-                                  child: Text(
-                                    "Datos Caracteristicos del Paciente",
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                  ),
+                                  child: DateTextField(
+                                    contextRow: 'Fecha de Nacimiento',
+                                    controllerData: _birthdayDateController,
+                                  )),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.075,
+                                  vertical: size.height * 0.010,
                                 ),
-                                Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.075,
-                                      vertical: size.height * 0.010,
-                                    ),
-                                    child: DateTextField(
-                                      contextRow: 'Fecha de Nacimiento',
-                                      controllerData: _birthdayDateController,
-                                    )),
-                                Container(
+                                child: CaseDataTextField(
+                                  contextRow: 'Lugar de Nacimiento',
+                                  controllerData: _birthdayPlaceController,
+                                  textInputType: TextInputType.text,
+                                  iconData: Icons.location_on,
+                                ),
+                              ),
+                              Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.075,
+                                    vertical: size.height * 0.010,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                          child: TypeGenreDropdownField(
+                                            defaultValue: _genderTypeController.value,
+                                        controllerData: _genderTypeController,
+                                      )),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                          child: TypeBloodDropdownField(
+                                        controllerData: _bloodTypeController,
+                                      ))
+                                    ],
+                                  )),
+                              Container(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: size.width * 0.075,
                                     vertical: size.height * 0.010,
                                   ),
                                   child: CaseDataTextField(
-                                    contextRow: 'Lugar de Nacimiento',
-                                    controllerData: _birthdayPlaceController,
-                                    textInputType: TextInputType.text,
+                                    contextRow: 'Cedula del Paciente',
+                                    controllerData: _dniController,
+                                    textInputType: TextInputType.number,
+                                    inputFormatters:
+                                        TextFormatters.dniFormatter,
+                                    iconData: Icons.person,
+                                  )),
+                              Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.075,
+                                    vertical: size.height * 0.010,
                                   ),
-                                ),
-                                Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.075,
-                                      vertical: size.height * 0.010,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                            child: TypeGenreDropdownField(
-                                          controllerData: _genderTypeController,
-                                        )),
-                                        const SizedBox(
-                                          width: 10,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: CaseDataTextField(
+                                          contextRow: 'Peso (kilogramos)',
+                                          controllerData: _weightDateController,
+                                          textInputType: const TextInputType
+                                              .numberWithOptions(decimal: true),
+                                          inputFormatters: TextFormatters
+                                              .onlyNumbersForMetrics,
+                                          iconData: Icons.monitor_weight,
                                         ),
-                                        Expanded(
-                                            child: TypeBloodDropdownField(
-                                          controllerData: _bloodTypeController,
-                                        ))
-                                      ],
-                                    )),
-                                Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.075,
-                                      vertical: size.height * 0.010,
-                                    ),
-                                    child: CaseDataTextField(
-                                      contextRow: 'Cedula del Paciente',
-                                      controllerData: _dniController,
-                                      textInputType: TextInputType.number,
-                                      inputFormatters: TextFormatters.dniFormatter,
-                                    )),
-                                Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.075,
-                                      vertical: size.height * 0.010,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: CaseDataTextField(
-                                            contextRow: 'Peso (kilogramos)',
-                                            controllerData:
-                                                _weightDateController,
-                                            textInputType: const TextInputType.numberWithOptions(decimal: true),
-                                            inputFormatters: TextFormatters.onlyNumbersForMetrics,
-                                          ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        child: CaseDataTextField(
+                                          contextRow: 'Altura (Metros)',
+                                          controllerData: _heightController,
+                                          textInputType: const TextInputType
+                                              .numberWithOptions(decimal: true),
+                                          inputFormatters: TextFormatters
+                                              .onlyNumbersForMetrics,
+                                          iconData: Icons.height, // Icon(Icons.text_snippet)
                                         ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          child: CaseDataTextField(
-                                            contextRow: 'Altura (metros)',
-                                            controllerData: _heightController,
-                                            textInputType: const TextInputType.numberWithOptions(decimal: true),
-                                            inputFormatters: TextFormatters.onlyNumbersForMetrics,
-                                          ),
-                                        )
-                                      ],
-                                    )),
-                              ],
-                            ),
+                                      )
+                                    ],
+                                  )),
+                            ],
                           ),
                         ),
                       ),
@@ -438,9 +459,8 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
                               .read<PatientEditorCubit>()
                               .postChanges(
                                   _submitForm(
-                                    stateSelector.getSelectionPat()!.patId,
-                                    patient['casId']
-                                  ),
+                                      stateSelector.getSelectionPat()!.patId,
+                                      patient['casId']),
                                   stateSelector.getSelectionPat()!,
                                   part,
                                   authUser.accessToken),

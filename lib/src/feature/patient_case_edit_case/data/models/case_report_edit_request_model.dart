@@ -6,6 +6,7 @@ class CaseReportEditRequestModel extends CaseReportEditRequest {
   CaseReportEditRequestModel({
     required super.casId,
     required super.patId,
+    required super.casAdmissionReason,
     required super.casSymptomatology,
     required super.casPhysicalState,
     required super.casDiagnosis,
@@ -20,6 +21,7 @@ class CaseReportEditRequestModel extends CaseReportEditRequest {
     return CaseReportEditRequestModel(
         casId: json['casId'],
         patId: json['patId']['patId'],
+        casAdmissionReason: json['casAdmissionReason'],
         casSymptomatology: json['casSymptomatology'],
         casPhysicalState: json['casPhysicalState'],
         casDiagnosis: json['casDiagnosis'],
@@ -35,6 +37,7 @@ class CaseReportEditRequestModel extends CaseReportEditRequest {
     return {
       "casId": casId,
       "patId": patId,
+      "casAdmissionReason": casAdmissionReason,
       "casSymptomatology": casSymptomatology,
       "casPhysicalState": casPhysicalState,
       "casDiagnosis": casDiagnosis,
@@ -51,6 +54,7 @@ class CaseReportEditRequestModel extends CaseReportEditRequest {
       case 0:
         return {
           "casId": casId,
+          "casAdmissionReason": casAdmissionReason,
           "casSymptomatology": casSymptomatology,
           "casPhysicalState": casPhysicalState,
           "casDiagnosis": casDiagnosis,
@@ -60,7 +64,8 @@ class CaseReportEditRequestModel extends CaseReportEditRequest {
           "casId": casId,
           "casActualRoom": casActualRoom,
           "casEntryArea": casEntryArea,
-        }; // "casMethodOfEntry": casMethodOfEntry,
+          "casMethodOfEntry": casMethodOfEntry,
+        };
       case 2:
       return {
         "casId": casId,
@@ -76,6 +81,7 @@ class CaseReportEditRequestModel extends CaseReportEditRequest {
     return CaseReportEditRequestModel(
         casId: caseReportEditRequest.casId,
         patId: caseReportEditRequest.patId,
+        casAdmissionReason: caseReportEditRequest.casAdmissionReason,
         casSymptomatology: caseReportEditRequest.casSymptomatology,
         casPhysicalState: caseReportEditRequest.casPhysicalState,
         casDiagnosis: caseReportEditRequest.casDiagnosis,

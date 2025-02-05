@@ -2,6 +2,7 @@ class CaseReportEditRequest {
   CaseReportEditRequest({
     required this.casId,
     required this.patId,
+    required this.casAdmissionReason,
     required this.casSymptomatology,
     required this.casPhysicalState,
     required this.casDiagnosis,
@@ -14,6 +15,7 @@ class CaseReportEditRequest {
 
   int casId;
   int patId;
+  String? casAdmissionReason;
   String casSymptomatology;
   String casPhysicalState;
   String casDiagnosis;

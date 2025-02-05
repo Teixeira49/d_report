@@ -18,10 +18,11 @@ class CompareCasesUseCase {
 
     List<String> caseRows = checkEqualityUpdateCase[part]!;
 
+    print(caseRows);
+
     for (var i in caseRows) {
       print('$i ${originalCaseJson[i]} ${updateCaseJson[i]}');
-      if (originalCaseJson[i].toLowerCase() !=
-          updateCaseJson[i].toLowerCase()) {
+      if (originalCaseJson[i].toString().toLowerCase() != updateCaseJson[i].toString().toLowerCase()) {
         if (updateCaseJson[i] == '') {
           error = 'Porfavor, no deje campos por rellenar.';
         } else {

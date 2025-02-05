@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 
 class TextFormatters {
   static final List<TextInputFormatter> onlyLettersAndNumbers = [
-    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]'))
+    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]'))
   ];
 
   static final List<TextInputFormatter> onlyNumbersForMetrics = [

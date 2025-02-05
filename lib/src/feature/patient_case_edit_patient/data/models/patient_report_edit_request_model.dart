@@ -59,6 +59,7 @@ class PatientEditRequestModel extends PatientEditRequest {
       case 0:
         return {
           "patId": patId,
+          'casId': casId,
           "patFirstName": patFirstName,
           'patSecondName': patSecondName,
           'patLastname': patLastname,
