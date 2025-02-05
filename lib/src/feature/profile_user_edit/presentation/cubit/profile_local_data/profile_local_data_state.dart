@@ -1,3 +1,4 @@
+import '../../../../../core/utils/constants/fields_constants.dart';
 import '../../../../../shared/domain/entities/doctor.dart';
 
 abstract class ProfileLocalDataState {
@@ -12,7 +13,7 @@ class DoctorEditorLocalData extends ProfileLocalDataState {
   final String title;
   final DoctorProfile? doctor;
 
-  DoctorEditorLocalData({this.title = '', this.doctor});
+  DoctorEditorLocalData({this.title = emptyString, this.doctor});
 
   @override
   DoctorEditorLocalData copyWith({String? newTitle, DoctorProfile? newDoctor}) {

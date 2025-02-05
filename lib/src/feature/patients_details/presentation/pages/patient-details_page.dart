@@ -176,7 +176,7 @@ class MyPatientDetailsState extends State<PatientDetailsPage> {
                         }
                         if (stateDownload is FileGeneratorLoaded) {
                           final bytes = await stateDownload.pdf.save();
-                          var file = File('');
+                          var file = File(emptyString);
                           if (Platform.isIOS) {
                             final dir =
                                 await getApplicationDocumentsDirectory();
@@ -605,7 +605,7 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
         ),
         Visibility(
           visible: state.caseReport.casAdmissionReason != null &&
-              state.caseReport.casAdmissionReason != '',
+              state.caseReport.casAdmissionReason != emptyString,
           child: CustomCardPatientRow(
             widgetKey: "Motivo de Consulta",
             widgetValue: state.caseReport.casAdmissionReason.toString(),
@@ -652,7 +652,7 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
           child: CustomCardPatientRow(
             widgetKey: "Fecha de Cierre",
             widgetValue: state.caseReport.casEndDate == null
-                ? ''
+                ? emptyString
                 : Helper.getDateSMSByString(
                     state.caseReport.casEndDate.toString()),
             tileIcon: Icons.date_range,

@@ -20,7 +20,7 @@ class ComparePatientsUseCase {
       print('$i ${originalPatJson[i]} ${updatePatJson[i]}');
       if (originalPatJson[i].toString().toLowerCase() !=
           updatePatJson[i].toString().toLowerCase()) {
-        if (updatePatJson[i] == '') {
+        if (updatePatJson[i] == emptyString) {
           error = 'Porfavor, no deje campos por rellenar.';
         } else {
           error = null;

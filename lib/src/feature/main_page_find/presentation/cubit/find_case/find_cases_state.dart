@@ -1,4 +1,5 @@
 
+import '../../../../../core/utils/constants/fields_constants.dart';
 import '../../../domain/entities/case_simple.dart';
 
 abstract class FindCasesState {}
@@ -11,7 +12,7 @@ class FindCasesLoaded extends FindCasesState {
   final List<CaseSimple> cases;
   final String filter;
   final bool isComplete;
-  FindCasesLoaded({required this.cases, this.filter = '', this.isComplete = false});
+  FindCasesLoaded({required this.cases, this.filter = emptyString, this.isComplete = false});
 
   FindCasesLoaded copyWith({List<CaseSimple>? newCases, String? filter, bool? isComplete}) {
     return FindCasesLoaded(

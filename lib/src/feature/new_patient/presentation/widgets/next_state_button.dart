@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../cubit/new_patient/new_patient_case_cubit.dart';
 
@@ -58,7 +59,7 @@ class NextStateButton extends StatelessWidget {
                 patGender != null &&
                 patBloodType != null &&
                 patGuPhone.isNotEmpty) {
-              if (patDni != null && patDni != '') {
+              if (patDni != null && patDni != emptyString) {
                 context.read<CheckPatientCubit>().checkIfPatientExist(
                     patName, patLastName, int.parse(patGuDni), accessToken, int.parse(patDni!));
               } else {

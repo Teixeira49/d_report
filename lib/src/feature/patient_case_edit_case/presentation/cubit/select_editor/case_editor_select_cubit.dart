@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/utils/constants/fields_constants.dart';
 import '../../../domain/entities/case_report.dart';
 import '../../../domain/use_cases/create_instance_report.dart';
 import 'case_editor_select_state.dart';
@@ -24,7 +25,7 @@ class CaseEditorSelectCubit extends Cubit<CaseEditorSelectState> {
     if (state is CaseEditorSelectRows) {
       return state.getSelectionTitle();
     }
-    return '';
+    return emptyString;
   }
 
   CaseReport? getSelectionCase() {

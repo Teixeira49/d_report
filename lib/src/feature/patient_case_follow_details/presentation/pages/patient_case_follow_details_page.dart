@@ -12,6 +12,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/config/styles/static_colors.dart';
 import '../../../../core/helpers/helpers.dart';
+import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
@@ -79,7 +80,7 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
                       }
                       if (subState is FileGeneratorLoaded) {
                         final bytes = await subState.pdf.save();
-                        var file = File('');
+                        var file = File(emptyString);
                         if (Platform.isIOS) {
                           final dir = await getApplicationDocumentsDirectory();
                           file = File('${dir.path}/example.pdf');
@@ -181,7 +182,7 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
                   CustomCardResumeRow(
                     widgetKey: "Paciente",
                     widgetValue:
-                        '$patFullName ${(patDetails != null) ? '(Edad: ${Helper.getAgeByDateInString(patDetails['birthday'])} Años)' : ''}',
+                        '$patFullName ${(patDetails != null) ? '(Edad: ${Helper.getAgeByDateInString(patDetails['birthday'])} Años)' : emptyString}',
                     iconData: Icons.person,
                   ),
                   CustomCardResumeRow(

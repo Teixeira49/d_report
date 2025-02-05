@@ -1,10 +1,10 @@
-import 'package:d_report/my_flutter_app_icons.dart';
 import 'package:d_report/src/feature/patient_case_edit_patient/domain/use_cases/post_patient_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/config/styles/static_colors.dart';
 import '../../../../core/helpers/helpers.dart';
+import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/presentation/formatter/text_formatters.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
@@ -68,7 +68,6 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
       dynamic args = ModalRoute.of(context)!.settings.arguments;
       initialPage = (args['id'] != null) ? args['id'] : 1;
       _pageController = PageController(initialPage: initialPage);
-      print(args['patKey']);
       if (args['patKey']['patName'] != null) {
         // patFirstName
         _firstNameController.text = args['patKey']['patName'];
@@ -139,17 +138,17 @@ class MyEditCasePatientState extends State<EditCasePatientPage> {
       patSecondName: Helper.capitalize(_secondNameController.text),
       patLastname: Helper.capitalize(_lastNameController.text),
       patSecondSurname: Helper.capitalize(_lastSurnameNameController.text),
-      patDni: _dniController.text != '' ? int.parse(_dniController.text) : null,
+      patDni: _dniController.text != emptyString ? int.parse(_dniController.text) : null,
       patBirthdayDate: _birthdayDateController.text,
-      patGender: _genderTypeController.value ?? '',
+      patGender: _genderTypeController.value ?? emptyString,
       patBirthdayPlace: Helper.capitalize(_birthdayPlaceController.text, false),
-      patBloodType: _bloodTypeController.value ?? '',
+      patBloodType: _bloodTypeController.value ?? emptyString,
       patGuardianDni: int.parse(_guardianDniController.text),
-      patWeight: _weightDateController.text != ''
+      patWeight: _weightDateController.text != emptyString
           ? int.parse(Helper.writeWeightByDouble(
               double.parse(_weightDateController.text), true))
           : null,
-      patHeight: _heightController.text != ''
+      patHeight: _heightController.text != emptyString
           ? int.parse(Helper.writeHeightByDouble(
               double.parse(_heightController.text), true))
           : null,

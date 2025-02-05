@@ -1,3 +1,4 @@
+import '../../../core/utils/constants/fields_constants.dart';
 import '../../domain/entities/doctor.dart';
 
 class DoctorProfileModel extends DoctorProfile {
@@ -25,7 +26,7 @@ class DoctorProfileModel extends DoctorProfile {
       birthday: json['docBirthday'],
       range: json['rolId'],
       speciality: json['docSpecialty'],
-      photoUrl: json['docPhotoUrl'] ?? '',
+      photoUrl: json['docPhotoUrl'] ?? emptyString,
       email: json['userEmail'],
       phone: json['userPhone'],
     );
@@ -41,7 +42,7 @@ class DoctorProfileModel extends DoctorProfile {
       birthday: json['docBirthday'],
       range: userRole,
       speciality: json['docSpecialty'],
-      photoUrl: json['docPhotoUrl'] ?? '',
+      photoUrl: json['docPhotoUrl'] ?? emptyString,
       email: email,
       phone: json['userPhone'],
     );

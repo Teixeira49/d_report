@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/utils/constants/fields_constants.dart';
 import '../../../../../shared/domain/entities/doctor.dart';
 import '../../../domain/use_cases/create_instance_doctor_user.dart';
 import 'profile_local_data_state.dart';
@@ -25,7 +26,7 @@ class ProfileLocalDataCubit extends Cubit<ProfileLocalDataState> {
     if (state is DoctorEditorLocalData) {
       return state.getLocalTitle();
     }
-    return '';
+    return emptyString;
   }
 
   DoctorProfile? getSelectionPatient() {

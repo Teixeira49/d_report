@@ -1,3 +1,4 @@
+import '../../../../../core/utils/constants/fields_constants.dart';
 import '../../../domain/entities/case_report.dart';
 
 abstract class CaseEditorSelectState {
@@ -12,7 +13,7 @@ class CaseEditorSelectRows extends CaseEditorSelectState {
   final String title;
   final CaseReport? caseReport;
 
-  CaseEditorSelectRows({this.title = '', this.caseReport});
+  CaseEditorSelectRows({this.title = emptyString, this.caseReport});
 
   @override
   CaseEditorSelectRows copyWith({String? newTitle, CaseReport? newCaseReport}) {

@@ -1,4 +1,5 @@
 
+import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/data/model/profile_model.dart';
 import '../../../../shared/domain/entities/doctor.dart';
 
@@ -13,13 +14,10 @@ class CompareProfilesUseCase {
 
     List<String> profileRows = originalDocJson.keys.toList();
 
-    print(originalDocJson);
-    print(updateDocJson);
-
     for (var i in profileRows) {
       if (originalDocJson[i].toString().toLowerCase() !=
           updateDocJson[i].toString().toLowerCase()) {
-        if (updateDocJson[i] == '') {
+        if (updateDocJson[i] == emptyString) {
           error = 'Porfavor, no deje campos por rellenar.';
         } else {
           error = null;

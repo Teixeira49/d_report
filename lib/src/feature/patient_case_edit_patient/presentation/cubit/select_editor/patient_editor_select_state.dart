@@ -1,3 +1,4 @@
+import '../../../../../core/utils/constants/fields_constants.dart';
 import '../../../domain/entities/patient.dart';
 
 abstract class PatientEditorSelectState {
@@ -12,7 +13,7 @@ class PatientEditorSelectRows extends PatientEditorSelectState {
   final String title;
   final Patient? patient;
 
-  PatientEditorSelectRows({this.title = '', this.patient});
+  PatientEditorSelectRows({this.title = emptyString, this.patient});
 
   @override
   PatientEditorSelectRows copyWith({String? newTitle, Patient? newPatient}) {

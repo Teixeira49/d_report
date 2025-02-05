@@ -282,14 +282,14 @@ class MyProfilePageState extends State<ProfilePage> {
                       height: 14,
                     ),
                     Visibility(
-                      visible: state.doctor.phone.isNotEmpty && state.doctor.phone != '',
+                      visible: state.doctor.phone.isNotEmpty && state.doctor.phone != emptyString,
                         child: CustomCardProfileRow(
                             defaultKey: "Telefono",
                             defaultValue: state.doctor.phone,
                             trailingIcon: Icons.phone_android),
                     ),
                     Visibility(
-                        visible: state.doctor.phone.isNotEmpty && state.doctor.phone != '',
+                        visible: state.doctor.phone.isNotEmpty && state.doctor.phone != emptyString,
                         child: Divider(
                           color: Theme.of(context)
                               .colorScheme

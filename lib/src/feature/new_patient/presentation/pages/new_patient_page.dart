@@ -113,7 +113,7 @@ class MyNewPatientPageState extends State<NewPatientPage> {
               LoadingShowDialog.show(context, 'Comprobando Informacion');
             } else if (state is CheckPatientLoaded) {
               Future.delayed(const Duration(seconds: 1), () {
-                if (state.sms == '') {
+                if (state.sms == emptyString) {
                   Navigator.of(context).pop();
 
                   Map<String, dynamic> patientData = {

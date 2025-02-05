@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/utils/constants/fields_constants.dart';
 import '../../../domain/entities/patient.dart';
 import '../../../domain/use_cases/create_instance_patient.dart';
 import 'patient_editor_select_state.dart';
@@ -28,7 +29,7 @@ class PatientEditorSelectCubit extends Cubit<PatientEditorSelectState> {
     if (state is PatientEditorSelectRows) {
       return state.getSelectionTitle();
     }
-    return '';
+    return emptyString;
   }
 
   Patient? getSelectionPatient() {

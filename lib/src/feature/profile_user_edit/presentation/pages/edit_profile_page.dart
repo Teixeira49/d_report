@@ -63,22 +63,22 @@ class MyEditProfilePageState extends State<EditProfilePage> {
       dynamic args = ModalRoute.of(context)!.settings.arguments;
       DoctorProfile doctor = args["doctorData"];
       _dniController.text = doctor.dni.toString();
-      if (doctor.firstName.isNotEmpty && doctor.firstName != '') {
+      if (doctor.firstName.isNotEmpty && doctor.firstName != emptyString) {
         _nameController.text = doctor.firstName;
       }
-      if (doctor.lastName.isNotEmpty && doctor.lastName != '') {
+      if (doctor.lastName.isNotEmpty && doctor.lastName != emptyString) {
         _lastNameController.text = doctor.lastName;
       }
-      if (doctor.genre.isNotEmpty && doctor.genre != '') {
+      if (doctor.genre.isNotEmpty && doctor.genre != emptyString) {
         _genreController.value = doctor.genre;
       }
-      if (doctor.speciality.isNotEmpty && doctor.speciality != '') {
+      if (doctor.speciality.isNotEmpty && doctor.speciality != emptyString) {
         _specialityController.text = doctor.speciality;
       }
-      if (doctor.birthday.isNotEmpty && doctor.birthday != '') {
+      if (doctor.birthday.isNotEmpty && doctor.birthday != emptyString) {
         _dateController.text = doctor.birthday;
       }
-      if (doctor.phone.isNotEmpty && doctor.phone != '') {
+      if (doctor.phone.isNotEmpty && doctor.phone != emptyString) {
         _phoneController.text = doctor.phone;
       }
     }
@@ -104,11 +104,11 @@ class MyEditProfilePageState extends State<EditProfilePage> {
         firstName: Helper.capitalize(_nameController.text),
         lastName: Helper.capitalize(_lastNameController.text),
         dni: int.parse(_dniController.text),
-        genre: _genreController.value ?? '',
+        genre: _genreController.value ?? emptyString,
         birthday: _dateController.text,
         range: role,
         speciality: Helper.capitalize(_specialityController.text, false),
-        photoUrl: '',
+        photoUrl: emptyString,
         email: email.toLowerCase(),
         phone: _phoneController.text));
   }

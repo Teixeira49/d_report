@@ -190,7 +190,7 @@ class MyLoginPageState extends State<LoginPage> {
                     width: 6,
                   ),
                   Text(
-                      "Version: ${_version != 'Cargando...' ? _version : ''}. Hospital J.M. de los Rios."),
+                      "Version: ${_version != 'Cargando...' ? _version : emptyString}. Hospital J.M. de los Rios."),
                 ],
               ),
             )),

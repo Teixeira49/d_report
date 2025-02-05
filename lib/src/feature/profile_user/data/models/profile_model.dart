@@ -26,7 +26,7 @@ class DoctorProfileModel extends DoctorProfile {
       birthday: json['docBirthday'],
       range: json['rolId'],
       speciality: json['docSpecialty'],
-      photoUrl: json['docPhotoUrl'] ?? '',
+      photoUrl: json['docPhotoUrl'] ?? emptyString,
       email: json['userEmail'],
       phone: json['userPhone'],
     );

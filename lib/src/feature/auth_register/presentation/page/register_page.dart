@@ -40,13 +40,13 @@ class MyRegisterPageState extends State<RegisterPage> {
   // Agregar una lista de Especialidades, con un Otros
 
   final AccountProfileRequest accountProfileRequest = AccountProfileRequest(
-      firstName: '',
-      lastName: '',
-      genre: '',
-      email: '',
-      phone: '',
-      range: '',
-      password: '');
+      firstName: emptyString,
+      lastName: emptyString,
+      genre: emptyString,
+      email: emptyString,
+      phone: emptyString,
+      range: emptyString,
+      password: emptyString);
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();

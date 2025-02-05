@@ -1,5 +1,7 @@
 import 'package:flutter/services.dart';
 
+import '../../../../core/utils/constants/fields_constants.dart';
+
 class PhoneNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
@@ -8,7 +10,7 @@ class PhoneNumberFormatter extends TextInputFormatter {
       return oldValue;
     }
 
-    String formattedText = '';
+    String formattedText = emptyString;
     if (text.length >= 1) {
       formattedText += '+${text.substring(0, 1)}';
     }

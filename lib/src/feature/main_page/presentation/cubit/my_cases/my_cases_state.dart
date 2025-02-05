@@ -1,4 +1,5 @@
 
+import '../../../../../core/utils/constants/fields_constants.dart';
 import '../../../domain/entities/case_simple.dart';
 
 abstract class MyCasesState {
@@ -13,7 +14,7 @@ class MyCasesLoading extends MyCasesState {
 class MyCasesLoaded extends MyCasesState {
   final List<CaseSimple> cases;
   final String filter;
-  MyCasesLoaded({required this.cases, this.filter = ''});
+  MyCasesLoaded({required this.cases, this.filter = emptyString});
 
   MyCasesLoaded copyWith({List<CaseSimple>? cases, String? filter}) {
     return MyCasesLoaded(

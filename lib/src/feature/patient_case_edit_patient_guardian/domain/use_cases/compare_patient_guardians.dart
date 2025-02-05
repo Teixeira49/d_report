@@ -1,3 +1,4 @@
+import '../../../../core/utils/constants/fields_constants.dart';
 import '../../data/models/patient_guardian_edit_request_model.dart';
 import '../../data/models/patient_guardian_model.dart';
 import '../entities/patient_guardian.dart';
@@ -23,12 +24,11 @@ class ComparePatientGuardiansUseCase {
     ];
 
     for (var i in patGuRows) {
-      print('$i ${originalPatGuJson[i]} ${updatePatGuJson[i]}');
       if (originalPatGuJson[i] == null) {
-        originalPatGuJson[i] = '';
+        originalPatGuJson[i] = emptyString;
       }
       if (originalPatGuJson[i].toString().toLowerCase() != updatePatGuJson[i].toString().toLowerCase()) {
-        if (updatePatGuJson[i] == '') {
+        if (updatePatGuJson[i] == emptyString) {
           error = 'Porfavor, no deje campos por rellenar.';
         } else {
           error = null;

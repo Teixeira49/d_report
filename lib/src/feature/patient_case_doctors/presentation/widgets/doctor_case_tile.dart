@@ -4,6 +4,7 @@ import 'package:d_report/src/shared/presentation/widget/floating_snack_bars.dart
 import 'package:flutter/material.dart';
 
 import '../../../../core/config/styles/static_colors.dart';
+import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/data/model/view_details_status.dart';
 import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/domain/entities/user.dart';
@@ -25,7 +26,7 @@ class DoctorCaseTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
       child: ListTile(
         title: Text(
-          '${assignedDoctor.docName} ${assignedDoctor.docLastName}${assignedDoctor.docId == user.userProfileId ? ' (Yo)' : ''}',
+          '${assignedDoctor.docName} ${assignedDoctor.docLastName}${assignedDoctor.docId == user.userProfileId ? ' (Yo)' : emptyString}',
           style: Theme.of(context).listTileTheme.titleTextStyle,
         ),
         subtitle:

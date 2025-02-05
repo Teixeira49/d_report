@@ -23,7 +23,7 @@ class CompareCasesUseCase {
     for (var i in caseRows) {
       print('$i ${originalCaseJson[i]} ${updateCaseJson[i]}');
       if (originalCaseJson[i].toString().toLowerCase() != updateCaseJson[i].toString().toLowerCase()) {
-        if (updateCaseJson[i] == '') {
+        if (updateCaseJson[i] == emptyString) {
           error = 'Porfavor, no deje campos por rellenar.';
         } else {
           error = null;

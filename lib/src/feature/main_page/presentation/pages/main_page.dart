@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
+import '../../../../core/utils/constants/fields_constants.dart';
 import '../../../../shared/data/model/roles.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../../../shared/presentation/widget/circular_progress_bar.dart';
@@ -168,7 +169,7 @@ class MyMainPageState extends State<MainPage> {
                             onPressed: () {
                               switchSearchState();
                               _searchController.clear();
-                              context.read<MyCasesCubit>().updateFilter('');
+                              context.read<MyCasesCubit>().updateFilter(emptyString);
                             },
                           ),
                           suffixIcon: Visibility(

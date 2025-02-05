@@ -1,3 +1,4 @@
+import '../../../../../core/utils/constants/fields_constants.dart';
 import '../../../domain/entities/patient.dart';
 
 abstract class FindPatientState {}
@@ -12,7 +13,7 @@ class FindPatientLoaded extends FindPatientState {
   final String filter;
   final bool isComplete;
 
-  FindPatientLoaded({required this.patients, this.filter = '', this.isComplete = false});
+  FindPatientLoaded({required this.patients, this.filter = emptyString, this.isComplete = false});
 
   FindPatientLoaded copyWith({List<SearchPatient>? patients, String? filter, bool? isComplete}) {
     return FindPatientLoaded(

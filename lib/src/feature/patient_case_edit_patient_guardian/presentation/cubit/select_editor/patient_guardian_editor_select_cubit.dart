@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
+import '../../../../../core/utils/constants/fields_constants.dart';
 import '../../../domain/entities/patient_guardian.dart';
 import '../../../domain/use_cases/create_instance_patient_guardian.dart';
 import 'patient_guardian_editor_select_state.dart';
@@ -27,7 +28,7 @@ class PatientGuardianEditorSelectCubit
     if (state is PatientGuardianEditorSelectRows) {
       return state.getSelectionTitle();
     }
-    return '';
+    return emptyString;
   }
 
   PatientGuardian? getSelectionPatient() {

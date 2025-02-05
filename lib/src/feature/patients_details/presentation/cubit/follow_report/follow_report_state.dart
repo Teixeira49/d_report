@@ -1,5 +1,7 @@
 import 'package:d_report/src/feature/patients_details/domain/entities/follows_in_case.dart';
 
+import '../../../../../core/utils/constants/fields_constants.dart';
+
 abstract class FollowReportState {}
 
 class FollowCaseInitial extends FollowReportState {}
@@ -14,7 +16,7 @@ class FollowCaseLoaded extends FollowReportState {
 
   FollowCaseLoaded(
       {required this.followCase,
-      this.filter = '',
+      this.filter = emptyString,
       this.isComplete = false,
       required this.countTotal});
 

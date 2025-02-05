@@ -1,5 +1,7 @@
 import 'package:d_report/src/feature/patient_case_doctors/domain/entities/assigned_doctor.dart';
 
+import '../../../../../core/utils/constants/fields_constants.dart';
+
 abstract class ViewDoctorsState {}
 
 class ViewDoctorsInitial extends ViewDoctorsState {}
@@ -15,7 +17,7 @@ class ViewDoctorsLoaded extends ViewDoctorsState {
   ViewDoctorsLoaded(
       {required this.listAssignedDoctors, this.isCompleteAssignedDoctors = false,
       required this.countTotalAssignedDoctors,
-      this.filter = ''});
+      this.filter = emptyString});
 
   ViewDoctorsLoaded copyWith(
       {List<AssignedDoctor>? doctors, int? count, String? filter, bool? isComplete}) {
