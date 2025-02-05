@@ -1,18 +1,26 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:d_report/src/feature/new_follow/presentation/cubit/upload_follow/upload_follow_state.dart';
-import '../../../domain/repository/new_follow_repository.dart';
+import '../../../domain/use_cases/create_follow.dart';
 
 class UploadFollowCubit extends Cubit<UploadFollowState> {
 
-  final FollowCaseRepositoryImpl _repositoryImpl;
+  final CreateFollowUseCase _createFollowUseCase;
 
-  UploadFollowCubit(this._repositoryImpl) : super(UploadFollowInitial());
+  UploadFollowCubit(this._createFollowUseCase) : super(UploadFollowInitial());
 
-  Future<void> postUploadFollowData(Map<String, dynamic> data, String accessToken) async {
+  Future<void> postUploadFollowData(Map<String, dynamic> input, String accessToken) async {
+
     try {
+
       emit(UploadFollowLoading());
-      await _repositoryImpl.postFollowCaseData(data, accessToken);
-      emit(UploadFollowPosted());
+
+      final data = await _createFollowUseCase.call(input, accessToken);
+
+      data.fold(
+              (l) => emit(UploadFollowError(l.message)),
+              (r) => emit(UploadFollowPosted(r))
+      );
+
     } catch (e) {
       emit(UploadFollowError('Error al subir los datos del paciente'));
     }

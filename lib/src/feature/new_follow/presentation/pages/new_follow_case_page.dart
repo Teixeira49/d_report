@@ -8,7 +8,8 @@ import '../../../../shared/domain/entities/auth_user.dart';
 import '../../../../shared/presentation/widget/floating_snack_bars.dart';
 import '../../../../shared/presentation/widget/loading_show_dialog.dart';
 import '../../data/datasource/remote/new_follow_remote_datasource.dart';
-import '../../domain/repository/new_follow_repository.dart';
+import '../../data/repository/follow_repository.dart';
+import '../../domain/use_cases/create_follow.dart';
 import '../cubit/upload_follow/upload_follow_cubit.dart';
 import '../cubit/upload_follow/upload_follow_state.dart';
 import '../widgets/data_textArea.dart';
@@ -37,6 +38,7 @@ class MyNewFollowCasePage extends State<NewFollowCasePage> {
   Widget build(BuildContext context) {
     final remoteDataSource = FollowCaseDataSourceImpl();
     final repository = FollowCaseRepositoryImpl(remoteDataSource);
+    final createUseCase = CreateFollowUseCase(repository);
 
     final size = MediaQuery.of(context).size;
     final keyboardEnabled = MediaQuery.of(context).viewInsets.bottom;
@@ -48,13 +50,13 @@ class MyNewFollowCasePage extends State<NewFollowCasePage> {
     AuthUser authUser = arguments['AuthCredentials'];
 
     return BlocProvider(
-        create: (_) => UploadFollowCubit(repository),
+        create: (_) => UploadFollowCubit(createUseCase),
         child: BlocConsumer<UploadFollowCubit, UploadFollowState>(
           listener: (context, state) {
 
             if (state is UploadFollowLoading) {
               LoadingShowDialog.show(context, 'Subiendo Informacion');
-            } else if (state is UploadFollowLoaded) {
+            } else if (state is UploadFollowPosted) {
               Navigator.pop(context);
               Future.delayed(const Duration(milliseconds: 100), () {
                 FloatingSnackBar.show(

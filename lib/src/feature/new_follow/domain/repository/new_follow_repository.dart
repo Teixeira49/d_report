@@ -1,12 +1,9 @@
+import 'package:dartz/dartz.dart';
 
-import '../../data/datasource/remote/new_follow_remote_datasource.dart';
+import '../../../../core/network/error/failures.dart';
+import '../entities/follow_case.dart';
 
-class FollowCaseRepositoryImpl {
-  const FollowCaseRepositoryImpl(this._followCaseRemoteDataSource);
+abstract class FollowCaseRepository {
 
-  final FollowCaseRemoteDataSource _followCaseRemoteDataSource;
-
-  Future<void> postFollowCaseData(Map<String, dynamic> data, String accessToken) async {
-    await _followCaseRemoteDataSource.postCaseFollowsByCase(data, accessToken);
-  }
+  Future<Either<Failure, FollowCase>> postFollowCaseData(Map<String, dynamic> data, String accessToken);
 }

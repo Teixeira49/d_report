@@ -12,7 +12,10 @@ class UploadFollowLoaded extends UploadFollowState {
   UploadFollowLoaded(this.uploadFollow);
 }
 
-class UploadFollowPosted extends UploadFollowState {}
+class UploadFollowPosted extends UploadFollowState {
+  final FollowCase uploadFollow;
+  UploadFollowPosted(this.uploadFollow);
+}
 
 class UploadFollowError extends UploadFollowState {
   final String errorSMS;

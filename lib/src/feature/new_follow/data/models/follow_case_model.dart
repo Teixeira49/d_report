@@ -18,7 +18,7 @@ class FollowModel extends FollowCase {
       cafReportType: json['cafReportType'],
       casId: json['casId'],
       cafReportInfo: json['cafReportDate'],
-      docId: json['docId'],
+      docId: json['docId']['docId'],
       cafReportTitle: json['cafReportTitle'],
     );
   }

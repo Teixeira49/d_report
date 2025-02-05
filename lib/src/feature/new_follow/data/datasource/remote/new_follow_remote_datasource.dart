@@ -29,8 +29,7 @@ class FollowCaseDataSourceImpl implements FollowCaseRemoteDataSource{
 
     const r = RetryOptions(maxAttempts: 3);
 
-    print('AAA');
-    print(FollowModel.fromBodyJson(data).toJson());
+    print('ENTRADA ${FollowModel.fromBodyJson(data).toJson()}');
 
     final resp = await r.retry(() => dio.post(
       '$apiUrl/cases/operations/follows/add',
@@ -44,9 +43,7 @@ class FollowCaseDataSourceImpl implements FollowCaseRemoteDataSource{
       data: FollowModel.fromBodyJson(data).toJson()
     ));
 
-    print('KONO DIO DAA');
-    print(resp.data);
-
+    print('SALIDA ${resp.data}');
 
     return FollowModel.fromJson(resp.data);
   }
