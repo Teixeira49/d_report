@@ -20,7 +20,9 @@ class SendEndCaseCubit extends Cubit<SendEndCaseState>{
 
       emit(SendEndCaseLoading());
 
-      final data = await _endCaseRepositoryImpl.endSelectedCase(EndCaseDTO(encPatId: patId, encCasId: casId, encEndReason: endReason), accessToken);
+      final data = await _endCaseRepositoryImpl.endSelectedCase(
+          EndCaseDTO(encPatId: patId, encCasId: casId, encEndReason: endReason, encEndDiagnosis: endDiagnosis), // TODO Change to model
+          accessToken);
 
       data.fold(
               (l) => emit(SendEndCaseFail(errorSMS: l.message)),

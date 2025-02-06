@@ -1,1 +1,1 @@
-enum EndReasons { SURVIVE, DEAD, REFERRAL }
+enum EndReasons { SURVIVE, DEAD, REFERRAL, ESCAPED }

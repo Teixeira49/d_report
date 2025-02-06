@@ -18,7 +18,7 @@ class CaseEditorSelectCubit extends Cubit<CaseEditorSelectState> {
 
   void setOriginalCase(dynamic caseJson) {
     CaseReport caseReport = _createInstanceCaseReportUseCase.call(caseJson);
-    emit(state.copyWith(newCaseReport: caseReport));
+    emit(state.copyWith(newCaseReport: caseReport, isUpdated: true));
   }
 
   String getSelectionTitle() {
@@ -30,6 +30,10 @@ class CaseEditorSelectCubit extends Cubit<CaseEditorSelectState> {
 
   CaseReport? getSelectionCase() {
     return state.getSelectionCase();
+  }
+
+  bool getEditedStatus() {
+    return state.getEditedStatus();
   }
 
 }

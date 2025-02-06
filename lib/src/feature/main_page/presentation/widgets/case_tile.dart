@@ -13,9 +13,10 @@ class CaseTile extends StatelessWidget {
   final CaseSimple dataPatientRow;
   final AuthUser authUser;
   final User user;
+  final Function() function;
 
   const CaseTile(this.context, this.dataPatientRow, this.authUser, this.user,
-      {super.key});
+      {super.key, required this.function});
 
   @override
   Widget build(BuildContext context) {
@@ -23,50 +24,50 @@ class CaseTile extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 1),
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
       child: ListTile(
-          title: Text(
-            dataPatientRow.patName,
-            style: Theme
-                .of(context)
-                .listTileTheme
-                .titleTextStyle,
-          ),
-          subtitle: Text(
-            dataPatientRow.casActualRoom,
-            style: Theme
-                .of(context)
-                .listTileTheme
-                .subtitleTextStyle,
-          ),
-          leading: const SizedBox(
-            height: double.maxFinite,
-            width: 5,
-          ),
-          trailing: Wrap(
-            alignment: WrapAlignment.center,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-
-              Text(!dataPatientRow.casEndFlag
-                  ? textFormatterTrailingDays(Helper.countCaseDaysByString(dataPatientRow.casEnterDate))
-                  : textFormatterTrailingLabel(dataPatientRow.casEndReason)),
-              const SizedBox(width: 4,),
-            BulletDecorator(sizeBullet: 9, marginHorizontal: 5,
-            marginVertical: 5, gradientSystem: !dataPatientRow.casEndFlag
-              ? ColorPalette.activeCase
-              : ColorPalette.disabledCase,
-          ),
-      ],),
-    onTap: () {
-    Navigator.of(context)
-        .pushNamed('/main/patients/details/', arguments: {
-    "casKey": int.parse(dataPatientRow.casId),
-    'patFullName': dataPatientRow.patName,
-    'AuthCredentials': authUser,
-    'userData': user
-    });
-    },
-    )
-    ,
+        title: Text(
+          dataPatientRow.patName,
+          style: Theme.of(context).listTileTheme.titleTextStyle,
+        ),
+        subtitle: Text(
+          dataPatientRow.casActualRoom,
+          style: Theme.of(context).listTileTheme.subtitleTextStyle,
+        ),
+        leading: const SizedBox(
+          height: double.maxFinite,
+          width: 5,
+        ),
+        trailing: Wrap(
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Text(!dataPatientRow.casEndFlag
+                ? textFormatterTrailingDays(
+                    Helper.countCaseDaysByString(dataPatientRow.casEnterDate))
+                : textFormatterTrailingLabel(dataPatientRow.casEndReason)),
+            const SizedBox(
+              width: 4,
+            ),
+            BulletDecorator(
+              sizeBullet: 9,
+              marginHorizontal: 5,
+              marginVertical: 5,
+              gradientSystem: !dataPatientRow.casEndFlag
+                  ? ColorPalette.activeCase
+                  : ColorPalette.disabledCase,
+            ),
+          ],
+        ),
+        onTap: () {
+          Navigator.of(context)
+              .pushNamed('/main/patients/details/', arguments: {
+            "casKey": int.parse(dataPatientRow.casId),
+            'patFullName': dataPatientRow.patName,
+            'AuthCredentials': authUser,
+            'userData': user
+          });
+          function();
+        },
+      ),
     );
   }
 

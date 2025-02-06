@@ -139,30 +139,33 @@ class MyPatientDetailsState extends State<PatientDetailsPage> {
             appBar: AppBar(
               title: getTitleAppBar(state),
               backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-              automaticallyImplyLeading: true,
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },),
               actions: [
                 IconButton(
-                    onPressed: () => {
-                          if (state is PatientDataLoaded)
-                            {
-                              Navigator.of(context).pushNamed(
-                                  "/main/patients/details/edit-case",
-                                  arguments: {
-                                    'casKey': CaseReportModel.fromEntity(
-                                            state.caseReport)
-                                        .toJson(),
-                                    'patKey':
-                                        PatientModel.fromEntity(state.patient)
-                                            .toJson(),
-                                    'AuthCredentials': authUser,
-                                  })
-                            }
-                          else
-                            {
-                              FloatingWarningSnackBar.show(context,
-                                  'Espere a que carguen los datos para editar')
-                            }
-                        },
+                    onPressed: () async {
+                      if (state is PatientDataLoaded) {
+                        await Navigator.of(context).pushNamed(
+                            "/main/patients/details/edit-case",
+                            arguments: {
+                              'casKey':
+                                  CaseReportModel.fromEntity(state.caseReport)
+                                      .toJson(),
+                              'patKey': PatientModel.fromEntity(state.patient)
+                                  .toJson(),
+                              'AuthCredentials': authUser,
+                            });
+                        context.read<PatientDataCubit>().fetchCaseDetails(
+                            caseId, user.userProfileId, authUser.accessToken);
+                      } else {
+                        FloatingWarningSnackBar.show(context,
+                            'Espere a que carguen los datos para editar');
+                      }
+                    },
                     icon: const Icon(Icons.edit)),
                 Visibility(
                     visible: state is PatientDataLoaded
@@ -285,7 +288,12 @@ class MyPatientDetailsState extends State<PatientDetailsPage> {
                 casId: caseId,
                 docId: 23,
                 patName: patFullName,
-                authUser: authUser), // TODO Delete Hardcode number
+                authUser: authUser,
+                endCase: (state is PatientDataLoaded)
+                    ? (state.caseReport.casEndFlag) != null
+                        ? (state.caseReport.casEndFlag)!
+                        : false
+                    : false), // TODO Delete Hardcode number
           );
         }),
       ),
@@ -298,12 +306,14 @@ class _FloatingActionButtonForTab extends StatelessWidget {
   final int docId;
   final String patName;
   final AuthUser authUser;
+  final bool endCase;
 
   const _FloatingActionButtonForTab(
       {required this.casId,
       required this.docId,
       required this.authUser,
-      required this.patName});
+      required this.patName,
+      required this.endCase});
 
   @override
   Widget build(BuildContext context) {
@@ -313,10 +323,10 @@ class _FloatingActionButtonForTab extends StatelessWidget {
       animation: tabController,
       builder: (context, child) {
         return Visibility(
-          visible: tabController.index == 2,
+          visible: tabController.index == 2 && !endCase,
           child: FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(
+            onPressed: () async {
+              final result = await Navigator.of(context).pushNamed(
                   '/main/patients/details/create-follow-case',
                   arguments: {
                     'docId': docId,
@@ -324,6 +334,11 @@ class _FloatingActionButtonForTab extends StatelessWidget {
                     'patName': patName,
                     'AuthCredentials': authUser
                   });
+              if (result == true) {
+                context
+                    .read<FollowReportCubit>()
+                    .fetchFollowCaseDetails(casId, authUser.accessToken);
+              }
             },
             child: const Icon(Icons.add),
           ),
@@ -587,7 +602,6 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
       ],
     );
   } else if (state is PatientDataLoaded && indexTab == 2) {
-    print(state.caseReport.casAdmissionReason);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -709,10 +723,16 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
                         onPressed: () {
                           customWindowDialog(
                             context,
-                            () => (miniContext
-                                .read<AssignUtilsCubit>()
-                                .fetchEndAssignDetails(caseId,
-                                    user.userProfileId, authUser.accessToken)),
+                            () async {
+                              await miniContext
+                                  .read<AssignUtilsCubit>()
+                                  .fetchEndAssignDetails(caseId,
+                                      user.userProfileId, authUser.accessToken);
+                              miniContext
+                                  .read<PatientDataCubit>()
+                                  .fetchCaseDetails(caseId, user.userProfileId,
+                                      authUser.accessToken);
+                            },
                           );
                         },
                         child: Text(
@@ -759,11 +779,17 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
                                               .secondary),
                                     )),
                                 TextButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       Navigator.pop(subContext);
-                                      miniContext
+                                      await miniContext
                                           .read<AssignUtilsCubit>()
                                           .createNewAssign(
+                                              caseId,
+                                              user.userProfileId,
+                                              authUser.accessToken);
+                                      miniContext
+                                          .read<PatientDataCubit>()
+                                          .fetchCaseDetails(
                                               caseId,
                                               user.userProfileId,
                                               authUser.accessToken);
@@ -822,11 +848,12 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
                                               .secondary),
                                     )),
                                 TextButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       Navigator.pop(context);
-                                      Navigator.of(context).pushNamed(
-                                          '/main/patients/details/end-case',
-                                          arguments: {
+                                      final result = await Navigator.of(context)
+                                          .pushNamed(
+                                              '/main/patients/details/end-case',
+                                              arguments: {
                                             'authCredentials': authUser,
                                             'patName':
                                                 '${state.patient.patName} ${state.patient.patLastname}',
@@ -835,6 +862,14 @@ Widget patientInfo(context, state, AuthUser authUser, User user, int caseId,
                                             'casStartDate':
                                                 state.caseReport.casEnterDate,
                                           });
+                                      if (result == true) {
+                                        miniContext
+                                            .read<PatientDataCubit>()
+                                            .fetchCaseDetails(
+                                                caseId,
+                                                user.userProfileId,
+                                                authUser.accessToken);
+                                      }
                                     },
                                     child: const Text('Confirmar'))
                               ],

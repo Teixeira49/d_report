@@ -54,12 +54,12 @@ class DoctorProfileModel extends DoctorProfile {
       'docFirstName': firstName,
       'docLastName': lastName,
       'docDni': dni,
-      'docGender': genre,
-      'docBirthday': birthday,
+      'docGender': this.genre,
+      'docBirthday': this.birthday,
       'rolId': range,
       'docSpecialty': speciality,
       'photoUrl': photoUrl,
-      'userEmail': email,
+      'userEmail': this.email,
       'userPhone': phone,
     };
   }

@@ -5,6 +5,7 @@ import 'package:d_report/src/shared/presentation/widget/bullet.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/config/styles/static_colors.dart';
+import '../../../../core/utils/constants/fields_constants.dart';
 
 class HeaderDetails extends StatelessWidget {
   final BuildContext fatherContext;
@@ -46,7 +47,7 @@ class HeaderDetails extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      caseStatus,
+                      endCaseTypeMeta[caseStatus] ?? caseStatus,
                       textAlign: TextAlign.left,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),

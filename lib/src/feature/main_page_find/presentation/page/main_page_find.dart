@@ -344,7 +344,9 @@ class MyMainPageFindState extends State<MainPageFind> {
               padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
               itemCount: filteredCases.length,
             itemBuilder: (context, index) =>
-                CaseTile(context, filteredCases[index], authUser, user))),
+                CaseTile(context, filteredCases[index], authUser, user, function: (result) {
+                  context.read<FindCasesCubit>().refreshCases(_searchController.text, _selectedIndex, authUser.accessToken);
+                },))),
       )));
     } else if (state is FindCasesLoadedButEmpty) {
       return Center(

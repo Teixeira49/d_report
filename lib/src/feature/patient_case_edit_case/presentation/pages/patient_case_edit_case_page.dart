@@ -73,7 +73,6 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
       dynamic args = ModalRoute.of(context)!.settings.arguments;
       initialPage = (args['id'] != null) ? args['id'] : 1;
       _pageController = PageController(initialPage: initialPage);
-      print(args['casKey']);
       if (args['casKey']['casAdmissionReason'] != null) {
         _reasonConsultationController.text = args['casKey']['casAdmissionReason'];
       }
@@ -161,8 +160,6 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
     int patient = arguments['patKey']['patId'];
     int part = arguments['id'];
 
-    print(arguments['casKey']['casEndReason']);
-
     return MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -216,6 +213,13 @@ class MyEditCaseCaseState extends State<EditCaseCasePage> {
               appBar: AppBar(
                 title: Text(
                     'Editar ${BlocProvider.of<CaseEditorSelectCubit>(contextSelector).getSelectionTitle()}'),
+                automaticallyImplyLeading: false,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.of(context).pop(contextSelector.read<CaseEditorSelectCubit>().getEditedStatus());
+                  },
+                ),
               ),
               body: Stack(
                 alignment: Alignment.topCenter,

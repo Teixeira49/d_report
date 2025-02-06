@@ -76,7 +76,6 @@ class MyCasesRemoteDataSourceImpl implements MyCasesRemoteDataSource {
 
   @override
   Future<void> getRefreshMyCases() async {
-    print('object');
     _page = 0;
   }
 }

@@ -40,7 +40,8 @@ class EndCaseRemoteDataSourceImpl implements EndCaseRemoteDataSource{
         data: {
           'patId': endCaseStatus.encPatId,
           'casId': endCaseStatus.encCasId,
-          'casEndReason': endCaseStatus.encEndReason
+          'casEndReason': endCaseStatus.encEndReason,
+          'casEndDiagnosis': endCaseStatus.encEndDiagnosis
         }
     ));
 

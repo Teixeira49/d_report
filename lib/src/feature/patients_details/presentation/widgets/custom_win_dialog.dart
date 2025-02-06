@@ -29,7 +29,7 @@ Future<void> customWindowDialog(BuildContext context, Function function) {
             onPressed: () {
               function();
               Navigator.of(dialogContext).pop(true);
-              Navigator.of(dialogContext).pop(true);
+              //Navigator.of(dialogContext).pop(true);
               },
             child: const Text('Confirmar'))
       ],

@@ -64,7 +64,7 @@ class MyNewFollowCasePage extends State<NewFollowCasePage> {
                     'Informe guardado con exito.',
                     Icons.check,
                     ColorPalette.checkColor);
-                Navigator.pop(context);
+                Navigator.of(context).pop(true);
               });
             } else if (state is UploadFollowError) {
               Navigator.pop(context);

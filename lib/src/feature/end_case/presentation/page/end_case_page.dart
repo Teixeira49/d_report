@@ -42,7 +42,6 @@ class MyEndCasePage extends State<EndCasePage> {
     final repository = EndCaseRepositoryImpl(remoteDataSource);
 
     final size = MediaQuery.of(context).size;
-    final keyboardEnabled = MediaQuery.of(context).viewInsets.bottom;
 
     dynamic arguments = ModalRoute.of(context)?.settings.arguments;
     AuthUser authUser = arguments["authCredentials"];
@@ -58,14 +57,13 @@ class MyEndCasePage extends State<EndCasePage> {
           if (state is LoadingShowDialog) {
             LoadingShowDialog.show(context, 'Descargando Archivo');
           } else if (state is SendEndCaseLoaded) {
-            Navigator.of(context, rootNavigator: true).pop();
+            Navigator.of(context).pop(true);
             Future.delayed(const Duration(milliseconds: 100), () { // TODO Make Constant
               FloatingSnackBar.show(
                   context,
                   'Caso Finalizado con Exito.',
                   Icons.check,
                   ColorPalette.checkColor);
-              Navigator.pop(context);
             });
           } else if (state is SendEndCaseTimeout) {
             FloatingWarningSnackBar.show(context, state.sms);
@@ -218,9 +216,7 @@ class MyEndCasePage extends State<EndCasePage> {
                 )),
               ),
             ),
-            bottomSheet: Visibility(
-              visible: keyboardEnabled == 0,
-              child: EndCaseButton(size: size, endFunction: () {
+            bottomNavigationBar: EndCaseButton(size: size, endFunction: () {
                 if (_endDiagnosisData.text.isNotEmpty &&
                     _endStatusController
                         .value!.isNotEmpty) {
@@ -240,7 +236,7 @@ class MyEndCasePage extends State<EndCasePage> {
                 } else {
                   _formKey.currentState?.validate();
                 }
-              },),
+              },
             ),
           );
         }));

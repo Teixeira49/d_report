@@ -6,13 +6,16 @@ class EndCaseDTOModel extends EndCaseDTO {
   EndCaseDTOModel(
       {required super.encPatId,
       required super.encCasId,
-      required super.encEndReason,});
+      required super.encEndReason,
+      required super.encEndDiagnosis});
 
   factory EndCaseDTOModel.fromJson(json) {
     return EndCaseDTOModel(
         encPatId: json['patId'],
         encCasId: json['casId'],
-        encEndReason: json['casEndReason']);
+        encEndReason: json['casEndReason'],
+        encEndDiagnosis: json['casEndDiagnosis']
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -20,6 +23,7 @@ class EndCaseDTOModel extends EndCaseDTO {
       'encPatId': encPatId,
       'encCasId': encCasId,
       'encEndReason': encEndReason,
+      'encEndDiagnosis': encEndDiagnosis
     };
   }
 
@@ -28,6 +32,7 @@ class EndCaseDTOModel extends EndCaseDTO {
       encPatId: endCase.encPatId,
       encCasId: endCase.encCasId,
       encEndReason: endCase.encEndReason,
+      encEndDiagnosis: endCase.encEndDiagnosis,
     );
   }
 }

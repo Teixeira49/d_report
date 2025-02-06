@@ -9,7 +9,8 @@ class EndCaseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.only(bottom: 50,), // TODO CREATE A CONSTANT
+        margin: const EdgeInsets.only(bottom: 50, left: 24, right: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 64),// TODO CREATE A CONSTANT
         width: size.width * 0.50,
         height: size.height / 18,
         child: MaterialButton(

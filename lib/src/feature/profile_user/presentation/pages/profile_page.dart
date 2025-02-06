@@ -59,13 +59,16 @@ class MyProfilePageState extends State<ProfilePage> {
                 if (state is ProfileDataLoaded) {
                   return IconButton(
                     icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      Navigator.of(context)
+                    onPressed: () async {
+                      await Navigator.of(context)
                           .pushNamed('/main/profile/edit-row', arguments: {
                         'userData': user,
                         'AuthCredentials': authUser,
                         'doctorData': state.doctor,
                       });
+                      context
+                          .read<ProfileDataCubit>()
+                          .refreshProfile(user.userProfileId, authUser.accessToken);
                     },
                   );
                 } else {

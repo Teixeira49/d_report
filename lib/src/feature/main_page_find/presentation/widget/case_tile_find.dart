@@ -1,4 +1,3 @@
-import 'package:d_report/src/feature/main_page/presentation/cubit/my_cases/my_cases_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,8 +15,9 @@ class CaseTile extends StatelessWidget {
   final CaseSimple dataPatientRow;
   final AuthUser authUser;
   final User user;
+  final Function function;
 
-  const CaseTile(this.context, this.dataPatientRow, this.authUser, this.user, {super.key});
+  const CaseTile(this.context, this.dataPatientRow, this.authUser, this.user, {super.key, required this.function});
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +51,7 @@ class CaseTile extends StatelessWidget {
                 'AuthCredentials': authUser,
                 'userData': user
               });
-          if (result == true) {
-            context.read<MyCasesCubit>().refreshCases(user.userProfileId, authUser.accessToken);
-          }
+          function(result);
         },
       ),
     );
