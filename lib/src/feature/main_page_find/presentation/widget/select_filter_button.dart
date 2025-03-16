@@ -20,8 +20,9 @@ class CustomSelectButton extends StatelessWidget {
         color: selectIndex == index
             ? Theme.of(context).primaryColor
             : Colors.white,
+        elevation: 1.5,
         child: IntrinsicWidth(
-          child:Container(
+          child: Container(
             height: 20,
             alignment: Alignment.center,
             margin: const EdgeInsets.symmetric(vertical: 5.0),

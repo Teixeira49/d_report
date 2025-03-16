@@ -72,11 +72,11 @@ class MyEditProfilePageState extends State<EditProfilePage> {
       if (doctor.genre.isNotEmpty && doctor.genre != emptyString) {
         _genreController.value = doctor.genre;
       }
-      if (doctor.speciality.isNotEmpty && doctor.speciality != emptyString) {
-        _specialityController.text = doctor.speciality;
+      if (doctor.speciality != null && doctor.speciality != emptyString) {
+        _specialityController.text = doctor.speciality!;
       }
-      if (doctor.birthday.isNotEmpty && doctor.birthday != emptyString) {
-        _dateController.text = doctor.birthday;
+      if (doctor.birthday != null && doctor.birthday != emptyString) {
+        _dateController.text = doctor.birthday!;
       }
       if (doctor.phone.isNotEmpty && doctor.phone != emptyString) {
         _phoneController.text = doctor.phone;
@@ -365,8 +365,9 @@ class MyEditProfilePageState extends State<EditProfilePage> {
                                         Flexible(
                                             child: DateTextField(
                                           controllerData: _dateController,
-                                          selectedDate:
-                                              DateTime.parse(doctor.birthday),
+                                          selectedDate: doctor.birthday != null
+                                              ? DateTime.parse(doctor.birthday!)
+                                              : DateTime.now(),
                                         )),
                                         const SizedBox(
                                           width: 12,

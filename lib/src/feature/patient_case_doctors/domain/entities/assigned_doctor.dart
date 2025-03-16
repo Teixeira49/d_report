@@ -15,7 +15,7 @@ class AssignedDoctor {
   int caaId;
   String docName;
   String docLastName;
-  String docSpeciality;
+  String? docSpeciality;
   String caaStartDate; // TODO CHANGE to Datetime
   String caaEndDate;
   bool caaPinned;

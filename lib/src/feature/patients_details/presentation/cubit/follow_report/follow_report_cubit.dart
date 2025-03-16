@@ -44,7 +44,7 @@ class FollowReportCubit extends Cubit<FollowReportState> {
           if (r.followsList.isEmpty) {
             emit(FollowCaseLoadedButEmpty(
                 sms:
-                    "Este paciente no posee Seguimiento, porfavor, cree uno para empezar."));
+                    "Este paciente no posee Seguimiento, porfavor, "));
           } else {
             emit(resetPage
                 ? FollowCaseLoaded(

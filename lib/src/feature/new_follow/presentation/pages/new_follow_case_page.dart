@@ -49,6 +49,8 @@ class MyNewFollowCasePage extends State<NewFollowCasePage> {
     String patName = arguments['patName'];
     AuthUser authUser = arguments['AuthCredentials'];
 
+    print(docId);
+
     return BlocProvider(
         create: (_) => UploadFollowCubit(createUseCase),
         child: BlocConsumer<UploadFollowCubit, UploadFollowState>(
@@ -194,7 +196,7 @@ class MyNewFollowCasePage extends State<NewFollowCasePage> {
                             ),
                           )))),
                 ),
-                bottomSheet: Visibility(
+                bottomNavigationBar: Visibility(
                     visible: keyboardEnabled == 0,
                     child: UploadButton(
                         selected: 1,

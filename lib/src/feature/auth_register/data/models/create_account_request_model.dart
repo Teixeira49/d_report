@@ -28,10 +28,10 @@ class AccountProfileRequestModel extends AccountProfileRequest {
       'docFirstName': firstName,
       'docLastName': lastName,
       'docGender': genre,
-      'userEmail': email,
-      'userPhone': phone,
+      'docEmail': email,
+      'docPhone': phone,
       'rolId': range,
-      'password': password,
+      'docPassword': password,
     };
   }
 

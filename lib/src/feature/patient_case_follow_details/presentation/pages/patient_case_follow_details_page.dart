@@ -198,7 +198,7 @@ class PatientFollowCaseDetailsPage extends StatelessWidget {
                   CustomCardResumeRow(
                     widgetKey: "Autor del Reporte",
                     widgetValue:
-                        '${state.followDetailedCase.docFullName} (${state.followDetailedCase.docSpecialty})',
+                        '${state.followDetailedCase.docFullName} ${state.followDetailedCase.docSpecialty != null ? "(${state.followDetailedCase.docSpecialty})" : ''}',
                     iconData: MyFlutterApp.user_md,
                   ),
                   Divider(

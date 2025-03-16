@@ -31,7 +31,7 @@ class DoctorCaseTile extends StatelessWidget {
         ),
         subtitle:
             Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
-              BadgeTile(color: ColorPalette.badgeDoctorSpeciality, title: assignedDoctor.docSpeciality)
+              BadgeTile(color: ColorPalette.badgeDoctorSpeciality, title: assignedDoctor.docSpeciality != null ? assignedDoctor.docSpeciality! : "Medico General")
         ]),
         tileColor: (assignedDoctor.docId == user.userProfileId
             ? Theme.of(context).colorScheme.onTertiaryContainer

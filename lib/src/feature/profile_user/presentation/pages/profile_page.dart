@@ -215,7 +215,7 @@ class MyProfilePageState extends State<ProfilePage> {
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           Text(
-                            user.userEmail,
+                            state.doctor.email,
                             style: Theme.of(context).textTheme.titleSmall,
                           )
                         ],
@@ -237,29 +237,41 @@ class MyProfilePageState extends State<ProfilePage> {
                           .withOpacity(0.35),
                       height: 14,
                     ),
-                    CustomCardProfileRow(
-                      defaultKey: "Cedula",
-                      defaultValue: state.doctor.dni.toString(),
-                      trailingIcon: Icons.contact_emergency,
+                    Visibility(
+                      visible: state.doctor.dni.toString() != "0", // transfer to utils
+                      child: CustomCardProfileRow(
+                        defaultKey: "Cedula",
+                        defaultValue: state.doctor.dni.toString(),
+                        trailingIcon: Icons.contact_emergency,
+                      ),
                     ),
-                    Divider(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primaryContainer
-                          .withOpacity(0.35),
-                      height: 14,
+                    Visibility(
+                      visible: state.doctor.dni.toString() != "0", // transfer to utils
+                      child: Divider(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primaryContainer
+                            .withOpacity(0.35),
+                        height: 14,
+                      ),
                     ),
-                    CustomCardProfileRow(
-                      defaultKey: "Cumpleaños",
-                      defaultValue: state.doctor.birthday,
-                      trailingIcon: Icons.calendar_month,
+                    Visibility(
+                      visible: state.doctor.birthday != null,
+                        child: CustomCardProfileRow(
+                          defaultKey: "Cumpleaños",
+                          defaultValue: state.doctor.birthday.toString(),
+                          trailingIcon: Icons.calendar_month,
+                        ),
                     ),
-                    Divider(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primaryContainer
-                          .withOpacity(0.35),
-                      height: 14,
+                    Visibility(
+                      visible: state.doctor.birthday != null,
+                        child: Divider(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primaryContainer
+                              .withOpacity(0.35),
+                          height: 14,
+                        ),
                     ),
                     CustomCardProfileRow(
                       defaultKey: "Genero",
@@ -273,16 +285,22 @@ class MyProfilePageState extends State<ProfilePage> {
                           .withOpacity(0.35),
                       height: 14,
                     ),
-                    CustomCardProfileRow(
-                        defaultKey: "Especialidad",
-                        defaultValue: "Doctor - ${state.doctor.speciality}",
-                        trailingIcon: MyFlutterApp.user_md),
-                    Divider(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primaryContainer
-                          .withOpacity(0.35),
-                      height: 14,
+                    Visibility(
+                      visible: state.doctor.speciality != null,
+                        child: CustomCardProfileRow(
+                            defaultKey: "Especialidad",
+                            defaultValue: "Doctor - ${state.doctor.speciality}",
+                            trailingIcon: MyFlutterApp.user_md),
+                    ),
+                    Visibility(
+                      visible: state.doctor.speciality != null,
+                      child: Divider(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primaryContainer
+                              .withOpacity(0.35),
+                          height: 14,
+                        ),
                     ),
                     Visibility(
                       visible: state.doctor.phone.isNotEmpty && state.doctor.phone != emptyString,
@@ -314,7 +332,7 @@ class MyProfilePageState extends State<ProfilePage> {
               onRefresh: () async {
                 context
                     .read<ProfileDataCubit>()
-                    .refreshProfile(user.userProfileId, authUser.accessToken);
+                    .refreshProfile(profileId, authUser.accessToken);
               },
               child: Center(
                 child: ListView(children: [
@@ -398,7 +416,7 @@ class MyProfilePageState extends State<ProfilePage> {
                               onPressed: () async {
                                 await context
                                     .read<ProfileDataCubit>()
-                                    .refreshProfile(user.userProfileId,
+                                    .refreshProfile(profileId,
                                         authUser.accessToken);
                               },
                               child: Text('Reintentar',

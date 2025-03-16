@@ -28,13 +28,13 @@ class RegisterAccountRemoteDataSourceImpl implements RegisterAccountRemoteDataSo
       _isFetching = true;
     }
 
-    const r = RetryOptions(maxAttempts: 3);
+    const r = RetryOptions(maxAttempts: 1);
 
 
     final resp = await r.retry(() => dio.post('$apiUrl/login/doctor/registration',
         options: Options(
-          sendTimeout: const Duration(seconds: 2),
-          receiveTimeout: const Duration(seconds: 2),
+          sendTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
         ),
         data: AccountProfileRequestModel.fromEntity(profileRequest).toJson()));
 

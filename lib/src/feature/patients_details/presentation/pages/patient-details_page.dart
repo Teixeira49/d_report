@@ -279,21 +279,24 @@ class MyPatientDetailsState extends State<PatientDetailsPage> {
                               }
                             : null,
                         size,
+                        (state is PatientDataLoaded) ? state.permissionStatus : ViewDetailsStatus.GUEST,
                         _scrollController),
                   ],
                 ))
               ],
             ),
             floatingActionButton: _FloatingActionButtonForTab(
-                casId: caseId,
-                docId: 23,
-                patName: patFullName,
-                authUser: authUser,
-                endCase: (state is PatientDataLoaded)
-                    ? (state.caseReport.casEndFlag) != null
-                        ? (state.caseReport.casEndFlag)!
-                        : false
-                    : false), // TODO Delete Hardcode number
+              casId: caseId,
+              docId: user.userProfileId,
+              patName: patFullName,
+              authUser: authUser,
+              permissionStatus: (state is PatientDataLoaded)
+                  ? (state.permissionStatus) : ViewDetailsStatus.GUEST,
+              endCase: (state is PatientDataLoaded)
+                  ? (state.caseReport.casEndFlag) != null
+                      ? (state.caseReport.casEndFlag)!
+                      : false
+                  : false), // TODO Delete Hardcode number
           );
         }),
       ),
@@ -306,6 +309,7 @@ class _FloatingActionButtonForTab extends StatelessWidget {
   final int docId;
   final String patName;
   final AuthUser authUser;
+  final ViewDetailsStatus permissionStatus;
   final bool endCase;
 
   const _FloatingActionButtonForTab(
@@ -313,7 +317,8 @@ class _FloatingActionButtonForTab extends StatelessWidget {
       required this.docId,
       required this.authUser,
       required this.patName,
-      required this.endCase});
+      required this.endCase,
+      required this.permissionStatus,});
 
   @override
   Widget build(BuildContext context) {
@@ -323,7 +328,7 @@ class _FloatingActionButtonForTab extends StatelessWidget {
       animation: tabController,
       builder: (context, child) {
         return Visibility(
-          visible: tabController.index == 2 && !endCase,
+          visible: tabController.index == 2 && !endCase && permissionStatus != ViewDetailsStatus.GUEST,
           child: FloatingActionButton(
             onPressed: () async {
               final result = await Navigator.of(context).pushNamed(
@@ -365,7 +370,7 @@ String getTitleDocument(state) {
 }
 
 class FollowInfo extends StatelessWidget {
-  const FollowInfo(this.patName, this.caseId, this.patientDetails, this.size,
+  const FollowInfo(this.patName, this.caseId, this.patientDetails, this.size, this.permissionStatus,
       this.scrollController,
       {super.key});
 
@@ -374,6 +379,7 @@ class FollowInfo extends StatelessWidget {
   final int caseId;
   final Map<String, dynamic>? patientDetails;
   final Size size;
+  final ViewDetailsStatus permissionStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -442,7 +448,7 @@ class FollowInfo extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                       child: Text(
-                    state.sms,
+                    "${state.sms} ${permissionStatus != ViewDetailsStatus.GUEST ? "cree uno para empezar" : 'Vincule su cuenta al caso para empezar'}.",
                     textAlign: TextAlign.justify,
                   ))
                 ],

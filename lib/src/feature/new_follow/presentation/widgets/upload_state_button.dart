@@ -18,7 +18,7 @@ class UploadButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.only(bottom: 50,), // TODO CREATE A CONSTANT
+        margin: const EdgeInsets.only(bottom: 50, left: 90, right: 90, ), // TODO CREATE A CONSTANT
         width: size.width * 0.50,
         height: size.height / 18,
         child: MaterialButton(

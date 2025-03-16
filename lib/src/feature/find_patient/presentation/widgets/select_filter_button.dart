@@ -19,6 +19,7 @@ class CustomSelectButton extends StatelessWidget {
         color: selectIndex == index
             ? Theme.of(context).primaryColor
             : Colors.white,
+        elevation: 2,
         child: Container(
             height: 40,
             width: 90,

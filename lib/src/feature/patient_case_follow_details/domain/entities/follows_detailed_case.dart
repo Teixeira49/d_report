@@ -21,7 +21,7 @@ class FollowDetailedCase{
   String cafReportInfo;
   String cafReportDate;
   String docFullName;
-  String docSpecialty;
+  String? docSpecialty;
   String cafReportTitle;
   String cafReportUpdateTime;
 }

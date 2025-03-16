@@ -21,10 +21,10 @@ class DoctorProfile{
   String lastName;
   int dni;
   String genre;
-  String birthday;
+  String? birthday;
   String range;
-  String speciality;
-  String photoUrl;
+  String? speciality;
+  String? photoUrl;
   String email;
   String phone;
 
@@ -33,7 +33,7 @@ class DoctorProfile{
   }
 
   String getSpeciality(){
-    return speciality;
+    return speciality != null ? speciality! : "No especificada";
   }
 
 }

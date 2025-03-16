@@ -97,7 +97,7 @@ class DownloadCaseFollowRecordUseCase {
   static String customTextIdentifier(FollowDetailedCase followDetailedCase,
       String patName, Map<String, dynamic>? patDetails) {
     return '''$patName
-    ${patDetails != null ? 'Edad: ${Helper.getAgeByDateInString(patDetails['birthday'])} - Peso: ${Helper.writeWeightByInt(patDetails['patWeight'])} Kg' : 'Re. Seguimiento'}
+    ${patDetails != null ? 'Edad: ${Helper.getAgeByDateInString(patDetails['birthday'])} - Peso: ${patDetails['patWeight'] != null ? Helper.writeWeightByInt(patDetails['patWeight']) : '???'} Kg' : 'Re. Seguimiento'}
     Historia: ${followDetailedCase.cafId}
     F.S: ${Helper.cutDateByString(followDetailedCase.cafReportDate)}''';
   }
